@@ -1,0 +1,1015 @@
+﻿// NetNode
+using ColossalFramework;
+using ColossalFramework.Math;
+using UnityEngine;
+
+public void TerrainUpdated(ushort nodeID, float minX, float minZ, float maxX, float maxZ)
+{
+	// modified
+	TerrainSurfacePatcherState patcherState;
+	// modified end
+
+	NetInfo info;
+	bool flag;
+	bool flag2;
+	bool flag3;
+	bool flag4;
+	bool flag5;
+	bool flag6;
+	ushort num;
+	if ((m_flags & (Flags.Created | Flags.Deleted)) == Flags.Created)
+	{
+		info = Info;
+		if ((object)info != null)
+		{
+			byte b = (byte)((!Singleton<TerrainManager>.instance.HasDetailMapping(m_position) && info.m_requireSurfaceMaps) ? 64 : 0);
+			if (b != m_heightOffset)
+			{
+				CheckHeightOffset(nodeID);
+				NetManager instance = Singleton<NetManager>.instance;
+				for (int i = 0; i < 8; i++)
+				{
+					ushort segment = GetSegment(i);
+					if (segment != 0)
+					{
+						ushort startNode = instance.m_segments.m_buffer[segment].m_startNode;
+						ushort endNode = instance.m_segments.m_buffer[segment].m_endNode;
+						if (startNode == nodeID)
+						{
+							instance.m_nodes.m_buffer[endNode].CheckHeightOffset(endNode);
+						}
+						else
+						{
+							instance.m_nodes.m_buffer[startNode].CheckHeightOffset(startNode);
+						}
+					}
+				}
+			}
+			if ((m_flags & Flags.Underground) != 0)
+			{
+				flag = false;
+				flag2 = false;
+				flag3 = false;
+				flag4 = false;
+				flag5 = false;
+				flag6 = info.m_netAI.RaiseTerrain();
+			}
+			else
+			{
+				flag = (info.m_createPavement && (!info.m_lowerTerrain || (m_flags & Flags.OnGround) != Flags.None));
+				flag2 = (info.m_createGravel && (!info.m_lowerTerrain || (m_flags & Flags.OnGround) != Flags.None));
+				flag3 = (info.m_createRuining && (!info.m_lowerTerrain || (m_flags & Flags.OnGround) != Flags.None));
+				flag4 = (info.m_clipTerrain && (!info.m_lowerTerrain || (m_flags & Flags.OnGround) != 0) && info.m_netAI.CanClipNodes());
+				flag5 = (info.m_flattenTerrain || (info.m_netAI.FlattenGroundNodes() && (m_flags & Flags.OnGround) != Flags.None));
+				flag6 = false;
+			}
+			if (!flag5 && !info.m_lowerTerrain && !flag6 && !flag && !flag2 && !flag3 && !flag4)
+			{
+				return;
+			}
+			for (int j = 0; j < 8; j++)
+			{
+				ushort segment2 = GetSegment(j);
+				if (segment2 != 0)
+				{
+					if ((Singleton<NetManager>.instance.m_segments.m_buffer[segment2].m_flags & (NetSegment.Flags.Created | NetSegment.Flags.Deleted)) != NetSegment.Flags.Created)
+					{
+						return;
+					}
+					ushort startNode2 = Singleton<NetManager>.instance.m_segments.m_buffer[segment2].m_startNode;
+					ushort endNode2 = Singleton<NetManager>.instance.m_segments.m_buffer[segment2].m_endNode;
+					if (startNode2 == nodeID)
+					{
+						for (int k = 0; k < 8; k++)
+						{
+							ushort segment3 = Singleton<NetManager>.instance.m_nodes.m_buffer[endNode2].GetSegment(k);
+							if (segment3 != 0 && (Singleton<NetManager>.instance.m_segments.m_buffer[segment3].m_flags & (NetSegment.Flags.Created | NetSegment.Flags.Deleted)) != NetSegment.Flags.Created)
+							{
+								return;
+							}
+						}
+					}
+					else
+					{
+						for (int l = 0; l < 8; l++)
+						{
+							ushort segment4 = Singleton<NetManager>.instance.m_nodes.m_buffer[startNode2].GetSegment(l);
+							if (segment4 != 0 && (Singleton<NetManager>.instance.m_segments.m_buffer[segment4].m_flags & (NetSegment.Flags.Created | NetSegment.Flags.Deleted)) != NetSegment.Flags.Created)
+							{
+								return;
+							}
+						}
+					}
+				}
+			}
+			num = 0;
+			if ((m_flags & Flags.Junction) != 0)
+			{
+				Vector3 vector = m_position;
+				int num2 = 0;
+				for (int m = 0; m < 8; m++)
+				{
+					ushort segment5 = GetSegment(m);
+					if (segment5 != 0)
+					{
+						NetSegment netSegment = Singleton<NetManager>.instance.m_segments.m_buffer[segment5];
+						NetInfo info2 = netSegment.Info;
+						if ((object)info2 != null && info2.m_netAI.GetSnapElevation() <= info.m_netAI.GetSnapElevation())
+						{
+							ItemClass connectionClass = info2.GetConnectionClass();
+							Vector3 a = (nodeID != netSegment.m_startNode) ? netSegment.m_endDirection : netSegment.m_startDirection;
+							float num3 = -1f;
+							for (int n = 0; n < 8; n++)
+							{
+								ushort segment6 = GetSegment(n);
+								if (segment6 != 0 && segment6 != segment5)
+								{
+									NetSegment netSegment2 = Singleton<NetManager>.instance.m_segments.m_buffer[segment6];
+									NetInfo info3 = netSegment2.Info;
+									if ((object)info3 != null && info3.m_netAI.GetSnapElevation() <= info.m_netAI.GetSnapElevation())
+									{
+										ItemClass connectionClass2 = info3.GetConnectionClass();
+										if (connectionClass.m_service == connectionClass2.m_service)
+										{
+											Vector3 vector2 = (nodeID != netSegment2.m_startNode) ? netSegment2.m_endDirection : netSegment2.m_startDirection;
+											num3 = Mathf.Max(num3, a.x * vector2.x + a.z * vector2.z);
+										}
+									}
+								}
+							}
+							vector += a * (2f + num3 * 2f);
+							num2++;
+							num = segment5;
+						}
+					}
+				}
+				vector.y = m_position.y;
+				if (num2 > 1)
+				{
+					num = 0;
+					for (int num4 = 0; num4 < 8; num4++)
+					{
+						ushort segment7 = GetSegment(num4);
+						if (segment7 != 0)
+						{
+							NetSegment netSegment3 = Singleton<NetManager>.instance.m_segments.m_buffer[segment7];
+							NetInfo info4 = netSegment3.Info;
+							if ((object)info4 != null && info4.m_netAI.GetSnapElevation() <= info.m_netAI.GetSnapElevation())
+							{
+								Bezier3 bezier = default(Bezier3);
+								Segment3 segment8 = default(Segment3);
+								Vector3 zero = Vector3.zero;
+								Vector3 zero2 = Vector3.zero;
+								Vector3 a2 = Vector3.zero;
+								Vector3 a3 = Vector3.zero;
+								ItemClass connectionClass3 = info4.GetConnectionClass();
+								NetInfo netInfo = info4;
+								Vector3 vector3 = (nodeID != netSegment3.m_startNode) ? netSegment3.m_endDirection : netSegment3.m_startDirection;
+								float num5 = -4f;
+								ushort num6 = 0;
+								for (int num7 = 0; num7 < 8; num7++)
+								{
+									ushort segment9 = GetSegment(num7);
+									if (segment9 != 0 && segment9 != segment7)
+									{
+										NetSegment netSegment4 = Singleton<NetManager>.instance.m_segments.m_buffer[segment9];
+										NetInfo info5 = netSegment4.Info;
+										if ((object)info5 != null && info5.m_netAI.GetSnapElevation() <= info.m_netAI.GetSnapElevation())
+										{
+											ItemClass connectionClass4 = info5.GetConnectionClass();
+											if (connectionClass3.m_service == connectionClass4.m_service)
+											{
+												Vector3 vector4 = (nodeID != netSegment4.m_startNode) ? netSegment4.m_endDirection : netSegment4.m_startDirection;
+												float num8 = vector3.x * vector4.x + vector3.z * vector4.z;
+												if (vector4.z * vector3.x - vector4.x * vector3.z < 0f)
+												{
+													if (num8 > num5)
+													{
+														num5 = num8;
+														num6 = segment9;
+													}
+												}
+												else
+												{
+													num8 = -2f - num8;
+													if (num8 > num5)
+													{
+														num5 = num8;
+														num6 = segment9;
+													}
+												}
+											}
+										}
+									}
+								}
+								bool start = netSegment3.m_startNode == nodeID;
+								netSegment3.CalculateCorner(segment7, false, start, false, out bezier.a, out zero, out bool flag7);
+								netSegment3.CalculateCorner(segment7, false, start, true, out segment8.a, out zero2, out flag7);
+								if (num6 != 0)
+								{
+									NetSegment netSegment5 = Singleton<NetManager>.instance.m_segments.m_buffer[num6];
+									netInfo = netSegment5.Info;
+									start = (netSegment5.m_startNode == nodeID);
+									netSegment5.CalculateCorner(num6, false, start, true, out bezier.d, out a2, out flag7);
+									netSegment5.CalculateCorner(num6, false, start, false, out segment8.b, out a3, out flag7);
+									NetSegment.CalculateMiddlePoints(bezier.a, -zero, bezier.d, -a2, true, true, out bezier.b, out bezier.c);
+									segment8.a = (bezier.a + segment8.a) * 0.5f;
+									segment8.b = (bezier.d + segment8.b) * 0.5f;
+									Vector3 vector5 = Vector3.Min(vector, Vector3.Min(bezier.Min(), segment8.Min()));
+									Vector3 vector6 = Vector3.Max(vector, Vector3.Max(bezier.Max(), segment8.Max()));
+									if (vector5.x <= maxX && vector5.z <= maxZ && minX <= vector6.x && minZ <= vector6.z)
+									{
+										float num9 = Vector3.Distance(bezier.a, bezier.b);
+										float num10 = Vector3.Distance(bezier.b, bezier.c);
+										float num11 = Vector3.Distance(bezier.c, bezier.d);
+										Vector3 lhs = (bezier.a - bezier.b) * (1f / Mathf.Max(0.1f, num9));
+										Vector3 vector7 = (bezier.c - bezier.b) * (1f / Mathf.Max(0.1f, num10));
+										Vector3 rhs = (bezier.d - bezier.c) * (1f / Mathf.Max(0.1f, num11));
+										float num12 = Mathf.Min(Vector3.Dot(lhs, vector7), Vector3.Dot(vector7, rhs));
+										num9 += num10 + num11;
+										int num13 = Mathf.Clamp(Mathf.CeilToInt(Mathf.Min(num9 * 0.125f, 50f - num12 * 50f)) * 2, 2, 16);
+										Vector3 vector8 = bezier.a;
+										Vector3 vector9 = segment8.a;
+										for (int num14 = 1; num14 <= num13; num14++)
+										{
+											NetInfo netInfo2 = (num14 > num13 >> 1) ? netInfo : info4;
+											Vector3 vector10 = bezier.Position((float)num14 / (float)num13);
+											Vector3 vector11 = (num14 > num13 >> 1) ? (vector + (segment8.b - vector) * ((float)num14 / (float)num13 * 2f - 1f)) : (segment8.a + (vector - segment8.a) * ((float)num14 / (float)num13 * 2f));
+											
+											// modified
+											patcherState = NetworkSkins.TerrainSurfacePatcher.Apply(netInfo2, NetworkSkins.Skins.NetworkSkinManager.SegmentSkins[(num14 > num13 >> 1) ? num6 : segment7]);
+											// modified end
+											
+											bool flag8 = netInfo2.m_createPavement && (!netInfo2.m_lowerTerrain || (m_flags & Flags.OnGround) != Flags.None);
+											bool flag9 = netInfo2.m_createGravel && (!netInfo2.m_lowerTerrain || (m_flags & Flags.OnGround) != Flags.None);
+											bool flag10 = netInfo2.m_createRuining && (!netInfo2.m_lowerTerrain || (m_flags & Flags.OnGround) != Flags.None);
+											bool flag11 = netInfo2.m_clipTerrain && (!netInfo2.m_lowerTerrain || (m_flags & Flags.OnGround) != 0) && netInfo2.m_netAI.CanClipNodes();
+
+											// modified
+											NetworkSkins.TerrainSurfacePatcher.Revert(netInfo2, patcherState);
+											// modified end
+
+											bool flag12 = netInfo2.m_flattenTerrain || (netInfo2.m_netAI.FlattenGroundNodes() && (m_flags & Flags.OnGround) != Flags.None);
+											Vector3 vector12 = vector8;
+											Vector3 vector13 = vector10;
+											Vector3 vector14 = vector11;
+											Vector3 vector15 = vector9;
+											TerrainModify.Heights heights = TerrainModify.Heights.None;
+											TerrainModify.Surface surface = TerrainModify.Surface.None;
+											if (flag6)
+											{
+												heights = TerrainModify.Heights.SecondaryMin;
+											}
+											else
+											{
+												if (flag5 || flag12)
+												{
+													heights |= TerrainModify.Heights.PrimaryLevel;
+												}
+												if (info.m_lowerTerrain || netInfo2.m_lowerTerrain)
+												{
+													heights |= TerrainModify.Heights.PrimaryMax;
+												}
+												if (info.m_blockWater || netInfo2.m_blockWater)
+												{
+													heights |= TerrainModify.Heights.BlockHeight;
+												}
+												if (flag8)
+												{
+													surface |= TerrainModify.Surface.PavementA;
+												}
+												if (flag2 || flag9)
+												{
+													surface |= TerrainModify.Surface.Gravel;
+												}
+												if (flag3 || flag10)
+												{
+													surface |= TerrainModify.Surface.Ruined;
+												}
+												if (flag4 || flag11)
+												{
+													surface |= TerrainModify.Surface.Clip;
+												}
+											}
+											TerrainModify.Edges edges = TerrainModify.Edges.All;
+											float num15 = 0f;
+											float num16 = 1f;
+											float num17 = 0f;
+											float num18 = 0f;
+											for (int num19 = 0; netInfo2.m_netAI.NodeModifyMask(nodeID, ref this, segment7, num6, num19, ref surface, ref heights, ref edges, ref num15, ref num16, ref num17, ref num18); num19++)
+											{
+												if (!(num15 >= 0.5f))
+												{
+													TerrainModify.Edges edges2 = TerrainModify.Edges.AB;
+													if (num15 != 0f || num16 != 1f || num19 != 0)
+													{
+														if (num15 != 0f)
+														{
+															float t = 2f * num15 * netInfo2.m_halfWidth / Vector3.Distance(vector12, vector15);
+															float t2 = 2f * num15 * netInfo2.m_halfWidth / Vector3.Distance(vector13, vector14);
+															vector8 = Vector3.Lerp(vector12, vector15, t);
+															vector10 = Vector3.Lerp(vector13, vector14, t2);
+														}
+														else
+														{
+															vector8 = vector12;
+															vector10 = vector13;
+														}
+														if (num16 < 0.5f)
+														{
+															edges2 |= TerrainModify.Edges.CD;
+															float t3 = 2f * num16 * netInfo2.m_halfWidth / Vector3.Distance(vector12, vector15);
+															float t4 = 2f * num16 * netInfo2.m_halfWidth / Vector3.Distance(vector13, vector14);
+															vector9 = Vector3.Lerp(vector12, vector15, t3);
+															vector11 = Vector3.Lerp(vector13, vector14, t4);
+														}
+														else
+														{
+															vector9 = vector15;
+															vector11 = vector14;
+														}
+													}
+													vector8.y += num17;
+													vector9.y += num18;
+													vector10.y += num17;
+													vector11.y += num18;
+													Vector3 zero3 = Vector3.zero;
+													Vector3 zero4 = Vector3.zero;
+													if (flag6)
+													{
+														zero3.y += info.m_maxHeight;
+														zero4.y += info.m_maxHeight;
+													}
+													else if (netInfo2.m_lowerTerrain)
+													{
+														if (!info.m_lowerTerrain)
+														{
+															if (num14 == 1)
+															{
+																TerrainModify.Edges edges3 = edges2 | TerrainModify.Edges.DA;
+																TerrainModify.ApplyQuad(vector8, vector10, vector11, vector9, edges3, TerrainModify.Heights.None, surface);
+																surface = TerrainModify.Surface.None;
+															}
+															else if (num14 == num13)
+															{
+																TerrainModify.Edges edges4 = edges2 | TerrainModify.Edges.BC;
+																TerrainModify.ApplyQuad(vector8, vector10, vector11, vector9, edges4, TerrainModify.Heights.None, surface);
+																surface = TerrainModify.Surface.None;
+															}
+															zero3.y += (float)Mathf.Abs(num14 - 1 - (num13 >> 1)) * (1f / (float)num13) * netInfo2.m_netAI.GetTerrainLowerOffset();
+															zero4.y += (float)Mathf.Abs(num14 - (num13 >> 1)) * (1f / (float)num13) * netInfo2.m_netAI.GetTerrainLowerOffset();
+														}
+														else
+														{
+															if ((m_flags & Flags.OnGround) != 0)
+															{
+																if (num14 == 1)
+																{
+																	edges2 |= TerrainModify.Edges.DA;
+																}
+																else if (num14 == num13)
+																{
+																	edges2 |= TerrainModify.Edges.BC;
+																}
+															}
+															zero3.y += netInfo2.m_netAI.GetTerrainLowerOffset();
+															zero4.y += netInfo2.m_netAI.GetTerrainLowerOffset();
+														}
+													}
+													edges2 &= edges;
+													TerrainModify.Surface surface2 = surface;
+													if ((surface2 & TerrainModify.Surface.PavementA) != 0)
+													{
+														surface2 |= TerrainModify.Surface.Gravel;
+													}
+													TerrainModify.ApplyQuad(vector8 + zero3, vector10 + zero4, vector11 + zero4, vector9 + zero3, edges2, heights, surface2);
+												}
+											}
+											vector8 = vector13;
+											vector9 = vector14;
+										}
+									}
+								}
+								else
+								{
+									Vector3 vector16 = bezier.a;
+									Vector3 vector17 = segment8.a;
+									Vector3 vector18 = Vector3.zero;
+									Vector3 vector19 = Vector3.zero;
+									Vector3 a4 = vector16;
+									Vector3 b2 = vector17;
+									Vector3 a5 = vector18;
+									Vector3 b3 = vector19;
+
+									// modified
+									patcherState = NetworkSkins.TerrainSurfacePatcher.Apply(info4, NetworkSkins.Skins.NetworkSkinManager.SegmentSkins[segment7]);
+									// modified end
+
+									bool flag13 = info4.m_createPavement && (!info4.m_lowerTerrain || (m_flags & Flags.OnGround) != Flags.None);
+									bool flag14 = info4.m_createGravel && (!info4.m_lowerTerrain || (m_flags & Flags.OnGround) != Flags.None);
+									bool flag15 = info4.m_createRuining && (!info4.m_lowerTerrain || (m_flags & Flags.OnGround) != Flags.None);
+									bool flag16 = info4.m_clipTerrain && (!info4.m_lowerTerrain || (m_flags & Flags.OnGround) != 0) && info4.m_netAI.CanClipNodes();
+
+									// modified
+									NetworkSkins.TerrainSurfacePatcher.Revert(netInfo, patcherState);
+								    // modified end
+
+									bool flag17 = info4.m_flattenTerrain || (info4.m_netAI.FlattenGroundNodes() && (m_flags & Flags.OnGround) != Flags.None);
+									TerrainModify.Heights heights2 = TerrainModify.Heights.None;
+									TerrainModify.Surface surface3 = TerrainModify.Surface.None;
+									if (flag6)
+									{
+										heights2 = TerrainModify.Heights.SecondaryMin;
+									}
+									else
+									{
+										if (flag17)
+										{
+											heights2 |= TerrainModify.Heights.PrimaryLevel;
+										}
+										if (info4.m_lowerTerrain)
+										{
+											heights2 |= TerrainModify.Heights.PrimaryMax;
+										}
+										if (info4.m_blockWater)
+										{
+											heights2 |= TerrainModify.Heights.BlockHeight;
+										}
+										if (flag13)
+										{
+											surface3 |= TerrainModify.Surface.PavementA;
+										}
+										if (flag14)
+										{
+											surface3 |= TerrainModify.Surface.Gravel;
+										}
+										if (flag15)
+										{
+											surface3 |= TerrainModify.Surface.Ruined;
+										}
+										if (flag16)
+										{
+											surface3 |= TerrainModify.Surface.Clip;
+										}
+									}
+									TerrainModify.Edges edges5 = TerrainModify.Edges.All;
+									float num20 = 0f;
+									float num21 = 1f;
+									float num22 = 0f;
+									float num23 = 0f;
+									for (int num24 = 0; info4.m_netAI.NodeModifyMask(nodeID, ref this, segment7, segment7, num24, ref surface3, ref heights2, ref edges5, ref num20, ref num21, ref num22, ref num23); num24++)
+									{
+										if (num20 != 0f || num21 != 1f || num24 != 0)
+										{
+											vector16 = Vector3.Lerp(a4, b2, num20);
+											vector17 = Vector3.Lerp(a4, b2, num21);
+											vector18 = Vector3.Lerp(a5, b3, num20);
+											vector19 = Vector3.Lerp(a5, b3, num21);
+										}
+										vector16.y += num22;
+										vector17.y += num23;
+										vector18.y += num22;
+										vector19.y += num23;
+										if (info4.m_segments == null || info4.m_segments.Length == 0)
+										{
+											vector18 = vector16 - zero * (info4.m_halfWidth + 2f);
+											vector19 = vector17 - zero2 * (info4.m_halfWidth + 2f);
+											float num25 = Mathf.Min(Mathf.Min(Mathf.Min(vector16.x, vector17.x), Mathf.Min(vector18.x, vector19.x)));
+											float num26 = Mathf.Max(Mathf.Max(Mathf.Max(vector16.x, vector17.x), Mathf.Max(vector18.x, vector19.x)));
+											float num27 = Mathf.Min(Mathf.Min(Mathf.Min(vector16.z, vector17.z), Mathf.Min(vector18.z, vector19.z)));
+											float num28 = Mathf.Max(Mathf.Max(Mathf.Max(vector16.z, vector17.z), Mathf.Max(vector18.z, vector19.z)));
+											if (num25 <= maxX && num27 <= maxZ && minX <= num26 && minZ <= num28)
+											{
+												TerrainModify.Edges edges6 = TerrainModify.Edges.AB | TerrainModify.Edges.BC | TerrainModify.Edges.CD;
+												if (info4.m_lowerTerrain && (m_flags & Flags.OnGround) != 0)
+												{
+													edges6 |= TerrainModify.Edges.DA;
+												}
+												edges6 &= edges5;
+												TerrainModify.Surface surface4 = surface3;
+												if ((surface4 & TerrainModify.Surface.PavementA) != 0)
+												{
+													surface4 |= TerrainModify.Surface.Gravel;
+												}
+												Vector3 zero5 = Vector3.zero;
+												if (flag6)
+												{
+													zero5.y += info4.m_maxHeight;
+												}
+												else if (info4.m_lowerTerrain)
+												{
+													zero5.y += info4.m_netAI.GetTerrainLowerOffset();
+												}
+												TerrainModify.ApplyQuad(vector16 + zero5, vector18 + zero5, vector19 + zero5, vector17 + zero5, edges6, heights2, surface4);
+											}
+										}
+										else
+										{
+											vector18 = vector17;
+											vector19 = vector16;
+											a2 = zero2;
+											a3 = zero;
+											float d = info4.m_netAI.GetEndRadius() * 1.33333337f * 1.1f;
+											Vector3 b4 = vector16 - zero * d;
+											Vector3 c = vector18 - a2 * d;
+											Vector3 vector20 = vector17 + zero2 * d;
+											Vector3 vector21 = vector19 + a3 * d;
+											float num29 = Mathf.Min(Mathf.Min(Mathf.Min(vector16.x, vector17.x), Mathf.Min(b4.x, vector20.x)), Mathf.Min(Mathf.Min(c.x, vector21.x), Mathf.Min(vector18.x, vector19.x)));
+											float num30 = Mathf.Max(Mathf.Max(Mathf.Max(vector16.x, vector17.x), Mathf.Max(b4.x, vector20.x)), Mathf.Max(Mathf.Max(c.x, vector21.x), Mathf.Max(vector18.x, vector19.x)));
+											float num31 = Mathf.Min(Mathf.Min(Mathf.Min(vector16.z, vector17.z), Mathf.Min(b4.z, vector20.z)), Mathf.Min(Mathf.Min(c.z, vector21.z), Mathf.Min(vector18.z, vector19.z)));
+											float num32 = Mathf.Max(Mathf.Max(Mathf.Max(vector16.z, vector17.z), Mathf.Max(b4.z, vector20.z)), Mathf.Max(Mathf.Max(c.z, vector21.z), Mathf.Max(vector18.z, vector19.z)));
+											if (num29 <= maxX && num31 <= maxZ && minX <= num30 && minZ <= num32)
+											{
+												int num33 = Mathf.Clamp(Mathf.CeilToInt(info4.m_halfWidth * 0.4f), 2, 8);
+												Vector3 a6 = vector16;
+												Vector3 a7 = (vector16 + vector17) * 0.5f;
+												for (int num34 = 1; num34 <= num33; num34++)
+												{
+													Vector3 a8 = Bezier3.Position(vector16, b4, c, vector18, ((float)num34 - 0.5f) / (float)num33);
+													Vector3 vector22 = Bezier3.Position(vector16, b4, c, vector18, (float)num34 / (float)num33);
+													TerrainModify.Edges edges7 = TerrainModify.Edges.AB | TerrainModify.Edges.BC;
+													edges7 &= edges5;
+													TerrainModify.Surface surface5 = surface3;
+													if ((surface5 & TerrainModify.Surface.PavementA) != 0)
+													{
+														surface5 |= TerrainModify.Surface.Gravel;
+													}
+													Vector3 zero6 = Vector3.zero;
+													if (flag6)
+													{
+														zero6.y += info4.m_maxHeight;
+													}
+													else if (info4.m_lowerTerrain)
+													{
+														zero6.y += info4.m_netAI.GetTerrainLowerOffset();
+													}
+													TerrainModify.ApplyQuad(a6 + zero6, a8 + zero6, vector22 + zero6, a7 + zero6, edges7, heights2, surface5);
+													a6 = vector22;
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+					if (num2 == 8)
+					{
+						Vector3 vector23 = vector + Vector3.left * 8f;
+						Vector3 vector24 = vector + Vector3.back * 8f;
+						Vector3 vector25 = vector + Vector3.right * 8f;
+						Vector3 vector26 = vector + Vector3.forward * 8f;
+						Vector3 vector27 = vector23;
+						Vector3 vector28 = vector24;
+						Vector3 vector29 = vector25;
+						Vector3 vector30 = vector26;
+						TerrainModify.Heights heights3 = TerrainModify.Heights.None;
+						TerrainModify.Surface surface6 = TerrainModify.Surface.None;
+						if (flag6)
+						{
+							heights3 = TerrainModify.Heights.SecondaryMin;
+						}
+						else
+						{
+							if (flag5)
+							{
+								heights3 |= TerrainModify.Heights.PrimaryLevel;
+							}
+							if (info.m_lowerTerrain)
+							{
+								heights3 |= TerrainModify.Heights.PrimaryMax;
+							}
+							if (info.m_blockWater)
+							{
+								heights3 |= TerrainModify.Heights.BlockHeight;
+							}
+							if (flag)
+							{
+								surface6 |= TerrainModify.Surface.PavementA;
+							}
+							if (flag2)
+							{
+								surface6 |= TerrainModify.Surface.Gravel;
+							}
+							if (flag3)
+							{
+								surface6 |= TerrainModify.Surface.Ruined;
+							}
+							if (flag4)
+							{
+								surface6 |= TerrainModify.Surface.Clip;
+							}
+						}
+						TerrainModify.Edges edges8 = TerrainModify.Edges.All;
+						float num35 = 0f;
+						float num36 = 1f;
+						float num37 = 0f;
+						float num38 = 0f;
+						for (int num39 = 0; info.m_netAI.NodeModifyMask(nodeID, ref this, 0, 0, num39, ref surface6, ref heights3, ref edges8, ref num35, ref num36, ref num37, ref num38); num39++)
+						{
+							if (num39 != 0)
+							{
+								vector23 = vector27;
+								vector24 = vector28;
+								vector25 = vector29;
+								vector26 = vector30;
+							}
+							vector23.y += (num37 + num38) * 0.5f;
+							vector24.y += (num37 + num38) * 0.5f;
+							vector25.y += (num37 + num38) * 0.5f;
+							vector26.y += (num37 + num38) * 0.5f;
+							TerrainModify.Edges edges9 = TerrainModify.Edges.All;
+							edges9 &= edges8;
+							TerrainModify.Surface surface7 = surface6;
+							if ((surface7 & TerrainModify.Surface.PavementA) != 0)
+							{
+								surface7 |= TerrainModify.Surface.Gravel;
+							}
+							Vector3 zero7 = Vector3.zero;
+							if (flag6)
+							{
+								zero7.y += info.m_maxHeight;
+							}
+							else if (info.m_lowerTerrain)
+							{
+								zero7.y += info.m_netAI.GetTerrainLowerOffset();
+							}
+							TerrainModify.ApplyQuad(vector23 + zero7, vector24 + zero7, vector25 + zero7, vector26 + zero7, edges9, heights3, surface7);
+						}
+					}
+				}
+			}
+			else if ((m_flags & Flags.Bend) != 0)
+			{
+				Bezier3 bezier2 = default(Bezier3);
+				Bezier3 bezier3 = default(Bezier3);
+				Vector3 zero8 = Vector3.zero;
+				Vector3 zero9 = Vector3.zero;
+				Vector3 zero10 = Vector3.zero;
+				Vector3 zero11 = Vector3.zero;
+				ushort segment10 = 0;
+				ushort num40 = 0;
+				int num41 = 0;
+				for (int num42 = 0; num42 < 8; num42++)
+				{
+					ushort segment11 = GetSegment(num42);
+					if (segment11 != 0)
+					{
+						NetSegment netSegment6 = Singleton<NetManager>.instance.m_segments.m_buffer[segment11];
+						if ((object)netSegment6.Info != null)
+						{
+							bool start2 = netSegment6.m_startNode == nodeID;
+							bool flag18;
+							if (++num41 == 1)
+							{
+								segment10 = segment11;
+								netSegment6.CalculateCorner(segment11, false, start2, false, out bezier2.a, out zero8, out flag18);
+								netSegment6.CalculateCorner(segment11, false, start2, true, out bezier3.a, out zero9, out flag18);
+							}
+							else
+							{
+								num40 = segment11;
+								netSegment6.CalculateCorner(segment11, false, start2, true, out bezier2.d, out zero10, out flag18);
+								netSegment6.CalculateCorner(segment11, false, start2, false, out bezier3.d, out zero11, out flag18);
+							}
+						}
+					}
+				}
+				if (num40 != 0)
+				{
+					Vector3 a9 = bezier2.a;
+					Vector3 a10 = bezier3.a;
+					Vector3 d2 = bezier2.d;
+					Vector3 d3 = bezier3.d;
+					TerrainModify.Heights heights4 = TerrainModify.Heights.None;
+					TerrainModify.Surface surface8 = TerrainModify.Surface.None;
+					if (flag6)
+					{
+						heights4 = TerrainModify.Heights.SecondaryMin;
+					}
+					else
+					{
+						if (flag5)
+						{
+							heights4 |= TerrainModify.Heights.PrimaryLevel;
+						}
+						if (info.m_lowerTerrain)
+						{
+							heights4 |= TerrainModify.Heights.PrimaryMax;
+						}
+						if (info.m_blockWater)
+						{
+							heights4 |= TerrainModify.Heights.BlockHeight;
+						}
+						if (flag)
+						{
+							surface8 |= TerrainModify.Surface.PavementA;
+						}
+						if (flag2)
+						{
+							surface8 |= TerrainModify.Surface.Gravel;
+						}
+						if (flag3)
+						{
+							surface8 |= TerrainModify.Surface.Ruined;
+						}
+						if (flag4)
+						{
+							surface8 |= TerrainModify.Surface.Clip;
+						}
+					}
+					TerrainModify.Edges edges10 = TerrainModify.Edges.All;
+					float num43 = 0f;
+					float num44 = 1f;
+					float num45 = 0f;
+					float num46 = 0f;
+					for (int num47 = 0; info.m_netAI.NodeModifyMask(nodeID, ref this, segment10, num40, num47, ref surface8, ref heights4, ref edges10, ref num43, ref num44, ref num45, ref num46); num47++)
+					{
+						if (num43 != 0f || num44 != 1f || num47 != 0)
+						{
+							bezier2.a = Vector3.Lerp(a9, a10, num43);
+							bezier3.a = Vector3.Lerp(a9, a10, num44);
+							bezier2.d = Vector3.Lerp(d2, d3, num43);
+							bezier3.d = Vector3.Lerp(d2, d3, num44);
+						}
+						bezier2.a.y += num45;
+						bezier3.a.y += num46;
+						bezier2.d.y += num45;
+						bezier3.d.y += num46;
+						NetSegment.CalculateMiddlePoints(bezier2.a, -zero8, bezier2.d, -zero10, true, true, out bezier2.b, out bezier2.c);
+						NetSegment.CalculateMiddlePoints(bezier3.a, -zero9, bezier3.d, -zero11, true, true, out bezier3.b, out bezier3.c);
+						Vector3 vector31 = Vector3.Min(bezier2.Min(), bezier3.Min());
+						Vector3 vector32 = Vector3.Max(bezier2.Max(), bezier3.Max());
+						if (vector31.x <= maxX && vector31.z <= maxZ && minX <= vector32.x && minZ <= vector32.z)
+						{
+							float num48 = Vector3.Distance(bezier2.a, bezier2.b);
+							float num49 = Vector3.Distance(bezier2.b, bezier2.c);
+							float num50 = Vector3.Distance(bezier2.c, bezier2.d);
+							float num51 = Vector3.Distance(bezier3.a, bezier3.b);
+							float num52 = Vector3.Distance(bezier3.b, bezier3.c);
+							float num53 = Vector3.Distance(bezier3.c, bezier3.d);
+							Vector3 lhs2 = (bezier2.a - bezier2.b) * (1f / Mathf.Max(0.1f, num48));
+							Vector3 vector33 = (bezier2.c - bezier2.b) * (1f / Mathf.Max(0.1f, num49));
+							Vector3 rhs2 = (bezier2.d - bezier2.c) * (1f / Mathf.Max(0.1f, num50));
+							float num54 = Mathf.Min(Vector3.Dot(lhs2, vector33), Vector3.Dot(vector33, rhs2));
+							num48 += num49 + num50;
+							num51 += num52 + num53;
+							int num55 = Mathf.Clamp(Mathf.CeilToInt(Mathf.Min(Mathf.Max(num48, num51) * 0.25f, 100f - num54 * 100f)), 1, 16);
+							Vector3 a11 = bezier2.a;
+							Vector3 a12 = bezier3.a;
+							for (int num56 = 1; num56 <= num55; num56++)
+							{
+								Vector3 vector34 = bezier2.Position((float)num56 / (float)num55);
+								Vector3 vector35 = bezier3.Position((float)num56 / (float)num55);
+								TerrainModify.Edges edges11 = TerrainModify.Edges.AB | TerrainModify.Edges.CD;
+								if (info.m_lowerTerrain && (m_flags & Flags.OnGround) != 0)
+								{
+									if (num56 == 1)
+									{
+										edges11 |= TerrainModify.Edges.DA;
+									}
+									else if (num56 == num55)
+									{
+										edges11 |= TerrainModify.Edges.BC;
+									}
+								}
+								edges11 &= edges10;
+								TerrainModify.Surface surface9 = surface8;
+								if ((surface9 & TerrainModify.Surface.PavementA) != 0)
+								{
+									surface9 |= TerrainModify.Surface.Gravel;
+								}
+								Vector3 zero12 = Vector3.zero;
+								if (flag6)
+								{
+									zero12.y += info.m_maxHeight;
+								}
+								else if (info.m_lowerTerrain)
+								{
+									zero12.y += info.m_netAI.GetTerrainLowerOffset();
+								}
+								TerrainModify.ApplyQuad(a11 + zero12, vector34 + zero12, vector35 + zero12, a12 + zero12, edges11, heights4, surface9);
+								a11 = vector34;
+								a12 = vector35;
+							}
+						}
+					}
+					goto IL_2080;
+				}
+				return;
+			}
+			goto IL_2080;
+		}
+	}
+	return;
+	IL_2080:
+	if ((m_flags & Flags.End) == Flags.None && num == 0)
+	{
+		goto IL_2876;
+	}
+	Vector3 vector36 = Vector3.zero;
+	Vector3 vector37 = Vector3.zero;
+	Vector3 vector38 = Vector3.zero;
+	Vector3 vector39 = Vector3.zero;
+	Vector3 zero13 = Vector3.zero;
+	Vector3 zero14 = Vector3.zero;
+	Vector3 zero15 = Vector3.zero;
+	Vector3 zero16 = Vector3.zero;
+	ushort num57 = num;
+	for (int num58 = 0; num58 < 8; num58++)
+	{
+		if (num57 != 0)
+		{
+			break;
+		}
+		ushort segment12 = GetSegment(num58);
+		if (segment12 != 0)
+		{
+			num57 = segment12;
+		}
+	}
+	if (num57 != 0)
+	{
+		bool start3 = Singleton<NetManager>.instance.m_segments.m_buffer[num57].m_startNode == nodeID;
+		Singleton<NetManager>.instance.m_segments.m_buffer[num57].CalculateCorner(num57, false, start3, false, out vector36, out zero13, out bool flag19);
+		Singleton<NetManager>.instance.m_segments.m_buffer[num57].CalculateCorner(num57, false, start3, true, out vector37, out zero14, out flag19);
+		Vector3 a13 = vector36;
+		Vector3 b5 = vector37;
+		Vector3 a14 = vector38;
+		Vector3 b6 = vector39;
+		TerrainModify.Heights heights5 = TerrainModify.Heights.None;
+		TerrainModify.Surface surface10 = TerrainModify.Surface.None;
+		if (flag6)
+		{
+			heights5 = TerrainModify.Heights.SecondaryMin;
+		}
+		else
+		{
+			if (flag5)
+			{
+				heights5 |= TerrainModify.Heights.PrimaryLevel;
+			}
+			if (info.m_lowerTerrain)
+			{
+				heights5 |= TerrainModify.Heights.PrimaryMax;
+			}
+			if (info.m_blockWater)
+			{
+				heights5 |= TerrainModify.Heights.BlockHeight;
+			}
+			if (flag)
+			{
+				surface10 |= TerrainModify.Surface.PavementA;
+			}
+			if (flag2)
+			{
+				surface10 |= TerrainModify.Surface.Gravel;
+			}
+			if (flag3)
+			{
+				surface10 |= TerrainModify.Surface.Ruined;
+			}
+			if (flag4)
+			{
+				surface10 |= TerrainModify.Surface.Clip;
+			}
+		}
+		TerrainModify.Edges edges12 = TerrainModify.Edges.All;
+		float num59 = 0f;
+		float num60 = 1f;
+		float num61 = 0f;
+		float num62 = 0f;
+		for (int num63 = 0; info.m_netAI.NodeModifyMask(nodeID, ref this, num57, num57, num63, ref surface10, ref heights5, ref edges12, ref num59, ref num60, ref num61, ref num62); num63++)
+		{
+			if (num59 != 0f || num60 != 1f || num63 != 0)
+			{
+				vector36 = Vector3.Lerp(a13, b5, num59);
+				vector37 = Vector3.Lerp(a13, b5, num60);
+				vector38 = Vector3.Lerp(a14, b6, num59);
+				vector39 = Vector3.Lerp(a14, b6, num60);
+			}
+			vector36.y += num61;
+			vector37.y += num62;
+			vector38.y += num61;
+			vector39.y += num62;
+			if (info.m_segments == null || info.m_segments.Length == 0)
+			{
+				vector38 = vector36 - zero13 * (info.m_halfWidth + 2f);
+				vector39 = vector37 - zero14 * (info.m_halfWidth + 2f);
+				float num64 = Mathf.Min(Mathf.Min(Mathf.Min(vector36.x, vector37.x), Mathf.Min(vector38.x, vector39.x)));
+				float num65 = Mathf.Max(Mathf.Max(Mathf.Max(vector36.x, vector37.x), Mathf.Max(vector38.x, vector39.x)));
+				float num66 = Mathf.Min(Mathf.Min(Mathf.Min(vector36.z, vector37.z), Mathf.Min(vector38.z, vector39.z)));
+				float num67 = Mathf.Max(Mathf.Max(Mathf.Max(vector36.z, vector37.z), Mathf.Max(vector38.z, vector39.z)));
+				if (num64 <= maxX && num66 <= maxZ && minX <= num65 && minZ <= num67)
+				{
+					TerrainModify.Edges edges13 = TerrainModify.Edges.AB | TerrainModify.Edges.BC | TerrainModify.Edges.CD;
+					if (info.m_lowerTerrain && (m_flags & Flags.OnGround) != 0)
+					{
+						edges13 |= TerrainModify.Edges.DA;
+					}
+					edges13 &= edges12;
+					TerrainModify.Surface surface11 = surface10;
+					if ((surface11 & TerrainModify.Surface.PavementA) != 0)
+					{
+						surface11 |= TerrainModify.Surface.Gravel;
+					}
+					Vector3 zero17 = Vector3.zero;
+					if (flag6)
+					{
+						zero17.y += info.m_maxHeight;
+					}
+					else if (info.m_lowerTerrain)
+					{
+						zero17.y += info.m_netAI.GetTerrainLowerOffset();
+					}
+					TerrainModify.ApplyQuad(vector36 + zero17, vector38 + zero17, vector39 + zero17, vector37 + zero17, edges13, heights5, surface11);
+				}
+			}
+			else
+			{
+				vector38 = vector37;
+				vector39 = vector36;
+				zero15 = zero14;
+				zero16 = zero13;
+				float d4 = info.m_netAI.GetEndRadius() * 1.33333337f * 1.1f;
+				Vector3 b7 = vector36 - zero13 * d4;
+				Vector3 c2 = vector38 - zero15 * d4;
+				Vector3 vector40 = vector37 + zero14 * d4;
+				Vector3 vector41 = vector39 + zero16 * d4;
+				float num68 = Mathf.Min(Mathf.Min(Mathf.Min(vector36.x, vector37.x), Mathf.Min(b7.x, vector40.x)), Mathf.Min(Mathf.Min(c2.x, vector41.x), Mathf.Min(vector38.x, vector39.x)));
+				float num69 = Mathf.Max(Mathf.Max(Mathf.Max(vector36.x, vector37.x), Mathf.Max(b7.x, vector40.x)), Mathf.Max(Mathf.Max(c2.x, vector41.x), Mathf.Max(vector38.x, vector39.x)));
+				float num70 = Mathf.Min(Mathf.Min(Mathf.Min(vector36.z, vector37.z), Mathf.Min(b7.z, vector40.z)), Mathf.Min(Mathf.Min(c2.z, vector41.z), Mathf.Min(vector38.z, vector39.z)));
+				float num71 = Mathf.Max(Mathf.Max(Mathf.Max(vector36.z, vector37.z), Mathf.Max(b7.z, vector40.z)), Mathf.Max(Mathf.Max(c2.z, vector41.z), Mathf.Max(vector38.z, vector39.z)));
+				if (num68 <= maxX && num70 <= maxZ && minX <= num69 && minZ <= num71)
+				{
+					int num72 = Mathf.Clamp(Mathf.CeilToInt(info.m_halfWidth * 0.4f), 2, 8);
+					Vector3 a15 = vector36;
+					Vector3 a16 = (vector36 + vector37) * 0.5f;
+					for (int num73 = 1; num73 <= num72; num73++)
+					{
+						Vector3 a17 = Bezier3.Position(vector36, b7, c2, vector38, ((float)num73 - 0.5f) / (float)num72);
+						Vector3 vector42 = Bezier3.Position(vector36, b7, c2, vector38, (float)num73 / (float)num72);
+						TerrainModify.Edges edges14 = TerrainModify.Edges.AB | TerrainModify.Edges.BC;
+						edges14 &= edges12;
+						TerrainModify.Surface surface12 = surface10;
+						if ((surface12 & TerrainModify.Surface.PavementA) != 0)
+						{
+							surface12 |= TerrainModify.Surface.Gravel;
+						}
+						Vector3 zero18 = Vector3.zero;
+						if (flag6)
+						{
+							zero18.y += info.m_maxHeight;
+						}
+						else if (info.m_lowerTerrain)
+						{
+							zero18.y += info.m_netAI.GetTerrainLowerOffset();
+						}
+						TerrainModify.ApplyQuad(a15 + zero18, a17 + zero18, vector42 + zero18, a16 + zero18, edges14, heights5, surface12);
+						a15 = vector42;
+					}
+				}
+			}
+		}
+		goto IL_2876;
+	}
+	return;
+	IL_2876:
+	if (m_lane != 0 && info.m_halfWidth < 3.999f)
+	{
+		Vector3 a18 = Singleton<NetManager>.instance.m_lanes.m_buffer[m_lane].CalculatePosition((float)(int)m_laneOffset * 0.003921569f);
+		float num74 = 0f;
+		Vector3 vector43 = VectorUtils.NormalizeXZ(a18 - m_position, out num74);
+		if (num74 > 1f)
+		{
+			Vector3 a19 = m_position - new Vector3(vector43.x + vector43.z * info.m_halfWidth, 0f, vector43.z - vector43.x * info.m_halfWidth);
+			Vector3 a20 = m_position - new Vector3(vector43.x - vector43.z * info.m_halfWidth, 0f, vector43.z + vector43.x * info.m_halfWidth);
+			Vector3 a21 = a18 + new Vector3(vector43.x - vector43.z * info.m_halfWidth, 0f, vector43.z + vector43.x * info.m_halfWidth);
+			Vector3 a22 = a18 + new Vector3(vector43.x + vector43.z * info.m_halfWidth, 0f, vector43.z - vector43.x * info.m_halfWidth);
+			float num75 = Mathf.Min(Mathf.Min(Mathf.Min(a19.x, a20.x), Mathf.Min(a21.x, a22.x)));
+			float num76 = Mathf.Max(Mathf.Max(Mathf.Max(a19.x, a20.x), Mathf.Max(a21.x, a22.x)));
+			float num77 = Mathf.Min(Mathf.Min(Mathf.Min(a19.z, a20.z), Mathf.Min(a21.z, a22.z)));
+			float num78 = Mathf.Max(Mathf.Max(Mathf.Max(a19.z, a20.z), Mathf.Max(a21.z, a22.z)));
+			if (num75 <= maxX && num77 <= maxZ && minX <= num76 && minZ <= num78)
+			{
+				TerrainModify.Edges edges15 = TerrainModify.Edges.All;
+				TerrainModify.Heights heights6 = TerrainModify.Heights.None;
+				TerrainModify.Surface surface13 = TerrainModify.Surface.None;
+				if (flag)
+				{
+					surface13 |= (TerrainModify.Surface.PavementA | TerrainModify.Surface.Gravel);
+				}
+				if (flag2)
+				{
+					surface13 |= TerrainModify.Surface.Gravel;
+				}
+				if (flag3)
+				{
+					surface13 |= TerrainModify.Surface.Ruined;
+				}
+				Vector3 zero19 = Vector3.zero;
+				TerrainModify.ApplyQuad(a19 + zero19, a21 + zero19, a22 + zero19, a20 + zero19, edges15, heights6, surface13);
+			}
+		}
+	}
+}
