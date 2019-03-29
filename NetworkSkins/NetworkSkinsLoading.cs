@@ -40,7 +40,7 @@ namespace NetworkSkins
                 var terrainSurface = new TerrainSurfaceModifier(groundType: NetworkGroundType.Gravel);
                 terrainSurface.Apply(_skinForBasicRoad);
 
-                var color = new ColorModifier(color: new Color(0.3f, 0.3f, 0.3f));
+                var color = new ColorModifier(color: new Color(90f / 255f, 90f / 255f, 90f / 255f));
                 color.Apply(_skinForBasicRoad);
 
                 Debug.Log($"Built skin for basic road: {_skinForBasicRoad}");
@@ -58,7 +58,7 @@ namespace NetworkSkins
                 var groundBuilder = new TerrainSurfaceModifier(groundType: NetworkGroundType.None);
                 groundBuilder.Apply(_skinForMediumRoad);
 
-                var color = new ColorModifier(color: new Color(0.75f, 0.75f, 0.75f));
+                var color = new ColorModifier(color: new Color(160f / 255f, 160f / 255f, 160f / 255f));
                 color.Apply(_skinForMediumRoad);
 
                 Debug.Log($"Built skin for medium road: {_skinForMediumRoad}");
