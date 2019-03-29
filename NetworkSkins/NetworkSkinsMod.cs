@@ -1,15 +1,13 @@
 ﻿using System;
 using Harmony;
 using ICities;
-using NetworkSkins.Patches;
 using UnityEngine;
 
 namespace NetworkSkins
 {
-    // Ideas:
-    // Road colors
-    // pavement/gravel/ruined
-    // ped crossíngs
+    // TODO ped crossings
+    // TODO serialization
+    // TODO backup serialization outside of the savegame (or some other ways to prevent data loss!)
     public class NetworkSkinsMod : IUserMod
     {
         private const string HarmonyId = "boformer.NetworkSkins";
