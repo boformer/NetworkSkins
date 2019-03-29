@@ -9,18 +9,18 @@ using UnityEngine;
 namespace NetworkSkins.Patches
 {
     [HarmonyPatch]
-    public class NetSegmentRenderInstancePatch
+    public static class NetSegmentRenderInstancePatch
     {
         private const byte InfoArgIndex = 4;
 
-        static MethodBase TargetMethod()
+        public static MethodBase TargetMethod()
         {
             // RenderInstance(RenderManager.CameraInfo cameraInfo, ushort segmentID, int layerMask, NetInfo info, ref RenderManager.Instance data)
             return typeof(NetSegment).GetMethod("RenderInstance", BindingFlags.NonPublic | BindingFlags.Instance, Type.DefaultBinder,
                 new Type[] { typeof(RenderManager.CameraInfo), typeof(ushort), typeof(int), typeof(NetInfo), typeof(RenderManager.Instance).MakeByRefType() }, null);
         }
 
-        static IEnumerable<CodeInstruction> Transpiler(ILGenerator il, IEnumerable<CodeInstruction> instructions)
+        public static IEnumerable<CodeInstruction> Transpiler(ILGenerator il, IEnumerable<CodeInstruction> instructions)
         {
             var netInfoLanesField = typeof(NetInfo).GetField("m_lanes");
             var segmentSkinsField = typeof(NetworkSkinManager).GetField("SegmentSkins", BindingFlags.Static | BindingFlags.Public);

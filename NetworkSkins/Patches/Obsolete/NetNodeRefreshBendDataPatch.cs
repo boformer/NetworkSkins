@@ -1,4 +1,6 @@
-﻿using Harmony;
+﻿// TODO remove
+/*
+using Harmony;
 using NetworkSkins.Skins;
 using UnityEngine;
 // ReSharper disable InconsistentNaming
@@ -19,3 +21,4 @@ namespace NetworkSkins.Patches
         }
     }
 }
+*/

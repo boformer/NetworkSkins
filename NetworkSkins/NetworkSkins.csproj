@@ -57,10 +57,10 @@
   <ItemGroup>
     <Compile Include="Patches\ColorPatcher.cs" />
     <Compile Include="Patches\NetManagerUpdateColorMapPatch.cs" />
-    <Compile Include="Patches\NetNodeRefreshEndDataPatch.cs" />
-    <Compile Include="Patches\NetNodeRefreshBendDataPatch.cs" />
-    <Compile Include="Patches\RoadBaseAiGetSegmentColorPatch.cs" />
-    <Compile Include="Patches\RoadBaseAiGetNodeColorPatch.cs" />
+    <Compile Include="Patches\Obsolete\NetNodeRefreshEndDataPatch.cs" />
+    <Compile Include="Patches\Obsolete\NetNodeRefreshBendDataPatch.cs" />
+    <Compile Include="Patches\Obsolete\RoadBaseAiGetSegmentColorPatch.cs" />
+    <Compile Include="Patches\Obsolete\RoadBaseAiGetNodeColorPatch.cs" />
     <Compile Include="Patches\TerrainSurfacePatcher.cs" />
     <Compile Include="Patches\NetManagerReleaseNodePatch.cs" />
     <Compile Include="Patches\NetNodeCalculateNodePatch.cs" />
@@ -73,7 +73,7 @@
     <Compile Include="NetManagerHooks.cs" />
     <Compile Include="NetworkSkinsLoading.cs" />
     <Compile Include="NetworkSkinsMod.cs" />
-    <Compile Include="Patches\NetLaneRenderInstancePatch.cs" />
+    <Compile Include="Patches\Obsolete\NetLaneRenderInstancePatch.cs" />
     <Compile Include="Patches\NetManagerReleaseSegmentPatch.cs" />
     <Compile Include="Patches\NetManagerCreateSegmentPatch.cs" />
     <Compile Include="Patches\NetSegmentRenderInstancePatch.cs" />

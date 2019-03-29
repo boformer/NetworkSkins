@@ -11,10 +11,12 @@ namespace NetworkSkins.Patches
     [HarmonyPatch(typeof(NetNode), "CalculateNode")]
     public class NetNodeCalculateNodePatch
     {
-        static void Postfix(ref NetNode __instance, ushort nodeID)
+        public static void Postfix(ref NetNode __instance, ushort nodeID)
         {
             if (__instance.m_flags != 0)
             {
+                var previousSkin = NetworkSkinManager.NodeSkins[nodeID];
+
                 NetworkSkin skinWithHighestPrio = null;
                 var netManager = NetManager.instance;
                 float currentPrio = -1E+07f;
@@ -38,8 +40,13 @@ namespace NetworkSkins.Patches
 
                 Debug.Log($"CalculateNode on {nodeID}. Settin skin to {skinWithHighestPrio}");
                 NetworkSkinManager.NodeSkins[nodeID] = skinWithHighestPrio;
-            }
 
+                // Make sure that the color map is updated when a skin with a different color is applied!
+                if (previousSkin?.m_color != skinWithHighestPrio?.m_color)
+                {
+                    netManager.UpdateNodeColors(nodeID);
+                }
+            }
         }
     }
 }
