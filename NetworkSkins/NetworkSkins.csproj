@@ -66,6 +66,8 @@
     <Compile Include="GUI\DragBar.cs" />
     <Compile Include="GUI\ToolBar.cs" />
     <Compile Include="GUI\TreesPanel.cs" />
+    <Compile Include="NetToolMonitor.cs" />
+    <Compile Include="Net\NetUtil.cs" />
     <Compile Include="Net\LanePosition.cs" />
     <Compile Include="Patches\ColorPatcher.cs" />
     <Compile Include="Patches\NetManagerUpdateColorMapPatch.cs" />
@@ -79,6 +81,7 @@
     <Compile Include="Patches\NetNodeTerrainUpdatedPatch.cs" />
     <Compile Include="Patches\NetSegmentTerrainUpdatedPatch.cs" />
     <Compile Include="Resources\Resources.cs" />
+    <Compile Include="Resources\TextureUtil.cs" />
     <Compile Include="Skins\ColorModifier.cs" />
     <Compile Include="Skins\SimpleTreeModifier.cs" />
     <Compile Include="Skins\TerrainSurfaceModifier.cs" />

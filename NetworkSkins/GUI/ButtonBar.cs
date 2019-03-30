@@ -5,6 +5,7 @@ namespace NetworkSkins.GUI
 {
     public class ButtonBar : PanelBase
     {
+        private NetToolMonitor Monitor => NetToolMonitor.Instance;
         private UIButton treesButton;
         private UIButton lightsButton;
         private UIButton surfaceButton;
@@ -13,42 +14,43 @@ namespace NetworkSkins.GUI
         private UIButton colorButton;
         private UIButton extrasButton;
 
+        public override void Awake() {
+            base.Awake();
+            Monitor.EventPrefabChanged += OnPrefabChanged;
+        }
+
+        public override void OnDestroy() {
+            base.OnDestroy();
+            Monitor.EventPrefabChanged -= OnPrefabChanged;
+        }
+
         public override void Build(Layout layout) {
             base.Build(layout);
             Vector2 buttonSize = new Vector2(layout.Size.x - layout.Spacing * 2, size.x - layout.Spacing * 2);
-            treesButton = MakeButton(buttonSize, "InfoIconEntertainment");
-            lightsButton = MakeButton(buttonSize, "IconPolicyEvenMoreFun");
-            surfaceButton = MakeButton(buttonSize, "SubBarDistrictSpecializationPaint");
-            pillarButton = MakeButton(buttonSize, "InfoIconTours");
-            catenariesButton = MakeButton(buttonSize, "Options");
-            colorButton = MakeButton(buttonSize, "ToolbarIconProps");
-            extrasButton = MakeButton(buttonSize, "Options");
+            treesButton = MakeButton(buttonSize, "T", "Trees");
+            lightsButton = MakeButton(buttonSize, "L", "Lights");
+            surfaceButton = MakeButton(buttonSize, "S", "Sidewalk");
+            pillarButton = MakeButton(buttonSize, "P", "Pillars");
+            catenariesButton = MakeButton(buttonSize, "C", "Catenary");
+            colorButton = MakeButton(buttonSize, "C", "Color");
+            extrasButton = MakeButton(buttonSize, "E", "Extra");
             UIPanel space = AddUIComponent<UIPanel>();
             space.size = new Vector2(0.1f, 0.0f);
-        }
-
-        public override void Update() {
-            base.Update();
-            if (ToolsModifierControl.toolController.CurrentTool is NetTool netTool && MainPanel.Prefab != netTool.m_prefab) {
-                MainPanel.Prefab = netTool.m_prefab;
-                RefreshUI();
-            }
+            RefreshUI();
         }
 
         protected override void RefreshUI() {
             base.RefreshUI();
-            treesButton.isVisible = HasTrees();
+            treesButton.isVisible = Monitor.NetInfoHasTrees;
+            lightsButton.isVisible = Monitor.NetInfoHasStreetLights;
+            surfaceButton.isVisible = Monitor.NetInfoHasSurfaces;
+            pillarButton.isVisible = Monitor.NetInfoHasPillars;
+            catenariesButton.isVisible = Monitor.NetInfoHasCatenaries;
+            colorButton.isVisible = Monitor.NetInfoIsColorable;
         }
 
-        private bool HasTrees() {
-            if (MainPanel.Prefab == null || MainPanel.Prefab.m_lanes == null) return false;
-
-            foreach (NetInfo.Lane lane in MainPanel.Prefab.m_lanes)
-                if (lane?.m_laneProps?.m_props != null)
-                    foreach (var laneProp in lane.m_laneProps.m_props) {
-                        if (laneProp?.m_finalTree != null) return true;
-                    }
-            return false;
+        private void OnPrefabChanged(NetInfo netInfo) {
+            RefreshUI();
         }
     }
 }

@@ -13,9 +13,12 @@ namespace NetworkSkins.GUI
             Layout.Apply(this);
         }
 
-        protected UIButton MakeButton(Vector2 size, string foregroundSprite = "", string backgroundSprite = "ButtonSmall", bool isFocusable = false, UITextureAtlas atlas = null) {
+        protected UIButton MakeButton(Vector2 size, string text = "", string tooltip = "", string foregroundSprite = "", string backgroundSprite = "ButtonSmall", bool isFocusable = false, UITextureAtlas atlas = null) {
             UIButton button = AddUIComponent<UIButton>();
             button.size = size;
+            button.text = text;
+            button.tooltip = tooltip;
+            button.textPadding = new RectOffset(0, 0, 3, 0);
             button.normalBgSprite = backgroundSprite;
             button.hoveredBgSprite = string.Concat(backgroundSprite, "Hovered");
             button.pressedBgSprite = string.Concat(backgroundSprite, "Pressed");

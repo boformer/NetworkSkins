@@ -23,16 +23,52 @@ namespace NetworkSkins
         private HarmonyInstance _harmony;
         private bool InGame => LoadingManager.exists && LoadingManager.instance.m_loadingComplete;
         private MainPanel panel;
+        private GameObject monitorGameObject;
 
         public string Name => "Network Skins";
         public string Description => "Change the visual appearance of roads, train tracks and other networks";
 
-        public void OnEnabled()
-        {
-            if(InGame) {
-                panel = UIView.GetAView().AddUIComponent(typeof(MainPanel)) as MainPanel;
+        public void OnEnabled() {
+            if (InGame) {
+                Install();
             }
-            return;//remove later
+        }
+
+        public void OnDisabled() {
+            Uninstall();
+        }
+
+        public override void OnLevelLoaded(LoadMode mode) {
+            base.OnLevelLoaded(mode);
+            while (!InGame) { }
+            OnEnabled();
+        }
+
+        public override void OnReleased() {
+            base.OnReleased();
+            OnDisabled();
+        }
+
+        private void Install() {
+            Uninstall();
+            monitorGameObject = new GameObject(nameof(NetToolMonitor));
+            NetToolMonitor.Instance = monitorGameObject.AddComponent<NetToolMonitor>();
+            NetToolMonitor.Instance.EventToolStateChanged += OnNetToolStateChanged;
+            //InstallHarmony();
+        }
+
+        private void Uninstall() {
+            if (monitorGameObject != null) {
+                NetToolMonitor.Instance.EventToolStateChanged -= OnNetToolStateChanged;
+                Destroy(monitorGameObject);
+            }
+            if (NetworkSkinManager.exists) {
+                Destroy(NetworkSkinManager.instance.gameObject);
+            }
+            //UninstallHarmony();
+        }
+
+        private void InstallHarmony() {
             if (_harmony != null) return;
 
             Debug.Log("NetworkSkins Patching...");
@@ -40,41 +76,29 @@ namespace NetworkSkins
             HarmonyInstance.DEBUG = true; // TODO remove
             // TODO compile release version of harmony dll
             _harmony = HarmonyInstance.Create(HarmonyId);
-            try
-            {
+            try {
                 _harmony.PatchAll(GetType().Assembly);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Debug.LogError("Error while applying patches!");
                 Debug.LogException(e);
             }
         }
-        public override void OnLevelLoaded(LoadMode mode) {
-            base.OnLevelLoaded(mode);
-            while (!InGame) { }
-            OnEnabled();
-        }
-
-        public void OnDisabled()
-        {
-            if (panel != null) {
-                Destroy(panel.gameObject);
-                panel = null;
-            }
-            if (NetworkSkinManager.exists) {
-                Destroy(NetworkSkinManager.instance.gameObject);
-            }
-            return;
+        private void UninstallHarmony() {
             _harmony.UnpatchAll(HarmonyId);
             _harmony = null;
 
             Debug.Log("NetworkSkins Reverted...");
         }
 
-        public override void OnReleased() {
-            base.OnReleased();
-            OnDisabled();
+        private void OnNetToolStateChanged(bool state) {
+            if (state) {
+                panel = UIView.GetAView().AddUIComponent(typeof(MainPanel)) as MainPanel;
+            } else {
+                if (panel.gameObject != null) {
+                    Destroy(panel.gameObject);
+                    panel = null;
+                }
+            }
         }
     }
 }
