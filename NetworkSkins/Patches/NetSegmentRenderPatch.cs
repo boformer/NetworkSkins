@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace NetworkSkins.Patches
 {
+    /// <summary>
+    /// Common patch logic for NetSegment.RenderInstance, NetSegment.CalculateGroupData and NetSegment.PopulateGroupData
+    /// </summary>
     public static class NetSegmentRenderPatch
     {
         public static bool PatchLanesAndSegments(ILGenerator il, List<CodeInstruction> codes, CodeInstruction infoLdInstruction, CodeInstruction segmentIdLdInstruction, ref int index)
@@ -47,7 +50,7 @@ namespace NetworkSkins.Patches
                 new CodeInstruction(OpCodes.Ldfld, netInfoSegmentsField),
                 new CodeInstruction(OpCodes.Stloc, customSegmentsLocalVar),
 
-                // if (SegmentSkinManager.SegmentSkins[segmentID] != null)
+                // if (SegmentSkinManager.SegmentSkins[segmentID] != null) {
                 new CodeInstruction(OpCodes.Ldsfld, segmentSkinsField),
                 new CodeInstruction(segmentIdLdInstruction), // segmentID
                 new CodeInstruction(OpCodes.Ldelem_Ref),
@@ -66,36 +69,30 @@ namespace NetworkSkins.Patches
                 new CodeInstruction(OpCodes.Ldelem_Ref),
                 new CodeInstruction(OpCodes.Ldfld, networkSkinSegmentsField),
                 new CodeInstruction(OpCodes.Stloc, customSegmentsLocalVar),
+                // }
             };
             codes.InsertRange(index, customLanesInstructions);
 
             index += customLanesInstructions.Length;
 
             // Replace all occurences of:
-            // ldloc.1 or ldarg.s info
-            // ldfld class NetInfo/Lane[] NetInfo::m_lanes
+            //
+            // info.m_lanes
             // -- with --
-            // ldloc.s <customLanesLocalVar>
-            // and all occurences of:
-            // ldloc.1 or ldarg.s info
-            // ldfld class NetInfo/Segment[] NetInfo::m_segments
+            // customLanes
+            //
+            // info.m_segments
             // -- with --
-            // ldloc.s <customSegmentsLocalVar>
+            // customSegments
             for (; index < codes.Count; index++)
             {
                 var code = codes[index];
-                if (code.opcode == infoLdInstruction.opcode)
-                {
-                    Debug.Log($"Found infoLdInstruction opcode {code.opcode} with operand {code.operand} {code.operand?.GetType()} should be {infoLdInstruction.operand} {infoLdInstruction.operand?.GetType()}");
-                }
-
                 if (code.opcode == infoLdInstruction.opcode && codes[index + 1].opcode == OpCodes.Ldfld)
                 {
                     if (code.operand != infoLdInstruction.operand)
                     {
-                        Debug.Log($"sbyte1: {infoLdInstruction.operand is byte}, sbyte2: {code.operand is byte}");
-                        if (!(infoLdInstruction.operand is byte sByte1 && code.operand is byte sByte2 &&
-                              sByte1 == sByte2))
+                        // This special code is needed for some reason because the != operator doesn't work on System.Byte
+                        if (!(infoLdInstruction.operand is byte byte1 && code.operand is byte byte2 && byte1 == byte2))
                         {
                             continue;
                         }

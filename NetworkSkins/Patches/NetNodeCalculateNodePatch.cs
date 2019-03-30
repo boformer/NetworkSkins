@@ -38,7 +38,6 @@ namespace NetworkSkins.Patches
                     }
                 }
 
-                Debug.Log($"CalculateNode on {nodeID}. Settin skin to {skinWithHighestPrio}");
                 NetworkSkinManager.NodeSkins[nodeID] = skinWithHighestPrio;
 
                 // Make sure that the color map is updated when a skin with a different color is applied!

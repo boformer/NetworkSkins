@@ -27,6 +27,7 @@ namespace NetworkSkins.Patches
 
             var codes = new List<CodeInstruction>(originalInstructions);
 
+            // Replace all GetColor calls with GetSegmentColor/GetNodeColor
             for (var index = 0; index < codes.Count; index++)
             {
                 if (codes[index].opcode == OpCodes.Callvirt)

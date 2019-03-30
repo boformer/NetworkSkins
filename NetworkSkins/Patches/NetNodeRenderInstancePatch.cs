@@ -100,12 +100,11 @@ namespace NetworkSkins.Patches
                 if (codes[index].opcode == OpCodes.Call && codes[index].operand == netNodeGetSegmentMethod)
                 {
                     // IL_00a1: stloc.0
-                    segmentLocalVarLdloc = PatchUtils.GetLdLocForStLoc(codes[index + 1]);
+                    segmentLocalVarLdloc = TranspilerUtils.GetLdLocForStLoc(codes[index + 1]);
                     index += 2;
                     break;
                 }
             }
-
 
             for (; index < codes.Count; index++)
             {
@@ -113,7 +112,7 @@ namespace NetworkSkins.Patches
                 if (codes[index].opcode == OpCodes.Call && codes[index].operand == netNodeGetSegmentMethod)
                 {
                     // IL_00b1: stloc.1
-                    segment2LocalVarLdloc = PatchUtils.GetLdLocForStLoc(codes[index + 1]);
+                    segment2LocalVarLdloc = TranspilerUtils.GetLdLocForStLoc(codes[index + 1]);
                     index += 2;
                     break;
                 }
@@ -125,7 +124,7 @@ namespace NetworkSkins.Patches
                 if (codes[index].opcode == OpCodes.Ldfld && codes[index].operand == netInfoNodesField)
                 {
                     // IL_0146: stloc.s 6
-                    nodeLocalVarLdLoc = PatchUtils.GetLdLocForStLoc(codes[index + 3]);
+                    nodeLocalVarLdLoc = TranspilerUtils.GetLdLocForStLoc(codes[index + 3]);
                     index += 4;
                     break;
                 }
@@ -157,9 +156,9 @@ namespace NetworkSkins.Patches
                     // IL_0206: brfalse.s IL_024A
                     var renderCheckInstructions = new[]
                     {
-                        nodeLocalVarLdLoc,
-                        segmentLocalVarLdloc,
-                        segment2LocalVarLdloc,
+                        new CodeInstruction(nodeLocalVarLdLoc), 
+                        new CodeInstruction(segmentLocalVarLdloc), 
+                        new CodeInstruction(segment2LocalVarLdloc), 
                         new CodeInstruction(OpCodes.Call, netNodeRenderPatcherShouldRenderJunctionNodeMethod), 
                         new CodeInstruction(OpCodes.Brfalse, labelIfFalse),
                     };
@@ -212,7 +211,7 @@ namespace NetworkSkins.Patches
                 if (codes[index].opcode == OpCodes.Call && codes[index].operand == netNodeGetSegmentMethod)
                 {
                     // IL_00a1: stloc.s 32
-                    segment5LocalVarLdloc = PatchUtils.GetLdLocForStLoc(codes[index + 1]);
+                    segment5LocalVarLdloc = TranspilerUtils.GetLdLocForStLoc(codes[index + 1]);
                     index += 2;
                     break;
                 }
@@ -224,7 +223,7 @@ namespace NetworkSkins.Patches
                 if (codes[index].opcode == OpCodes.Call && codes[index].operand == netNodeGetSegmentMethod)
                 {
                     // IL_11c4: stloc.s 33
-                    segment6LocalVarLdloc = PatchUtils.GetLdLocForStLoc(codes[index + 1]);
+                    segment6LocalVarLdloc = TranspilerUtils.GetLdLocForStLoc(codes[index + 1]);
                     index += 2;
                     break;
                 }
@@ -236,7 +235,7 @@ namespace NetworkSkins.Patches
                 if (codes[index].opcode == OpCodes.Ldfld && codes[index].operand == netInfoNodesField)
                 {
                     // IL_1215: stloc.s 35
-                    node4LocalVarLdLoc = PatchUtils.GetLdLocForStLoc(codes[index + 3]);
+                    node4LocalVarLdLoc = TranspilerUtils.GetLdLocForStLoc(codes[index + 3]);
                     index += 4;
                     break;
                 }
@@ -268,9 +267,9 @@ namespace NetworkSkins.Patches
                     // brfalse.s IL_1637
                     var renderCheckInstructions = new[]
                     {
-                        node4LocalVarLdLoc,
-                        segment5LocalVarLdloc,
-                        segment6LocalVarLdloc,
+                        new CodeInstruction(node4LocalVarLdLoc), 
+                        new CodeInstruction(segment5LocalVarLdloc), 
+                        new CodeInstruction(segment6LocalVarLdloc), 
                         new CodeInstruction(OpCodes.Call, netNodeRenderPatcherShouldRenderBendNodeMethod),
                         new CodeInstruction(OpCodes.Brfalse, labelIfFalse),
                     };

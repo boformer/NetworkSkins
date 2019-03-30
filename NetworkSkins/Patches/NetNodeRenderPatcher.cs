@@ -3,9 +3,14 @@ using UnityEngine;
 
 namespace NetworkSkins.Patches
 {
+    /// <summary>
+    /// Special check for overhead wires on junctions and bends.
+    /// Wires are only render when both connected segments have wires.
+    /// </summary>
     public static class NetNodeRenderPatcher
     {
         private static Shader _electricityNetShader;
+
         public static bool ShouldRenderJunctionNode(NetInfo.Node node, ushort segment1, ushort segment2)
         {
             if (_electricityNetShader == null)
