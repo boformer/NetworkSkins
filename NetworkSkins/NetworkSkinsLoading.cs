@@ -10,6 +10,7 @@ namespace NetworkSkins
         private NetworkSkin _skinForBasicRoad;
         private NetworkSkin _skinForBasicRoadWithTrees;
         private NetworkSkin _skinForMediumRoad;
+        private NetworkSkin _skinForTrainTrack;
 
         public void OnCreated(ILoading loading)
         {
@@ -75,10 +76,31 @@ namespace NetworkSkins
 
                 Debug.Log($"Built skin for medium road: {_skinForMediumRoad}");
             }
+
+            var trainTrackPrefab = PrefabCollection<NetInfo>.FindLoaded("Train Track");
+            if (trainTrackPrefab != null)
+            {
+                _skinForTrainTrack = new NetworkSkin(trainTrackPrefab);
+
+                _skinForTrainTrack.ApplyModifier(new TerrainSurfaceModifier(groundType: NetworkGroundType.Pavement));
+
+                _skinForTrainTrack.ApplyModifier(new CatenaryModifier(catenary: null));
+
+                Debug.Log($"Built skin for train track: {_skinForTrainTrack}");
+            }
         }
 
         public void OnLevelUnloading()
         {
+            _skinForBasicRoad?.Destroy();
+            _skinForBasicRoad = null;
+            _skinForBasicRoadWithTrees?.Destroy();
+            _skinForBasicRoadWithTrees = null;
+            _skinForMediumRoad?.Destroy();
+            _skinForMediumRoad = null;
+            _skinForTrainTrack?.Destroy();
+            _skinForTrainTrack = null;
+
             NetManagerHooks.EventSegmentCreate -= OnSegmentCreate;
             NetManagerHooks.EventSegmentTransferData -= OnSegmentTransferData;
             NetManagerHooks.EventSegmentRelease -= OnSegmentRelease;
@@ -114,6 +136,11 @@ namespace NetworkSkins
                 {
                     Debug.Log($"Is medium road! {_skinForMediumRoad}");
                     NetworkSkinManager.SegmentSkins[segment] = _skinForMediumRoad;
+                }
+                else if (prefab.name == "Train Track")
+                {
+                    Debug.Log($"Is train track! {_skinForTrainTrack}");
+                    NetworkSkinManager.SegmentSkins[segment] = _skinForTrainTrack;
                 }
             }
         }

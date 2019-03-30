@@ -5,9 +5,14 @@ using UnityEngine;
 
 namespace NetworkSkins
 {
+    // TODO alle debug logs entfernen
     // TODO ped crossings
     // TODO serialization
     // TODO backup serialization outside of the savegame (or some other ways to prevent data loss!)
+    // TODO rail track LODs!
+    // TODO rail track nodes! (catenaries)
+    // TODO use PatchUtils.GetLdLocForStLoc in all patches for more safety!
+    // TODO für alle patches eine txt-datei mit den modifizierten code einfügen
     public class NetworkSkinsMod : IUserMod
     {
         private const string HarmonyId = "boformer.NetworkSkins";

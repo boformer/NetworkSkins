@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-
-namespace NetworkSkins.Skins
+﻿namespace NetworkSkins.Skins
 {
     public class StreetLightModifier : NetworkSkinModifier
     {

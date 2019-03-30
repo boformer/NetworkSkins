@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace NetworkSkins.Patches
 {
-    public class ColorPatcher
+    public static class ColorPatcher
     {
         public static Color GetSegmentColor(NetAI netAI, ushort segmentID, ref NetSegment data, InfoManager.InfoMode infoMode)
         {

@@ -1,0 +1,451 @@
+﻿// NetNode
+using ColossalFramework;
+using UnityEngine;
+
+private void RenderInstance(RenderManager.CameraInfo cameraInfo, ushort nodeID, NetInfo info, int iter, Flags flags, ref uint instanceIndex, ref RenderManager.Instance data)
+{
+	if (data.m_dirty)
+	{
+		data.m_dirty = false;
+		if (iter == 0)
+		{
+			if ((flags & Flags.Junction) != 0)
+			{
+				RefreshJunctionData(nodeID, info, instanceIndex);
+			}
+			else if ((flags & Flags.Bend) != 0)
+			{
+				RefreshBendData(nodeID, info, instanceIndex, ref data);
+			}
+			else if ((flags & Flags.End) != 0)
+			{
+				RefreshEndData(nodeID, info, instanceIndex, ref data);
+			}
+		}
+	}
+	if (data.m_initialized)
+	{
+		if ((flags & Flags.Junction) != 0)
+		{
+			if ((data.m_dataInt0 & 8) != 0)
+			{
+				ushort segment = GetSegment(data.m_dataInt0 & 7);
+				ushort segment2 = GetSegment(data.m_dataInt0 >> 4);
+				if (segment != 0 && segment2 != 0)
+				{
+					NetManager instance = Singleton<NetManager>.instance;
+					info = instance.m_segments.m_buffer[segment].Info;
+					NetInfo info2 = instance.m_segments.m_buffer[segment2].Info;
+					Flags flags2 = flags;
+					if (((instance.m_segments.m_buffer[segment].m_flags | instance.m_segments.m_buffer[segment2].m_flags) & NetSegment.Flags.Collapsed) != 0)
+					{
+						flags2 |= Flags.Collapsed;
+					}
+					for (int i = 0; i < info.m_nodes.Length; i++)
+					{
+						NetInfo.Node node = info.m_nodes[i];
+						Vector4 dataVector;
+						Vector4 dataVector2;
+						bool flag;
+						if (node.CheckFlags(flags2) && node.m_directConnect && (node.m_connectGroup == NetInfo.ConnectGroup.None || (node.m_connectGroup & info2.m_connectGroup & NetInfo.ConnectGroup.AllGroups) != 0)
+							// modified
+							&& NetNodeRenderPatcher:ShouldRenderJunctionNode(node, segment, segment2)
+							// modified end
+						)
+						{
+							dataVector = data.m_dataVector3;
+							dataVector2 = data.m_dataVector0;
+							if (node.m_requireWindSpeed)
+							{
+								dataVector.w = data.m_dataFloat0;
+							}
+							if ((node.m_connectGroup & NetInfo.ConnectGroup.Oneway) != 0)
+							{
+								flag = (instance.m_segments.m_buffer[segment].m_startNode == nodeID == ((instance.m_segments.m_buffer[segment].m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None));
+								if (info2.m_hasBackwardVehicleLanes == info2.m_hasForwardVehicleLanes && (node.m_connectGroup & NetInfo.ConnectGroup.Directional) == NetInfo.ConnectGroup.None)
+								{
+									goto IL_0268;
+								}
+								bool flag2 = instance.m_segments.m_buffer[segment2].m_startNode == nodeID == ((instance.m_segments.m_buffer[segment2].m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None);
+								if (flag != flag2)
+								{
+									goto IL_0268;
+								}
+								continue;
+							}
+							goto IL_02c0;
+						}
+						continue;
+						IL_0268:
+						if (flag)
+						{
+							if ((node.m_connectGroup & NetInfo.ConnectGroup.OnewayStart) != 0)
+							{
+								goto IL_02c0;
+							}
+						}
+						else if ((node.m_connectGroup & NetInfo.ConnectGroup.OnewayEnd) != 0)
+						{
+							dataVector2.x = 0f - dataVector2.x;
+							dataVector2.y = 0f - dataVector2.y;
+							goto IL_02c0;
+						}
+						continue;
+						IL_02c0:
+						if (cameraInfo.CheckRenderDistance(data.m_position, node.m_lodRenderDistance))
+						{
+							instance.m_materialBlock.Clear();
+							instance.m_materialBlock.SetMatrix(instance.ID_LeftMatrix, data.m_dataMatrix0);
+							instance.m_materialBlock.SetMatrix(instance.ID_RightMatrix, data.m_extraData.m_dataMatrix2);
+							instance.m_materialBlock.SetVector(instance.ID_MeshScale, dataVector2);
+							instance.m_materialBlock.SetVector(instance.ID_ObjectIndex, dataVector);
+							instance.m_materialBlock.SetColor(instance.ID_Color, data.m_dataColor0);
+							if (node.m_requireSurfaceMaps && (Object)data.m_dataTexture1 != (Object)null)
+							{
+								instance.m_materialBlock.SetTexture(instance.ID_SurfaceTexA, data.m_dataTexture0);
+								instance.m_materialBlock.SetTexture(instance.ID_SurfaceTexB, data.m_dataTexture1);
+								instance.m_materialBlock.SetVector(instance.ID_SurfaceMapping, data.m_dataVector1);
+							}
+							instance.m_drawCallData.m_defaultCalls++;
+							Graphics.DrawMesh(node.m_nodeMesh, data.m_position, data.m_rotation, node.m_nodeMaterial, node.m_layer, null, 0, instance.m_materialBlock);
+						}
+						else
+						{
+							NetInfo.LodValue combinedLod = node.m_combinedLod;
+							if (combinedLod != null)
+							{
+								if (node.m_requireSurfaceMaps && (Object)data.m_dataTexture0 != (Object)combinedLod.m_surfaceTexA)
+								{
+									if (combinedLod.m_lodCount != 0)
+									{
+										NetSegment.RenderLod(cameraInfo, combinedLod);
+									}
+									combinedLod.m_surfaceTexA = data.m_dataTexture0;
+									combinedLod.m_surfaceTexB = data.m_dataTexture1;
+									combinedLod.m_surfaceMapping = data.m_dataVector1;
+								}
+								combinedLod.m_leftMatrices[combinedLod.m_lodCount] = data.m_dataMatrix0;
+								combinedLod.m_rightMatrices[combinedLod.m_lodCount] = data.m_extraData.m_dataMatrix2;
+								combinedLod.m_meshScales[combinedLod.m_lodCount] = dataVector2;
+								combinedLod.m_objectIndices[combinedLod.m_lodCount] = dataVector;
+								combinedLod.m_meshLocations[combinedLod.m_lodCount] = data.m_position;
+								combinedLod.m_lodMin = Vector3.Min(combinedLod.m_lodMin, data.m_position);
+								combinedLod.m_lodMax = Vector3.Max(combinedLod.m_lodMax, data.m_position);
+								if (++combinedLod.m_lodCount == combinedLod.m_leftMatrices.Length)
+								{
+									NetSegment.RenderLod(cameraInfo, combinedLod);
+								}
+							}
+						}
+					}
+				}
+			}
+			else
+			{
+				ushort segment3 = GetSegment(data.m_dataInt0 & 7);
+				if (segment3 != 0)
+				{
+					NetManager instance2 = Singleton<NetManager>.instance;
+					info = instance2.m_segments.m_buffer[segment3].Info;
+					for (int j = 0; j < info.m_nodes.Length; j++)
+					{
+						NetInfo.Node node2 = info.m_nodes[j];
+						if (node2.CheckFlags(flags) && !node2.m_directConnect)
+						{
+							Vector4 dataVector3 = data.m_extraData.m_dataVector4;
+							if (node2.m_requireWindSpeed)
+							{
+								dataVector3.w = data.m_dataFloat0;
+							}
+							if (cameraInfo.CheckRenderDistance(data.m_position, node2.m_lodRenderDistance))
+							{
+								instance2.m_materialBlock.Clear();
+								instance2.m_materialBlock.SetMatrix(instance2.ID_LeftMatrix, data.m_dataMatrix0);
+								instance2.m_materialBlock.SetMatrix(instance2.ID_RightMatrix, data.m_extraData.m_dataMatrix2);
+								instance2.m_materialBlock.SetMatrix(instance2.ID_LeftMatrixB, data.m_extraData.m_dataMatrix3);
+								instance2.m_materialBlock.SetMatrix(instance2.ID_RightMatrixB, data.m_dataMatrix1);
+								instance2.m_materialBlock.SetVector(instance2.ID_MeshScale, data.m_dataVector0);
+								instance2.m_materialBlock.SetVector(instance2.ID_CenterPos, data.m_dataVector1);
+								instance2.m_materialBlock.SetVector(instance2.ID_SideScale, data.m_dataVector2);
+								instance2.m_materialBlock.SetVector(instance2.ID_ObjectIndex, dataVector3);
+								instance2.m_materialBlock.SetColor(instance2.ID_Color, data.m_dataColor0);
+								if (node2.m_requireSurfaceMaps && (Object)data.m_dataTexture1 != (Object)null)
+								{
+									instance2.m_materialBlock.SetTexture(instance2.ID_SurfaceTexA, data.m_dataTexture0);
+									instance2.m_materialBlock.SetTexture(instance2.ID_SurfaceTexB, data.m_dataTexture1);
+									instance2.m_materialBlock.SetVector(instance2.ID_SurfaceMapping, data.m_dataVector3);
+								}
+								instance2.m_drawCallData.m_defaultCalls++;
+								Graphics.DrawMesh(node2.m_nodeMesh, data.m_position, data.m_rotation, node2.m_nodeMaterial, node2.m_layer, null, 0, instance2.m_materialBlock);
+							}
+							else
+							{
+								NetInfo.LodValue combinedLod2 = node2.m_combinedLod;
+								if (combinedLod2 != null)
+								{
+									if (node2.m_requireSurfaceMaps && (Object)data.m_dataTexture0 != (Object)combinedLod2.m_surfaceTexA)
+									{
+										if (combinedLod2.m_lodCount != 0)
+										{
+											RenderLod(cameraInfo, combinedLod2);
+										}
+										combinedLod2.m_surfaceTexA = data.m_dataTexture0;
+										combinedLod2.m_surfaceTexB = data.m_dataTexture1;
+										combinedLod2.m_surfaceMapping = data.m_dataVector3;
+									}
+									combinedLod2.m_leftMatrices[combinedLod2.m_lodCount] = data.m_dataMatrix0;
+									combinedLod2.m_leftMatricesB[combinedLod2.m_lodCount] = data.m_extraData.m_dataMatrix3;
+									combinedLod2.m_rightMatrices[combinedLod2.m_lodCount] = data.m_extraData.m_dataMatrix2;
+									combinedLod2.m_rightMatricesB[combinedLod2.m_lodCount] = data.m_dataMatrix1;
+									combinedLod2.m_meshScales[combinedLod2.m_lodCount] = data.m_dataVector0;
+									combinedLod2.m_centerPositions[combinedLod2.m_lodCount] = data.m_dataVector1;
+									combinedLod2.m_sideScales[combinedLod2.m_lodCount] = data.m_dataVector2;
+									combinedLod2.m_objectIndices[combinedLod2.m_lodCount] = dataVector3;
+									combinedLod2.m_meshLocations[combinedLod2.m_lodCount] = data.m_position;
+									combinedLod2.m_lodMin = Vector3.Min(combinedLod2.m_lodMin, data.m_position);
+									combinedLod2.m_lodMax = Vector3.Max(combinedLod2.m_lodMax, data.m_position);
+									if (++combinedLod2.m_lodCount == combinedLod2.m_leftMatrices.Length)
+									{
+										RenderLod(cameraInfo, combinedLod2);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		else if ((flags & Flags.End) != 0)
+		{
+			NetManager instance3 = Singleton<NetManager>.instance;
+			for (int k = 0; k < info.m_nodes.Length; k++)
+			{
+				NetInfo.Node node3 = info.m_nodes[k];
+				if (node3.CheckFlags(flags) && !node3.m_directConnect)
+				{
+					Vector4 dataVector4 = data.m_extraData.m_dataVector4;
+					if (node3.m_requireWindSpeed)
+					{
+						dataVector4.w = data.m_dataFloat0;
+					}
+					if (cameraInfo.CheckRenderDistance(data.m_position, node3.m_lodRenderDistance))
+					{
+						instance3.m_materialBlock.Clear();
+						instance3.m_materialBlock.SetMatrix(instance3.ID_LeftMatrix, data.m_dataMatrix0);
+						instance3.m_materialBlock.SetMatrix(instance3.ID_RightMatrix, data.m_extraData.m_dataMatrix2);
+						instance3.m_materialBlock.SetMatrix(instance3.ID_LeftMatrixB, data.m_extraData.m_dataMatrix3);
+						instance3.m_materialBlock.SetMatrix(instance3.ID_RightMatrixB, data.m_dataMatrix1);
+						instance3.m_materialBlock.SetVector(instance3.ID_MeshScale, data.m_dataVector0);
+						instance3.m_materialBlock.SetVector(instance3.ID_CenterPos, data.m_dataVector1);
+						instance3.m_materialBlock.SetVector(instance3.ID_SideScale, data.m_dataVector2);
+						instance3.m_materialBlock.SetVector(instance3.ID_ObjectIndex, dataVector4);
+						instance3.m_materialBlock.SetColor(instance3.ID_Color, data.m_dataColor0);
+						if (node3.m_requireSurfaceMaps && (Object)data.m_dataTexture1 != (Object)null)
+						{
+							instance3.m_materialBlock.SetTexture(instance3.ID_SurfaceTexA, data.m_dataTexture0);
+							instance3.m_materialBlock.SetTexture(instance3.ID_SurfaceTexB, data.m_dataTexture1);
+							instance3.m_materialBlock.SetVector(instance3.ID_SurfaceMapping, data.m_dataVector3);
+						}
+						instance3.m_drawCallData.m_defaultCalls++;
+						Graphics.DrawMesh(node3.m_nodeMesh, data.m_position, data.m_rotation, node3.m_nodeMaterial, node3.m_layer, null, 0, instance3.m_materialBlock);
+					}
+					else
+					{
+						NetInfo.LodValue combinedLod3 = node3.m_combinedLod;
+						if (combinedLod3 != null)
+						{
+							if (node3.m_requireSurfaceMaps && (Object)data.m_dataTexture0 != (Object)combinedLod3.m_surfaceTexA)
+							{
+								if (combinedLod3.m_lodCount != 0)
+								{
+									RenderLod(cameraInfo, combinedLod3);
+								}
+								combinedLod3.m_surfaceTexA = data.m_dataTexture0;
+								combinedLod3.m_surfaceTexB = data.m_dataTexture1;
+								combinedLod3.m_surfaceMapping = data.m_dataVector3;
+							}
+							combinedLod3.m_leftMatrices[combinedLod3.m_lodCount] = data.m_dataMatrix0;
+							combinedLod3.m_leftMatricesB[combinedLod3.m_lodCount] = data.m_extraData.m_dataMatrix3;
+							combinedLod3.m_rightMatrices[combinedLod3.m_lodCount] = data.m_extraData.m_dataMatrix2;
+							combinedLod3.m_rightMatricesB[combinedLod3.m_lodCount] = data.m_dataMatrix1;
+							combinedLod3.m_meshScales[combinedLod3.m_lodCount] = data.m_dataVector0;
+							combinedLod3.m_centerPositions[combinedLod3.m_lodCount] = data.m_dataVector1;
+							combinedLod3.m_sideScales[combinedLod3.m_lodCount] = data.m_dataVector2;
+							combinedLod3.m_objectIndices[combinedLod3.m_lodCount] = dataVector4;
+							combinedLod3.m_meshLocations[combinedLod3.m_lodCount] = data.m_position;
+							combinedLod3.m_lodMin = Vector3.Min(combinedLod3.m_lodMin, data.m_position);
+							combinedLod3.m_lodMax = Vector3.Max(combinedLod3.m_lodMax, data.m_position);
+							if (++combinedLod3.m_lodCount == combinedLod3.m_leftMatrices.Length)
+							{
+								RenderLod(cameraInfo, combinedLod3);
+							}
+						}
+					}
+				}
+			}
+		}
+		else if ((flags & Flags.Bend) != 0)
+		{
+			NetManager instance4 = Singleton<NetManager>.instance;
+			for (int l = 0; l < info.m_segments.Length; l++)
+			{
+				NetInfo.Segment segment4 = info.m_segments[l];
+				if (segment4.CheckFlags(info.m_netAI.GetBendFlags(nodeID, ref this), out bool flag3) && !segment4.m_disableBendNodes)
+				{
+					Vector4 dataVector5 = data.m_dataVector3;
+					Vector4 dataVector6 = data.m_dataVector0;
+					if (segment4.m_requireWindSpeed)
+					{
+						dataVector5.w = data.m_dataFloat0;
+					}
+					if (flag3)
+					{
+						dataVector6.x = 0f - dataVector6.x;
+						dataVector6.y = 0f - dataVector6.y;
+					}
+					if (cameraInfo.CheckRenderDistance(data.m_position, segment4.m_lodRenderDistance))
+					{
+						instance4.m_materialBlock.Clear();
+						instance4.m_materialBlock.SetMatrix(instance4.ID_LeftMatrix, data.m_dataMatrix0);
+						instance4.m_materialBlock.SetMatrix(instance4.ID_RightMatrix, data.m_extraData.m_dataMatrix2);
+						instance4.m_materialBlock.SetVector(instance4.ID_MeshScale, dataVector6);
+						instance4.m_materialBlock.SetVector(instance4.ID_ObjectIndex, dataVector5);
+						instance4.m_materialBlock.SetColor(instance4.ID_Color, data.m_dataColor0);
+						if (segment4.m_requireSurfaceMaps && (Object)data.m_dataTexture1 != (Object)null)
+						{
+							instance4.m_materialBlock.SetTexture(instance4.ID_SurfaceTexA, data.m_dataTexture0);
+							instance4.m_materialBlock.SetTexture(instance4.ID_SurfaceTexB, data.m_dataTexture1);
+							instance4.m_materialBlock.SetVector(instance4.ID_SurfaceMapping, data.m_dataVector1);
+						}
+						instance4.m_drawCallData.m_defaultCalls++;
+						Graphics.DrawMesh(segment4.m_segmentMesh, data.m_position, data.m_rotation, segment4.m_segmentMaterial, segment4.m_layer, null, 0, instance4.m_materialBlock);
+					}
+					else
+					{
+						NetInfo.LodValue combinedLod4 = segment4.m_combinedLod;
+						if (combinedLod4 != null)
+						{
+							if (segment4.m_requireSurfaceMaps && (Object)data.m_dataTexture0 != (Object)combinedLod4.m_surfaceTexA)
+							{
+								if (combinedLod4.m_lodCount != 0)
+								{
+									NetSegment.RenderLod(cameraInfo, combinedLod4);
+								}
+								combinedLod4.m_surfaceTexA = data.m_dataTexture0;
+								combinedLod4.m_surfaceTexB = data.m_dataTexture1;
+								combinedLod4.m_surfaceMapping = data.m_dataVector1;
+							}
+							combinedLod4.m_leftMatrices[combinedLod4.m_lodCount] = data.m_dataMatrix0;
+							combinedLod4.m_rightMatrices[combinedLod4.m_lodCount] = data.m_extraData.m_dataMatrix2;
+							combinedLod4.m_meshScales[combinedLod4.m_lodCount] = dataVector6;
+							combinedLod4.m_objectIndices[combinedLod4.m_lodCount] = dataVector5;
+							combinedLod4.m_meshLocations[combinedLod4.m_lodCount] = data.m_position;
+							combinedLod4.m_lodMin = Vector3.Min(combinedLod4.m_lodMin, data.m_position);
+							combinedLod4.m_lodMax = Vector3.Max(combinedLod4.m_lodMax, data.m_position);
+							if (++combinedLod4.m_lodCount == combinedLod4.m_leftMatrices.Length)
+							{
+								NetSegment.RenderLod(cameraInfo, combinedLod4);
+							}
+						}
+					}
+				}
+			}
+			for (int m = 0; m < info.m_nodes.Length; m++)
+			{
+				ushort segment5 = GetSegment(data.m_dataInt0 & 7);
+				ushort segment6 = GetSegment(data.m_dataInt0 >> 4);
+				if (((instance4.m_segments.m_buffer[segment5].m_flags | instance4.m_segments.m_buffer[segment6].m_flags) & NetSegment.Flags.Collapsed) != 0)
+				{
+					Flags flags3 = flags | Flags.Collapsed;
+				}
+				NetInfo.Node node4 = info.m_nodes[m];
+				Vector4 dataVector7;
+				Vector4 dataVector8;
+				if (node4.CheckFlags(flags) && node4.m_directConnect && (node4.m_connectGroup == NetInfo.ConnectGroup.None || (node4.m_connectGroup & info.m_connectGroup & NetInfo.ConnectGroup.AllGroups) != 0)
+					// modified
+					&& NetNodeRenderPatcher:ShouldRenderBendNode(node4, segment5, segment6)
+					// modified end
+				)
+				{
+					dataVector7 = data.m_dataVector3;
+					dataVector8 = data.m_dataVector0;
+					if (node4.m_requireWindSpeed)
+					{
+						dataVector7.w = data.m_dataFloat0;
+					}
+					if ((node4.m_connectGroup & NetInfo.ConnectGroup.Oneway) != 0)
+					{
+						bool flag4 = instance4.m_segments.m_buffer[segment5].m_startNode == nodeID == ((instance4.m_segments.m_buffer[segment5].m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None);
+						bool flag5 = instance4.m_segments.m_buffer[segment6].m_startNode == nodeID == ((instance4.m_segments.m_buffer[segment6].m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None);
+						if (flag4 != flag5)
+						{
+							if (flag4)
+							{
+								if ((node4.m_connectGroup & NetInfo.ConnectGroup.OnewayStart) != 0)
+								{
+									goto IL_1374;
+								}
+							}
+							else if ((node4.m_connectGroup & NetInfo.ConnectGroup.OnewayEnd) != 0)
+							{
+								dataVector8.x = 0f - dataVector8.x;
+								dataVector8.y = 0f - dataVector8.y;
+								goto IL_1374;
+							}
+						}
+						continue;
+					}
+					goto IL_1374;
+				}
+				continue;
+				IL_1374:
+				if (cameraInfo.CheckRenderDistance(data.m_position, node4.m_lodRenderDistance))
+				{
+					instance4.m_materialBlock.Clear();
+					instance4.m_materialBlock.SetMatrix(instance4.ID_LeftMatrix, data.m_dataMatrix0);
+					instance4.m_materialBlock.SetMatrix(instance4.ID_RightMatrix, data.m_extraData.m_dataMatrix2);
+					instance4.m_materialBlock.SetVector(instance4.ID_MeshScale, dataVector8);
+					instance4.m_materialBlock.SetVector(instance4.ID_ObjectIndex, dataVector7);
+					instance4.m_materialBlock.SetColor(instance4.ID_Color, data.m_dataColor0);
+					if (node4.m_requireSurfaceMaps && (Object)data.m_dataTexture1 != (Object)null)
+					{
+						instance4.m_materialBlock.SetTexture(instance4.ID_SurfaceTexA, data.m_dataTexture0);
+						instance4.m_materialBlock.SetTexture(instance4.ID_SurfaceTexB, data.m_dataTexture1);
+						instance4.m_materialBlock.SetVector(instance4.ID_SurfaceMapping, data.m_dataVector1);
+					}
+					instance4.m_drawCallData.m_defaultCalls++;
+					Graphics.DrawMesh(node4.m_nodeMesh, data.m_position, data.m_rotation, node4.m_nodeMaterial, node4.m_layer, null, 0, instance4.m_materialBlock);
+				}
+				else
+				{
+					NetInfo.LodValue combinedLod5 = node4.m_combinedLod;
+					if (combinedLod5 != null)
+					{
+						if (node4.m_requireSurfaceMaps && (Object)data.m_dataTexture0 != (Object)combinedLod5.m_surfaceTexA)
+						{
+							if (combinedLod5.m_lodCount != 0)
+							{
+								NetSegment.RenderLod(cameraInfo, combinedLod5);
+							}
+							combinedLod5.m_surfaceTexA = data.m_dataTexture0;
+							combinedLod5.m_surfaceTexB = data.m_dataTexture1;
+							combinedLod5.m_surfaceMapping = data.m_dataVector1;
+						}
+						combinedLod5.m_leftMatrices[combinedLod5.m_lodCount] = data.m_dataMatrix0;
+						combinedLod5.m_rightMatrices[combinedLod5.m_lodCount] = data.m_extraData.m_dataMatrix2;
+						combinedLod5.m_meshScales[combinedLod5.m_lodCount] = dataVector8;
+						combinedLod5.m_objectIndices[combinedLod5.m_lodCount] = dataVector7;
+						combinedLod5.m_meshLocations[combinedLod5.m_lodCount] = data.m_position;
+						combinedLod5.m_lodMin = Vector3.Min(combinedLod5.m_lodMin, data.m_position);
+						combinedLod5.m_lodMax = Vector3.Max(combinedLod5.m_lodMax, data.m_position);
+						if (++combinedLod5.m_lodCount == combinedLod5.m_leftMatrices.Length)
+						{
+							NetSegment.RenderLod(cameraInfo, combinedLod5);
+						}
+					}
+				}
+			}
+		}
+	}
+	instanceIndex = data.m_nextInstance;
+}

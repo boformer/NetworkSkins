@@ -9,6 +9,7 @@ namespace NetworkSkins.Skins
     public class NetworkSkin
     {
         public NetInfo.Lane[] m_lanes;
+        public NetInfo.Segment[] m_segments;
 
         public bool m_createPavement;
         public bool m_createGravel;
@@ -16,6 +17,8 @@ namespace NetworkSkins.Skins
         public bool m_clipTerrain;
 
         public Color m_color;
+
+        public bool m_hasWires;
 
         public readonly NetInfo Prefab;
         public readonly List<NetworkSkinModifier> Modifiers = new List<NetworkSkinModifier>();
@@ -27,11 +30,20 @@ namespace NetworkSkins.Skins
                 m_lanes = new NetInfo.Lane[prefab.m_lanes.Length];
                 Array.Copy(prefab.m_lanes, m_lanes, m_lanes.Length);
             }
+
+            m_hasWires = true;
+            if (prefab.m_segments != null)
+            {
+                m_segments = new NetInfo.Segment[prefab.m_segments.Length];
+                Array.Copy(prefab.m_segments, m_segments, m_segments.Length);
+            }
             m_createPavement = prefab.m_createPavement;
             m_createGravel = prefab.m_createGravel;
             m_createRuining = prefab.m_createRuining;
             m_clipTerrain = prefab.m_clipTerrain;
             m_color = prefab.m_color;
+
+            UpdateHasWires();
 
             Prefab = prefab ?? throw new ArgumentNullException(nameof(prefab));
         }
@@ -100,6 +112,66 @@ namespace NetworkSkins.Skins
             }
 
             updater(prop);
+        }
+
+        public void RemoveLaneProp(int laneIndex, int propIndex)
+        {
+            if (m_lanes.Length <= laneIndex)
+            {
+                Debug.LogError($"Invalid lane index {laneIndex} for prefab {Prefab}!");
+                return;
+            }
+
+            var lane = m_lanes[laneIndex];
+            if (lane == null || lane.m_laneProps == null || lane.m_laneProps.m_props == null)
+            {
+                Debug.LogError($"Lane {laneIndex} is null or doesn't have any props!");
+                return;
+            }
+
+            if (lane.m_laneProps.m_props.Length <= propIndex)
+            {
+                Debug.LogError($"Invalid prop index {propIndex} for prefab {Prefab}, lane {laneIndex}!");
+                return;
+            }
+
+            if (!(lane is NetworkSkinLane))
+            {
+                lane = new NetworkSkinLane(lane);
+                m_lanes[laneIndex] = lane;
+            }
+
+            var props = new List<NetLaneProps.Prop>(lane.m_laneProps.m_props);
+            props.RemoveAt(propIndex);
+            lane.m_laneProps.m_props = props.ToArray();
+        }
+
+        public void RemoveSegment(int segmentIndex)
+        {
+            var segments = new List<NetInfo.Segment>(m_segments);
+            segments.RemoveAt(segmentIndex);
+            m_segments = segments.ToArray();
+
+            UpdateHasWires();
+        }
+
+        private void UpdateHasWires()
+        {
+            m_hasWires = false;
+            if (m_segments == null)
+            {
+                return;
+            }
+
+            foreach (var segment in m_segments)
+            {
+                if (segment.m_material?.shader?.name == "Custom/Net/Electricity")
+                {
+                    m_hasWires = true;
+                    break;
+                }
+            }
+
         }
 
         public override string ToString()

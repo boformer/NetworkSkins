@@ -31,7 +31,6 @@ namespace NetworkSkins.Patches
             {
                 if (codes[index].opcode == OpCodes.Callvirt)
                 {
-                    Debug.Log($"Found callvirt {codes[index].operand}");
                     if (codes[index].operand == netAiGetSegmentColorMethod)
                     {
                         Debug.Log("Found GetColor(ushort segmentID, ref NetSegment data, InfoManager.InfoMode infoMode)");
