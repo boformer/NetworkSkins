@@ -8,6 +8,7 @@ namespace NetworkSkins
     {
         public static bool SkinEnabled = true;
         private NetworkSkin _skinForBasicRoad;
+        private NetworkSkin _skinForBasicRoadWithTrees;
         private NetworkSkin _skinForMediumRoad;
 
         public void OnCreated(ILoading loading)
@@ -34,16 +35,30 @@ namespace NetworkSkins
                 _skinForBasicRoad = new NetworkSkin(basicRoadPrefab);
 
                 var airportLightPrefab = PrefabCollection<PropInfo>.FindLoaded("Airport Light");
-                var streetLightModifier = new StreetLightModifier(streetLight: airportLightPrefab);
-                streetLightModifier.Apply(_skinForBasicRoad);
+                _skinForBasicRoad.ApplyModifier(new StreetLightModifier(streetLight: airportLightPrefab));
 
-                var terrainSurface = new TerrainSurfaceModifier(groundType: NetworkGroundType.Gravel);
-                terrainSurface.Apply(_skinForBasicRoad);
+                _skinForBasicRoad.ApplyModifier(new TerrainSurfaceModifier(groundType: NetworkGroundType.Gravel));
 
-                var color = new ColorModifier(color: new Color(0.3f, 0.3f, 0.3f));
-                color.Apply(_skinForBasicRoad);
+                _skinForBasicRoad.ApplyModifier(new ColorModifier(color: new Color(90f / 255f, 90f / 255f, 90f / 255f)));
 
                 Debug.Log($"Built skin for basic road: {_skinForBasicRoad}");
+            }
+
+            var basicRoadWithTreesPrefab = PrefabCollection<NetInfo>.FindLoaded("Basic Road Decoration Trees");
+            if (basicRoadWithTreesPrefab != null)
+            {
+                _skinForBasicRoadWithTrees = new NetworkSkin(basicRoadWithTreesPrefab);
+
+                _skinForBasicRoadWithTrees.ApplyModifier(new StreetLightModifier(null));
+
+                var flowerTreePrefab = PrefabCollection<TreeInfo>.FindLoaded("Flower Tree 01");
+                _skinForBasicRoadWithTrees.ApplyModifier(new SimpleTreeModifier(tree: flowerTreePrefab));
+
+                _skinForBasicRoadWithTrees.ApplyModifier(new TerrainSurfaceModifier(groundType: NetworkGroundType.Gravel));
+
+                _skinForBasicRoadWithTrees.ApplyModifier(new ColorModifier(color: new Color(173f / 255f, 158f / 255f, 147f / 255f)));
+
+                Debug.Log($"Built skin for basic road with tree deco: {_skinForBasicRoadWithTrees}");
             }
 
             var mediumRoadPrefab = PrefabCollection<NetInfo>.FindLoaded("Medium Road");
@@ -52,14 +67,11 @@ namespace NetworkSkins
                 _skinForMediumRoad = new NetworkSkin(mediumRoadPrefab);
 
                 var streetLampPrefab = PrefabCollection<PropInfo>.FindLoaded("StreetLamp02");
-                var propBuilder = new StreetLightModifier(streetLight: streetLampPrefab);
-                propBuilder.Apply(_skinForMediumRoad);
+                _skinForMediumRoad.ApplyModifier(new StreetLightModifier(streetLight: streetLampPrefab));
 
-                var groundBuilder = new TerrainSurfaceModifier(groundType: NetworkGroundType.None);
-                groundBuilder.Apply(_skinForMediumRoad);
+                _skinForMediumRoad.ApplyModifier(new TerrainSurfaceModifier(groundType: NetworkGroundType.None));
 
-                var color = new ColorModifier(color: new Color(0.75f, 0.75f, 0.75f));
-                color.Apply(_skinForMediumRoad);
+                _skinForMediumRoad.ApplyModifier(new ColorModifier(color: new Color(160f / 255f, 160f / 255f, 160f / 255f)));
 
                 Debug.Log($"Built skin for medium road: {_skinForMediumRoad}");
             }
@@ -93,6 +105,11 @@ namespace NetworkSkins
                     Debug.Log($"Is basic road! {_skinForBasicRoad}");
                     NetworkSkinManager.SegmentSkins[segment] = _skinForBasicRoad;
                 }
+                else if (prefab.name == "Basic Road Decoration Trees")
+                {
+                    Debug.Log($"Is basic road with tree deco! {_skinForMediumRoad}");
+                    NetworkSkinManager.SegmentSkins[segment] = _skinForBasicRoadWithTrees;
+                }
                 else if (prefab.name == "Medium Road")
                 {
                     Debug.Log($"Is medium road! {_skinForMediumRoad}");
@@ -116,7 +133,6 @@ namespace NetworkSkins
             NetworkSkinManager.NodeSkins[node] = null;
         }
     }
-
 
     public class KeyInputThreading : ThreadingExtensionBase
     {

@@ -3,9 +3,9 @@
 namespace NetworkSkins.Patches
 {
     [HarmonyPatch(typeof(NetManager), "CreateSegment")]
-    public class NetManagerCreateSegmentPatch
+    public static class NetManagerCreateSegmentPatch
     {
-        static void Postfix(ref ushort segment, NetInfo info, bool __result)
+        public static void Postfix(ref ushort segment, NetInfo info, bool __result)
         {
             // 0 is this method
             // 1 is CreateSegment_Patch<n> (The original method that was patched by Harmony)

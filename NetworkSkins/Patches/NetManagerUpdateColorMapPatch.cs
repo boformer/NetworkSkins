@@ -1,24 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Reflection.Emit;
-using System.Text;
 using Harmony;
-using NetworkSkins.Skins;
 using UnityEngine;
 
 namespace NetworkSkins.Patches
 {
     [HarmonyPatch(typeof(NetManager), "UpdateColorMap")]
-    public class NetManagerUpdateColorMapPatch
+    public static class NetManagerUpdateColorMapPatch
     {
-        static IEnumerable<CodeInstruction> Transpiler(ILGenerator il, IEnumerable<CodeInstruction> instructions)
+        public static IEnumerable<CodeInstruction> Transpiler(ILGenerator il, IEnumerable<CodeInstruction> instructions)
         {
             var originalInstructions = new List<CodeInstruction>(instructions);
 
             var netAiGetSegmentColorMethod = typeof(NetAI).GetMethod("GetColor", new[] { typeof(ushort), typeof(NetSegment).MakeByRefType(), typeof(InfoManager.InfoMode) });
-            var netAiGetNodeColorMethod = typeof(NetInfo).GetMethod("GetColor", new Type[] { typeof(ushort), typeof(NetNode).MakeByRefType(), typeof(InfoManager.InfoMode) });
+            var netAiGetNodeColorMethod = typeof(NetAI).GetMethod("GetColor", new Type[] { typeof(ushort), typeof(NetNode).MakeByRefType(), typeof(InfoManager.InfoMode) });
 
             var colorPatcherGetSegmentColorMethod = typeof(ColorPatcher).GetMethod("GetSegmentColor");
             var colorPatcherGetNodeColorMethod = typeof(ColorPatcher).GetMethod("GetNodeColor");
@@ -35,6 +31,7 @@ namespace NetworkSkins.Patches
             {
                 if (codes[index].opcode == OpCodes.Callvirt)
                 {
+                    Debug.Log($"Found callvirt {codes[index].operand}");
                     if (codes[index].operand == netAiGetSegmentColorMethod)
                     {
                         Debug.Log("Found GetColor(ushort segmentID, ref NetSegment data, InfoManager.InfoMode infoMode)");

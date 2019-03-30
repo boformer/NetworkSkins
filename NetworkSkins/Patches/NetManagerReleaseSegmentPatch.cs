@@ -3,9 +3,9 @@
 namespace NetworkSkins.Patches
 {
     [HarmonyPatch(typeof(NetManager), "ReleaseSegment")]
-    public class NetManagerReleaseSegmentPatch
+    public static class NetManagerReleaseSegmentPatch
     {
-        static void Prefix(ushort segment)
+        public static void Prefix(ushort segment)
         {
             // 0 is this method
             // 1 is ReleaseSegment_Patch<n> (The original method that was patched by Harmony)

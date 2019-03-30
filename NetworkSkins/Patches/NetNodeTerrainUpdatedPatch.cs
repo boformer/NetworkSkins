@@ -17,19 +17,19 @@ namespace NetworkSkins.Patches
     [HarmonyPatch(typeof(NetNode), "TerrainUpdated")]
     public static class NetNodeTerrainUpdatedPatch
     {
-        static void Prefix(ref NetNode __instance, ushort nodeID, out TerrainSurfacePatcherState __state)
+        public static void Prefix(ref NetNode __instance, ushort nodeID, out TerrainSurfacePatcherState __state)
         {
             // Apply the ground texture patch to the NetInfo of the node
             // This is important for loose road ends without junctions
             __state = TerrainSurfacePatcher.Apply(__instance.Info, NetworkSkinManager.NodeSkins[nodeID]);
         }
 
-        static void Postfix(ref NetNode __instance, TerrainSurfacePatcherState __state)
+        public static void Postfix(ref NetNode __instance, TerrainSurfacePatcherState __state)
         {
             TerrainSurfacePatcher.Revert(__instance.Info, __state);
         }
 
-        static IEnumerable<CodeInstruction> Transpiler(ILGenerator il, IEnumerable<CodeInstruction> instructions)
+        public static IEnumerable<CodeInstruction> Transpiler(ILGenerator il, IEnumerable<CodeInstruction> instructions)
         {
             var originalInstructions = new List<CodeInstruction>(instructions);
 

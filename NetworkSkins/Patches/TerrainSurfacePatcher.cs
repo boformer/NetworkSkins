@@ -1,22 +1,16 @@
 ﻿using System;
 using NetworkSkins.Skins;
-using UnityEngine;
 
 namespace NetworkSkins.Patches
 {
     public static class TerrainSurfacePatcher
     {
-        private static int _debugCounter = 0;
-
         public static TerrainSurfacePatcherState Apply(NetInfo info, NetworkSkin skin)
         {
             if (info == null || skin == null)
             {
                 return TerrainSurfacePatcherState.None;
             }
-
-            Debug.Log($"Patching ground flags to skin {skin} {_debugCounter}");
-            _debugCounter++;
 
             var state = TerrainSurfacePatcherState.Modified;
             if (info.m_createPavement) state |= TerrainSurfacePatcherState.Pavement;
@@ -38,10 +32,7 @@ namespace NetworkSkins.Patches
             {
                 return;
             }
-
-            _debugCounter--;
-            Debug.Log($"Reversing ground flags {_debugCounter}");
-            
+           
             info.m_createPavement = (state & TerrainSurfacePatcherState.Pavement) != TerrainSurfacePatcherState.None;
             info.m_createGravel = (state & TerrainSurfacePatcherState.Gravel) != TerrainSurfacePatcherState.None;
             info.m_createRuining = (state & TerrainSurfacePatcherState.Ruined) != TerrainSurfacePatcherState.None;

@@ -3,9 +3,9 @@
 namespace NetworkSkins.Patches
 {
     [HarmonyPatch(typeof(NetManager), "ReleaseNode")]
-    public class NetManagerReleaseNodePatch
+    public static class NetManagerReleaseNodePatch
     {
-        static void Prefix(ushort node)
+        public static void Prefix(ushort node)
         {
             NetManagerHooks.OnNodeRelease(node);
         }

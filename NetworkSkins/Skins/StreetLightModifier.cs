@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Reflection;
 
 namespace NetworkSkins.Skins
 {
@@ -13,58 +14,69 @@ namespace NetworkSkins.Skins
 
         public override void Apply(NetworkSkin skin)
         {
-            var originalLanes = skin.m_lanes;
-            if (originalLanes == null) return;
+            if (skin.m_lanes == null) return;
 
-            skin.m_lanes = new NetInfo.Lane[originalLanes.Length];
             for (var l = 0; l < skin.m_lanes.Length; l++)
             {
-                skin.m_lanes[l] = ReplaceStreetLightsAndTreesOnLane(originalLanes[l]);
-            }
-        }
+                var laneProps = skin.m_lanes[l]?.m_laneProps?.m_props;
+                if (laneProps == null) continue;
 
-        private NetInfo.Lane ReplaceStreetLightsAndTreesOnLane(NetInfo.Lane originalLane)
-        {
-            var originalLaneProps = originalLane?.m_laneProps;
-            if (originalLaneProps == null || originalLaneProps.m_props == null || !HasStreetLightProps(originalLaneProps.m_props))
-            {
-                return originalLane;
-            }
-
-            var replacementLane = new NetInfo.Lane();
-            CopyProperties(replacementLane, originalLane);
-            replacementLane.m_laneProps = UnityEngine.Object.Instantiate(originalLaneProps);
-
-            for (var p = 0; p < replacementLane.m_laneProps.m_props.Length; p++)
-            {
-                var originalLaneProp = replacementLane.m_laneProps.m_props[p];
-
-                if (IsStreetLightProp(originalLaneProp?.m_prop))
+                for (var p = 0; p < laneProps.Length; p++)
                 {
-                    var replacementLaneProp = new NetLaneProps.Prop();
-                    CopyProperties(replacementLaneProp, originalLaneProp);
-
-                    replacementLaneProp.m_prop = StreetLight;
-                    replacementLaneProp.m_finalProp = StreetLight;
-
-                    replacementLane.m_laneProps.m_props[p] = replacementLaneProp;
+                    if (IsStreetLightProp(laneProps[p]?.m_finalProp))
+                    {
+                        skin.UpdateLaneProp(l, p, laneProp =>
+                        {
+                            laneProp.m_prop = StreetLight;
+                            laneProp.m_finalProp = StreetLight;
+                        });
+                    }
                 }
             }
-
-            return replacementLane;
         }
 
-        private bool HasStreetLightProps(NetLaneProps.Prop[] laneProps)
+        public static bool HasStreetLights(NetInfo prefab)
         {
-            foreach (var laneProp in laneProps)
+            if (prefab.m_lanes == null) return false;
+
+            foreach (var lane in prefab.m_lanes)
             {
-                if (IsStreetLightProp(laneProp?.m_finalProp))
+                var laneProps = lane?.m_laneProps?.m_props;
+                if (laneProps == null) continue;
+
+                foreach (var laneProp in laneProps)
                 {
-                    return true;
+                    if (IsStreetLightProp(laneProp?.m_finalProp))
+                    {
+                        return true;
+                    }
                 }
             }
 
             return false;
+        }
+
+        // nullable
+        public static PropInfo GetDefaultStreetLight(NetInfo prefab)
+        {
+            if (prefab.m_lanes == null) return null;
+
+            foreach (var lane in prefab.m_lanes)
+            {
+                var laneProps = lane?.m_laneProps?.m_props;
+                if (laneProps == null) continue;
+
+                foreach (var laneProp in laneProps)
+                {
+                    var finalProp = laneProp?.m_finalProp;
+                    if (IsStreetLightProp(finalProp))
+                    {
+                        return finalProp;
+                    }
+                }
+            }
+
+            return null;
         }
 
         private static bool IsStreetLightProp(PropInfo prefab)
@@ -91,15 +103,6 @@ namespace NetworkSkins.Skins
             }
 
             return false;
-        }
-
-        private static void CopyProperties(object target, object origin)
-        {
-            var fields = target.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public);
-            foreach (var fieldInfo in fields)
-            {
-                fieldInfo.SetValue(target, fieldInfo.GetValue(origin));
-            }
         }
     }
 }
