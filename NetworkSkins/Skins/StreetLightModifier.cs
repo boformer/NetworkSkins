@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Reflection;
 
 namespace NetworkSkins.Skins
 {
@@ -32,6 +33,50 @@ namespace NetworkSkins.Skins
                     }
                 }
             }
+        }
+
+        public static bool HasStreetLights(NetInfo prefab)
+        {
+            if (prefab.m_lanes == null) return false;
+
+            foreach (var lane in prefab.m_lanes)
+            {
+                var laneProps = lane?.m_laneProps?.m_props;
+                if (laneProps == null) continue;
+
+                foreach (var laneProp in laneProps)
+                {
+                    if (IsStreetLightProp(laneProp?.m_finalProp))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        // nullable
+        public static PropInfo GetDefaultStreetLight(NetInfo prefab)
+        {
+            if (prefab.m_lanes == null) return null;
+
+            foreach (var lane in prefab.m_lanes)
+            {
+                var laneProps = lane?.m_laneProps?.m_props;
+                if (laneProps == null) continue;
+
+                foreach (var laneProp in laneProps)
+                {
+                    var finalProp = laneProp?.m_finalProp;
+                    if (IsStreetLightProp(finalProp))
+                    {
+                        return finalProp;
+                    }
+                }
+            }
+
+            return null;
         }
 
         private static bool IsStreetLightProp(PropInfo prefab)
