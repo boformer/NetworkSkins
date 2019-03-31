@@ -1,4 +1,5 @@
 ﻿using Harmony;
+using NetworkSkins.Skins;
 
 namespace NetworkSkins.Patches.NetManager
 {
@@ -39,22 +40,22 @@ namespace NetworkSkins.Patches.NetManager
                         {
                             if (__result)
                             {
-                                NetManagerHooks.OnSegmentCreate(segment);
+                                NetworkSkinManager.instance.OnSegmentCreate(segment);
                             }
 
                             // Delete data of deleted segments
-                            if (NetManagerHooks.MoveMiddleNode_releasedSegment > 0)
+                            if (NetManagerReleaseSegmentPatch.MoveMiddleNode_releasedSegment > 0)
                             {
-                                NetManagerHooks.OnSegmentRelease(NetManagerHooks.MoveMiddleNode_releasedSegment);
+                                NetworkSkinManager.instance.OnSegmentRelease(NetManagerReleaseSegmentPatch.MoveMiddleNode_releasedSegment);
                             }
 
-                            if (NetManagerHooks.SplitSegment_releasedSegment > 0)
+                            if (NetManagerReleaseSegmentPatch.SplitSegment_releasedSegment > 0)
                             {
-                                NetManagerHooks.OnSegmentRelease(NetManagerHooks.SplitSegment_releasedSegment);
+                                NetworkSkinManager.instance.OnSegmentRelease(NetManagerReleaseSegmentPatch.SplitSegment_releasedSegment);
                             }
 
-                            NetManagerHooks.SplitSegment_releasedSegment = 0;
-                            NetManagerHooks.MoveMiddleNode_releasedSegment = 0;
+                            NetManagerReleaseSegmentPatch.SplitSegment_releasedSegment = 0;
+                            NetManagerReleaseSegmentPatch.MoveMiddleNode_releasedSegment = 0;
                         }
                     }
                     else if (caller2.Name == "LoadPaths")
@@ -66,26 +67,26 @@ namespace NetworkSkins.Patches.NetManager
 
                 case "MoveMiddleNode": // segment that was modified because user added network, apply style of previous segment
 
-                    if (NetManagerHooks.MoveMiddleNode_releasedSegment > 0)
+                    if (NetManagerReleaseSegmentPatch.MoveMiddleNode_releasedSegment > 0)
                     {
                         if (__result)
                         {
-                            NetManagerHooks.OnSegmentTransferData(NetManagerHooks.MoveMiddleNode_releasedSegment, segment);
+                            NetworkSkinManager.instance.OnSegmentTransferData(NetManagerReleaseSegmentPatch.MoveMiddleNode_releasedSegment, segment);
                         }
 
                         // Delete data of previous segment
-                        NetManagerHooks.OnSegmentRelease(NetManagerHooks.MoveMiddleNode_releasedSegment);
-                        NetManagerHooks.MoveMiddleNode_releasedSegment = 0;
+                        NetworkSkinManager.instance.OnSegmentRelease(NetManagerReleaseSegmentPatch.MoveMiddleNode_releasedSegment);
+                        NetManagerReleaseSegmentPatch.MoveMiddleNode_releasedSegment = 0;
                     }
                     break;
 
                 case "SplitSegment": // segment that was split by new node, apply style of previous segment
 
-                    if (NetManagerHooks.SplitSegment_releasedSegment > 0)
+                    if (NetManagerReleaseSegmentPatch.SplitSegment_releasedSegment > 0)
                     {
                         if (__result)
                         {
-                            NetManagerHooks.OnSegmentTransferData(NetManagerHooks.SplitSegment_releasedSegment, segment);
+                            NetworkSkinManager.instance.OnSegmentTransferData(NetManagerReleaseSegmentPatch.SplitSegment_releasedSegment, segment);
                         }
                     }
                     break;

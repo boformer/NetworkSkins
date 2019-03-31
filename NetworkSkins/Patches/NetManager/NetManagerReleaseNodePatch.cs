@@ -1,4 +1,5 @@
 ﻿using Harmony;
+using NetworkSkins.Skins;
 
 namespace NetworkSkins.Patches.NetManager
 {
@@ -7,7 +8,7 @@ namespace NetworkSkins.Patches.NetManager
     {
         public static void Prefix(ushort node)
         {
-            NetManagerHooks.OnNodeRelease(node);
+            NetworkSkinManager.instance.OnNodeRelease(node);
         }
     }
 }

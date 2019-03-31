@@ -1,7 +1,9 @@
 ﻿using System;
 using Harmony;
 using ICities;
+using NetworkSkins.Skins;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace NetworkSkins
 {
@@ -22,21 +24,24 @@ namespace NetworkSkins
 
         public void OnEnabled()
         {
-            if (_harmony != null) return;
+            NetworkSkinManager.Ensure();
 
-            Debug.Log("NetworkSkins Patching...");
-            HarmonyInstance.SELF_PATCHING = false;
-            HarmonyInstance.DEBUG = true; // TODO remove
-            // TODO compile release version of harmony dll
-            _harmony = HarmonyInstance.Create(HarmonyId);
-            try
+            if (_harmony == null)
             {
-                _harmony.PatchAll(GetType().Assembly);
-            }
-            catch (Exception e)
-            {
-                Debug.LogError("Error while applying patches!");
-                Debug.LogException(e);
+                Debug.Log("NetworkSkins Patching...");
+                HarmonyInstance.SELF_PATCHING = false;
+                HarmonyInstance.DEBUG = true; // TODO remove
+                // TODO compile release version of harmony dll
+                _harmony = HarmonyInstance.Create(HarmonyId);
+                try
+                {
+                    _harmony.PatchAll(GetType().Assembly);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError("Error while applying patches!");
+                    Debug.LogException(e);
+                }
             }
         }
 
@@ -46,6 +51,8 @@ namespace NetworkSkins
             _harmony = null;
 
             Debug.Log("NetworkSkins Reverted...");
+
+            Object.Destroy(NetworkSkinManager.instance);
         }
     }
 }

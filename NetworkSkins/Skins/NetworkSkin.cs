@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using NetworkSkins.Net;
 using UnityEngine;
 // ReSharper disable InconsistentNaming
 
@@ -8,6 +9,19 @@ namespace NetworkSkins.Skins
 {
     public class NetworkSkin
     {
+        public BuildingInfo m_bridgePillarInfo;
+
+        // Monorail bend pillar
+        public BuildingInfo m_bridgePillarInfo2;
+
+        // Monorail junction pillar
+        public BuildingInfo m_bridgePillarInfo3;
+
+        // Pedestrian path elevation-dependent pillars
+        public BuildingInfo[] m_bridgePillarInfos;
+
+        public BuildingInfo m_middlePillarInfo;
+
         public NetInfo.Lane[] m_lanes;
         public NetInfo.Segment[] m_segments;
 
@@ -25,6 +39,12 @@ namespace NetworkSkins.Skins
 
         public NetworkSkin(NetInfo prefab)
         {
+            m_bridgePillarInfo = PillarUtils.GetDefaultBridgePillar(prefab);
+            m_bridgePillarInfo2 = PillarUtils.GetDefaultBridgePillar2(prefab);
+            m_bridgePillarInfo3 = PillarUtils.GetDefaultBridgePillar3(prefab);
+            m_bridgePillarInfos = PillarUtils.GetDefaultBridgePillars(prefab);
+            m_middlePillarInfo = PillarUtils.GetDefaultMiddlePillar(prefab);
+            
             if (prefab.m_lanes != null)
             {
                 m_lanes = new NetInfo.Lane[prefab.m_lanes.Length];
@@ -59,6 +79,7 @@ namespace NetworkSkins.Skins
                     {
                         // NetLaneProps is a ScriptableObject, must be destroyed when no longer in use!
                         UnityEngine.Object.Destroy(lane.m_laneProps);
+                        lane.m_laneProps = null;
                     }
                 }
             }

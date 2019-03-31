@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+// TODO currently only removes catenaries
+// TODO add support for railway and catenary replacer catenaries
+
 namespace NetworkSkins.Skins
 {
     public class CatenaryModifier : NetworkSkinModifier
@@ -13,7 +16,7 @@ namespace NetworkSkins.Skins
 
         public override void Apply(NetworkSkin skin)
         {
-            // TODO currently only removes catenaries
+            
             for (var s = skin.m_segments.Length - 1; s >= 0; s--)
             {
                 var segment = skin.m_segments[s];
@@ -25,12 +28,12 @@ namespace NetworkSkins.Skins
 
             for (var l = 0; l < skin.m_lanes.Length; l++)
             {
-                var laneProps = skin.m_lanes[l]?.m_laneProps?.m_props;
-                if (laneProps == null) continue;
+                if (skin.m_lanes[l]?.m_laneProps?.m_props == null) continue;
 
-                for (var p = laneProps.Length - 1; p >= 0; p--)
+                for (var p = skin.m_lanes[l].m_laneProps.m_props.Length - 1; p >= 0; p--)
                 {
-                    if (laneProps[p]?.m_finalProp?.name == "RailwayPowerline")
+                    var propName = skin.m_lanes[l].m_laneProps.m_props[p]?.m_finalProp?.name;
+                    if (propName == "RailwayPowerline" || propName == "RailwayPowerline Singular")
                     {
                         skin.RemoveLaneProp(l, p);
                     }

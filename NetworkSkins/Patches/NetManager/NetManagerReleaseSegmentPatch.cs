@@ -1,10 +1,16 @@
 ﻿using Harmony;
+using NetworkSkins.Skins;
+
+// ReSharper disable InconsistentNaming
 
 namespace NetworkSkins.Patches.NetManager
 {
     [HarmonyPatch(typeof(global::NetManager), "ReleaseSegment")]
     public static class NetManagerReleaseSegmentPatch
     {
+        public static ushort MoveMiddleNode_releasedSegment;
+        public static ushort SplitSegment_releasedSegment;
+
         public static void Prefix(ushort segment)
         {
             // 0 is this method
@@ -17,32 +23,32 @@ namespace NetworkSkins.Patches.NetManager
                 case "MoveMiddleNode": // segment that was modified because user added network, keep data until replacement segments were created
 
                     // Delete data of last moved segment
-                    if (NetManagerHooks.MoveMiddleNode_releasedSegment > 0)
+                    if (MoveMiddleNode_releasedSegment > 0)
                     {
-                        NetManagerHooks.OnSegmentRelease(NetManagerHooks.MoveMiddleNode_releasedSegment);
+                        NetworkSkinManager.instance.OnSegmentRelease(MoveMiddleNode_releasedSegment);
                     }
 
                     // Save segment id
-                    NetManagerHooks.MoveMiddleNode_releasedSegment = segment;
+                    MoveMiddleNode_releasedSegment = segment;
                     break;
 
                 case "SplitSegment": // segment that was split by new node, keep data until replacement segments were created
 
                     // Delete data of last splitted segment
-                    if (NetManagerHooks.SplitSegment_releasedSegment > 0)
+                    if (SplitSegment_releasedSegment > 0)
                     {
-                        NetManagerHooks.OnSegmentRelease(NetManagerHooks.SplitSegment_releasedSegment);
+                        NetworkSkinManager.instance.OnSegmentRelease(SplitSegment_releasedSegment);
                     }
 
                     // Save segment id
-                    NetManagerHooks.SplitSegment_releasedSegment = segment;
+                    SplitSegment_releasedSegment = segment;
                     break;
 
                 case "DeleteSegmentImpl": // segment deleted with bulldozer by user, delete data
                 case "ReleasePaths": // segment deleted because user bulldozed building with integrated networks, delete data
                 default: // unknown caller, delete data
 
-                    NetManagerHooks.OnSegmentRelease(segment);
+                    NetworkSkinManager.instance.OnSegmentRelease(segment);
                     break;
             }
         }

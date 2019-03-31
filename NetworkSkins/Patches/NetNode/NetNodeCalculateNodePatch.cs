@@ -37,12 +37,15 @@ namespace NetworkSkins.Patches.NetNode
                     }
                 }
 
-                NetworkSkinManager.NodeSkins[nodeID] = skinWithHighestPrio;
-
-                // Make sure that the color map is updated when a skin with a different color is applied!
-                if (previousSkin?.m_color != skinWithHighestPrio?.m_color)
+                if (previousSkin != skinWithHighestPrio)
                 {
-                    netManager.UpdateNodeColors(nodeID);
+                    NetworkSkinManager.instance.UpdateNodeSkin(nodeID, skinWithHighestPrio);
+
+                    // Make sure that the color map is updated when a skin with a different color is applied!
+                    if (previousSkin?.m_color != skinWithHighestPrio?.m_color)
+                    {
+                        netManager.UpdateNodeColors(nodeID);
+                    }
                 }
             }
         }
