@@ -1,9 +1,10 @@
 ﻿using System.Reflection.Emit;
 using Harmony;
+using UnityEngine;
 
 namespace NetworkSkins.Patches
 {
-    public static class PatchUtils
+    public static class TranspilerUtils
     {
         // nullable
         public static CodeInstruction GetLdLocForStLoc(CodeInstruction instruction)
@@ -35,6 +36,29 @@ namespace NetworkSkins.Patches
             else
             {
                 return null;
+            }
+        }
+
+        public static bool IsSameInstruction(CodeInstruction a, CodeInstruction b, bool debug = false)
+        {
+            if (a.opcode == b.opcode)
+            {
+                if (a.operand == b.operand)
+                {
+                    return true;
+                }
+
+                if (debug)
+                {
+                    Debug.Log($"IsSameInstruction {a.operand} {a.operand?.GetType()} == {b.operand} {b.operand?.GetType()}?");
+                }
+
+                // This special code is needed for some reason because the != operator doesn't work on System.Byte
+                return (a.operand is byte aByte && b.operand is byte bByte && aByte == bByte);
+            }
+            else
+            {
+                return false;
             }
         }
     }

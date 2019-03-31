@@ -86,18 +86,8 @@ namespace NetworkSkins.Patches
             // customSegments
             for (; index < codes.Count; index++)
             {
-                var code = codes[index];
-                if (code.opcode == infoLdInstruction.opcode && codes[index + 1].opcode == OpCodes.Ldfld)
+                if (TranspilerUtils.IsSameInstruction(codes[index], infoLdInstruction) && codes[index + 1].opcode == OpCodes.Ldfld)
                 {
-                    if (code.operand != infoLdInstruction.operand)
-                    {
-                        // This special code is needed for some reason because the != operator doesn't work on System.Byte
-                        if (!(infoLdInstruction.operand is byte byte1 && code.operand is byte byte2 && byte1 == byte2))
-                        {
-                            continue;
-                        }
-                    }
-
                     if (codes[index + 1].operand == netInfoLanesField)
                     {
                         // It is important that we copy the labels from the existing instruction!

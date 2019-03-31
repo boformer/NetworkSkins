@@ -1,5 +1,4 @@
 ﻿using Harmony;
-using NetworkSkins.Skins;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -15,7 +14,6 @@ namespace NetworkSkins.Patches
 
         public static MethodBase TargetMethod()
         {
-            // RenderInstance(RenderManager.CameraInfo cameraInfo, ushort segmentID, int layerMask, NetInfo info, ref RenderManager.Instance data)
             // RenderInstance(RenderManager.CameraInfo cameraInfo, ushort nodeID, NetInfo info, int iter, Flags flags, ref uint instanceIndex, ref RenderManager.Instance data)
             return typeof(NetNode).GetMethod("RenderInstance", BindingFlags.NonPublic | BindingFlags.Instance, Type.DefaultBinder, new[]
             {
@@ -132,8 +130,8 @@ namespace NetworkSkins.Patches
 
             if (segmentLocalVarLdloc == null || segment2LocalVarLdloc == null || nodeLocalVarLdLoc == null)
             {
-                Debug.LogError("Necessary field for junction not found. Cancelling transpiler!");
-                Debug.Log($"{segmentLocalVarLdloc} {segment2LocalVarLdloc} {nodeLocalVarLdLoc}");
+                Debug.LogError("NetNodeRenderInstancePatch: Necessary field for junction not found. Cancelling transpiler!");
+                Debug.Log($"{segmentLocalVarLdloc}, {segment2LocalVarLdloc}, {nodeLocalVarLdLoc}");
                 return originalCodes;
             }
 
