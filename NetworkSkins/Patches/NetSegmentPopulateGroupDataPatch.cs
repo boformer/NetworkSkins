@@ -53,7 +53,7 @@ namespace NetworkSkins.Patches
                 // IL_0003: call instance class NetInfo NetSegment::get_Info()
                 if (codes[index].opcode == OpCodes.Call && codes[index].operand == netSegmentInfoGetter && TranspilerUtils.IsStLoc(codes[index + 1]))
                 {
-                    infoLocalVarLdloc = TranspilerUtils.GetLdLocForStLoc(codes[index + 1]);
+                    infoLocalVarLdloc = TranspilerUtils.BuildLdLocFromStLoc(codes[index + 1]);
                     index += 2;
                     break;
                 }

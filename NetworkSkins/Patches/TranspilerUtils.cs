@@ -6,6 +6,24 @@ namespace NetworkSkins.Patches
 {
     public static class TranspilerUtils
     {
+        public static bool IsSameInstruction(CodeInstruction a, CodeInstruction b, bool debug = false)
+        {
+            if (a.opcode == b.opcode)
+            {
+                if (a.operand == b.operand)
+                {
+                    return true;
+                }
+
+                // This special code is needed for some reason because the == operator doesn't work on System.Byte
+                return (a.operand is byte aByte && b.operand is byte bByte && aByte == bByte);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public static bool IsLdLoc(CodeInstruction instruction)
         {
             return (instruction.opcode == OpCodes.Ldloc_0 || instruction.opcode == OpCodes.Ldloc_1 ||
@@ -22,10 +40,7 @@ namespace NetworkSkins.Patches
                 );
         }
 
-        // TODO rename to Build...From...
-
-        // nullable
-        public static CodeInstruction GetLdLocForStLoc(CodeInstruction instruction)
+        public static CodeInstruction BuildLdLocFromStLoc(CodeInstruction instruction)
         {
             if (instruction.opcode == OpCodes.Stloc_0)
             {
@@ -57,7 +72,7 @@ namespace NetworkSkins.Patches
             }
         }
 
-        public static CodeInstruction GetLdLocForLdLoc(CodeInstruction instruction)
+        public static CodeInstruction BuildLdLocFromLdLoc(CodeInstruction instruction)
         {
             if (instruction.opcode == OpCodes.Ldloc_0)
             {
@@ -89,8 +104,7 @@ namespace NetworkSkins.Patches
             }
         }
 
-        // nullable
-        public static CodeInstruction GetStLocForLdLoc(CodeInstruction instruction)
+        public static CodeInstruction BuildStLocFromLdLoc(CodeInstruction instruction)
         {
             if (instruction.opcode == OpCodes.Ldloc_0)
             {
@@ -119,24 +133,6 @@ namespace NetworkSkins.Patches
             else
             {
                 throw new Exception("Statement is not ldloc!");
-            }
-        }
-
-        public static bool IsSameInstruction(CodeInstruction a, CodeInstruction b, bool debug = false)
-        {
-            if (a.opcode == b.opcode)
-            {
-                if (a.operand == b.operand)
-                {
-                    return true;
-                }
-
-                // This special code is needed for some reason because the == operator doesn't work on System.Byte
-                return (a.operand is byte aByte && b.operand is byte bByte && aByte == bByte);
-            }
-            else
-            {
-                return false;
             }
         }
     }

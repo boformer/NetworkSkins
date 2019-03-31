@@ -84,15 +84,15 @@ namespace NetworkSkins.Patches
                     )
                 {
                     Debug.Log("Found NetInfo netInfo2 = (num14 > num13 >> 1) ? netInfo : info4;");
-                    num14LocalVarLdLoc = TranspilerUtils.GetLdLocForLdLoc(codes[index - 3]);
-                    num13LocalVarLdLoc = TranspilerUtils.GetLdLocForLdLoc(codes[index - 2]);
-                    info4LocalVarLdLoc = TranspilerUtils.GetLdLocForLdLoc(codes[index + 2]); // 40
-                    var netInfoLocalVarLdLoc = TranspilerUtils.GetLdLocForLdLoc(codes[index + 4]); // 48
-                    netInfo2LocalVarLdLoc = TranspilerUtils.GetLdLocForStLoc(codes[index + 5]); // 75
+                    num14LocalVarLdLoc = TranspilerUtils.BuildLdLocFromLdLoc(codes[index - 3]);
+                    num13LocalVarLdLoc = TranspilerUtils.BuildLdLocFromLdLoc(codes[index - 2]);
+                    info4LocalVarLdLoc = TranspilerUtils.BuildLdLocFromLdLoc(codes[index + 2]); // 40
+                    var netInfoLocalVarLdLoc = TranspilerUtils.BuildLdLocFromLdLoc(codes[index + 4]); // 48
+                    netInfo2LocalVarLdLoc = TranspilerUtils.BuildLdLocFromStLoc(codes[index + 5]); // 75
 
                     var findIndex = 0;
-                    segment7LocalVarLdLoc = FindSegment7LocalVar(codes, TranspilerUtils.GetStLocForLdLoc(info4LocalVarLdLoc), ref findIndex, index - 3); // 38
-                    num6LocalVarLdLoc = FindNum6LocalVar(codes, TranspilerUtils.GetStLocForLdLoc(netInfoLocalVarLdLoc), ref findIndex, index - 3); // 51
+                    segment7LocalVarLdLoc = FindSegment7LocalVar(codes, TranspilerUtils.BuildStLocFromLdLoc(info4LocalVarLdLoc), ref findIndex, index - 3); // 38
+                    num6LocalVarLdLoc = FindNum6LocalVar(codes, TranspilerUtils.BuildStLocFromLdLoc(netInfoLocalVarLdLoc), ref findIndex, index - 3); // 51
                     break;
                 }
             }
@@ -309,7 +309,7 @@ namespace NetworkSkins.Patches
                     if (TranspilerUtils.IsLdLoc(codes[index - 6]))
                     {
                         Debug.Log("Found segment7");
-                        return TranspilerUtils.GetLdLocForLdLoc(codes[index - 6]);
+                        return TranspilerUtils.BuildLdLocFromLdLoc(codes[index - 6]);
                     }
                 }
             }
@@ -349,7 +349,7 @@ namespace NetworkSkins.Patches
                     if (TranspilerUtils.IsLdLoc(codes[index - 6]))
                     {
                         Debug.Log("Found num6");
-                        return TranspilerUtils.GetLdLocForLdLoc(codes[index - 6]);
+                        return TranspilerUtils.BuildLdLocFromLdLoc(codes[index - 6]);
                     }
                 }
             }

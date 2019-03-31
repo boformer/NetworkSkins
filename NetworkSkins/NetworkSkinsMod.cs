@@ -10,7 +10,6 @@ namespace NetworkSkins
     // TODO serialization
     // TODO backup serialization outside of the savegame (or some other ways to prevent data loss!)
     // TODO proof-read harmony.log before release
-    // TODO use PatchUtils.GetLdLocForStLoc in all patches for more safety!
     // TODO create txt files with patch code for all transpilers
     // TODO backup current assembly
     public class NetworkSkinsMod : IUserMod

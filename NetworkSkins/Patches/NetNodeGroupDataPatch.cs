@@ -71,7 +71,7 @@ namespace NetworkSkins.Patches
                 if (codes[index].opcode == OpCodes.Call && codes[index].operand == netNodeGetSegmentMethod && TranspilerUtils.IsStLoc(codes[index + 1]))
                 {
                     // IL_0078: stloc.s 5
-                    segmentLocalVarLdloc = TranspilerUtils.GetLdLocForStLoc(codes[index + 1]);
+                    segmentLocalVarLdloc = TranspilerUtils.BuildLdLocFromStLoc(codes[index + 1]);
                     index += 2;
                     break;
                 }
@@ -84,7 +84,7 @@ namespace NetworkSkins.Patches
                 if (codes[index].opcode == OpCodes.Call && codes[index].operand == netNodeGetSegmentMethod && TranspilerUtils.IsStLoc(codes[index + 1]))
                 {
                     // IL_010c: stloc.s 11
-                    segment2LocalVarLdloc = TranspilerUtils.GetLdLocForStLoc(codes[index + 1]);
+                    segment2LocalVarLdloc = TranspilerUtils.BuildLdLocFromStLoc(codes[index + 1]);
                     index += 2;
                     break;
                 }
@@ -103,7 +103,7 @@ namespace NetworkSkins.Patches
                     && TranspilerUtils.IsStLoc(codes[index + 3]))
                 {
                     // IL_0361: stloc.s 22
-                    nodeLocalVarLdLoc = TranspilerUtils.GetLdLocForStLoc(codes[index + 3]);
+                    nodeLocalVarLdLoc = TranspilerUtils.BuildLdLocFromStLoc(codes[index + 3]);
                     index += 4;
                     break;
                 }
@@ -196,7 +196,7 @@ namespace NetworkSkins.Patches
                    && TranspilerUtils.IsStLoc(codes[index + 3]))
                 {
                     // IL_0361: stloc.s 22
-                    node5LocalVarLdLoc = TranspilerUtils.GetLdLocForStLoc(codes[index + 3]);
+                    node5LocalVarLdLoc = TranspilerUtils.BuildLdLocFromStLoc(codes[index + 3]);
                     index += 4;
                     break;
                 }
