@@ -37,5 +37,45 @@
             skin.m_bridgePillarInfos = BridgePillarInfos;
             skin.m_middlePillarInfo = MiddlePillarInfo;
         }
+
+        #region Equality
+        protected bool Equals(PillarModifier other)
+        {
+            return Equals(BridgePillarInfo, other.BridgePillarInfo) && Equals(BridgePillarInfo2, other.BridgePillarInfo2) && Equals(BridgePillarInfo3, other.BridgePillarInfo3) && Equals(BridgePillarInfos, other.BridgePillarInfos) && Equals(MiddlePillarInfo, other.MiddlePillarInfo);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
+            return Equals((PillarModifier)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (BridgePillarInfo != null ? BridgePillarInfo.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (BridgePillarInfo2 != null ? BridgePillarInfo2.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (BridgePillarInfo3 != null ? BridgePillarInfo3.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (BridgePillarInfos != null ? BridgePillarInfos.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (MiddlePillarInfo != null ? MiddlePillarInfo.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
+        #endregion
     }
 }

@@ -32,6 +32,38 @@
             }
         }
 
+        #region Equality
+        protected bool Equals(StreetLightModifier other)
+        {
+            return Equals(StreetLight, other.StreetLight);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
+            return Equals((StreetLightModifier) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return (StreetLight != null ? StreetLight.GetHashCode() : 0);
+        }
+        #endregion
+
         public static bool HasStreetLights(NetInfo prefab)
         {
             if (prefab.m_lanes == null) return false;

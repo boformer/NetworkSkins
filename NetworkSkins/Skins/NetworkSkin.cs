@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using NetworkSkins.Net;
 using UnityEngine;
@@ -36,6 +37,8 @@ namespace NetworkSkins.Skins
 
         public readonly NetInfo Prefab;
         public readonly List<NetworkSkinModifier> Modifiers = new List<NetworkSkinModifier>();
+
+        public int UseCount = 0;
 
         public NetworkSkin(NetInfo prefab)
         {
@@ -91,6 +94,7 @@ namespace NetworkSkins.Skins
             Modifiers.Add(modifier);
         }
 
+        #region Modifications
         // Updates a lane prop without affecting the original lane props of the network
         public void UpdateLaneProp(int laneIndex, int propIndex, Action<NetLaneProps.Prop> updater)
         {
@@ -192,14 +196,29 @@ namespace NetworkSkins.Skins
                     break;
                 }
             }
-
         }
+        #endregion
 
         public override string ToString()
         {
-            return $"Skin for {Prefab.name}";
+            return $"Skin for {Prefab.name} with {Modifiers.Count} modifiers (used {UseCount} times)";
         }
 
+        // nullable
+        public static NetworkSkin GetMatchingSkinFromList(List<NetworkSkin> skins, NetInfo prefab, List<NetworkSkinModifier> modifiers)
+        {
+            foreach (var skin in skins)
+            {
+                if (skin.Prefab == prefab && skin.Modifiers.SequenceEqual(modifiers))
+                {
+                    return skin;
+                }
+            }
+
+            return null;
+        }
+
+        #region Skin Structures
         internal class NetworkSkinLane : NetInfo.Lane
         {
             public NetworkSkinLane(NetInfo.Lane originalLane)
@@ -220,7 +239,7 @@ namespace NetworkSkins.Skins
             }
         }
 
-        public static void CopyProperties(object target, object origin)
+        private static void CopyProperties(object target, object origin)
         {
             var fields = target.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public);
             foreach (var fieldInfo in fields)
@@ -228,5 +247,6 @@ namespace NetworkSkins.Skins
                 fieldInfo.SetValue(target, fieldInfo.GetValue(origin));
             }
         }
+        #endregion
     }
 }

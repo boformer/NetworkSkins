@@ -33,5 +33,37 @@ namespace NetworkSkins.Skins
                 }
             }
         }
+
+        #region Equality
+        protected bool Equals(SimpleTreeModifier other)
+        {
+            return Equals(Tree, other.Tree);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
+            return Equals((SimpleTreeModifier) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return (Tree != null ? Tree.GetHashCode() : 0);
+        }
+        #endregion
     }
 }

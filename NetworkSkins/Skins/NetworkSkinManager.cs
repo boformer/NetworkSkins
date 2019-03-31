@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using ColossalFramework;
 using UnityEngine;
@@ -14,6 +15,10 @@ namespace NetworkSkins.Skins
         public static NetworkSkin[] SegmentSkins = new NetworkSkin[NetManager.MAX_SEGMENT_COUNT];
         public static NetworkSkin[] NodeSkins = new NetworkSkin[NetManager.MAX_NODE_COUNT];
 
+        // Skins that are currently in use on the map
+        private readonly List<NetworkSkin> _appliedSkins = new List<NetworkSkin>();
+
+        // Skins that are currently selected in the UI and will be applied to new segments and nodes
         private readonly Dictionary<NetInfo, NetworkSkin> _activeSkins = new Dictionary<NetInfo, NetworkSkin>();
 
         #region Lifecycle
@@ -39,45 +44,77 @@ namespace NetworkSkins.Skins
         }
         #endregion
 
+        #region Active Skins
+        public void SetActiveModifiers(Dictionary<NetInfo, List<NetworkSkinModifier>> prefabsWithModifiers)
+        {
+            // TODO Destroy skins which are no longer in use
+
+            var possiblyUnusedSkins = new List<NetworkSkin>(_activeSkins.Values);
+
+            _activeSkins.Clear();
+
+            foreach (var pair in prefabsWithModifiers)
+            {
+                var prefab = pair.Key;
+                var modifiers = pair.Value;
+
+                if (modifiers.Count == 0)
+                {
+                    continue;
+                }
+
+                var matchingActiveSkin = NetworkSkin.GetMatchingSkinFromList(possiblyUnusedSkins, prefab, modifiers);
+                if (matchingActiveSkin != null)
+                {
+                    // exact same skin was already generated and is ready to use,
+                    // use that one instead of generating a new skin!
+                    _activeSkins[prefab] = matchingActiveSkin;
+                    possiblyUnusedSkins.Remove(matchingActiveSkin);
+                    continue;
+                }
+
+                var matchingAppliedSkin = NetworkSkin.GetMatchingSkinFromList(_appliedSkins, prefab, modifiers);
+                if (matchingAppliedSkin != null)
+                {
+                    // exact same skin is already present in the city,
+                    // use that one instead of generating a new skin!
+                    _activeSkins[prefab] = matchingAppliedSkin;
+                    continue;
+                }
+
+                // generate and use a new skin!
+                var skin = new NetworkSkin(prefab);
+                foreach (var modifier in modifiers)
+                {
+                    skin.ApplyModifier(modifier);
+                }
+                _activeSkins[prefab] = skin;
+            }
+
+            // Destroy all unused skins that are not present in the city
+            foreach (var skin in possiblyUnusedSkins)
+            {
+                if (skin.UseCount <= 0)
+                {
+                    Debug.Log($"Destroying unused skin {skin}");
+                    skin.Destroy();
+                }
+            }
+        }
+
+        public void ClearActiveModifiers()
+        {
+            SetActiveModifiers(new Dictionary<NetInfo, List<NetworkSkinModifier>>());
+        }
+
         public NetworkSkin GetActiveSkin(NetInfo prefab)
         {
             return _activeSkins.TryGetValue(prefab, out var skin) ? skin : null;
         }
+        #endregion
 
-        public void SetActiveSkins(List<NetworkSkin> skins)
-        {
-            // TODO Destroy skins which are no longer in use
-            _activeSkins.Clear();
-
-            // TODO make sure that no duplicate skins exist (with the exact same properties)
-            foreach (var skin in skins)
-            {
-                _activeSkins[skin.Prefab] = skin;
-            }
-        }
-
-        public void ClearActiveSkins()
-        {
-            // TODO Destroy skins which are no longer in use
-            _activeSkins.Clear();
-        }
-
-        public void UpdateNodeSkin(ushort node, NetworkSkin skin)
-        {
-            var previousSkin = NodeSkins[node];
-            // TODO update use count
-            NetworkSkinManager.NodeSkins[node] = skin;
-            // TODO update use count
-
-            // Make sure that the color map is updated when a skin with a different color is applied!
-            if (previousSkin?.m_color != skin?.m_color)
-            {
-                NetManager.instance.UpdateNodeColors(node);
-            }
-        }
-
-
-        public void OnSegmentCreate(ushort segment)
+        #region Segment/Node Events
+        public void OnSegmentPlaced(ushort segment)
         {
             var netManager = NetManager.instance;
             var startNode = netManager.m_segments.m_buffer[segment].m_startNode;
@@ -88,11 +125,9 @@ namespace NetworkSkins.Skins
             var previousEndSkin = NetworkSkinManager.NodeSkins[endNode];
 
             _activeSkins.TryGetValue(prefab, out var skin);
-            NetworkSkinManager.SegmentSkins[segment] = skin;
-            
-            NetworkSkinManager.NodeSkins[startNode] = skin;
-            NetworkSkinManager.NodeSkins[endNode] = skin;
-            // TODO update use count
+            SegmentSkins[segment] = skin;
+            NodeSkins[startNode] = skin;
+            NodeSkins[endNode] = skin;
 
             // Make sure that the color map is updated when a skin with a different color is applied!
             if (previousStartSkin?.m_color != skin?.m_color || previousEndSkin?.m_color != skin?.m_color)
@@ -101,49 +136,104 @@ namespace NetworkSkins.Skins
                 netManager.UpdateNodeColors(endNode);
             }
 
+            UsageAdded(skin, count: 3);
+            UsageRemoved(previousStartSkin);
+            UsageRemoved(previousEndSkin);
+
             Debug.Log($"OnSegmentCreate {segment}, startNode: {startNode}, endNode {endNode}, prefab: {prefab}, skin: {skin}");
         }
 
         public void OnSegmentTransferData(ushort oldSegment, ushort newSegment)
         {
-            Debug.Log($"OnSegmentTransferData {oldSegment} --> {newSegment}, skin: {NetworkSkinManager.SegmentSkins[oldSegment]}");
+            var oldSkin = SegmentSkins[oldSegment];
 
-            NetworkSkinManager.SegmentSkins[newSegment] = NetworkSkinManager.SegmentSkins[oldSegment];
-            // TODO update use count
+            SegmentSkins[newSegment] = oldSkin;
+
+            UsageAdded(oldSkin);
+
+            Debug.Log($"OnSegmentTransferData {oldSegment} --> {newSegment}, skin: {oldSkin}");
         }
 
         public void OnSegmentRelease(ushort segment)
         {
+            var skin = SegmentSkins[segment];
+
+            SegmentSkins[segment] = null;
+
+            UsageRemoved(skin);
+
             Debug.Log($"OnSegmentRelease {segment}, skin: {NetworkSkinManager.SegmentSkins[segment]}");
-            NetworkSkinManager.SegmentSkins[segment] = null;
-            // TODO update use count
         }
 
-        public void OnNodeCreate(ushort node)
+        public void UpdateNodeSkin(ushort node, NetworkSkin skin)
         {
-            var prefab = NetManager.instance.m_nodes.m_buffer[node].Info;
+            var previousSkin = NodeSkins[node];
+            if (Equals(previousSkin, skin)) return;
 
-            _activeSkins.TryGetValue(prefab, out var skin);
             NetworkSkinManager.NodeSkins[node] = skin;
-            // TODO update use count
 
-            Debug.Log($"OnNodeCreate {node}, prefab: {prefab}, skin: {skin}");
-        }
+            // Make sure that the color map is updated when a skin with a different color is applied!
+            if (previousSkin?.m_color != skin?.m_color)
+            {
+                NetManager.instance.UpdateNodeColors(node);
+            }
 
-        public void OnNodeTransferData(ushort oldNode, ushort newNode)
-        {
-            Debug.Log($"OnNodeTransferData {oldNode} --> {newNode}, skin: {NetworkSkinManager.NodeSkins[oldNode]}");
-
-            NetworkSkinManager.NodeSkins[newNode] = NetworkSkinManager.NodeSkins[oldNode];
-            // TODO update use count
+            UsageAdded(skin);
+            UsageRemoved(previousSkin);
         }
 
         public void OnNodeRelease(ushort node)
         {
-            Debug.Log($"OnNodeRelease {node}, skin: {NetworkSkinManager.NodeSkins[node]}");
-
+            var skin = NetworkSkinManager.NodeSkins[node];
             NetworkSkinManager.NodeSkins[node] = null;
-            // TODO update use count
+
+            UsageRemoved(skin);
+
+            Debug.Log($"OnNodeRelease {node}, skin: {NetworkSkinManager.NodeSkins[node]}");
         }
+        #endregion
+        
+        #region Usage Tracking
+        private void UsageAdded(NetworkSkin skin, int count = 1)
+        {
+            if (skin == null) return;
+
+            if (skin.UseCount == 0)
+            {
+                Debug.Log($"Adding skin to applied skins: {skin}");
+                _appliedSkins.Add(skin);
+            }
+
+            skin.UseCount += count;
+
+            Debug.Log($"Usage added: {skin}");
+        }
+
+        private void UsageRemoved(NetworkSkin skin)
+        {
+            if (skin == null) return;
+
+            skin.UseCount--;
+
+            Debug.Log($"Usage removed: {skin}");
+
+            if (skin.UseCount <= 0)
+            {
+                Debug.Log($"Removing skin from applied skins: {skin}");
+                _appliedSkins.Remove(skin);
+
+                if (!IsActive(skin))
+                {
+                    Debug.Log($"Destroying unused skin {skin}");
+                    skin.Destroy();
+                }
+            }
+        }
+
+        private bool IsActive(NetworkSkin skin)
+        {
+            return _activeSkins.TryGetValue(skin.Prefab, out var activeSkin) && Equals(activeSkin, skin);
+        }
+        #endregion
     }
 }

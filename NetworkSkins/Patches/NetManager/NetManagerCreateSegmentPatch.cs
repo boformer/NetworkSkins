@@ -42,22 +42,22 @@ namespace NetworkSkins.Patches.NetManager
                     {
                         if (__result)
                         {
-                            NetworkSkinManager.instance.OnSegmentCreate(segment);
+                            NetworkSkinManager.instance.OnSegmentPlaced(segment);
                         }
 
                         // Delete data of deleted segments
-                        if (NetManagerReleaseSegmentPatch.MoveMiddleNode_releasedSegment > 0)
+                        if (NetManagerReleaseSegmentImplementationPatch.MoveMiddleNode_releasedSegment > 0)
                         {
-                            NetworkSkinManager.instance.OnSegmentRelease(NetManagerReleaseSegmentPatch.MoveMiddleNode_releasedSegment);
+                            NetworkSkinManager.instance.OnSegmentRelease(NetManagerReleaseSegmentImplementationPatch.MoveMiddleNode_releasedSegment);
                         }
 
-                        if (NetManagerReleaseSegmentPatch.SplitSegment_releasedSegment > 0)
+                        if (NetManagerReleaseSegmentImplementationPatch.SplitSegment_releasedSegment > 0)
                         {
-                            NetworkSkinManager.instance.OnSegmentRelease(NetManagerReleaseSegmentPatch.SplitSegment_releasedSegment);
+                            NetworkSkinManager.instance.OnSegmentRelease(NetManagerReleaseSegmentImplementationPatch.SplitSegment_releasedSegment);
                         }
 
-                        NetManagerReleaseSegmentPatch.SplitSegment_releasedSegment = 0;
-                        NetManagerReleaseSegmentPatch.MoveMiddleNode_releasedSegment = 0;
+                        NetManagerReleaseSegmentImplementationPatch.SplitSegment_releasedSegment = 0;
+                        NetManagerReleaseSegmentImplementationPatch.MoveMiddleNode_releasedSegment = 0;
                     }
                 }
                 else if (caller2.Name == "LoadPaths" || caller2.Name.StartsWith("LoadPaths_Patch"))
@@ -69,26 +69,26 @@ namespace NetworkSkins.Patches.NetManager
             // segment that was modified because user added network, apply style of previous segment
             else if (caller1.Name == "MoveMiddleNode" || caller1.Name.StartsWith("MoveMiddleNode_Patch"))
             {
-                if (NetManagerReleaseSegmentPatch.MoveMiddleNode_releasedSegment > 0)
+                if (NetManagerReleaseSegmentImplementationPatch.MoveMiddleNode_releasedSegment > 0)
                 {
                     if (__result)
                     {
-                        NetworkSkinManager.instance.OnSegmentTransferData(NetManagerReleaseSegmentPatch.MoveMiddleNode_releasedSegment, segment);
+                        NetworkSkinManager.instance.OnSegmentTransferData(NetManagerReleaseSegmentImplementationPatch.MoveMiddleNode_releasedSegment, segment);
                     }
 
                     // Delete data of previous segment
-                    NetworkSkinManager.instance.OnSegmentRelease(NetManagerReleaseSegmentPatch.MoveMiddleNode_releasedSegment);
-                    NetManagerReleaseSegmentPatch.MoveMiddleNode_releasedSegment = 0;
+                    NetworkSkinManager.instance.OnSegmentRelease(NetManagerReleaseSegmentImplementationPatch.MoveMiddleNode_releasedSegment);
+                    NetManagerReleaseSegmentImplementationPatch.MoveMiddleNode_releasedSegment = 0;
                 }
             }
             // segment that was split by new node, apply style of previous segment
             else if (caller1.Name == "SplitSegment" || caller1.Name.StartsWith("SplitSegment_Patch"))
             {
-                if (NetManagerReleaseSegmentPatch.SplitSegment_releasedSegment > 0)
+                if (NetManagerReleaseSegmentImplementationPatch.SplitSegment_releasedSegment > 0)
                 {
                     if (__result)
                     {
-                        NetworkSkinManager.instance.OnSegmentTransferData(NetManagerReleaseSegmentPatch.SplitSegment_releasedSegment, segment);
+                        NetworkSkinManager.instance.OnSegmentTransferData(NetManagerReleaseSegmentImplementationPatch.SplitSegment_releasedSegment, segment);
                     }
                 }
             }

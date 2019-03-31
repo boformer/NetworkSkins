@@ -2,6 +2,7 @@
 
 // TODO currently only removes catenaries
 // TODO add support for railway and catenary replacer catenaries
+// TODO problem with missing rail end prop!
 
 namespace NetworkSkins.Skins
 {
@@ -40,5 +41,37 @@ namespace NetworkSkins.Skins
                 }
             }
         }
+
+        #region Equality
+        protected bool Equals(CatenaryModifier other)
+        {
+            return Equals(Catenary, other.Catenary);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
+            return Equals((CatenaryModifier) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return (Catenary != null ? Catenary.GetHashCode() : 0);
+        } 
+        #endregion
     }
 }
