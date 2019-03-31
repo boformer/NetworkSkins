@@ -5,7 +5,7 @@ using Harmony;
 using NetworkSkins.Skins;
 using UnityEngine;
 
-namespace NetworkSkins.Patches
+namespace NetworkSkins.Patches.NetSegment
 {
     /// <summary>
     /// Common transpiler logic for NetSegment.RenderInstance, NetSegment.CalculateGroupData and NetSegment.PopulateGroupData

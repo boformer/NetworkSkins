@@ -1,8 +1,8 @@
 ﻿using Harmony;
 
-namespace NetworkSkins.Patches
+namespace NetworkSkins.Patches.NetManager
 {
-    [HarmonyPatch(typeof(NetManager), "ReleaseNode")]
+    [HarmonyPatch(typeof(global::NetManager), "ReleaseNode")]
     public static class NetManagerReleaseNodePatch
     {
         public static void Prefix(ushort node)

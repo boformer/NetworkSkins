@@ -1,11 +1,11 @@
-﻿using Harmony;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using Harmony;
 using UnityEngine;
 
-namespace NetworkSkins.Patches
+namespace NetworkSkins.Patches.NetNode
 {
     /// <summary>
     /// Used by wires (LODs)
@@ -16,7 +16,7 @@ namespace NetworkSkins.Patches
         public static MethodBase TargetMethod()
         {
             // PopulateGroupData(ushort nodeID, int groupX, int groupZ, int layer, ref int vertexIndex, ref int triangleIndex, Vector3 groupPosition, RenderGroup.MeshData data, ref Vector3 min, ref Vector3 max, ref float maxRenderDistance, ref float maxInstanceDistance, ref bool requireSurfaceMaps)
-            return typeof(NetNode).GetMethod("PopulateGroupData", BindingFlags.Public | BindingFlags.Instance, Type.DefaultBinder, new[]
+            return typeof(global::NetNode).GetMethod("PopulateGroupData", BindingFlags.Public | BindingFlags.Instance, Type.DefaultBinder, new[]
             {
                 typeof(ushort),
                 typeof(int),

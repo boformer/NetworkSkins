@@ -1,11 +1,11 @@
-﻿using Harmony;
-using NetworkSkins.Skins;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using Harmony;
+using NetworkSkins.Skins;
 using UnityEngine;
 
-namespace NetworkSkins.Patches
+namespace NetworkSkins.Patches.NetNode
 {
     /// <summary>
     /// Used by terrain surface.
@@ -15,17 +15,17 @@ namespace NetworkSkins.Patches
     /// Take a look at NetNodeTerrainUpdatedPatch.txt file to see what the transpiler is supposed to do!
     /// If an update breaks the transpiler, it should fail gracefully. In that case some crossings will no longer have the correct ground textures.
     /// </summary>
-    [HarmonyPatch(typeof(NetNode), "TerrainUpdated")]
+    [HarmonyPatch(typeof(global::NetNode), "TerrainUpdated")]
     public static class NetNodeTerrainUpdatedPatch
     {
-        public static void Prefix(ref NetNode __instance, ushort nodeID, out TerrainSurfacePatcherState __state)
+        public static void Prefix(ref global::NetNode __instance, ushort nodeID, out TerrainSurfacePatcherState __state)
         {
             // Apply the ground texture patch to the NetInfo of the node
             // This is important for loose road ends without junctions
             __state = TerrainSurfacePatcher.Apply(__instance.Info, NetworkSkinManager.NodeSkins[nodeID]);
         }
 
-        public static void Postfix(ref NetNode __instance, TerrainSurfacePatcherState __state)
+        public static void Postfix(ref global::NetNode __instance, TerrainSurfacePatcherState __state)
         {
             TerrainSurfacePatcher.Revert(__instance.Info, __state);
         }

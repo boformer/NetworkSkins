@@ -56,25 +56,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Patches\ColorPatcher.cs" />
-    <Compile Include="Patches\NetManagerUpdateColorMapPatch.cs" />
-    <Compile Include="Patches\NetNodeGroupDataPatch.cs" />
-    <Compile Include="Patches\NetNodePopulateGroupDataPatch.cs" />
-    <Compile Include="Patches\NetNodeCalculateGroupDataPatch.cs" />
-    <Compile Include="Patches\NetNodeRenderInstancePatch.cs" />
-    <Compile Include="Patches\NetNodeRenderPatch.cs" />
-    <Compile Include="Patches\NetSegmentCalculateGroupDataPatch.cs" />
-    <Compile Include="Patches\NetSegmentRenderPatch.cs" />
-    <Compile Include="Patches\NetSegmentPopulateGroupDataPatch.cs" />
+    <Compile Include="Patches\NetManager\NetManagerUpdateColorMapPatch.cs" />
+    <Compile Include="Patches\NetNode\NetNodeGroupDataPatch.cs" />
+    <Compile Include="Patches\NetNode\NetNodePopulateGroupDataPatch.cs" />
+    <Compile Include="Patches\NetNode\NetNodeCalculateGroupDataPatch.cs" />
+    <Compile Include="Patches\NetNode\NetNodeRenderInstancePatch.cs" />
+    <Compile Include="Patches\NetNode\NetNodeRenderPatch.cs" />
+    <Compile Include="Patches\NetSegment\NetSegmentCalculateGroupDataPatch.cs" />
+    <Compile Include="Patches\NetSegment\NetSegmentRenderPatch.cs" />
+    <Compile Include="Patches\NetSegment\NetSegmentPopulateGroupDataPatch.cs" />
     <Compile Include="Patches\Obsolete\NetNodeRefreshEndDataPatch.cs" />
     <Compile Include="Patches\Obsolete\NetNodeRefreshBendDataPatch.cs" />
     <Compile Include="Patches\Obsolete\RoadBaseAiGetSegmentColorPatch.cs" />
     <Compile Include="Patches\Obsolete\RoadBaseAiGetNodeColorPatch.cs" />
     <Compile Include="Patches\TranspilerUtils.cs" />
     <Compile Include="Patches\TerrainSurfacePatcher.cs" />
-    <Compile Include="Patches\NetManagerReleaseNodePatch.cs" />
-    <Compile Include="Patches\NetNodeCalculateNodePatch.cs" />
-    <Compile Include="Patches\NetNodeTerrainUpdatedPatch.cs" />
-    <Compile Include="Patches\NetSegmentTerrainUpdatedPatch.cs" />
+    <Compile Include="Patches\NetManager\NetManagerReleaseNodePatch.cs" />
+    <Compile Include="Patches\NetNode\NetNodeCalculateNodePatch.cs" />
+    <Compile Include="Patches\NetNode\NetNodeTerrainUpdatedPatch.cs" />
+    <Compile Include="Patches\NetSegment\NetSegmentTerrainUpdatedPatch.cs" />
     <Compile Include="Skins\CatenaryModifier.cs" />
     <Compile Include="Skins\ColorModifier.cs" />
     <Compile Include="Skins\SimpleTreeModifier.cs" />
@@ -85,22 +85,22 @@
     <Compile Include="NetworkSkinsLoading.cs" />
     <Compile Include="NetworkSkinsMod.cs" />
     <Compile Include="Patches\Obsolete\NetLaneRenderInstancePatch.cs" />
-    <Compile Include="Patches\NetManagerReleaseSegmentPatch.cs" />
-    <Compile Include="Patches\NetManagerCreateSegmentPatch.cs" />
-    <Compile Include="Patches\NetSegmentRenderInstancePatch.cs" />
+    <Compile Include="Patches\NetManager\NetManagerReleaseSegmentPatch.cs" />
+    <Compile Include="Patches\NetManager\NetManagerCreateSegmentPatch.cs" />
+    <Compile Include="Patches\NetSegment\NetSegmentRenderInstancePatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Skins\NetworkSkinModifier.cs" />
     <Compile Include="Skins\StreetLightModifier.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Patches\NetNodeCalculateGroupDataPatch.txt" />
-    <Content Include="Patches\NetNodePopulateGroupDataPatch.txt" />
-    <Content Include="Patches\NetNodeRenderInstancePatch.txt" />
-    <Content Include="Patches\NetNodeTerrainUpdatedPatch.txt" />
-    <Content Include="Patches\NetManagerUpdateColorMapPatch.txt" />
-    <Content Include="Patches\NetSegmentCalculateGroupDataPatch.txt" />
-    <Content Include="Patches\NetSegmentPopulateGroupDataPatch.txt" />
-    <Content Include="Patches\NetSegmentRenderInstancePatch.txt" />
+    <Content Include="Patches\NetNode\NetNodeCalculateGroupDataPatch.txt" />
+    <Content Include="Patches\NetNode\NetNodePopulateGroupDataPatch.txt" />
+    <Content Include="Patches\NetNode\NetNodeRenderInstancePatch.txt" />
+    <Content Include="Patches\NetNode\NetNodeTerrainUpdatedPatch.txt" />
+    <Content Include="Patches\NetManager\NetManagerUpdateColorMapPatch.txt" />
+    <Content Include="Patches\NetSegment\NetSegmentCalculateGroupDataPatch.txt" />
+    <Content Include="Patches\NetSegment\NetSegmentPopulateGroupDataPatch.txt" />
+    <Content Include="Patches\NetSegment\NetSegmentRenderInstancePatch.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

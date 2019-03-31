@@ -1,10 +1,10 @@
-﻿using Harmony;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using Harmony;
 
-namespace NetworkSkins.Patches
+namespace NetworkSkins.Patches.NetNode
 {
     /// <summary>
     /// Used by wires (LODs)
@@ -15,7 +15,7 @@ namespace NetworkSkins.Patches
         public static MethodBase TargetMethod()
         {
             // CalculateGroupData(ushort nodeID, int layer, ref int vertexCount, ref int triangleCount, ref int objectCount, ref RenderGroup.VertexArrays vertexArrays)
-            return typeof(NetNode).GetMethod("CalculateGroupData", BindingFlags.Public | BindingFlags.Instance, Type.DefaultBinder, new[]
+            return typeof(global::NetNode).GetMethod("CalculateGroupData", BindingFlags.Public | BindingFlags.Instance, Type.DefaultBinder, new[]
             {
                 typeof(ushort),
                 typeof(int),

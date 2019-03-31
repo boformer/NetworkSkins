@@ -1,11 +1,11 @@
-﻿using Harmony;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using Harmony;
 using UnityEngine;
 
-namespace NetworkSkins.Patches
+namespace NetworkSkins.Patches.NetSegment
 {
     /// <summary>
     /// Used by lane props, wires
@@ -18,7 +18,7 @@ namespace NetworkSkins.Patches
         public static MethodBase TargetMethod()
         {
             // RenderInstance(RenderManager.CameraInfo cameraInfo, ushort segmentID, int layerMask, NetInfo info, ref RenderManager.Instance data)
-            return typeof(NetSegment).GetMethod("RenderInstance", BindingFlags.NonPublic | BindingFlags.Instance, Type.DefaultBinder, new[] {
+            return typeof(global::NetSegment).GetMethod("RenderInstance", BindingFlags.NonPublic | BindingFlags.Instance, Type.DefaultBinder, new[] {
                 typeof(RenderManager.CameraInfo),
                 typeof(ushort),
                 typeof(int),

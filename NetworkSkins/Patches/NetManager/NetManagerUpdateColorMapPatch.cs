@@ -4,12 +4,12 @@ using System.Reflection.Emit;
 using Harmony;
 using UnityEngine;
 
-namespace NetworkSkins.Patches
+namespace NetworkSkins.Patches.NetManager
 {
     /// <summary>
     /// Used by pavement color
     /// </summary>
-    [HarmonyPatch(typeof(NetManager), "UpdateColorMap")]
+    [HarmonyPatch(typeof(global::NetManager), "UpdateColorMap")]
     public static class NetManagerUpdateColorMapPatch
     {
         public static IEnumerable<CodeInstruction> Transpiler(ILGenerator il, IEnumerable<CodeInstruction> instructions)

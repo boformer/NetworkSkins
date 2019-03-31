@@ -1,11 +1,11 @@
-﻿using Harmony;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using Harmony;
 using UnityEngine;
 
-namespace NetworkSkins.Patches
+namespace NetworkSkins.Patches.NetNode
 {
     /// <summary>
     /// Used by wires
@@ -18,13 +18,13 @@ namespace NetworkSkins.Patches
         public static MethodBase TargetMethod()
         {
             // RenderInstance(RenderManager.CameraInfo cameraInfo, ushort nodeID, NetInfo info, int iter, Flags flags, ref uint instanceIndex, ref RenderManager.Instance data)
-            return typeof(NetNode).GetMethod("RenderInstance", BindingFlags.NonPublic | BindingFlags.Instance, Type.DefaultBinder, new[]
+            return typeof(global::NetNode).GetMethod("RenderInstance", BindingFlags.NonPublic | BindingFlags.Instance, Type.DefaultBinder, new[]
             {
                 typeof(RenderManager.CameraInfo),
                 typeof(ushort),
                 typeof(NetInfo),
                 typeof(int),
-                typeof(NetNode.Flags),
+                typeof(global::NetNode.Flags),
                 typeof(uint).MakeByRefType(),
                 typeof(RenderManager.Instance).MakeByRefType()
             }, null);
@@ -33,8 +33,8 @@ namespace NetworkSkins.Patches
         public static IEnumerable<CodeInstruction> Transpiler(ILGenerator il, IEnumerable<CodeInstruction> instructions)
         {
             var netNodeRefreshEndDataMethod =
-                typeof(NetNode).GetMethod("RefreshEndData", BindingFlags.NonPublic | BindingFlags.Instance);
-            var netNodeGetSegmentMethod = typeof(NetNode).GetMethod("GetSegment");
+                typeof(global::NetNode).GetMethod("RefreshEndData", BindingFlags.NonPublic | BindingFlags.Instance);
+            var netNodeGetSegmentMethod = typeof(global::NetNode).GetMethod("GetSegment");
             var netInfoNodesField = typeof(NetInfo).GetField("m_nodes");
 
             var netNodeRenderPatchShouldRenderJunctionNodeMethod =
@@ -78,7 +78,7 @@ namespace NetworkSkins.Patches
                 // IL_0077: ldarg.s 'flags'
                 // IL_0079: ldc.i4 128
                 if (codes[index].opcode == OpCodes.Ldarg_S && (byte)codes[index].operand == FlagsArgIndex
-                    && codes[index + 1].opcode == OpCodes.Ldc_I4 && (int)codes[index + 1].operand == (int)NetNode.Flags.Junction)
+                    && codes[index + 1].opcode == OpCodes.Ldc_I4 && (int)codes[index + 1].operand == (int)global::NetNode.Flags.Junction)
                 {
                     junctionFlagCheckFound = true;
                     break;
@@ -190,7 +190,7 @@ namespace NetworkSkins.Patches
                 // IL_0e28: ldarg.s 'flags'
                 // IL_0e2a: ldc.i4.s 64
                 if (codes[index].opcode == OpCodes.Ldarg_S && (byte)codes[index].operand == FlagsArgIndex
-                    && codes[index + 1].opcode == OpCodes.Ldc_I4_S && (sbyte)codes[index + 1].operand == (sbyte)NetNode.Flags.Bend)
+                    && codes[index + 1].opcode == OpCodes.Ldc_I4_S && (sbyte)codes[index + 1].operand == (sbyte)global::NetNode.Flags.Bend)
                 {
                     bendFlagCheckFound = true;
                     break;

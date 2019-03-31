@@ -1,8 +1,8 @@
 ﻿using Harmony;
 
-namespace NetworkSkins.Patches
+namespace NetworkSkins.Patches.NetManager
 {
-    [HarmonyPatch(typeof(NetManager), "CreateSegment")]
+    [HarmonyPatch(typeof(global::NetManager), "CreateSegment")]
     public static class NetManagerCreateSegmentPatch
     {
         public static void Postfix(ref ushort segment, NetInfo info, bool __result)

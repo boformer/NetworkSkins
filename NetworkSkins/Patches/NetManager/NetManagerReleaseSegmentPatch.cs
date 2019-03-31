@@ -1,8 +1,8 @@
 ﻿using Harmony;
 
-namespace NetworkSkins.Patches
+namespace NetworkSkins.Patches.NetManager
 {
-    [HarmonyPatch(typeof(NetManager), "ReleaseSegment")]
+    [HarmonyPatch(typeof(global::NetManager), "ReleaseSegment")]
     public static class NetManagerReleaseSegmentPatch
     {
         public static void Prefix(ushort segment)

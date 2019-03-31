@@ -1,16 +1,16 @@
 ﻿using Harmony;
 using NetworkSkins.Skins;
 
-namespace NetworkSkins.Patches
+namespace NetworkSkins.Patches.NetNode
 {
     /// <summary>
     /// CalculateNode is called after a node was created or when a segment connected to the node was added, removed or updated.
     /// The method decides from which segment it is inheriting its NetInfo (for roads, ít's the widest road).
     /// </summary>
-    [HarmonyPatch(typeof(NetNode), "CalculateNode")]
+    [HarmonyPatch(typeof(global::NetNode), "CalculateNode")]
     public class NetNodeCalculateNodePatch
     {
-        public static void Postfix(ref NetNode __instance, ushort nodeID)
+        public static void Postfix(ref global::NetNode __instance, ushort nodeID)
         {
             if (__instance.m_flags != 0)
             {

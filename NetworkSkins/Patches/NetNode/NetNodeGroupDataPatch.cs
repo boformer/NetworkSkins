@@ -3,7 +3,7 @@ using System.Reflection.Emit;
 using Harmony;
 using UnityEngine;
 
-namespace NetworkSkins.Patches
+namespace NetworkSkins.Patches.NetNode
 {
     /// <summary>
     /// Used by wires (LODs)
@@ -15,9 +15,9 @@ namespace NetworkSkins.Patches
     {
         public static IEnumerable<CodeInstruction> Transpiler(ILGenerator il, IEnumerable<CodeInstruction> instructions)
         {
-            var netNodeFlagsField = typeof(NetNode).GetField("m_flags");
+            var netNodeFlagsField = typeof(global::NetNode).GetField("m_flags");
 
-            var netNodeGetSegmentMethod = typeof(NetNode).GetMethod("GetSegment");
+            var netNodeGetSegmentMethod = typeof(global::NetNode).GetMethod("GetSegment");
 
             var netInfoNodesField = typeof(NetInfo).GetField("m_nodes");
 
@@ -47,7 +47,7 @@ namespace NetworkSkins.Patches
                 // IL_004b: ldfld valuetype NetNode/Flags NetNode::m_flags
                 // IL_0079: ldc.i4 128
                 if (codes[index].opcode == OpCodes.Ldfld && codes[index].operand == netNodeFlagsField
-                    && codes[index + 1].opcode == OpCodes.Ldc_I4 && (int)codes[index + 1].operand == (int)NetNode.Flags.Junction)
+                    && codes[index + 1].opcode == OpCodes.Ldc_I4 && (int)codes[index + 1].operand == (int)global::NetNode.Flags.Junction)
                 {
                     junctionFlagCheckFound = true;
                     break;
@@ -169,7 +169,7 @@ namespace NetworkSkins.Patches
                 // IL_0e28: ldarg.s 'flags'
                 // IL_0e2a: ldc.i4.s 64
                 if (codes[index].opcode == OpCodes.Ldfld && codes[index].operand == netNodeFlagsField
-                    && codes[index + 1].opcode == OpCodes.Ldc_I4_S && (sbyte)codes[index + 1].operand == (sbyte)NetNode.Flags.Bend)
+                    && codes[index + 1].opcode == OpCodes.Ldc_I4_S && (sbyte)codes[index + 1].operand == (sbyte)global::NetNode.Flags.Bend)
                 {
                     bendFlagCheckFound = true;
                     break;
