@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace NetworkSkins.Patches
 {
+    /// <summary>
+    /// Used by lane props, wires (LODs)
+    /// </summary>
     [HarmonyPatch]
     public static class NetSegmentPopulateGroupDataPatch
     {

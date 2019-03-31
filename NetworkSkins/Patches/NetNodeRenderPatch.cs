@@ -4,10 +4,11 @@ using UnityEngine;
 namespace NetworkSkins.Patches
 {
     /// <summary>
+    /// Common patch logic for NetNode.RenderInstance, NetNode.CalculateGroupData and NetNode.PopulateGroupData
     /// Special check for overhead wires on junctions and bends.
     /// Wires are only render when both connected segments have wires.
     /// </summary>
-    public static class NetNodeRenderPatcher
+    public static class NetNodeRenderPatch
     {
         private static Shader _electricityNetShader;
 
@@ -15,7 +16,7 @@ namespace NetworkSkins.Patches
         {
             if (_electricityNetShader == null)
             {
-                _electricityNetShader = Shader.Find("Custom/Net/Electricity");
+                _electricityNetShader = Shader.Find("Custom/Net/Electricity"); // TODO maybe move this out for better perf?
             }
 
             if (node.m_material?.shader != _electricityNetShader)

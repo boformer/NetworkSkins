@@ -8,7 +8,8 @@ using UnityEngine;
 namespace NetworkSkins.Patches
 {
     /// <summary>
-    /// Mix of Transpiler/Prefix/Postfix
+    /// Used by terrain surface.
+    /// Mix of Transpiler/Prefix/Postfix.
     /// This is all here to apply the correct terrain surface when networks with different skins are joined together
     /// The difficult case to handle is the case when multiple networks of the same NetInfo, but with different skins are joined together.
     /// Take a look at NetNodeTerrainUpdatedPatch.txt file to see what the transpiler is supposed to do!

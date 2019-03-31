@@ -57,10 +57,11 @@
   <ItemGroup>
     <Compile Include="Patches\ColorPatcher.cs" />
     <Compile Include="Patches\NetManagerUpdateColorMapPatch.cs" />
+    <Compile Include="Patches\NetNodeGroupDataPatch.cs" />
     <Compile Include="Patches\NetNodePopulateGroupDataPatch.cs" />
     <Compile Include="Patches\NetNodeCalculateGroupDataPatch.cs" />
     <Compile Include="Patches\NetNodeRenderInstancePatch.cs" />
-    <Compile Include="Patches\NetNodeRenderPatcher.cs" />
+    <Compile Include="Patches\NetNodeRenderPatch.cs" />
     <Compile Include="Patches\NetSegmentCalculateGroupDataPatch.cs" />
     <Compile Include="Patches\NetSegmentRenderPatch.cs" />
     <Compile Include="Patches\NetSegmentPopulateGroupDataPatch.cs" />

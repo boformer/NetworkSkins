@@ -3,6 +3,9 @@ using NetworkSkins.Skins;
 
 namespace NetworkSkins.Patches
 {
+    /// <summary>
+    /// Used by terrain surface.
+    /// </summary>
     [HarmonyPatch(typeof(NetSegment), "TerrainUpdated")]
     public static class NetSegmentTerrainUpdatedPatch
     {

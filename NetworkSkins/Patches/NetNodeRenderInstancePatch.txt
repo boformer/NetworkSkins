@@ -49,7 +49,7 @@ private void RenderInstance(RenderManager.CameraInfo cameraInfo, ushort nodeID, 
 						bool flag;
 						if (node.CheckFlags(flags2) && node.m_directConnect && (node.m_connectGroup == NetInfo.ConnectGroup.None || (node.m_connectGroup & info2.m_connectGroup & NetInfo.ConnectGroup.AllGroups) != 0)
 							// modified
-							&& NetNodeRenderPatcher:ShouldRenderJunctionNode(node, segment, segment2)
+							&& NetNodeRenderPatch:ShouldRenderJunctionNode(node, segment, segment2)
 							// modified end
 						)
 						{
@@ -363,7 +363,7 @@ private void RenderInstance(RenderManager.CameraInfo cameraInfo, ushort nodeID, 
 				Vector4 dataVector8;
 				if (node4.CheckFlags(flags) && node4.m_directConnect && (node4.m_connectGroup == NetInfo.ConnectGroup.None || (node4.m_connectGroup & info.m_connectGroup & NetInfo.ConnectGroup.AllGroups) != 0)
 					// modified
-					&& NetNodeRenderPatcher:ShouldRenderBendNode(node4, segment5, segment6)
+					&& NetNodeRenderPatch:ShouldRenderBendNode(node4, segment5, segment6)
 					// modified end
 				)
 				{

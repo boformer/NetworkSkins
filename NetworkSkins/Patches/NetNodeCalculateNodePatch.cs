@@ -1,6 +1,5 @@
 ﻿using Harmony;
 using NetworkSkins.Skins;
-using UnityEngine;
 
 namespace NetworkSkins.Patches
 {

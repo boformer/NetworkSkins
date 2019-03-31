@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using Harmony;
@@ -9,7 +8,7 @@ using UnityEngine;
 namespace NetworkSkins.Patches
 {
     /// <summary>
-    /// Common patch logic for NetSegment.RenderInstance, NetSegment.CalculateGroupData and NetSegment.PopulateGroupData
+    /// Common transpiler logic for NetSegment.RenderInstance, NetSegment.CalculateGroupData and NetSegment.PopulateGroupData
     /// </summary>
     public static class NetSegmentRenderPatch
     {

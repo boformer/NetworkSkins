@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace NetworkSkins.Patches
 {
+    /// <summary>
+    /// Used by wires
+    /// </summary>
     [HarmonyPatch]
     public static class NetNodeRenderInstancePatch
     {
@@ -34,13 +37,13 @@ namespace NetworkSkins.Patches
             var netNodeGetSegmentMethod = typeof(NetNode).GetMethod("GetSegment");
             var netInfoNodesField = typeof(NetInfo).GetField("m_nodes");
 
-            var netNodeRenderPatcherShouldRenderJunctionNodeMethod =
-                typeof(NetNodeRenderPatcher).GetMethod("ShouldRenderJunctionNode");
+            var netNodeRenderPatchShouldRenderJunctionNodeMethod =
+                typeof(NetNodeRenderPatch).GetMethod("ShouldRenderJunctionNode");
 
-            var netNodeRenderPatcherShouldRenderBendNodeMethod =
-                typeof(NetNodeRenderPatcher).GetMethod("ShouldRenderBendNode");
+            var netNodeRenderPatchShouldRenderBendNodeMethod =
+                typeof(NetNodeRenderPatch).GetMethod("ShouldRenderBendNode");
 
-            if (netNodeRefreshEndDataMethod == null|| netNodeGetSegmentMethod == null || netInfoNodesField == null || netNodeRenderPatcherShouldRenderJunctionNodeMethod == null || netNodeRenderPatcherShouldRenderBendNodeMethod == null)
+            if (netNodeRefreshEndDataMethod == null|| netNodeGetSegmentMethod == null || netInfoNodesField == null || netNodeRenderPatchShouldRenderJunctionNodeMethod == null || netNodeRenderPatchShouldRenderBendNodeMethod == null)
             {
                 Debug.LogError("Necessary methods and field not found. Cancelling transpiler!");
                 return instructions;
@@ -150,14 +153,14 @@ namespace NetworkSkins.Patches
                     // IL_01FD: ldloc.s V_6
                     // IL_01FF: ldloc.0
                     // IL_0200: ldloc.1
-                    // IL_0201: call bool[NetworkSkins] NetworkSkins.Patches.NetNodeRenderPatcher::ShouldRenderJunctionNode(class NetInfo/Node, uint16, uint16)
+                    // IL_0201: call bool[NetworkSkins] NetworkSkins.Patches.NetNodeRenderPatch::ShouldRenderJunctionNode(class NetInfo/Node, uint16, uint16)
                     // IL_0206: brfalse.s IL_024A
                     var renderCheckInstructions = new[]
                     {
                         new CodeInstruction(nodeLocalVarLdLoc), 
                         new CodeInstruction(segmentLocalVarLdloc), 
                         new CodeInstruction(segment2LocalVarLdloc), 
-                        new CodeInstruction(OpCodes.Call, netNodeRenderPatcherShouldRenderJunctionNodeMethod), 
+                        new CodeInstruction(OpCodes.Call, netNodeRenderPatchShouldRenderJunctionNodeMethod), 
                         new CodeInstruction(OpCodes.Brfalse, labelIfFalse),
                     };
 
@@ -261,14 +264,14 @@ namespace NetworkSkins.Patches
                     // ldloc.s 35
                     // ldloc.s 32
                     // ldloc.s 33
-                    // call bool[NetworkSkins] NetworkSkins.Patches.NetNodeRenderPatcher::ShouldRenderJunctionNode(class NetInfo/Node, uint16, uint16)
+                    // call bool[NetworkSkins] NetworkSkins.Patches.NetNodeRenderPatch::ShouldRenderJunctionNode(class NetInfo/Node, uint16, uint16)
                     // brfalse.s IL_1637
                     var renderCheckInstructions = new[]
                     {
                         new CodeInstruction(node4LocalVarLdLoc), 
                         new CodeInstruction(segment5LocalVarLdloc), 
                         new CodeInstruction(segment6LocalVarLdloc), 
-                        new CodeInstruction(OpCodes.Call, netNodeRenderPatcherShouldRenderBendNodeMethod),
+                        new CodeInstruction(OpCodes.Call, netNodeRenderPatchShouldRenderBendNodeMethod),
                         new CodeInstruction(OpCodes.Brfalse, labelIfFalse),
                     };
 

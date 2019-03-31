@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace NetworkSkins.Patches
 {
+    /// <summary>
+    /// Used by pavement color
+    /// </summary>
     [HarmonyPatch(typeof(NetManager), "UpdateColorMap")]
     public static class NetManagerUpdateColorMapPatch
     {
