@@ -58,7 +58,6 @@
     <Compile Include="Net\PillarUtils.cs" />
     <Compile Include="Patches\ColorPatcher.cs" />
     <Compile Include="Patches\MonorailTrackAI\MonorailTrackAiGetNodeBuildingPatch.cs" />
-    <Compile Include="Patches\NetManager\NetManagerCreateNodePatch.cs" />
     <Compile Include="Patches\NetManager\NetManagerUpdateColorMapPatch.cs" />
     <Compile Include="Patches\NetNode\NetNodeGroupDataPatch.cs" />
     <Compile Include="Patches\NetNode\NetNodePopulateGroupDataPatch.cs" />

@@ -19,7 +19,7 @@ namespace NetworkSkins.Patches.NetManager
             // (even when multiple patches are applied, harmony does not cause additional stack frames)
             var caller1 = new System.Diagnostics.StackFrame(2).GetMethod();
 
-            Debug.Log($"ReleaseSegment: {caller1.Name}");
+            // Debug.Log($"ReleaseSegment: {caller1.Name}");
 
             // segment that was modified because user added network, keep data until replacement segments were created
             if (caller1.Name == "MoveMiddleNode" || caller1.Name.StartsWith("MoveMiddleNode_Patch"))
