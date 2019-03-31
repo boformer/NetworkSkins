@@ -8,7 +8,7 @@ namespace NetworkSkins.Patches
     /// </summary>
     public static class ColorPatcher
     {
-        public static Color GetSegmentColor(NetAI netAI, ushort segmentID, ref NetSegment data, InfoManager.InfoMode infoMode)
+        public static Color GetSegmentColor(NetAI netAI, ushort segmentID, ref global::NetSegment data, InfoManager.InfoMode infoMode)
         {
             var patcherState = Apply(netAI.m_info, NetworkSkinManager.SegmentSkins[segmentID]);
             var segmentColor = netAI.GetColor(segmentID, ref data, infoMode);
@@ -16,7 +16,7 @@ namespace NetworkSkins.Patches
             return segmentColor;
         }
 
-        public static Color GetNodeColor(NetAI netAI, ushort nodeID, ref NetNode data, InfoManager.InfoMode infoMode)
+        public static Color GetNodeColor(NetAI netAI, ushort nodeID, ref global::NetNode data, InfoManager.InfoMode infoMode)
         {
             var patcherState = Apply(netAI.m_info, NetworkSkinManager.NodeSkins[nodeID]);
             var segmentColor = netAI.GetColor(nodeID, ref data, infoMode);

@@ -8,7 +8,7 @@ namespace NetworkSkins.Patches.NetNode
     /// The method decides from which segment it is inheriting its NetInfo (for roads, ít's the widest road).
     /// </summary>
     [HarmonyPatch(typeof(global::NetNode), "CalculateNode")]
-    public class NetNodeCalculateNodePatch
+    public static class NetNodeCalculateNodePatch
     {
         public static void Postfix(ref global::NetNode __instance, ushort nodeID)
         {
@@ -17,7 +17,7 @@ namespace NetworkSkins.Patches.NetNode
                 var previousSkin = NetworkSkinManager.NodeSkins[nodeID];
 
                 NetworkSkin skinWithHighestPrio = null;
-                var netManager = NetManager.instance;
+                var netManager = global::NetManager.instance;
                 float currentPrio = -1E+07f;
                 float currentBuildIndex = 0;
                 for (int i = 0; i < 8; i++)

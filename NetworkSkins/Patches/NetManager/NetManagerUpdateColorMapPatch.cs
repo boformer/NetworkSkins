@@ -16,8 +16,8 @@ namespace NetworkSkins.Patches.NetManager
         {
             var originalInstructions = new List<CodeInstruction>(instructions);
 
-            var netAiGetSegmentColorMethod = typeof(NetAI).GetMethod("GetColor", new[] { typeof(ushort), typeof(NetSegment).MakeByRefType(), typeof(InfoManager.InfoMode) });
-            var netAiGetNodeColorMethod = typeof(NetAI).GetMethod("GetColor", new Type[] { typeof(ushort), typeof(NetNode).MakeByRefType(), typeof(InfoManager.InfoMode) });
+            var netAiGetSegmentColorMethod = typeof(NetAI).GetMethod("GetColor", new[] { typeof(ushort), typeof(global::NetSegment).MakeByRefType(), typeof(InfoManager.InfoMode) });
+            var netAiGetNodeColorMethod = typeof(NetAI).GetMethod("GetColor", new Type[] { typeof(ushort), typeof(global::NetNode).MakeByRefType(), typeof(InfoManager.InfoMode) });
 
             var colorPatcherGetSegmentColorMethod = typeof(ColorPatcher).GetMethod("GetSegmentColor");
             var colorPatcherGetNodeColorMethod = typeof(ColorPatcher).GetMethod("GetNodeColor");

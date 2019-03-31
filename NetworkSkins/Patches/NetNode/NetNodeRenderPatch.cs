@@ -59,7 +59,7 @@ namespace NetworkSkins.Patches.NetNode
             }
 
             // copied from CalculateGroupData
-            var netManager = NetManager.instance;
+            var netManager = global::NetManager.instance;
             ushort segmentId1 = 0;
             ushort segmentId2 = 0;
             var segmentId1Found = false;
