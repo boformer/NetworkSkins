@@ -11,6 +11,7 @@ namespace NetworkSkins
     // TODO backup serialization outside of the savegame (or some other ways to prevent data loss!)
     // TODO proof-read harmony.log before release
     // TODO backup current assembly
+    // TODO delete obsolete patches
     public class NetworkSkinsMod : IUserMod
     {
         private const string HarmonyId = "boformer.NetworkSkins";

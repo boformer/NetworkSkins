@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace NetworkSkins.Patches
 {
+    /// <summary>
+    /// Temporarily patches m_color of a NetInfo to the color defined in the skin of the node/segment
+    /// </summary>
     public static class ColorPatcher
     {
         public static Color GetSegmentColor(NetAI netAI, ushort segmentID, ref NetSegment data, InfoManager.InfoMode infoMode)
