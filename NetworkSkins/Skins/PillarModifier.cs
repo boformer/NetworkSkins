@@ -41,7 +41,9 @@
         #region Equality
         protected bool Equals(PillarModifier other)
         {
-            return Equals(BridgePillarInfo, other.BridgePillarInfo) && Equals(BridgePillarInfo2, other.BridgePillarInfo2) && Equals(BridgePillarInfo3, other.BridgePillarInfo3) && Equals(BridgePillarInfos, other.BridgePillarInfos) && Equals(MiddlePillarInfo, other.MiddlePillarInfo);
+            return Equals(BridgePillarInfo, other.BridgePillarInfo) && Equals(BridgePillarInfo2, other.BridgePillarInfo2)
+                && Equals(BridgePillarInfo3, other.BridgePillarInfo3) && Equals(BridgePillarInfos, other.BridgePillarInfos)
+                && Equals(MiddlePillarInfo, other.MiddlePillarInfo);
         }
 
         public override bool Equals(object obj)

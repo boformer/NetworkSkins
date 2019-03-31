@@ -55,7 +55,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Net\CatenaryUtils.cs" />
     <Compile Include="Net\PillarUtils.cs" />
+    <Compile Include="Net\StreetLightUtils.cs" />
     <Compile Include="Patches\ColorPatcher.cs" />
     <Compile Include="Patches\MonorailTrackAI\MonorailTrackAiGetNodeBuildingPatch.cs" />
     <Compile Include="Patches\NetManager\NetManagerUpdateColorMapPatch.cs" />
@@ -85,7 +87,8 @@
     <Compile Include="Skins\CatenaryModifier.cs" />
     <Compile Include="Skins\ColorModifier.cs" />
     <Compile Include="Skins\PillarModifier.cs" />
-    <Compile Include="Skins\SimpleTreeModifier.cs" />
+    <Compile Include="Skins\RoadDecorationModifier.cs" />
+    <Compile Include="Skins\TreeModifier.cs" />
     <Compile Include="Skins\TerrainSurfaceModifier.cs" />
     <Compile Include="Skins\NetworkSkinManager.cs" />
     <Compile Include="Skins\NetworkSkin.cs" />

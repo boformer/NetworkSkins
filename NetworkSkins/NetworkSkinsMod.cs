@@ -14,6 +14,8 @@ namespace NetworkSkins
     // TODO proof-read harmony.log before release
     // TODO backup current assembly
     // TODO delete obsolete patches
+    // TODO add legacy light enaber
+    // TODO add function to modify building built in roads
     public class NetworkSkinsMod : IUserMod
     {
         private const string HarmonyId = "boformer.NetworkSkins";

@@ -65,7 +65,7 @@ namespace NetworkSkins
             {
                 new TerrainSurfaceModifier(groundType: NetworkGroundType.Gravel),
                 new ColorModifier(color: new Color(90f / 255f, 90f / 255f, 90f / 255f)),
-                new StreetLightModifier(streetLight: PrefabCollection<PropInfo>.FindLoaded("Airport Light"))
+                new StreetLightModifier(streetLight: PrefabCollection<PropInfo>.FindLoaded("Airport Light"), repeatDistance: 80)
             });
         }
 
@@ -88,7 +88,7 @@ namespace NetworkSkins
                 new TerrainSurfaceModifier(groundType: NetworkGroundType.Gravel),
                 new ColorModifier(color: new Color(173f / 255f, 158f / 255f, 147f / 255f)),
                 new StreetLightModifier(streetLight: null),
-                new SimpleTreeModifier(tree: PrefabCollection<TreeInfo>.FindLoaded("Flower Tree 01"))
+                new TreeModifier(tree: PrefabCollection<TreeInfo>.FindLoaded("Flower Tree 01"), repeatDistance: 5)
             });
         }
 
