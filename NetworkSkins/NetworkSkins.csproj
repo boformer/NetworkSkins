@@ -58,6 +58,7 @@
     <Compile Include="Net\PillarUtils.cs" />
     <Compile Include="Patches\ColorPatcher.cs" />
     <Compile Include="Patches\MonorailTrackAI\MonorailTrackAiGetNodeBuildingPatch.cs" />
+    <Compile Include="Patches\NetManager\NetManagerCreateNodePatch.cs" />
     <Compile Include="Patches\NetManager\NetManagerUpdateColorMapPatch.cs" />
     <Compile Include="Patches\NetNode\NetNodeGroupDataPatch.cs" />
     <Compile Include="Patches\NetNode\NetNodePopulateGroupDataPatch.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="Patches\NetSegment\NetSegmentCalculateGroupDataPatch.cs" />
     <Compile Include="Patches\NetSegment\NetSegmentRenderPatch.cs" />
     <Compile Include="Patches\NetSegment\NetSegmentPopulateGroupDataPatch.cs" />
+    <Compile Include="Patches\NetTool\NetToolCreateNodePatch.cs" />
     <Compile Include="Patches\Obsolete\NetNodeRefreshEndDataPatch.cs" />
     <Compile Include="Patches\Obsolete\NetNodeRefreshBendDataPatch.cs" />
     <Compile Include="Patches\Obsolete\RoadBaseAiGetSegmentColorPatch.cs" />

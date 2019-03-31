@@ -1,16 +1,17 @@
 ﻿using Harmony;
 using NetworkSkins.Skins;
+using UnityEngine;
 
 namespace NetworkSkins.Patches.NetNode
 {
     /// <summary>
     /// CalculateNode is called after a node was created or when a segment connected to the node was added, removed or updated.
-    /// The method decides from which segment it is inheriting its NetInfo (for roads, ít's the widest road).
+    /// The method decides from which segment it is inheriting its NetInfo (for roads, it's the widest road).
     /// </summary>
     [HarmonyPatch(typeof(global::NetNode), "CalculateNode")]
     public static class NetNodeCalculateNodePatch
     {
-        public static void Postfix(ref global::NetNode __instance, ushort nodeID)
+        public static void Prefix(ref global::NetNode __instance, ushort nodeID)
         {
             if (__instance.m_flags != 0)
             {
@@ -37,15 +38,11 @@ namespace NetworkSkins.Patches.NetNode
                     }
                 }
 
+                Debug.Log($"CalculateNode: previous: {previousSkin}, next: {skinWithHighestPrio}");
+
                 if (previousSkin != skinWithHighestPrio)
                 {
                     NetworkSkinManager.instance.UpdateNodeSkin(nodeID, skinWithHighestPrio);
-
-                    // Make sure that the color map is updated when a skin with a different color is applied!
-                    if (previousSkin?.m_color != skinWithHighestPrio?.m_color)
-                    {
-                        netManager.UpdateNodeColors(nodeID);
-                    }
                 }
             }
         }

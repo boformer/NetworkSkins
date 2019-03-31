@@ -33,7 +33,7 @@ namespace NetworkSkins
                 HarmonyInstance.DEBUG = true; // TODO remove
                 // TODO compile release version of harmony dll
                 _harmony = HarmonyInstance.Create(HarmonyId);
-                try
+                try // TODO maybe remove try catch to make clear something went wrong
                 {
                     _harmony.PatchAll(GetType().Assembly);
                 }
