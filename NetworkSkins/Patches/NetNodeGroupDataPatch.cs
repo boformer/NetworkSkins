@@ -68,7 +68,7 @@ namespace NetworkSkins.Patches
             for (; index < codes.Count; index++)
             {
                 // IL_0073: call instance uint16 NetNode::GetSegment(int32)
-                if (codes[index].opcode == OpCodes.Call && codes[index].operand == netNodeGetSegmentMethod)
+                if (codes[index].opcode == OpCodes.Call && codes[index].operand == netNodeGetSegmentMethod && TranspilerUtils.IsStLoc(codes[index + 1]))
                 {
                     // IL_0078: stloc.s 5
                     segmentLocalVarLdloc = TranspilerUtils.GetLdLocForStLoc(codes[index + 1]);
@@ -81,7 +81,7 @@ namespace NetworkSkins.Patches
             for (; index < codes.Count; index++)
             {
                 // IL_0107: call instance uint16 NetNode::GetSegment(int32)
-                if (codes[index].opcode == OpCodes.Call && codes[index].operand == netNodeGetSegmentMethod)
+                if (codes[index].opcode == OpCodes.Call && codes[index].operand == netNodeGetSegmentMethod && TranspilerUtils.IsStLoc(codes[index + 1]))
                 {
                     // IL_010c: stloc.s 11
                     segment2LocalVarLdloc = TranspilerUtils.GetLdLocForStLoc(codes[index + 1]);
@@ -98,9 +98,9 @@ namespace NetworkSkins.Patches
                 // IL_0360: ldelem.ref
                 // IL_0361: stloc.s 22
                 if (codes[index].opcode == OpCodes.Ldfld && codes[index].operand == netInfoNodesField
-                    && codes[index + 1].opcode == OpCodes.Ldloc_S
+                    && TranspilerUtils.IsLdLoc(codes[index + 1])
                     && codes[index + 2].opcode == OpCodes.Ldelem_Ref
-                    && TranspilerUtils.GetLdLocForStLoc(codes[index + 3]) != null)
+                    && TranspilerUtils.IsStLoc(codes[index + 3]))
                 {
                     // IL_0361: stloc.s 22
                     nodeLocalVarLdLoc = TranspilerUtils.GetLdLocForStLoc(codes[index + 3]);
@@ -129,6 +129,7 @@ namespace NetworkSkins.Patches
                     var labelIfFalse = codes[index + 2].operand;
                     var insertionPosition = index + 3;
 
+                    // && ShouldRenderJunctionNode(node, segment, segment2)
                     // IL_01FD: ldloc.s 22
                     // IL_01FF: ldloc.s 11
                     // IL_0200: ldloc.s 22
@@ -190,9 +191,9 @@ namespace NetworkSkins.Patches
                 // IL_05ef: ldelem.ref
                 // IL_05f0: stloc.s 45
                 if (codes[index].opcode == OpCodes.Ldfld && codes[index].operand == netInfoNodesField
-                   && codes[index + 1].opcode == OpCodes.Ldloc_S
+                   && TranspilerUtils.IsLdLoc(codes[index + 1])
                    && codes[index + 2].opcode == OpCodes.Ldelem_Ref
-                   && TranspilerUtils.GetLdLocForStLoc(codes[index + 3]) != null)
+                   && TranspilerUtils.IsStLoc(codes[index + 3]))
                 {
                     // IL_0361: stloc.s 22
                     node5LocalVarLdLoc = TranspilerUtils.GetLdLocForStLoc(codes[index + 3]);
@@ -219,7 +220,7 @@ namespace NetworkSkins.Patches
                     var labelIfFalse = codes[index + 2].operand;
                     var insertionPosition = index + 3;
 
-                    // NetNodeRenderPatch.
+                    // && NetNodeRenderPatch.ShouldRenderBendNodeLod(nodeID, node5)
                     var renderCheckInstructions = new[]
                     {
                         new CodeInstruction(OpCodes.Ldarg_1), // nodeID

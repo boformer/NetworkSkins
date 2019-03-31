@@ -1,11 +1,29 @@
-﻿using System.Reflection.Emit;
+﻿using System;
+using System.Reflection.Emit;
 using Harmony;
-using UnityEngine;
 
 namespace NetworkSkins.Patches
 {
     public static class TranspilerUtils
     {
+        public static bool IsLdLoc(CodeInstruction instruction)
+        {
+            return (instruction.opcode == OpCodes.Ldloc_0 || instruction.opcode == OpCodes.Ldloc_1 ||
+                    instruction.opcode == OpCodes.Ldloc_2 || instruction.opcode == OpCodes.Ldloc_3
+                    || instruction.opcode == OpCodes.Ldloc_S || instruction.opcode == OpCodes.Ldloc
+                );
+        }
+
+        public static bool IsStLoc(CodeInstruction instruction)
+        {
+            return (instruction.opcode == OpCodes.Stloc_0 || instruction.opcode == OpCodes.Stloc_1 ||
+                    instruction.opcode == OpCodes.Stloc_2 || instruction.opcode == OpCodes.Stloc_3
+                    || instruction.opcode == OpCodes.Stloc_S || instruction.opcode == OpCodes.Stloc
+                );
+        }
+
+        // TODO rename to Build...From...
+
         // nullable
         public static CodeInstruction GetLdLocForStLoc(CodeInstruction instruction)
         {
@@ -35,7 +53,72 @@ namespace NetworkSkins.Patches
             }
             else
             {
-                return null;
+                throw new Exception("Statement is not stloc!");
+            }
+        }
+
+        public static CodeInstruction GetLdLocForLdLoc(CodeInstruction instruction)
+        {
+            if (instruction.opcode == OpCodes.Ldloc_0)
+            {
+                return new CodeInstruction(OpCodes.Ldloc_0);
+            }
+            else if (instruction.opcode == OpCodes.Ldloc_1)
+            {
+                return new CodeInstruction(OpCodes.Ldloc_1);
+            }
+            else if (instruction.opcode == OpCodes.Ldloc_2)
+            {
+                return new CodeInstruction(OpCodes.Ldloc_2);
+            }
+            else if (instruction.opcode == OpCodes.Ldloc_3)
+            {
+                return new CodeInstruction(OpCodes.Ldloc_3);
+            }
+            else if (instruction.opcode == OpCodes.Ldloc_S)
+            {
+                return new CodeInstruction(OpCodes.Ldloc_S, instruction.operand);
+            }
+            else if (instruction.opcode == OpCodes.Ldloc)
+            {
+                return new CodeInstruction(OpCodes.Ldloc, instruction.operand);
+            }
+            else
+            {
+                throw new Exception("Statement is not ldloc!");
+            }
+        }
+
+        // nullable
+        public static CodeInstruction GetStLocForLdLoc(CodeInstruction instruction)
+        {
+            if (instruction.opcode == OpCodes.Ldloc_0)
+            {
+                return new CodeInstruction(OpCodes.Stloc_0);
+            }
+            else if (instruction.opcode == OpCodes.Ldloc_1)
+            {
+                return new CodeInstruction(OpCodes.Stloc_1);
+            }
+            else if (instruction.opcode == OpCodes.Ldloc_2)
+            {
+                return new CodeInstruction(OpCodes.Stloc_2);
+            }
+            else if (instruction.opcode == OpCodes.Ldloc_3)
+            {
+                return new CodeInstruction(OpCodes.Stloc_3);
+            }
+            else if (instruction.opcode == OpCodes.Ldloc_S)
+            {
+                return new CodeInstruction(OpCodes.Stloc_S, instruction.operand);
+            }
+            else if (instruction.opcode == OpCodes.Ldloc)
+            {
+                return new CodeInstruction(OpCodes.Stloc, instruction.operand);
+            }
+            else
+            {
+                throw new Exception("Statement is not ldloc!");
             }
         }
 
@@ -48,12 +131,7 @@ namespace NetworkSkins.Patches
                     return true;
                 }
 
-                if (debug)
-                {
-                    Debug.Log($"IsSameInstruction {a.operand} {a.operand?.GetType()} == {b.operand} {b.operand?.GetType()}?");
-                }
-
-                // This special code is needed for some reason because the != operator doesn't work on System.Byte
+                // This special code is needed for some reason because the == operator doesn't work on System.Byte
                 return (a.operand is byte aByte && b.operand is byte bByte && aByte == bByte);
             }
             else

@@ -1,0 +1,271 @@
+﻿// NetNode
+using ColossalFramework;
+using UnityEngine;
+
+public bool CalculateGroupData(ushort nodeID, int layer, ref int vertexCount, ref int triangleCount, ref int objectCount, ref RenderGroup.VertexArrays vertexArrays)
+{
+	bool result = false;
+	NetInfo info = Info;
+	if (m_problems != Notification.Problem.None && layer == Singleton<NotificationManager>.instance.m_notificationLayer && (m_flags & Flags.Temporary) == Flags.None && Notification.CalculateGroupData(ref vertexCount, ref triangleCount, ref objectCount, ref vertexArrays))
+	{
+		result = true;
+	}
+	if ((m_flags & Flags.Junction) != 0)
+	{
+		NetManager instance = Singleton<NetManager>.instance;
+		Vector3 a = m_position;
+		for (int i = 0; i < 8; i++)
+		{
+			ushort segment = GetSegment(i);
+			if (segment != 0)
+			{
+				NetInfo info2 = instance.m_segments.m_buffer[segment].Info;
+				ItemClass connectionClass = info2.GetConnectionClass();
+				Vector3 a2 = (nodeID != instance.m_segments.m_buffer[segment].m_startNode) ? instance.m_segments.m_buffer[segment].m_endDirection : instance.m_segments.m_buffer[segment].m_startDirection;
+				float num = -1f;
+				for (int j = 0; j < 8; j++)
+				{
+					ushort segment2 = GetSegment(j);
+					if (segment2 != 0 && segment2 != segment)
+					{
+						NetInfo info3 = instance.m_segments.m_buffer[segment2].Info;
+						ItemClass connectionClass2 = info3.GetConnectionClass();
+						if (((info.m_netLayers | info2.m_netLayers | info3.m_netLayers) & 1 << layer) != 0 && (connectionClass.m_service == connectionClass2.m_service || (info2.m_nodeConnectGroups & info3.m_connectGroup) != 0 || (info3.m_nodeConnectGroups & info2.m_connectGroup) != 0))
+						{
+							Vector3 vector = (nodeID != instance.m_segments.m_buffer[segment2].m_startNode) ? instance.m_segments.m_buffer[segment2].m_endDirection : instance.m_segments.m_buffer[segment2].m_startDirection;
+							float num2 = a2.x * vector.x + a2.z * vector.z;
+							num = Mathf.Max(num, num2);
+							bool flag = info2.m_requireDirectRenderers && (info2.m_nodeConnectGroups == NetInfo.ConnectGroup.None || (info2.m_nodeConnectGroups & info3.m_connectGroup) != NetInfo.ConnectGroup.None);
+							bool flag2 = info3.m_requireDirectRenderers && (info3.m_nodeConnectGroups == NetInfo.ConnectGroup.None || (info3.m_nodeConnectGroups & info2.m_connectGroup) != NetInfo.ConnectGroup.None);
+							if (j > i && (flag || flag2))
+							{
+								float num3 = 0.01f - Mathf.Min(info2.m_maxTurnAngleCos, info3.m_maxTurnAngleCos);
+								if (num2 < num3)
+								{
+									float num4 = (!flag) ? -1E+08f : info2.m_netAI.GetNodeInfoPriority(segment, ref instance.m_segments.m_buffer[segment]);
+									float num5 = (!flag2) ? -1E+08f : info3.m_netAI.GetNodeInfoPriority(segment2, ref instance.m_segments.m_buffer[segment2]);
+									if (num4 >= num5)
+									{
+										if (info2.m_nodes != null && info2.m_nodes.Length != 0)
+										{
+											result = true;
+											for (int k = 0; k < info2.m_nodes.Length; k++)
+											{
+												NetInfo.Node node = info2.m_nodes[k];
+												bool flag3;
+												if ((node.m_connectGroup == NetInfo.ConnectGroup.None || (node.m_connectGroup & info3.m_connectGroup & NetInfo.ConnectGroup.AllGroups) != 0) && node.m_layer == layer && node.CheckFlags(m_flags) && node.m_combinedLod != null && node.m_directConnect
+													// modified
+													&& NetNodeRenderPatch:ShouldRenderJunctionNode(node, segment, segment2)
+													// modified end
+												)
+												{
+													if ((node.m_connectGroup & NetInfo.ConnectGroup.Oneway) == NetInfo.ConnectGroup.None)
+													{
+														goto IL_04b5;
+													}
+													flag3 = (instance.m_segments.m_buffer[segment].m_startNode == nodeID == ((instance.m_segments.m_buffer[segment].m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None));
+													if (info3.m_hasBackwardVehicleLanes == info3.m_hasForwardVehicleLanes && (node.m_connectGroup & NetInfo.ConnectGroup.Directional) == NetInfo.ConnectGroup.None)
+													{
+														goto IL_047b;
+													}
+													bool flag4 = instance.m_segments.m_buffer[segment2].m_startNode == nodeID == ((instance.m_segments.m_buffer[segment2].m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None);
+													if (flag3 != flag4)
+													{
+														goto IL_047b;
+													}
+												}
+												continue;
+												IL_04b5:
+												CalculateGroupData(node, ref vertexCount, ref triangleCount, ref objectCount, ref vertexArrays);
+												continue;
+												IL_047b:
+												if (flag3)
+												{
+													if ((node.m_connectGroup & NetInfo.ConnectGroup.OnewayStart) != 0)
+													{
+														goto IL_04b5;
+													}
+												}
+												else if ((node.m_connectGroup & NetInfo.ConnectGroup.OnewayEnd) != 0)
+												{
+													goto IL_04b5;
+												}
+											}
+										}
+									}
+									else if (info3.m_nodes != null && info3.m_nodes.Length != 0)
+									{
+										result = true;
+										for (int l = 0; l < info3.m_nodes.Length; l++)
+										{
+											NetInfo.Node node2 = info3.m_nodes[l];
+											bool flag5;
+											if ((node2.m_connectGroup == NetInfo.ConnectGroup.None || (node2.m_connectGroup & info2.m_connectGroup & NetInfo.ConnectGroup.AllGroups) != 0) && node2.m_layer == layer && node2.CheckFlags(m_flags) && node2.m_combinedLod != null && node2.m_directConnect)
+											{
+												if ((node2.m_connectGroup & NetInfo.ConnectGroup.Oneway) == NetInfo.ConnectGroup.None)
+												{
+													goto IL_0660;
+												}
+												flag5 = (instance.m_segments.m_buffer[segment2].m_startNode == nodeID == ((instance.m_segments.m_buffer[segment2].m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None));
+												if (info2.m_hasBackwardVehicleLanes == info2.m_hasForwardVehicleLanes && (node2.m_connectGroup & NetInfo.ConnectGroup.Directional) == NetInfo.ConnectGroup.None)
+												{
+													goto IL_0626;
+												}
+												bool flag6 = instance.m_segments.m_buffer[segment].m_startNode == nodeID == ((instance.m_segments.m_buffer[segment].m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None);
+												if (flag6 != flag5)
+												{
+													goto IL_0626;
+												}
+											}
+											continue;
+											IL_0660:
+											CalculateGroupData(node2, ref vertexCount, ref triangleCount, ref objectCount, ref vertexArrays);
+											continue;
+											IL_0626:
+											if (flag5)
+											{
+												if ((node2.m_connectGroup & NetInfo.ConnectGroup.OnewayStart) != 0)
+												{
+													goto IL_0660;
+												}
+											}
+											else if ((node2.m_connectGroup & NetInfo.ConnectGroup.OnewayEnd) != 0)
+											{
+												goto IL_0660;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				a += a2 * (2f + num * 2f);
+			}
+		}
+		a.y = m_position.y + (float)(int)m_heightOffset * 0.015625f;
+		if ((info.m_netLayers & 1 << layer) != 0 && info.m_requireSegmentRenderers)
+		{
+			for (int m = 0; m < 8; m++)
+			{
+				ushort segment3 = GetSegment(m);
+				if (segment3 != 0)
+				{
+					NetInfo info4 = instance.m_segments.m_buffer[segment3].Info;
+					if (info4.m_nodes != null && info4.m_nodes.Length != 0)
+					{
+						result = true;
+						for (int n = 0; n < info4.m_nodes.Length; n++)
+						{
+							NetInfo.Node node3 = info4.m_nodes[n];
+							if (node3.m_layer == layer && node3.CheckFlags(m_flags) && node3.m_combinedLod != null && !node3.m_directConnect)
+							{
+								CalculateGroupData(node3, ref vertexCount, ref triangleCount, ref objectCount, ref vertexArrays);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	else if ((info.m_netLayers & 1 << layer) != 0)
+	{
+		if ((m_flags & Flags.End) != 0)
+		{
+			if (info.m_nodes != null && info.m_nodes.Length != 0)
+			{
+				result = true;
+				for (int num6 = 0; num6 < info.m_nodes.Length; num6++)
+				{
+					NetInfo.Node node4 = info.m_nodes[num6];
+					if (node4.m_layer == layer && node4.CheckFlags(m_flags) && node4.m_combinedLod != null && !node4.m_directConnect)
+					{
+						CalculateGroupData(node4, ref vertexCount, ref triangleCount, ref objectCount, ref vertexArrays);
+					}
+				}
+			}
+		}
+		else if ((m_flags & Flags.Bend) != 0)
+		{
+			if (info.m_segments != null && info.m_segments.Length != 0)
+			{
+				result = true;
+				for (int num7 = 0; num7 < info.m_segments.Length; num7++)
+				{
+					NetInfo.Segment segment4 = info.m_segments[num7];
+					if (segment4.m_layer == layer && segment4.CheckFlags(info.m_netAI.GetBendFlags(nodeID, ref this), out bool _) && segment4.m_combinedLod != null && !segment4.m_disableBendNodes)
+					{
+						NetSegment.CalculateGroupData(segment4, ref vertexCount, ref triangleCount, ref objectCount, ref vertexArrays);
+					}
+				}
+			}
+			if (info.m_nodes != null && info.m_nodes.Length != 0)
+			{
+				result = true;
+				for (int num8 = 0; num8 < info.m_nodes.Length; num8++)
+				{
+					NetInfo.Node node5 = info.m_nodes[num8];
+					if ((node5.m_connectGroup == NetInfo.ConnectGroup.None || (node5.m_connectGroup & info.m_connectGroup & NetInfo.ConnectGroup.AllGroups) != 0) && node5.m_layer == layer && node5.CheckFlags(m_flags) && node5.m_combinedLod != null && node5.m_directConnect
+						// modified
+						&& NetNodeRenderPatch.ShouldRenderBendNodeLod(nodeID, node5)
+						// modified end
+					)
+					{
+						if ((node5.m_connectGroup & NetInfo.ConnectGroup.Oneway) == NetInfo.ConnectGroup.None)
+						{
+							goto IL_0b0b;
+						}
+						NetManager instance2 = Singleton<NetManager>.instance;
+						ushort num9 = 0;
+						ushort num10 = 0;
+						bool flag8 = false;
+						int num11 = 0;
+						for (int num12 = 0; num12 < 8; num12++)
+						{
+							ushort segment5 = GetSegment(num12);
+							if (segment5 != 0)
+							{
+								NetSegment netSegment = Singleton<NetManager>.instance.m_segments.m_buffer[segment5];
+								bool flag9 = ++num11 == 1;
+								bool flag10 = netSegment.m_startNode == nodeID;
+								if (!flag9 && !flag8)
+								{
+									goto IL_0a2b;
+								}
+								if (flag9 && !flag10)
+								{
+									goto IL_0a2b;
+								}
+								num10 = segment5;
+							}
+							continue;
+							IL_0a2b:
+							flag8 = true;
+							num9 = segment5;
+						}
+						bool flag11 = instance2.m_segments.m_buffer[num9].m_startNode == nodeID == ((instance2.m_segments.m_buffer[num9].m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None);
+						bool flag12 = instance2.m_segments.m_buffer[num10].m_startNode == nodeID == ((instance2.m_segments.m_buffer[num10].m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None);
+						if (flag11 != flag12)
+						{
+							if (flag11)
+							{
+								if ((node5.m_connectGroup & NetInfo.ConnectGroup.OnewayStart) != 0)
+								{
+									goto IL_0b0b;
+								}
+							}
+							else if ((node5.m_connectGroup & NetInfo.ConnectGroup.OnewayEnd) != 0)
+							{
+								goto IL_0b0b;
+							}
+						}
+					}
+					continue;
+					IL_0b0b:
+					CalculateGroupData(node5, ref vertexCount, ref triangleCount, ref objectCount, ref vertexArrays);
+				}
+			}
+		}
+	}
+	return result;
+}

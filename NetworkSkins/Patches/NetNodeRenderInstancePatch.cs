@@ -45,7 +45,7 @@ namespace NetworkSkins.Patches
 
             if (netNodeRefreshEndDataMethod == null|| netNodeGetSegmentMethod == null || netInfoNodesField == null || netNodeRenderPatchShouldRenderJunctionNodeMethod == null || netNodeRenderPatchShouldRenderBendNodeMethod == null)
             {
-                Debug.LogError("Necessary methods and field not found. Cancelling transpiler!");
+                Debug.LogError("NetNodeRenderInstancePatch: Necessary methods and field not found. Cancelling transpiler!");
                 return instructions;
             }
 
@@ -67,7 +67,7 @@ namespace NetworkSkins.Patches
 
             if (!refreshEndDataCallFound)
             {
-                Debug.LogError("RefreshEndData call not found. Cancelling transpiler!");
+                Debug.LogError("NetNodeRenderInstancePatch: RefreshEndData call not found. Cancelling transpiler!");
                 return originalCodes;
             }
 
@@ -87,7 +87,7 @@ namespace NetworkSkins.Patches
 
             if (!junctionFlagCheckFound)
             {
-                Debug.LogError("junctionFlagCheck not found. Cancelling transpiler!");
+                Debug.LogError("NetNodeRenderInstancePatch: junctionFlagCheck not found. Cancelling transpiler!");
                 return originalCodes;
             }
 
@@ -98,7 +98,7 @@ namespace NetworkSkins.Patches
             for (;index < codes.Count; index++)
             {
                 // IL_009c: call instance uint16 NetNode::GetSegment(int32)
-                if (codes[index].opcode == OpCodes.Call && codes[index].operand == netNodeGetSegmentMethod)
+                if (codes[index].opcode == OpCodes.Call && codes[index].operand == netNodeGetSegmentMethod && TranspilerUtils.IsStLoc(codes[index + 1]))
                 {
                     // IL_00a1: stloc.0
                     segmentLocalVarLdloc = TranspilerUtils.GetLdLocForStLoc(codes[index + 1]);
@@ -110,7 +110,7 @@ namespace NetworkSkins.Patches
             for (; index < codes.Count; index++)
             {
                 // IL_00ac: call instance uint16 NetNode::GetSegment(int32)
-                if (codes[index].opcode == OpCodes.Call && codes[index].operand == netNodeGetSegmentMethod)
+                if (codes[index].opcode == OpCodes.Call && codes[index].operand == netNodeGetSegmentMethod && TranspilerUtils.IsStLoc(codes[index + 1]))
                 {
                     // IL_00b1: stloc.1
                     segment2LocalVarLdloc = TranspilerUtils.GetLdLocForStLoc(codes[index + 1]);
@@ -122,7 +122,7 @@ namespace NetworkSkins.Patches
             for (; index < codes.Count; index++)
             {
                 // IL_013e: ldfld class NetInfo/Node[] NetInfo::m_nodes
-                if (codes[index].opcode == OpCodes.Ldfld && codes[index].operand == netInfoNodesField)
+                if (codes[index].opcode == OpCodes.Ldfld && codes[index].operand == netInfoNodesField && TranspilerUtils.IsStLoc(codes[index + 3]))
                 {
                     // IL_0146: stloc.s 6
                     nodeLocalVarLdLoc = TranspilerUtils.GetLdLocForStLoc(codes[index + 3]);
@@ -138,7 +138,7 @@ namespace NetworkSkins.Patches
                 return originalCodes;
             }
 
-            var renderCheck1Inserted = false;
+            var junctionRenderCheckInserted = false;
             for (; index < codes.Count; index++)
             {
                 // IL_017c: ldc.i4 987135
@@ -150,6 +150,7 @@ namespace NetworkSkins.Patches
                     var labelIfFalse = codes[index + 2].operand;
                     var insertionPosition = index + 3;
 
+                    // && NetNodeRenderPatch.NetNodeRenderPatch(node, segment, segment2)
                     // IL_01FD: ldloc.s V_6
                     // IL_01FF: ldloc.0
                     // IL_0200: ldloc.1
@@ -168,17 +169,17 @@ namespace NetworkSkins.Patches
                     codes[insertionPosition].labels.Clear();
 
                     codes.InsertRange(insertionPosition, renderCheckInstructions);
-                    Debug.Log("Render check 1 inserted");
+                    Debug.Log("Junction render check inserted");
 
                     index = insertionPosition + renderCheckInstructions.Length;
-                    renderCheck1Inserted = true;
+                    junctionRenderCheckInserted = true;
                     break;
                 }
             }
 
-            if (!renderCheck1Inserted)
+            if (!junctionRenderCheckInserted)
             {
-                Debug.LogError("Render check 1 not inserted. Cancelling transpiler!");
+                Debug.LogError("NetNodeRenderInstancePatch: Render check 1 not inserted. Cancelling transpiler!");
                 return originalCodes;
             }
 
@@ -198,7 +199,7 @@ namespace NetworkSkins.Patches
 
             if (!bendFlagCheckFound)
             {
-                Debug.LogError("bendFlagCheck not found. Cancelling transpiler!");
+                Debug.LogError("NetNodeRenderInstancePatch: bendFlagCheck not found. Cancelling transpiler!");
                 return originalCodes;
             }
 
@@ -209,7 +210,7 @@ namespace NetworkSkins.Patches
             for (; index < codes.Count; index++)
             {
                 // IL_11ae: call instance uint16 NetNode::GetSegment(int32)
-                if (codes[index].opcode == OpCodes.Call && codes[index].operand == netNodeGetSegmentMethod)
+                if (codes[index].opcode == OpCodes.Call && codes[index].operand == netNodeGetSegmentMethod && TranspilerUtils.IsStLoc(codes[index + 1]))
                 {
                     // IL_00a1: stloc.s 32
                     segment5LocalVarLdloc = TranspilerUtils.GetLdLocForStLoc(codes[index + 1]);
@@ -221,7 +222,7 @@ namespace NetworkSkins.Patches
             for (; index < codes.Count; index++)
             {
                 // IL_11bf: call instance uint16 NetNode::GetSegment(int32)
-                if (codes[index].opcode == OpCodes.Call && codes[index].operand == netNodeGetSegmentMethod)
+                if (codes[index].opcode == OpCodes.Call && codes[index].operand == netNodeGetSegmentMethod && TranspilerUtils.IsStLoc(codes[index + 1]))
                 {
                     // IL_11c4: stloc.s 33
                     segment6LocalVarLdloc = TranspilerUtils.GetLdLocForStLoc(codes[index + 1]);
@@ -233,7 +234,7 @@ namespace NetworkSkins.Patches
             for (; index < codes.Count; index++)
             {
                 // IL_120d: ldfld class NetInfo/Node[] NetInfo::m_nodes
-                if (codes[index].opcode == OpCodes.Ldfld && codes[index].operand == netInfoNodesField)
+                if (codes[index].opcode == OpCodes.Ldfld && codes[index].operand == netInfoNodesField && TranspilerUtils.IsStLoc(codes[index + 3]))
                 {
                     // IL_1215: stloc.s 35
                     node4LocalVarLdLoc = TranspilerUtils.GetLdLocForStLoc(codes[index + 3]);
@@ -244,12 +245,12 @@ namespace NetworkSkins.Patches
 
             if (segment5LocalVarLdloc == null || segment6LocalVarLdloc == null || node4LocalVarLdLoc == null)
             {
-                Debug.LogError("Necessary field for bend not found. Cancelling transpiler!");
+                Debug.LogError("NetNodeRenderInstancePatch: Necessary field for bend not found. Cancelling transpiler!");
                 Debug.Log($"{segment5LocalVarLdloc} {segment6LocalVarLdloc} {node4LocalVarLdLoc}");
                 return originalCodes;
             }
 
-            var renderCheck2Inserted = false;
+            var bendRenderCheckInserted = false;
             for (; index < codes.Count; index++)
             {
                 // IL_124b: ldc.i4 987135
@@ -279,17 +280,17 @@ namespace NetworkSkins.Patches
                     codes[insertionPosition].labels.Clear();
 
                     codes.InsertRange(insertionPosition, renderCheckInstructions);
-                    Debug.Log("Render check 2 inserted");
+                    Debug.Log("Bend render check inserted");
 
                     index = insertionPosition + renderCheckInstructions.Length;
-                    renderCheck2Inserted = true;
+                    bendRenderCheckInserted = true;
                     break;
                 }
             }
 
-            if (!renderCheck2Inserted)
+            if (!bendRenderCheckInserted)
             {
-                Debug.LogError("Render check 2 not inserted. Cancelling transpiler!");
+                Debug.LogError("NetNodeRenderInstancePatch: Bend render check not inserted. Cancelling transpiler!");
                 return originalCodes;
             }
 

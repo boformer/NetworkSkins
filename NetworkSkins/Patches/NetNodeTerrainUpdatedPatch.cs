@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Harmony;
+using NetworkSkins.Skins;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using Harmony;
-using NetworkSkins.Skins;
 using UnityEngine;
 
 namespace NetworkSkins.Patches
@@ -41,7 +41,7 @@ namespace NetworkSkins.Patches
             var terrainSurfacePatcherRevertMethod = typeof(TerrainSurfacePatcher).GetMethod("Revert");
             if (netInfoCreatePavementField == null || netInfoFlattenTerrainField == null || segmentSkinsField == null || terrainSurfacePatcherApplyMethod == null || terrainSurfacePatcherRevertMethod == null)
             {
-                Debug.LogError("Necessary field and methods not found. Cancelling transpiler!");
+                Debug.LogError("NetNodeTerrainUpdatedPatch: Necessary field and methods not found. Cancelling transpiler!");
                 return originalInstructions;
             }
 
@@ -50,15 +50,15 @@ namespace NetworkSkins.Patches
 
             var patcherStateLocalVar = il.DeclareLocal(typeof(TerrainSurfacePatcherState));
             patcherStateLocalVar.SetLocalSymInfo("patcherState");
-            
+
             int index = 0;
 
-            object num14LocalVar = null;
-            object num13LocalVar = null;
-            object info4LocalVar = null;
-            object netInfo2LocalVar = null;
-            object segment7LocalVar = null;
-            object num6LocalVar = null;
+            CodeInstruction num14LocalVarLdLoc = null;
+            CodeInstruction num13LocalVarLdLoc = null;
+            CodeInstruction info4LocalVarLdLoc = null;
+            CodeInstruction netInfo2LocalVarLdLoc = null;
+            CodeInstruction segment7LocalVarLdLoc = null;
+            CodeInstruction num6LocalVarLdLoc = null;
             for (; index < codes.Count; index++)
             {
                 // NetInfo netInfo2 = (num14 > num13 >> 1) ? netInfo : info4;
@@ -71,38 +71,37 @@ namespace NetworkSkins.Patches
                 //IL_0a4e: br IL_0a55
                 //IL_0a53: ldloc.s 48 (netInfo)
                 //IL_0a55: stloc.s 75 (netInfo2)
-                if (codes[index].opcode == OpCodes.Shr 
-                    && codes[index - 3].opcode == OpCodes.Ldloc_S
-                    && codes[index - 2].opcode == OpCodes.Ldloc_S 
+                if (codes[index].opcode == OpCodes.Shr
+                    && TranspilerUtils.IsLdLoc(codes[index - 3])
+                    && TranspilerUtils.IsLdLoc(codes[index - 2])
                     && codes[index - 1].opcode == OpCodes.Ldc_I4_1
                     // shr
                     && codes[index + 1].opcode == OpCodes.Bgt
-                    && codes[index + 2].opcode == OpCodes.Ldloc_S
+                    && TranspilerUtils.IsLdLoc(codes[index + 2])
                     && codes[index + 3].opcode == OpCodes.Br
-                    && codes[index + 4].opcode == OpCodes.Ldloc_S
-                    && codes[index + 5].opcode == OpCodes.Stloc_S
+                    && TranspilerUtils.IsLdLoc(codes[index + 4])
+                    && TranspilerUtils.IsStLoc(codes[index + 5])
                     )
                 {
                     Debug.Log("Found NetInfo netInfo2 = (num14 > num13 >> 1) ? netInfo : info4;");
-                    num14LocalVar = codes[index - 3].operand;
-                    num13LocalVar = codes[index - 2].operand;
-                    info4LocalVar = codes[index + 2].operand; // 40
-                    var netInfoLocalVar = codes[index + 4].operand; // 48
-                    netInfo2LocalVar = codes[index + 5].operand; // 75
+                    num14LocalVarLdLoc = TranspilerUtils.GetLdLocForLdLoc(codes[index - 3]);
+                    num13LocalVarLdLoc = TranspilerUtils.GetLdLocForLdLoc(codes[index - 2]);
+                    info4LocalVarLdLoc = TranspilerUtils.GetLdLocForLdLoc(codes[index + 2]); // 40
+                    var netInfoLocalVarLdLoc = TranspilerUtils.GetLdLocForLdLoc(codes[index + 4]); // 48
+                    netInfo2LocalVarLdLoc = TranspilerUtils.GetLdLocForStLoc(codes[index + 5]); // 75
 
                     var findIndex = 0;
-                    segment7LocalVar = FindSegment7LocalVar(codes, info4LocalVar, ref findIndex, index - 3); // 38
-                    num6LocalVar = FindNum6LocalVar(codes, netInfoLocalVar, ref findIndex, index - 3); // 51
+                    segment7LocalVarLdLoc = FindSegment7LocalVar(codes, TranspilerUtils.GetStLocForLdLoc(info4LocalVarLdLoc), ref findIndex, index - 3); // 38
+                    num6LocalVarLdLoc = FindNum6LocalVar(codes, TranspilerUtils.GetStLocForLdLoc(netInfoLocalVarLdLoc), ref findIndex, index - 3); // 51
                     break;
                 }
             }
 
-            Debug.Log($"num14: {num14LocalVar}, num13: {num13LocalVar}, info4: {info4LocalVar}, netInfo2: {netInfo2LocalVar}, segment7: {segment7LocalVar}, num6: {num6LocalVar}");
+            Debug.Log($"num14: {num14LocalVarLdLoc}, num13: {num13LocalVarLdLoc}, info4: {info4LocalVarLdLoc}, netInfo2: {netInfo2LocalVarLdLoc}, segment7: {segment7LocalVarLdLoc}, num6: {num6LocalVarLdLoc}");
 
-            if (num14LocalVar == null || num13LocalVar == null || info4LocalVar== null || netInfo2LocalVar == null || segment7LocalVar == null ||
-                num6LocalVar == null)
+            if (num14LocalVarLdLoc == null || num13LocalVarLdLoc == null || info4LocalVarLdLoc == null || netInfo2LocalVarLdLoc == null || segment7LocalVarLdLoc == null || num6LocalVarLdLoc == null)
             {
-                Debug.LogError("Some local variables not found! Cancelling transpiler!");
+                Debug.LogError("NetNodeTerrainUpdatedPatch: Some local variables not found! Cancelling transpiler!");
 
                 return originalInstructions;
             }
@@ -116,7 +115,7 @@ namespace NetworkSkins.Patches
             for (; index < codes.Count; index++)
             {
                 // bool flag8 = netInfo2.m_createPavement && (!netInfo2.m_lowerTerrain || (m_flags & Flags.OnGround) != Flags.None);
-                if (codes[index].opcode == OpCodes.Ldloc_S && codes[index].operand == netInfo2LocalVar 
+                if (TranspilerUtils.IsSameInstruction(codes[index], netInfo2LocalVarLdLoc)
                     && codes[index + 1].opcode == OpCodes.Ldfld && codes[index + 1].operand == netInfoCreatePavementField)
                 {
                     Debug.Log("Found info4.m_createPavement");
@@ -127,18 +126,18 @@ namespace NetworkSkins.Patches
                     // TerrainSurfacePatcherState patcherState = TerrainSurfacePatcher.Apply(netInfo, NetworkSkinManager.SegmentSkins[(int)((num14 > num13 >> 1) ? num6 : segment7)]);
                     var apply1Instructions = new[]
                     {
-                        new CodeInstruction(OpCodes.Ldloc_S, netInfo2LocalVar),
+                        new CodeInstruction(netInfo2LocalVarLdLoc),
                         new CodeInstruction(OpCodes.Ldsfld, segmentSkinsField),
-                        new CodeInstruction(OpCodes.Ldloc_S, num14LocalVar),
-                        new CodeInstruction(OpCodes.Ldloc_S, num13LocalVar),
+                        new CodeInstruction(num14LocalVarLdLoc),
+                        new CodeInstruction(num13LocalVarLdLoc),
                         new CodeInstruction(OpCodes.Ldc_I4_1),
                         new CodeInstruction(OpCodes.Shr),
                         new CodeInstruction(OpCodes.Bgt, ldLocSegment7Label),
-                        new CodeInstruction(OpCodes.Ldloc_S, segment7LocalVar),
+                        new CodeInstruction(segment7LocalVarLdLoc),
                         new CodeInstruction(OpCodes.Br, ldElemtRefLabel),
-                        new CodeInstruction(OpCodes.Ldloc_S, num6LocalVar), // ldLocSegment7Label
+                        new CodeInstruction(num6LocalVarLdLoc), // ldLocSegment7Label
                         new CodeInstruction(OpCodes.Ldelem_Ref), // ldElemtRefLabel
-                        new CodeInstruction(OpCodes.Call, terrainSurfacePatcherApplyMethod), 
+                        new CodeInstruction(OpCodes.Call, terrainSurfacePatcherApplyMethod),
                         new CodeInstruction(OpCodes.Stloc, patcherStateLocalVar)
                     };
                     apply1Instructions[0].labels.AddRange(codes[index].labels);
@@ -158,7 +157,7 @@ namespace NetworkSkins.Patches
 
             if (!apply1Inserted)
             {
-                Debug.LogError("Apply Insertion 1 failed! Cancelling transpiler!");
+                Debug.LogError("NetNodeTerrainUpdatedPatch: Apply Insertion 1 failed! Cancelling transpiler!");
                 return originalInstructions;
             }
 
@@ -169,14 +168,14 @@ namespace NetworkSkins.Patches
             for (; index < codes.Count; index++)
             {
                 // bool flag12 = netInfo2.m_flattenTerrain || (netInfo2.m_netAI.FlattenGroundNodes() && (m_flags & Flags.OnGround) != Flags.None);
-                if (codes[index].opcode == OpCodes.Ldloc_S && codes[index].operand == netInfo2LocalVar
+                if (TranspilerUtils.IsSameInstruction(codes[index], netInfo2LocalVarLdLoc)
                     && codes[index + 1].opcode == OpCodes.Ldfld && codes[index + 1].operand == netInfoFlattenTerrainField)
                 {
                     Debug.Log("Found info4.m_flattenTerrain");
 
                     var revert1Instructions = new[]
                     {
-                        new CodeInstruction(OpCodes.Ldloc, netInfo2LocalVar),
+                        new CodeInstruction(netInfo2LocalVarLdLoc),
                         new CodeInstruction(OpCodes.Ldloc, patcherStateLocalVar),
                         new CodeInstruction(OpCodes.Call, terrainSurfacePatcherRevertMethod),
                     };
@@ -195,7 +194,7 @@ namespace NetworkSkins.Patches
 
             if (!revert1Inserted)
             {
-                Debug.LogError("Revert Insertion 1 failed! Cancelling transpiler!");
+                Debug.LogError("NetNodeTerrainUpdatedPatch: Revert Insertion 1 failed! Cancelling transpiler!");
                 return originalInstructions;
             }
 
@@ -205,7 +204,7 @@ namespace NetworkSkins.Patches
             for (; index < codes.Count; index++)
             {
                 // bool flag13 = info4.m_createPavement && (!info4.m_lowerTerrain || (m_flags & Flags.OnGround) != Flags.None);
-                if (codes[index].opcode == OpCodes.Ldloc_S && codes[index].operand == info4LocalVar
+                if (TranspilerUtils.IsSameInstruction(codes[index], info4LocalVarLdLoc)
                     && codes[index + 1].opcode == OpCodes.Ldfld && codes[index + 1].operand == netInfoCreatePavementField)
                 {
                     Debug.Log("Found info4.m_createPavement");
@@ -213,9 +212,9 @@ namespace NetworkSkins.Patches
                     // patcherState = NetworkSkins.TerrainSurfacePatcher.Apply(info4, NetworkSkins.Skins.NetworkSkinManager.SegmentSkins[segment7]);
                     var apply2Instructions = new[]
                     {
-                        new CodeInstruction(OpCodes.Ldloc_S, info4LocalVar),
+                        new CodeInstruction(info4LocalVarLdLoc),
                         new CodeInstruction(OpCodes.Ldsfld, segmentSkinsField),
-                        new CodeInstruction(OpCodes.Ldloc_S, segment7LocalVar),
+                        new CodeInstruction(segment7LocalVarLdLoc),
                         new CodeInstruction(OpCodes.Ldelem_Ref),
                         new CodeInstruction(OpCodes.Call, terrainSurfacePatcherApplyMethod),
                         new CodeInstruction(OpCodes.Stloc, patcherStateLocalVar)
@@ -235,7 +234,7 @@ namespace NetworkSkins.Patches
 
             if (!apply2Inserted)
             {
-                Debug.LogError("Apply Insertion 2 failed! Cancelling transpiler!");
+                Debug.LogError("NetNodeTerrainUpdatedPatch: Apply Insertion 2 failed! Cancelling transpiler!");
                 return originalInstructions;
             }
 
@@ -245,7 +244,7 @@ namespace NetworkSkins.Patches
             for (; index < codes.Count; index++)
             {
                 // bool flag17 = info4.m_flattenTerrain || (info4.m_netAI.FlattenGroundNodes() && (m_flags & Flags.OnGround) != Flags.None);
-                if (codes[index].opcode == OpCodes.Ldloc_S && codes[index].operand == info4LocalVar
+                if (TranspilerUtils.IsSameInstruction(codes[index], info4LocalVarLdLoc)
                     && codes[index + 1].opcode == OpCodes.Ldfld && codes[index + 1].operand == netInfoFlattenTerrainField)
                 {
                     Debug.Log("Found info4.m_flattenTerrain");
@@ -253,7 +252,7 @@ namespace NetworkSkins.Patches
                     // NetworkSkins.TerrainSurfacePatcher.Revert(info4, patcherState);
                     var revert2Instructions = new[]
                     {
-                        new CodeInstruction(OpCodes.Ldloc_S, info4LocalVar),
+                        new CodeInstruction(info4LocalVarLdLoc),
                         new CodeInstruction(OpCodes.Ldloc, patcherStateLocalVar),
                         new CodeInstruction(OpCodes.Call, terrainSurfacePatcherRevertMethod),
                     };
@@ -272,37 +271,45 @@ namespace NetworkSkins.Patches
 
             if (!revert2Inserted)
             {
-                Debug.LogError("Revert Insertion 2 failed! Cancelling transpiler!");
+                Debug.LogError("NetNodeTerrainUpdatedPatch: Revert Insertion 2 failed! Cancelling transpiler!");
                 return originalInstructions;
             }
 
             return codes;
         }
 
-        private static object FindSegment7LocalVar(List<CodeInstruction> codes, object info4LocalVar, ref int index, int endIndex)
+        private static CodeInstruction FindSegment7LocalVar(List<CodeInstruction> codes, CodeInstruction info4LocalVarStLoc, ref int index, int endIndex)
         {
+            if (!TranspilerUtils.IsStLoc(info4LocalVarStLoc))
+            {
+                Debug.LogError("info4LocalVarStLoc is not stloc! Cancelling transpiler!");
+                return null;
+            }
+
+            // NetSegment netSegment3 = Singleton<NetManager>.instance.m_segments.m_buffer[segment7];
+            // IL_05a9: call !0 class [ColossalManaged]ColossalFramework.Singleton`1<class NetManager>::get_instance()
+            // IL_05ae: ldfld class Array16`1<valuetype NetSegment> NetManager::m_segments
+            // IL_05b3: ldfld !0[] class Array16`1<valuetype NetSegment>::m_buffer
+            // IL_05b8: ldloc.s 38
+            // IL_05ba: ldelema NetSegment
+            // IL_05bf: ldobj NetSegment
+            // IL_05c4: stloc.s 39
+            // NetInfo info4 = netSegment3.Info;
+            // IL_05c6: ldloca.s 39
+            // IL_05c8: call instance class NetInfo NetSegment::get_Info()
+            // IL_05cd: stloc.s 40
             for (; index < endIndex; index++)
             {
-                // NetSegment netSegment3 = Singleton<NetManager>.instance.m_segments.m_buffer[segment7];
-                // IL_05a9: call !0 class [ColossalManaged]ColossalFramework.Singleton`1<class NetManager>::get_instance()
-                // IL_05ae: ldfld class Array16`1<valuetype NetSegment> NetManager::m_segments
-                // IL_05b3: ldfld !0[] class Array16`1<valuetype NetSegment>::m_buffer
-                // IL_05b8: ldloc.s 38
-                // IL_05ba: ldelema NetSegment
-                // IL_05bf: ldobj NetSegment
-                // IL_05c4: stloc.s 39
-                // NetInfo info4 = netSegment3.Info;
-                // IL_05c6: ldloca.s 39
-                // IL_05c8: call instance class NetInfo NetSegment::get_Info()
                 // IL_05cd: stloc.s 40
-                if (codes[index].opcode == OpCodes.Stloc_S && codes[index].operand == info4LocalVar)
+                if (TranspilerUtils.IsSameInstruction(codes[index], info4LocalVarStLoc))
                 {
                     Debug.Log("Found info4 = ...");
 
-                    if (codes[index - 6].opcode == OpCodes.Ldloc_S)
+                    // // IL_05b8: ldloc.s 38
+                    if (TranspilerUtils.IsLdLoc(codes[index - 6]))
                     {
                         Debug.Log("Found segment7");
-                        return codes[index - 6].operand;
+                        return TranspilerUtils.GetLdLocForLdLoc(codes[index - 6]);
                     }
                 }
             }
@@ -311,30 +318,38 @@ namespace NetworkSkins.Patches
             return null;
         }
 
-        private static object FindNum6LocalVar(List<CodeInstruction> codes, object netInfoLocalVar, ref int index, int endIndex)
+        private static CodeInstruction FindNum6LocalVar(List<CodeInstruction> codes, CodeInstruction netInfoLocalVarStLoc, ref int index, int endIndex)
         {
+            if (!TranspilerUtils.IsStLoc(netInfoLocalVarStLoc))
+            {
+                Debug.LogError("netInfoLocalVarStLoc is not stloc! Cancelling transpiler!");
+                return null;
+            }
+
+            // NetSegment netSegment5 = Singleton<NetManager>.instance.m_segments.m_buffer[num6];
+            // IL_07cc: call !0 class [ColossalManaged] ColossalFramework.Singleton`1<class NetManager>::get_instance()
+            // IL_07d1: ldfld class Array16`1<valuetype NetSegment> NetManager::m_segments
+            // IL_07d6: ldfld !0[] class Array16`1<valuetype NetSegment>::m_buffer
+            // IL_07db: ldloc.s 51
+            // IL_07dd: ldelema NetSegment
+            // IL_07e2: ldobj NetSegment
+            // IL_07e7: stloc.s 61
+            // netInfo = netSegment5.Info;
+            // IL_07e9: ldloca.s 61
+            // IL_07eb: call instance class NetInfo NetSegment::get_Info()
+            // IL_07f0: stloc.s 48
             for (; index < endIndex; index++)
             {
-                // NetSegment netSegment5 = Singleton<NetManager>.instance.m_segments.m_buffer[num6];
-                // IL_07cc: call !0 class [ColossalManaged] ColossalFramework.Singleton`1<class NetManager>::get_instance()
-                // IL_07d1: ldfld class Array16`1<valuetype NetSegment> NetManager::m_segments
-                // IL_07d6: ldfld !0[] class Array16`1<valuetype NetSegment>::m_buffer
-                // IL_07db: ldloc.s 51
-                // IL_07dd: ldelema NetSegment
-                // IL_07e2: ldobj NetSegment
-                // IL_07e7: stloc.s 61
-                // netInfo = netSegment5.Info;
-                // IL_07e9: ldloca.s 61
-                // IL_07eb: call instance class NetInfo NetSegment::get_Info()
                 // IL_07f0: stloc.s 48
-                if (codes[index].opcode == OpCodes.Stloc_S && codes[index].operand == netInfoLocalVar)
+                if (TranspilerUtils.IsSameInstruction(codes[index], netInfoLocalVarStLoc))
                 {
                     Debug.Log("Found netInfo = ...");
 
-                    if (codes[index - 6].opcode == OpCodes.Ldloc_S)
+                    // IL_07db: ldloc.s 51
+                    if (TranspilerUtils.IsLdLoc(codes[index - 6]))
                     {
                         Debug.Log("Found num6");
-                        return codes[index - 6].operand;
+                        return TranspilerUtils.GetLdLocForLdLoc(codes[index - 6]);
                     }
                 }
             }

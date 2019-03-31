@@ -1,0 +1,211 @@
+﻿// NetManager
+using ColossalFramework;
+using System.Threading;
+using UnityEngine;
+
+public bool UpdateColorMap(Texture2D colorMap)
+{
+	if (m_newSmoothColors.m_size != 0)
+	{
+		while (!Monitor.TryEnter(m_newSmoothColors, SimulationManager.SYNCHRONIZE_TIMEOUT))
+		{
+		}
+		try
+		{
+			for (int i = 0; i < m_newSmoothColors.m_size; i++)
+			{
+				m_smoothColors.Add(m_newSmoothColors.m_buffer[i]);
+			}
+			m_newSmoothColors.m_size = 0;
+		}
+		finally
+		{
+			Monitor.Exit(m_newSmoothColors);
+		}
+	}
+	InfoManager.InfoMode currentMode = Singleton<InfoManager>.instance.CurrentMode;
+	if (currentMode != 0)
+	{
+		m_smoothColors.Clear();
+	}
+	if (m_colorUpdateMaxSegment < m_colorUpdateMinSegment && m_colorUpdateMaxNode < m_colorUpdateMinNode && m_smoothColors.Count == 0)
+	{
+		return false;
+	}
+	if (Singleton<CoverageManager>.instance.WaitingForIt())
+	{
+		return false;
+	}
+	while (!Monitor.TryEnter(m_colorUpdateLock, SimulationManager.SYNCHRONIZE_TIMEOUT))
+	{
+	}
+	int colorUpdateMinSegment = default(int);
+	int colorUpdateMaxSegment = default(int);
+	int colorUpdateMinNode = default(int);
+	int colorUpdateMaxNode = default(int);
+	try
+	{
+		colorUpdateMinSegment = m_colorUpdateMinSegment;
+		colorUpdateMaxSegment = m_colorUpdateMaxSegment;
+		colorUpdateMinNode = m_colorUpdateMinNode;
+		colorUpdateMaxNode = m_colorUpdateMaxNode;
+		m_colorUpdateMinSegment = 36864;
+		m_colorUpdateMaxSegment = -1;
+		m_colorUpdateMinNode = 32768;
+		m_colorUpdateMaxNode = -1;
+	}
+	finally
+	{
+		Monitor.Exit(m_colorUpdateLock);
+	}
+	for (int j = colorUpdateMinSegment; j <= colorUpdateMaxSegment; j++)
+	{
+		if (m_segments.m_buffer[j].m_flags != 0)
+		{
+			InstanceID empty = InstanceID.Empty;
+			empty.NetSegment = (ushort)j;
+			if (!m_smoothColors.Contains(empty))
+			{
+				RenderManager.GetColorLocation((uint)(49152 + j), out int x, out int y);
+				NetInfo info = m_segments.m_buffer[j].Info;
+				// modified
+				Color color = ColorPatcher.GetSegmentColor(info.m_netAI, (ushort)j, ref m_segments.m_buffer[j], currentMode);
+				// modified end
+				colorMap.SetPixel(x, y, color);
+			}
+		}
+	}
+	for (int k = colorUpdateMinNode; k <= colorUpdateMaxNode; k++)
+	{
+		if (m_nodes.m_buffer[k].m_flags != 0)
+		{
+			InstanceID empty2 = InstanceID.Empty;
+			empty2.NetNode = (ushort)k;
+			if (!m_smoothColors.Contains(empty2))
+			{
+				RenderManager.GetColorLocation((uint)(86016 + k), out int x2, out int y2);
+				NetInfo info2 = m_nodes.m_buffer[k].Info;
+				// modified
+				Color color2 = ColorPatcher.GetNodeColor(info2, ((ushort)k, ref m_nodes.m_buffer[k], currentMode);
+				// modified end
+				colorMap.SetPixel(x2, y2, color2);
+			}
+		}
+	}
+	if (colorUpdateMinSegment == 0)
+	{
+		RenderManager.GetColorLocation(49152u, out int x3, out int y3);
+		if (currentMode != 0)
+		{
+			colorMap.SetPixel(x3, y3, Singleton<InfoManager>.instance.m_properties.m_neutralColor);
+		}
+		else
+		{
+			colorMap.SetPixel(x3, y3, Color.white);
+		}
+	}
+	if (colorUpdateMinNode == 0)
+	{
+		RenderManager.GetColorLocation(86016u, out int x4, out int y4);
+		if (currentMode != 0)
+		{
+			colorMap.SetPixel(x4, y4, Singleton<InfoManager>.instance.m_properties.m_neutralColor);
+		}
+		else
+		{
+			colorMap.SetPixel(x4, y4, Color.white);
+		}
+	}
+	float simulationTimeDelta = Singleton<SimulationManager>.instance.m_simulationTimeDelta;
+	if (m_smoothColors.Count != 0 && simulationTimeDelta > 0f)
+	{
+		float num = 1f - Mathf.Pow(0.5f, simulationTimeDelta);
+		foreach (InstanceID smoothColor in m_smoothColors)
+		{
+			int x5;
+			int y5;
+			Color color3;
+			if (smoothColor.NetNode != 0)
+			{
+				RenderManager.GetColorLocation((uint)(86016 + smoothColor.NetNode), out x5, out y5);
+				NetInfo info3 = m_nodes.m_buffer[smoothColor.NetNode].Info;
+				// modified
+				color3 = ColorPatcher.GetNodeColor(info3, smoothColor.NetNode, ref m_nodes.m_buffer[smoothColor.NetNode], currentMode);
+				// modified end
+			}
+			else
+			{
+				RenderManager.GetColorLocation((uint)(49152 + smoothColor.NetSegment), out x5, out y5);
+				NetInfo info4 = m_segments.m_buffer[smoothColor.NetSegment].Info;
+				// modified
+				color3 = ColorPatcher.GetSegmentColor(info4, smoothColor.NetSegment, ref m_segments.m_buffer[smoothColor.NetSegment], currentMode);
+				// modified end
+			}
+			Color pixel = colorMap.GetPixel(x5, y5);
+			float num2 = color3.r - pixel.r;
+			float num3 = color3.g - pixel.g;
+			float num4 = color3.b - pixel.b;
+			float num5 = color3.a - pixel.a;
+			bool flag = true;
+			if (num2 < -0.005f)
+			{
+				num2 = Mathf.Min(-0.005f, num2 * num);
+				flag = false;
+			}
+			else if (num2 > 0.005f)
+			{
+				num2 = Mathf.Max(0.005f, num2 * num);
+				flag = false;
+			}
+			if (num3 < -0.005f)
+			{
+				num3 = Mathf.Min(-0.005f, num3 * num);
+				flag = false;
+			}
+			else if (num3 > 0.005f)
+			{
+				num3 = Mathf.Max(0.005f, num3 * num);
+				flag = false;
+			}
+			if (num4 < -0.005f)
+			{
+				num4 = Mathf.Min(-0.005f, num4 * num);
+				flag = false;
+			}
+			else if (num4 > 0.005f)
+			{
+				num4 = Mathf.Max(0.005f, num4 * num);
+				flag = false;
+			}
+			if (num5 < -0.005f)
+			{
+				num5 = Mathf.Min(-0.005f, num5 * num);
+				flag = false;
+			}
+			else if (num5 > 0.005f)
+			{
+				num5 = Mathf.Max(0.005f, num5 * num);
+				flag = false;
+			}
+			if (flag)
+			{
+				colorMap.SetPixel(x5, y5, color3);
+				m_removeSmoothColors.Add(smoothColor);
+			}
+			else
+			{
+				pixel.r += num2;
+				pixel.g += num3;
+				pixel.b += num4;
+				pixel.a += num5;
+				colorMap.SetPixel(x5, y5, pixel);
+			}
+		}
+		for (int l = 0; l < m_removeSmoothColors.m_size; l++)
+		{
+			m_smoothColors.Remove(m_removeSmoothColors.m_buffer[l]);
+		}
+		m_removeSmoothColors.m_size = 0;
+	}
+	return true;
+}

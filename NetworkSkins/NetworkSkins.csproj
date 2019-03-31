@@ -93,8 +93,11 @@
     <Compile Include="Skins\StreetLightModifier.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Patches\NetNodeCalculateGroupDataPatch.txt" />
+    <Content Include="Patches\NetNodePopulateGroupDataPatch.txt" />
     <Content Include="Patches\NetNodeRenderInstancePatch.txt" />
     <Content Include="Patches\NetNodeTerrainUpdatedPatch.txt" />
+    <Content Include="Patches\NetManagerUpdateColorMapPatch.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
