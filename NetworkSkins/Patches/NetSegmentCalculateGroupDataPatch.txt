@@ -1,0 +1,97 @@
+﻿// NetSegment
+using ColossalFramework;
+
+public bool CalculateGroupData(ushort segmentID, int layer, ref int vertexCount, ref int triangleCount, ref int objectCount, ref RenderGroup.VertexArrays vertexArrays)
+{
+	bool result = false;
+	bool flag = false;
+	NetInfo info = Info;
+
+	// modified
+	NetInfo.Lane[] customLanes = info.m_lanes;
+	NetInfo.Segment[] customSegments = info.m_segments;
+	if (SegmentSkinManager.SegmentSkins[segmentID] != null) {
+		customLanes = SegmentSkinManager.SegmentSkins[segmentID].m_lanes;
+		customSegments = SegmentSkinManager.SegmentSkins[segmentID].m:segments;
+	}
+	// modified end
+
+	if (m_problems != Notification.Problem.None && layer == Singleton<NotificationManager>.instance.m_notificationLayer && Notification.CalculateGroupData(ref vertexCount, ref triangleCount, ref objectCount, ref vertexArrays))
+	{
+		result = true;
+	}
+	if (info.m_hasForwardVehicleLanes != info.m_hasBackwardVehicleLanes && layer == Singleton<NetManager>.instance.m_arrowLayer && CalculateArrowGroupData(ref vertexCount, ref triangleCount, ref objectCount, ref vertexArrays))
+	{
+		result = true;
+	}
+	// modified
+	if (customLanes != null)
+	// modified end
+	{
+		NetManager instance = Singleton<NetManager>.instance;
+		bool invert;
+		NetNode.Flags startFlags;
+		NetNode.Flags endFlags;
+		if ((m_flags & Flags.Invert) != 0)
+		{
+			invert = true;
+			NetInfo info2 = instance.m_nodes.m_buffer[m_endNode].Info;
+			info2.m_netAI.GetNodeFlags(m_endNode, ref instance.m_nodes.m_buffer[m_endNode], segmentID, ref this, out startFlags);
+			NetInfo info3 = instance.m_nodes.m_buffer[m_startNode].Info;
+			info3.m_netAI.GetNodeFlags(m_startNode, ref instance.m_nodes.m_buffer[m_startNode], segmentID, ref this, out endFlags);
+		}
+		else
+		{
+			invert = false;
+			NetInfo info4 = instance.m_nodes.m_buffer[m_startNode].Info;
+			info4.m_netAI.GetNodeFlags(m_startNode, ref instance.m_nodes.m_buffer[m_startNode], segmentID, ref this, out startFlags);
+			NetInfo info5 = instance.m_nodes.m_buffer[m_endNode].Info;
+			info5.m_netAI.GetNodeFlags(m_endNode, ref instance.m_nodes.m_buffer[m_endNode], segmentID, ref this, out endFlags);
+		}
+		bool destroyed = (m_flags & Flags.Collapsed) != Flags.None;
+		uint num = m_lanes;
+		// modified
+		for (int i = 0; i < customLanes.Length; i++)
+		// modified end
+		{
+			if (num == 0)
+			{
+				break;
+			}
+			// modified
+			if (instance.m_lanes.m_buffer[num].CalculateGroupData(num, customLanes[i], destroyed, startFlags, endFlags, invert, layer, ref vertexCount, ref triangleCount, ref objectCount, ref vertexArrays, ref flag))
+			// modified end
+			{
+				result = true;
+			}
+			num = instance.m_lanes.m_buffer[num].m_nextLane;
+		}
+	}
+	if ((info.m_netLayers & 1 << layer) != 0)
+	{
+		// modified
+		bool flag2 = customSegments != null && customSegments.Length != 0;
+		// modified end
+		if (flag2 || flag)
+		{
+			result = true;
+			if (flag2)
+			{
+				// modified
+				for (int j = 0; j < customSegments.Length; j++)
+				// modified end
+				{
+					// modified
+					NetInfo.Segment segment = customSegments[j];
+					// modified end
+					bool flag3 = false;
+					if (segment.m_layer == layer && segment.CheckFlags(m_flags, out flag3) && segment.m_combinedLod != null)
+					{
+						CalculateGroupData(segment, ref vertexCount, ref triangleCount, ref objectCount, ref vertexArrays);
+					}
+				}
+			}
+		}
+	}
+	return result;
+}

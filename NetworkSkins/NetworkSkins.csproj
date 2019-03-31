@@ -98,6 +98,9 @@
     <Content Include="Patches\NetNodeRenderInstancePatch.txt" />
     <Content Include="Patches\NetNodeTerrainUpdatedPatch.txt" />
     <Content Include="Patches\NetManagerUpdateColorMapPatch.txt" />
+    <Content Include="Patches\NetSegmentCalculateGroupDataPatch.txt" />
+    <Content Include="Patches\NetSegmentPopulateGroupDataPatch.txt" />
+    <Content Include="Patches\NetSegmentRenderInstancePatch.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
