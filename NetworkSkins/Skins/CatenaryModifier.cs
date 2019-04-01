@@ -1,8 +1,7 @@
 ﻿using NetworkSkins.Net;
 
 // TODO currently only removes catenaries
-// TODO add support for railway and catenary replacer catenaries
-// TODO problem with missing rail end prop!
+// TODO add support for railway: https://gist.github.com/ronyx69/b4cd41742803eaeac6d19322384a0f4a
 
 namespace NetworkSkins.Skins
 {
@@ -43,6 +42,7 @@ namespace NetworkSkins.Skins
                         {
                             laneProp.m_prop = Catenary;
                             laneProp.m_finalProp = Catenary;
+                            CatenaryUtils.CorrectCatenaryPropAngle(laneProp);
                         });
                     }
                 }

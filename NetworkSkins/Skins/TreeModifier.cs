@@ -12,12 +12,12 @@
         public readonly float RighTreeRepeatDistance;
 
         public TreeModifier(
-            TreeInfo leftTree,
-            float leftTreeRepeatDistance,
-            TreeInfo middleTree,
-            float middleTreeRepeatDistance,
-            TreeInfo rightTree,
-            float righTreeRepeatDistance)
+            TreeInfo leftTree = null,
+            float leftTreeRepeatDistance = 20,
+            TreeInfo middleTree = null,
+            float middleTreeRepeatDistance = 20,
+            TreeInfo rightTree = null,
+            float righTreeRepeatDistance = 20)
         {
             LeftTree = leftTree;
             LeftTreeRepeatDistance = leftTreeRepeatDistance;
@@ -27,7 +27,7 @@
             RighTreeRepeatDistance = righTreeRepeatDistance;
         }
 
-        public TreeModifier(TreeInfo tree, float repeatDistance)
+        public TreeModifier(TreeInfo tree = null, float repeatDistance = 20)
         {
             LeftTree = tree;
             LeftTreeRepeatDistance = repeatDistance;

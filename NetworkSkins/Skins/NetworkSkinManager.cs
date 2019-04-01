@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
 using ColossalFramework;
 using UnityEngine;
 
+// TODO same structure as old SegmentDataManager for compat with other mods
+// TODO add clear applied skins, segment skins and node skins on level unload
+
 namespace NetworkSkins.Skins
 {
-    // TODO same structure as old SegmentDataManager for compat with other mods
     public class NetworkSkinManager : Singleton<NetworkSkinManager>
     {
         // stores which data is applied to a network segment

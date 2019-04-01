@@ -117,23 +117,18 @@ namespace NetworkSkins.Skins
                 return;
             }
 
-            var prop = lane.m_laneProps.m_props[propIndex];
-            if (prop == null)
-            {
-                Debug.LogError($"Prop {propIndex} is null for prefab {Prefab}, lane {laneIndex}!");
-                return;
-            }
-
+            // duplicate the lane so we do not affect the original prefab
             if (!(lane is NetworkSkinLane))
             {
                 lane = new NetworkSkinLane(lane);
                 m_lanes[laneIndex] = lane;
             }
 
-            if (!(prop is NetworkSkinLaneProp))
+            var prop = lane.m_laneProps.m_props[propIndex];
+            if (prop == null)
             {
-                prop = new NetworkSkinLaneProp(prop);
-                lane.m_laneProps.m_props[propIndex] = prop;
+                Debug.LogError($"Prop {propIndex} is null for prefab {Prefab}, lane {laneIndex}!");
+                return;
             }
 
             updater(prop);
@@ -160,6 +155,7 @@ namespace NetworkSkins.Skins
                 return;
             }
 
+            // duplicate the lane so we do not affect the original prefab
             if (!(lane is NetworkSkinLane))
             {
                 lane = new NetworkSkinLane(lane);
@@ -227,15 +223,12 @@ namespace NetworkSkins.Skins
                 if (originalLane.m_laneProps != null)
                 {
                     m_laneProps = UnityEngine.Object.Instantiate(originalLane.m_laneProps);
+                    for (var i = 0; i < originalLane.m_laneProps.m_props.Length; i++)
+                    {
+                        m_laneProps.m_props[i] = new NetLaneProps.Prop();
+                        CopyProperties(m_laneProps.m_props[i], originalLane.m_laneProps.m_props[i]);
+                    }
                 }
-            }
-        }
-
-        internal class NetworkSkinLaneProp : NetLaneProps.Prop
-        {
-            public NetworkSkinLaneProp(NetLaneProps.Prop originalProp)
-            {
-                CopyProperties(this, originalProp);
             }
         }
 

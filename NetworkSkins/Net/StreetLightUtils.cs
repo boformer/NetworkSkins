@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace NetworkSkins.Net
+﻿namespace NetworkSkins.Net
 {
     public static class StreetLightUtils
     {
-
         public static bool HasStreetLights(NetInfo prefab)
         {
             if (prefab.m_lanes == null) return false;

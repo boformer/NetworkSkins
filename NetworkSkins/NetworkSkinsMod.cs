@@ -16,6 +16,7 @@ namespace NetworkSkins
     // TODO delete obsolete patches
     // TODO add legacy light enaber
     // TODO add function to modify building built in roads
+    // TODO tram catenaries!
     public class NetworkSkinsMod : IUserMod
     {
         private const string HarmonyId = "boformer.NetworkSkins";
