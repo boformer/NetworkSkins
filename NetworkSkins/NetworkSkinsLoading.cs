@@ -1,4 +1,5 @@
-﻿using ICities;
+﻿using System.Collections.Generic;
+using ICities;
 using NetworkSkins.Skins;
 using UnityEngine;
 
@@ -6,14 +7,11 @@ namespace NetworkSkins
 {
     public class NetworkSkinsLoading : ILoadingExtension
     {
-        public static bool SkinEnabled = true;
-        private NetworkSkin _skinForBasicRoad;
-        private NetworkSkin _skinForBasicRoadWithTrees;
-        private NetworkSkin _skinForMediumRoad;
+        private static int _skinEnabled = 0;
 
         public void OnCreated(ILoading loading)
         {
-            NetworkSkinManager.Ensure();
+            NetworkSkinManager.Ensure(); // TODO remove here? it's on OnEnabled
             LoadingManager.instance.m_simulationDataReady += OnSimulationDataReady;
         }
 
@@ -24,70 +22,12 @@ namespace NetworkSkins
 
         public void OnLevelLoaded(LoadMode mode)
         {
-            NetManagerHooks.EventSegmentCreate += OnSegmentCreate;
-            NetManagerHooks.EventSegmentTransferData += OnSegmentTransferData;
-            NetManagerHooks.EventSegmentRelease += OnSegmentRelease;
-            NetManagerHooks.EventNodeRelease += OnNodeRelease;
-
-            var basicRoadPrefab = PrefabCollection<NetInfo>.FindLoaded("Basic Road");
-            if (basicRoadPrefab != null)
-            {
-                _skinForBasicRoad = new NetworkSkin(basicRoadPrefab);
-
-                var airportLightPrefab = PrefabCollection<PropInfo>.FindLoaded("Airport Light");
-                _skinForBasicRoad.ApplyModifier(new StreetLightModifier(streetLight: airportLightPrefab));
-
-                _skinForBasicRoad.ApplyModifier(new TerrainSurfaceModifier(groundType: NetworkGroundType.Gravel));
-
-                _skinForBasicRoad.ApplyModifier(new ColorModifier(color: new Color(90f / 255f, 90f / 255f, 90f / 255f)));
-
-                Debug.Log($"Built skin for basic road: {_skinForBasicRoad}");
-            }
-
-            var basicRoadWithTreesPrefab = PrefabCollection<NetInfo>.FindLoaded("Basic Road Decoration Trees");
-            if (basicRoadWithTreesPrefab != null)
-            {
-                _skinForBasicRoadWithTrees = new NetworkSkin(basicRoadWithTreesPrefab);
-
-                _skinForBasicRoadWithTrees.ApplyModifier(new StreetLightModifier(null));
-
-                var flowerTreePrefab = PrefabCollection<TreeInfo>.FindLoaded("Flower Tree 01");
-                _skinForBasicRoadWithTrees.ApplyModifier(new SimpleTreeModifier(tree: flowerTreePrefab));
-
-                _skinForBasicRoadWithTrees.ApplyModifier(new TerrainSurfaceModifier(groundType: NetworkGroundType.Gravel));
-
-                _skinForBasicRoadWithTrees.ApplyModifier(new ColorModifier(color: new Color(173f / 255f, 158f / 255f, 147f / 255f)));
-
-                Debug.Log($"Built skin for basic road with tree deco: {_skinForBasicRoadWithTrees}");
-            }
-
-            var mediumRoadPrefab = PrefabCollection<NetInfo>.FindLoaded("Medium Road");
-            if (mediumRoadPrefab != null)
-            {
-                _skinForMediumRoad = new NetworkSkin(mediumRoadPrefab);
-
-                var streetLampPrefab = PrefabCollection<PropInfo>.FindLoaded("StreetLamp02");
-                _skinForMediumRoad.ApplyModifier(new StreetLightModifier(streetLight: streetLampPrefab));
-
-                _skinForMediumRoad.ApplyModifier(new TerrainSurfaceModifier(groundType: NetworkGroundType.None));
-
-                _skinForMediumRoad.ApplyModifier(new ColorModifier(color: new Color(160f / 255f, 160f / 255f, 160f / 255f)));
-
-                Debug.Log($"Built skin for medium road: {_skinForMediumRoad}");
-            }
+            ToggleSampleSkins();
         }
 
         public void OnLevelUnloading()
         {
-            NetManagerHooks.EventSegmentCreate -= OnSegmentCreate;
-            NetManagerHooks.EventSegmentTransferData -= OnSegmentTransferData;
-            NetManagerHooks.EventSegmentRelease -= OnSegmentRelease;
-            NetManagerHooks.EventNodeRelease -= OnNodeRelease;
-
-            for (var s = 0; s < NetworkSkinManager.SegmentSkins.Length; s++)
-            {
-                NetworkSkinManager.SegmentSkins[s] = null;
-            }
+            NetworkSkinManager.instance.ClearActiveModifiers();
         }
 
         public void OnReleased()
@@ -95,42 +35,150 @@ namespace NetworkSkins
             LoadingManager.instance.m_simulationDataReady -= OnSimulationDataReady;
         }
 
-        private void OnSegmentCreate(ushort segment)
+        public static void ToggleSampleSkins()
         {
-            var prefab = NetManager.instance.m_segments.m_buffer[segment].Info;
-            if (SkinEnabled)
+            _skinEnabled++;
+            _skinEnabled %= 3;
+
+            var m = new Dictionary<NetInfo, List<NetworkSkinModifier>>();
+            if (_skinEnabled == 1)
             {
-                if (prefab.name == "Basic Road")
-                {
-                    Debug.Log($"Is basic road! {_skinForBasicRoad}");
-                    NetworkSkinManager.SegmentSkins[segment] = _skinForBasicRoad;
-                }
-                else if (prefab.name == "Basic Road Decoration Trees")
-                {
-                    Debug.Log($"Is basic road with tree deco! {_skinForMediumRoad}");
-                    NetworkSkinManager.SegmentSkins[segment] = _skinForBasicRoadWithTrees;
-                }
-                else if (prefab.name == "Medium Road")
-                {
-                    Debug.Log($"Is medium road! {_skinForMediumRoad}");
-                    NetworkSkinManager.SegmentSkins[segment] = _skinForMediumRoad;
-                }
+                BuildBasicRoadSampleSkin(m);
+                BuildBasicRoadElevatedSampleSkin(m);
+                BuildBasicRoadWithTreesSampleSkin(m);
+                BuildMediumRoadSampleSkin(m);
+                BuildTrainTrackSampleSkin(m);
+                BuildTrainOnewayTrackSampleSkin(m);
             }
+            else if(_skinEnabled == 2)
+            {
+                BuildAlternativeBasicRoadSampleSkin(m);
+                BuildAlternativeBasicRoadWithTreesSampleSkin(m);
+                BuildAlternativeTrainTrackSampleSkin(m);
+                BuildAlternativeTrainOnewayTrackSampleSkin(m);
+                BuildAlternativeMediumRoadSampleSkin(m);
+            }
+            NetworkSkinManager.instance.SetActiveModifiers(m);
+
+            Debug.Log($"Setting SkinEnabled to {_skinEnabled}");
         }
 
-        private void OnSegmentTransferData(ushort oldSegment, ushort newSegment)
+        public static void BuildBasicRoadSampleSkin(Dictionary<NetInfo, List<NetworkSkinModifier>> m)
         {
-            NetworkSkinManager.SegmentSkins[newSegment] = NetworkSkinManager.SegmentSkins[oldSegment];
+            var prefab = PrefabCollection<NetInfo>.FindLoaded("Basic Road");
+            m.Add(prefab, new List<NetworkSkinModifier>
+            {
+                new TerrainSurfaceModifier(groundType: NetworkGroundType.Gravel),
+                new ColorModifier(color: new Color32(90, 90, 90, 255)),
+                new StreetLightModifier(streetLight: PrefabCollection<PropInfo>.FindLoaded("Airport Light"), repeatDistance: 80)
+            });
         }
 
-        private void OnSegmentRelease(ushort segment)
+        public static void BuildAlternativeBasicRoadSampleSkin(Dictionary<NetInfo, List<NetworkSkinModifier>> m)
         {
-            NetworkSkinManager.SegmentSkins[segment] = null;
+            var prefab = PrefabCollection<NetInfo>.FindLoaded("Basic Road");
+            m.Add(prefab, new List<NetworkSkinModifier>
+            {
+                new ColorModifier(color: new Color32(118, 130, 118, 255)),
+                new StreetLightModifier(streetLight: PrefabCollection<PropInfo>.FindLoaded("StreetLamp02"), repeatDistance: 80)
+            });
         }
 
-        private void OnNodeRelease(ushort node)
+        public static void BuildBasicRoadElevatedSampleSkin(Dictionary<NetInfo, List<NetworkSkinModifier>> m)
         {
-            NetworkSkinManager.NodeSkins[node] = null;
+            var prefab = PrefabCollection<NetInfo>.FindLoaded("Basic Road Elevated");
+            m.Add(prefab, new List<NetworkSkinModifier>
+            {
+                new ColorModifier(color: new Color32(110, 90, 90, 255)),
+                new StreetLightModifier(streetLight: null),
+                new PillarModifier(bridgePillarInfo: PrefabCollection<BuildingInfo>.FindLoaded("RailwayElevatedPillar"))
+            });
+        }
+
+        public static void BuildBasicRoadWithTreesSampleSkin(Dictionary<NetInfo, List<NetworkSkinModifier>> m)
+        {
+            var prefab = PrefabCollection<NetInfo>.FindLoaded("Basic Road Decoration Trees");
+            m.Add(prefab, new List<NetworkSkinModifier>
+            {
+                new TerrainSurfaceModifier(groundType: NetworkGroundType.Gravel),
+                new ColorModifier(color: new Color32(173, 158, 147, 255)),
+                new StreetLightModifier(streetLight: null),
+                new TreeModifier(
+                    leftTree: PrefabCollection<TreeInfo>.FindLoaded("Flower Tree 01"), 
+                    leftTreeRepeatDistance: 5,
+                    rightTree: PrefabCollection<TreeInfo>.FindLoaded("Flower Tree 01"),
+                    righTreeRepeatDistance: 10
+                )
+            });
+        }
+
+        public static void BuildAlternativeBasicRoadWithTreesSampleSkin(Dictionary<NetInfo, List<NetworkSkinModifier>> m)
+        {
+            var prefab = PrefabCollection<NetInfo>.FindLoaded("Basic Road Decoration Trees");
+            m.Add(prefab, new List<NetworkSkinModifier>
+            {
+                new ColorModifier(color: new Color32(160, 160, 160, 255)),
+                new TreeModifier(tree: PrefabCollection<TreeInfo>.FindLoaded("909448182.Royal Palm_Data"), repeatDistance: 20)
+            });
+        }
+
+        public static void BuildMediumRoadSampleSkin(Dictionary<NetInfo, List<NetworkSkinModifier>> m)
+        {
+            var prefab = PrefabCollection<NetInfo>.FindLoaded("Medium Road");
+            m.Add(prefab, new List<NetworkSkinModifier>
+            {
+                new TerrainSurfaceModifier(groundType: NetworkGroundType.None),
+                new ColorModifier(color: new Color32(160, 160, 160, 255)),
+                new StreetLightModifier(streetLight: PrefabCollection<PropInfo>.FindLoaded("StreetLamp02"))
+            });
+        }
+
+        public static void BuildAlternativeMediumRoadSampleSkin(Dictionary<NetInfo, List<NetworkSkinModifier>> m)
+        {
+            var prefab = PrefabCollection<NetInfo>.FindLoaded("Medium Road");
+            m.Add(prefab, new List<NetworkSkinModifier>
+            {
+                new TerrainSurfaceModifier(groundType: NetworkGroundType.Gravel),
+                new ColorModifier(color: new Color32(130, 90, 90, 255))
+            });
+        }
+
+        public static void BuildTrainTrackSampleSkin(Dictionary<NetInfo, List<NetworkSkinModifier>> m)
+        {
+            var prefab = PrefabCollection<NetInfo>.FindLoaded("Train Track");
+            m.Add(prefab, new List<NetworkSkinModifier>
+            {
+                new TerrainSurfaceModifier(groundType: NetworkGroundType.Pavement),
+                new CatenaryModifier(catenary: null)
+            });
+        }
+
+        public static void BuildAlternativeTrainTrackSampleSkin(Dictionary<NetInfo, List<NetworkSkinModifier>> m)
+        {
+            var prefab = PrefabCollection<NetInfo>.FindLoaded("Train Track");
+            m.Add(prefab, new List<NetworkSkinModifier>
+            {
+                new CatenaryModifier(catenary: PrefabCollection<PropInfo>.FindLoaded("774449380.Catenary Type DE2A_Data"))
+            });
+        }
+
+        public static void BuildTrainOnewayTrackSampleSkin(Dictionary<NetInfo, List<NetworkSkinModifier>> m)
+        {
+            var prefab = PrefabCollection<NetInfo>.FindLoaded("Train Oneway Track");
+            m.Add(prefab, new List<NetworkSkinModifier>
+            {
+                new TerrainSurfaceModifier(groundType: NetworkGroundType.Ruined),
+                new CatenaryModifier(catenary: null)
+            });
+        }
+
+        public static void BuildAlternativeTrainOnewayTrackSampleSkin(Dictionary<NetInfo, List<NetworkSkinModifier>> m)
+        {
+            var prefab = PrefabCollection<NetInfo>.FindLoaded("Train Oneway Track");
+            m.Add(prefab, new List<NetworkSkinModifier>
+            {
+                new CatenaryModifier(catenary: PrefabCollection<PropInfo>.FindLoaded("774449380.Catenary Type DE1A_Data"))
+            });
         }
     }
 
@@ -145,8 +193,7 @@ namespace NetworkSkins
             {
                 if (_processed) return;
 
-                NetworkSkinsLoading.SkinEnabled = !NetworkSkinsLoading.SkinEnabled;
-                Debug.Log($"Setting SkinEnabled to {NetworkSkinsLoading.SkinEnabled}");
+                NetworkSkinsLoading.ToggleSampleSkins();
 
                 _processed = true;
             }

@@ -1,0 +1,158 @@
+﻿// NetSegment
+using ColossalFramework;
+using ColossalFramework.Math;
+using UnityEngine;
+
+public void PopulateGroupData(ushort segmentID, int groupX, int groupZ, int layer, ref int vertexIndex, ref int triangleIndex, Vector3 groupPosition, RenderGroup.MeshData data, ref Vector3 min, ref Vector3 max, ref float maxRenderDistance, ref float maxInstanceDistance, ref bool requireSurfaceMaps)
+{
+	bool flag = false;
+	NetInfo info = Info;
+
+	// modified
+	NetInfo.Lane[] customLanes = info.m_lanes;
+	NetInfo.Segment[] customSegments = info.m_segments;
+	if (SegmentSkinManager.SegmentSkins[segmentID] != null) {
+		customLanes = SegmentSkinManager.SegmentSkins[segmentID].m_lanes;
+		customSegments = SegmentSkinManager.SegmentSkins[segmentID].m:segments;
+	}
+	// modified end
+
+	NetManager instance = Singleton<NetManager>.instance;
+	if (m_problems != Notification.Problem.None && layer == Singleton<NotificationManager>.instance.m_notificationLayer)
+	{
+		Vector3 middlePosition = m_middlePosition;
+		middlePosition.y += info.m_maxHeight;
+		Notification.PopulateGroupData(m_problems, middlePosition, 1f, groupX, groupZ, ref vertexIndex, ref triangleIndex, groupPosition, data, ref min, ref max, ref maxRenderDistance, ref maxInstanceDistance);
+	}
+	if (info.m_hasForwardVehicleLanes != info.m_hasBackwardVehicleLanes && layer == Singleton<NetManager>.instance.m_arrowLayer)
+	{
+		Bezier3 bezier = default(Bezier3);
+		bezier.a = Singleton<NetManager>.instance.m_nodes.m_buffer[m_startNode].m_position;
+		bezier.d = Singleton<NetManager>.instance.m_nodes.m_buffer[m_endNode].m_position;
+		CalculateMiddlePoints(bezier.a, m_startDirection, bezier.d, m_endDirection, true, true, out bezier.b, out bezier.c);
+		Vector3 pos = bezier.Position(0.5f);
+		pos.y += info.m_netAI.GetSnapElevation();
+		Vector3 vector = VectorUtils.NormalizeXZ(bezier.Tangent(0.5f)) * (4f + info.m_halfWidth * 0.5f);
+		if ((m_flags & Flags.Invert) != Flags.None == info.m_hasForwardVehicleLanes)
+		{
+			vector = -vector;
+		}
+		PopulateArrowGroupData(pos, vector, ref vertexIndex, ref triangleIndex, groupPosition, data, ref min, ref max, ref maxRenderDistance, ref maxInstanceDistance);
+	}
+	// modified
+	if (customLanes != null)
+	// modified end
+	{
+		bool invert;
+		NetNode.Flags startFlags;
+		NetNode.Flags endFlags;
+		if ((m_flags & Flags.Invert) != 0)
+		{
+			invert = true;
+			NetInfo info2 = instance.m_nodes.m_buffer[m_endNode].Info;
+			info2.m_netAI.GetNodeFlags(m_endNode, ref instance.m_nodes.m_buffer[m_endNode], segmentID, ref this, out startFlags);
+			NetInfo info3 = instance.m_nodes.m_buffer[m_startNode].Info;
+			info3.m_netAI.GetNodeFlags(m_startNode, ref instance.m_nodes.m_buffer[m_startNode], segmentID, ref this, out endFlags);
+		}
+		else
+		{
+			invert = false;
+			NetInfo info4 = instance.m_nodes.m_buffer[m_startNode].Info;
+			info4.m_netAI.GetNodeFlags(m_startNode, ref instance.m_nodes.m_buffer[m_startNode], segmentID, ref this, out startFlags);
+			NetInfo info5 = instance.m_nodes.m_buffer[m_endNode].Info;
+			info5.m_netAI.GetNodeFlags(m_endNode, ref instance.m_nodes.m_buffer[m_endNode], segmentID, ref this, out endFlags);
+		}
+		// modified
+		bool terrainHeight = customSegments == null || customSegments.Length == 0;
+		// modified end
+		float startAngle = (float)(int)m_cornerAngleStart * 0.0245436933f;
+		float endAngle = (float)(int)m_cornerAngleEnd * 0.0245436933f;
+		bool destroyed = (m_flags & Flags.Collapsed) != Flags.None;
+		uint num = m_lanes;
+		// modified
+		for (int i = 0; i < customLanes.Length; i++)
+		// modified end
+		{
+			if (num == 0)
+			{
+				break;
+			}
+			// modified
+			instance.m_lanes.m_buffer[num].PopulateGroupData(segmentID, num, customLanes[i], destroyed, startFlags, endFlags, startAngle, endAngle, invert, terrainHeight, layer, ref vertexIndex, ref triangleIndex, groupPosition, data, ref min, ref max, ref maxRenderDistance, ref maxInstanceDistance, ref flag);
+			// modified end
+			num = instance.m_lanes.m_buffer[num].m_nextLane;
+		}
+	}
+	if ((info.m_netLayers & 1 << layer) != 0)
+	{
+		// modified
+		bool flag2 = customSegments != null && customSegments.Length != 0;
+		// modified end
+		if (!flag2 && !flag)
+		{
+			return;
+		}
+		min = Vector3.Min(min, m_bounds.min);
+		max = Vector3.Max(max, m_bounds.max);
+		maxRenderDistance = Mathf.Max(maxRenderDistance, 30000f);
+		maxInstanceDistance = Mathf.Max(maxInstanceDistance, 1000f);
+		if (flag2)
+		{
+			float vScale = info.m_netAI.GetVScale();
+			CalculateCorner(segmentID, true, true, true, out Vector3 vector2, out Vector3 startDir, out bool smoothStart);
+			CalculateCorner(segmentID, true, false, true, out Vector3 vector3, out Vector3 endDir, out bool smoothEnd);
+			CalculateCorner(segmentID, true, true, false, out Vector3 vector4, out Vector3 startDir2, out smoothStart);
+			CalculateCorner(segmentID, true, false, false, out Vector3 vector5, out Vector3 endDir2, out smoothEnd);
+			CalculateMiddlePoints(vector2, startDir, vector5, endDir2, smoothStart, smoothEnd, out Vector3 vector6, out Vector3 vector7);
+			CalculateMiddlePoints(vector4, startDir2, vector3, endDir, smoothStart, smoothEnd, out Vector3 vector8, out Vector3 vector9);
+			Vector3 position = instance.m_nodes.m_buffer[m_startNode].m_position;
+			Vector3 position2 = instance.m_nodes.m_buffer[m_endNode].m_position;
+			Vector4 meshScale = new Vector4(0.5f / info.m_halfWidth, 1f / info.m_segmentLength, 1f, 1f);
+			Vector4 colorLocation = RenderManager.GetColorLocation((uint)(49152 + segmentID));
+			Vector4 vector10 = colorLocation;
+			if (NetNode.BlendJunction(m_startNode))
+			{
+				colorLocation = RenderManager.GetColorLocation((uint)(86016 + m_startNode));
+			}
+			if (NetNode.BlendJunction(m_endNode))
+			{
+				vector10 = RenderManager.GetColorLocation((uint)(86016 + m_endNode));
+			}
+			Vector4 vector11 = new Vector4(colorLocation.x, colorLocation.y, vector10.x, vector10.y);
+			// modified
+			for (int j = 0; j < customSegments.Length; j++)
+			// modified end
+			{
+				// modified
+				NetInfo.Segment segment = customSegments[j];
+				// modified end
+				bool flag3 = false;
+				if (segment.m_layer == layer && segment.CheckFlags(m_flags, out flag3) && segment.m_combinedLod != null)
+				{
+					Vector4 objectIndex = vector11;
+					if (segment.m_requireWindSpeed)
+					{
+						objectIndex.w = Singleton<WeatherManager>.instance.GetWindSpeed((position + position2) * 0.5f);
+					}
+					else if (flag3)
+					{
+						objectIndex = new Vector4(objectIndex.z, objectIndex.w, objectIndex.x, objectIndex.y);
+					}
+					Matrix4x4 leftMatrix;
+					Matrix4x4 rightMatrix;
+					if (flag3)
+					{
+						leftMatrix = CalculateControlMatrix(vector3, vector9, vector8, vector4, vector5, vector7, vector6, vector2, groupPosition, vScale);
+						rightMatrix = CalculateControlMatrix(vector5, vector7, vector6, vector2, vector3, vector9, vector8, vector4, groupPosition, vScale);
+					}
+					else
+					{
+						leftMatrix = CalculateControlMatrix(vector2, vector6, vector7, vector5, vector4, vector8, vector9, vector3, groupPosition, vScale);
+						rightMatrix = CalculateControlMatrix(vector4, vector8, vector9, vector3, vector2, vector6, vector7, vector5, groupPosition, vScale);
+					}
+					PopulateGroupData(info, segment, leftMatrix, rightMatrix, meshScale, objectIndex, ref vertexIndex, ref triangleIndex, groupPosition, data, ref requireSurfaceMaps);
+				}
+			}
+		}
+	}
+}

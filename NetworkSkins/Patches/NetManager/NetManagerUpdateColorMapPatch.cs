@@ -4,17 +4,20 @@ using System.Reflection.Emit;
 using Harmony;
 using UnityEngine;
 
-namespace NetworkSkins.Patches
+namespace NetworkSkins.Patches.NetManager
 {
-    [HarmonyPatch(typeof(NetManager), "UpdateColorMap")]
+    /// <summary>
+    /// Used by pavement color
+    /// </summary>
+    [HarmonyPatch(typeof(global::NetManager), "UpdateColorMap")]
     public static class NetManagerUpdateColorMapPatch
     {
         public static IEnumerable<CodeInstruction> Transpiler(ILGenerator il, IEnumerable<CodeInstruction> instructions)
         {
             var originalInstructions = new List<CodeInstruction>(instructions);
 
-            var netAiGetSegmentColorMethod = typeof(NetAI).GetMethod("GetColor", new[] { typeof(ushort), typeof(NetSegment).MakeByRefType(), typeof(InfoManager.InfoMode) });
-            var netAiGetNodeColorMethod = typeof(NetAI).GetMethod("GetColor", new Type[] { typeof(ushort), typeof(NetNode).MakeByRefType(), typeof(InfoManager.InfoMode) });
+            var netAiGetSegmentColorMethod = typeof(NetAI).GetMethod("GetColor", new[] { typeof(ushort), typeof(global::NetSegment).MakeByRefType(), typeof(InfoManager.InfoMode) });
+            var netAiGetNodeColorMethod = typeof(NetAI).GetMethod("GetColor", new Type[] { typeof(ushort), typeof(global::NetNode).MakeByRefType(), typeof(InfoManager.InfoMode) });
 
             var colorPatcherGetSegmentColorMethod = typeof(ColorPatcher).GetMethod("GetSegmentColor");
             var colorPatcherGetNodeColorMethod = typeof(ColorPatcher).GetMethod("GetNodeColor");
@@ -27,11 +30,11 @@ namespace NetworkSkins.Patches
 
             var codes = new List<CodeInstruction>(originalInstructions);
 
+            // Replace all GetColor calls with GetSegmentColor/GetNodeColor
             for (var index = 0; index < codes.Count; index++)
             {
                 if (codes[index].opcode == OpCodes.Callvirt)
                 {
-                    Debug.Log($"Found callvirt {codes[index].operand}");
                     if (codes[index].operand == netAiGetSegmentColorMethod)
                     {
                         Debug.Log("Found GetColor(ushort segmentID, ref NetSegment data, InfoManager.InfoMode infoMode)");

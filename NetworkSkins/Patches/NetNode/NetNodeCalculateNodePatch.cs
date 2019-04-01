@@ -2,23 +2,23 @@
 using NetworkSkins.Skins;
 using UnityEngine;
 
-namespace NetworkSkins.Patches
+namespace NetworkSkins.Patches.NetNode
 {
     /// <summary>
     /// CalculateNode is called after a node was created or when a segment connected to the node was added, removed or updated.
-    /// The method decides from which segment it is inheriting its NetInfo (for roads, ít's the widest road).
+    /// The method decides from which segment it is inheriting its NetInfo (for roads, it's the widest road).
     /// </summary>
-    [HarmonyPatch(typeof(NetNode), "CalculateNode")]
-    public class NetNodeCalculateNodePatch
+    [HarmonyPatch(typeof(global::NetNode), "CalculateNode")]
+    public static class NetNodeCalculateNodePatch
     {
-        public static void Postfix(ref NetNode __instance, ushort nodeID)
+        public static void Prefix(ref global::NetNode __instance, ushort nodeID)
         {
             if (__instance.m_flags != 0)
             {
                 var previousSkin = NetworkSkinManager.NodeSkins[nodeID];
 
                 NetworkSkin skinWithHighestPrio = null;
-                var netManager = NetManager.instance;
+                var netManager = global::NetManager.instance;
                 float currentPrio = -1E+07f;
                 float currentBuildIndex = 0;
                 for (int i = 0; i < 8; i++)
@@ -38,13 +38,11 @@ namespace NetworkSkins.Patches
                     }
                 }
 
-                Debug.Log($"CalculateNode on {nodeID}. Settin skin to {skinWithHighestPrio}");
-                NetworkSkinManager.NodeSkins[nodeID] = skinWithHighestPrio;
+                Debug.Log($"CalculateNode: previous: {previousSkin}, next: {skinWithHighestPrio}");
 
-                // Make sure that the color map is updated when a skin with a different color is applied!
-                if (previousSkin?.m_color != skinWithHighestPrio?.m_color)
+                if (previousSkin != skinWithHighestPrio)
                 {
-                    netManager.UpdateNodeColors(nodeID);
+                    NetworkSkinManager.instance.UpdateNodeSkin(nodeID, skinWithHighestPrio);
                 }
             }
         }

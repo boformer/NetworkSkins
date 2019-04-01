@@ -36,6 +36,38 @@
                 skin.m_createRuining = false;
             }
         }
+
+        #region Equality
+        protected bool Equals(TerrainSurfaceModifier other)
+        {
+            return GroundType == other.GroundType;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
+            return Equals((TerrainSurfaceModifier) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return (int) GroundType;
+        }
+        #endregion
     }
 
     public enum NetworkGroundType

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using NetworkSkins.Net;
 using UnityEngine;
 // ReSharper disable InconsistentNaming
 
@@ -8,7 +10,21 @@ namespace NetworkSkins.Skins
 {
     public class NetworkSkin
     {
+        public BuildingInfo m_bridgePillarInfo;
+
+        // Monorail bend pillar
+        public BuildingInfo m_bridgePillarInfo2;
+
+        // Monorail junction pillar
+        public BuildingInfo m_bridgePillarInfo3;
+
+        // Pedestrian path elevation-dependent pillars
+        public BuildingInfo[] m_bridgePillarInfos;
+
+        public BuildingInfo m_middlePillarInfo;
+
         public NetInfo.Lane[] m_lanes;
+        public NetInfo.Segment[] m_segments;
 
         public bool m_createPavement;
         public bool m_createGravel;
@@ -17,21 +33,40 @@ namespace NetworkSkins.Skins
 
         public Color m_color;
 
+        public bool m_hasWires;
+
         public readonly NetInfo Prefab;
         public readonly List<NetworkSkinModifier> Modifiers = new List<NetworkSkinModifier>();
 
+        public int UseCount = 0;
+
         public NetworkSkin(NetInfo prefab)
         {
+            m_bridgePillarInfo = PillarUtils.GetDefaultBridgePillar(prefab);
+            m_bridgePillarInfo2 = PillarUtils.GetDefaultBridgePillar2(prefab);
+            m_bridgePillarInfo3 = PillarUtils.GetDefaultBridgePillar3(prefab);
+            m_bridgePillarInfos = PillarUtils.GetDefaultBridgePillars(prefab);
+            m_middlePillarInfo = PillarUtils.GetDefaultMiddlePillar(prefab);
+            
             if (prefab.m_lanes != null)
             {
                 m_lanes = new NetInfo.Lane[prefab.m_lanes.Length];
                 Array.Copy(prefab.m_lanes, m_lanes, m_lanes.Length);
+            }
+
+            m_hasWires = true;
+            if (prefab.m_segments != null)
+            {
+                m_segments = new NetInfo.Segment[prefab.m_segments.Length];
+                Array.Copy(prefab.m_segments, m_segments, m_segments.Length);
             }
             m_createPavement = prefab.m_createPavement;
             m_createGravel = prefab.m_createGravel;
             m_createRuining = prefab.m_createRuining;
             m_clipTerrain = prefab.m_clipTerrain;
             m_color = prefab.m_color;
+
+            UpdateHasWires();
 
             Prefab = prefab ?? throw new ArgumentNullException(nameof(prefab));
         }
@@ -47,6 +82,7 @@ namespace NetworkSkins.Skins
                     {
                         // NetLaneProps is a ScriptableObject, must be destroyed when no longer in use!
                         UnityEngine.Object.Destroy(lane.m_laneProps);
+                        lane.m_laneProps = null;
                     }
                 }
             }
@@ -58,6 +94,7 @@ namespace NetworkSkins.Skins
             Modifiers.Add(modifier);
         }
 
+        #region Modifications
         // Updates a lane prop without affecting the original lane props of the network
         public void UpdateLaneProp(int laneIndex, int propIndex, Action<NetLaneProps.Prop> updater)
         {
@@ -80,6 +117,13 @@ namespace NetworkSkins.Skins
                 return;
             }
 
+            // duplicate the lane so we do not affect the original prefab
+            if (!(lane is NetworkSkinLane))
+            {
+                lane = new NetworkSkinLane(lane);
+                m_lanes[laneIndex] = lane;
+            }
+
             var prop = lane.m_laneProps.m_props[propIndex];
             if (prop == null)
             {
@@ -87,26 +131,90 @@ namespace NetworkSkins.Skins
                 return;
             }
 
+            updater(prop);
+        }
+
+        public void RemoveLaneProp(int laneIndex, int propIndex)
+        {
+            if (m_lanes.Length <= laneIndex)
+            {
+                Debug.LogError($"Invalid lane index {laneIndex} for prefab {Prefab}!");
+                return;
+            }
+
+            var lane = m_lanes[laneIndex];
+            if (lane == null || lane.m_laneProps == null || lane.m_laneProps.m_props == null)
+            {
+                Debug.LogError($"Lane {laneIndex} is null or doesn't have any props!");
+                return;
+            }
+
+            if (lane.m_laneProps.m_props.Length <= propIndex)
+            {
+                Debug.LogError($"Invalid prop index {propIndex} for prefab {Prefab}, lane {laneIndex}!");
+                return;
+            }
+
+            // duplicate the lane so we do not affect the original prefab
             if (!(lane is NetworkSkinLane))
             {
                 lane = new NetworkSkinLane(lane);
                 m_lanes[laneIndex] = lane;
             }
 
-            if (!(prop is NetworkSkinLaneProp))
+            var props = new List<NetLaneProps.Prop>(lane.m_laneProps.m_props);
+            props.RemoveAt(propIndex);
+            lane.m_laneProps.m_props = props.ToArray();
+        }
+
+        public void RemoveSegment(int segmentIndex)
+        {
+            var segments = new List<NetInfo.Segment>(m_segments);
+            segments.RemoveAt(segmentIndex);
+            m_segments = segments.ToArray();
+
+            UpdateHasWires();
+        }
+
+        private void UpdateHasWires()
+        {
+            m_hasWires = false;
+            if (m_segments == null)
             {
-                prop = new NetworkSkinLaneProp(prop);
-                lane.m_laneProps.m_props[propIndex] = prop;
+                return;
             }
 
-            updater(prop);
+            foreach (var segment in m_segments)
+            {
+                if (segment.m_material?.shader?.name == "Custom/Net/Electricity")
+                {
+                    m_hasWires = true;
+                    break;
+                }
+            }
         }
+        #endregion
 
         public override string ToString()
         {
-            return $"Skin for {Prefab.name}";
+            return $"Skin for {Prefab.name} with {Modifiers.Count} modifiers (used {UseCount} times)";
         }
 
+        // nullable
+        public static NetworkSkin GetMatchingSkinFromList(List<NetworkSkin> skins, NetInfo prefab, List<NetworkSkinModifier> modifiers)
+        {
+            foreach (var skin in skins)
+            {
+                if (skin.Prefab == prefab && skin.Modifiers.SequenceEqual(modifiers))
+                {
+                    return skin;
+                }
+            }
+
+            return null;
+        }
+
+        #region Skin Structures
         internal class NetworkSkinLane : NetInfo.Lane
         {
             public NetworkSkinLane(NetInfo.Lane originalLane)
@@ -115,19 +223,16 @@ namespace NetworkSkins.Skins
                 if (originalLane.m_laneProps != null)
                 {
                     m_laneProps = UnityEngine.Object.Instantiate(originalLane.m_laneProps);
+                    for (var i = 0; i < originalLane.m_laneProps.m_props.Length; i++)
+                    {
+                        m_laneProps.m_props[i] = new NetLaneProps.Prop();
+                        CopyProperties(m_laneProps.m_props[i], originalLane.m_laneProps.m_props[i]);
+                    }
                 }
             }
         }
 
-        internal class NetworkSkinLaneProp : NetLaneProps.Prop
-        {
-            public NetworkSkinLaneProp(NetLaneProps.Prop originalProp)
-            {
-                CopyProperties(this, originalProp);
-            }
-        }
-
-        public static void CopyProperties(object target, object origin)
+        private static void CopyProperties(object target, object origin)
         {
             var fields = target.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public);
             foreach (var fieldInfo in fields)
@@ -135,5 +240,6 @@ namespace NetworkSkins.Skins
                 fieldInfo.SetValue(target, fieldInfo.GetValue(origin));
             }
         }
+        #endregion
     }
 }

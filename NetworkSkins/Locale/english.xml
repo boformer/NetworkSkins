@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Language UniqueName="en" ReadableName="English" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2009/XMLSchema/XMLSchema.xsd">
+  <Translations>
+    <Translation ID="MOD_DESCRIPTION" String="Change the visual appearance of roads, train tracks and other networks" />
+    <Translation ID="LABEL_NONE" String="None" />
+    <Translation ID="LABEL_DEFAULT" String="(Default) " />
+    <Translation ID="LABEL_SEARCH" String="Search" />
+    <Translation ID="TOOLTIP_TREES" String="Trees" />
+    <Translation ID="TOOLTIP_LIGHTS" String="Lights" />
+    <Translation ID="TOOLTIP_SIDEWALKS" String="Sidewalks" />
+    <Translation ID="TOOLTIP_PILLARS" String="Pillars" />
+    <Translation ID="TOOLTIP_CATENARY" String="Catenaries" />
+    <Translation ID="TOOLTIP_COLOR" String="Color" />
+    <Translation ID="TOOLTIP_EXTRAS" String="Extras" />
+    <Translation ID="TOOLTIP_ADDFAVOURITE" String="Add to favorites" />
+    <Translation ID="TOOLTIP_REMOVEFAVOURITE" String="Remove from favorites" />
+    <Translation ID="LEFT_LANE" String="Left Lane" />
+    <Translation ID="MIDDLE_LANE" String="Middle Lane" />
+    <Translation ID="RIGHT_LANE" String="Right Lane" />
+  </Translations>
+</Language>

@@ -1,9 +1,5 @@
-﻿using ColossalFramework;
-using ICities;
+﻿using System;
 using NetworkSkins.Net;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace NetworkSkins
@@ -34,7 +30,7 @@ namespace NetworkSkins
 
         private void Update() {
             if (ToolsModifierControl.toolController.CurrentTool is NetTool netTool) {
-                if(!isNetToolEnabled) {
+                if (!isNetToolEnabled) {
                     isNetToolEnabled = true;
                     EventToolStateChanged?.Invoke(true);
                 }
@@ -48,6 +44,10 @@ namespace NetworkSkins
                     EventToolStateChanged?.Invoke(false);
                 }
             }
+        }
+
+        internal bool NetInfoDefaultEquals<Info>(Info prefab) where Info : PrefabInfo {
+            return false;
         }
     }
 }

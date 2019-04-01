@@ -3,6 +3,10 @@ using NetworkSkins.Skins;
 
 namespace NetworkSkins.Patches
 {
+    /// <summary>
+    /// Temporarily changes m_createPavement, m_createGravel, m_createRuining and m_clipTerrain
+    /// of a NetInfo to the values defined in the skin of the node/segment
+    /// </summary>
     public static class TerrainSurfacePatcher
     {
         public static TerrainSurfacePatcherState Apply(NetInfo info, NetworkSkin skin)

@@ -13,8 +13,13 @@ namespace NetworkSkins.GUI
             Layout.Apply(this);
         }
 
-        protected UIButton MakeButton(Vector2 size, string text = "", string tooltip = "", string foregroundSprite = "", string backgroundSprite = "ButtonSmall", bool isFocusable = false, UITextureAtlas atlas = null) {
-            UIButton button = AddUIComponent<UIButton>();
+        public void CreateSpace(float width, float height) {
+            UIPanel panel = AddUIComponent<UIPanel>();
+            panel.size = new Vector2(width, height);
+        }
+
+        protected UIButton CreateButton(Vector2 size, string text = "", string tooltip = "", string foregroundSprite = "", string backgroundSprite = "ButtonSmall", bool isFocusable = false, UITextureAtlas atlas = null, UIComponent parentComponent = null) {
+            UIButton button = parentComponent != null ? parentComponent.AddUIComponent<UIButton>() : AddUIComponent<UIButton>();
             button.size = size;
             button.text = text;
             button.tooltip = tooltip;
@@ -30,10 +35,11 @@ namespace NetworkSkins.GUI
             button.focusedFgSprite = string.Concat(foregroundSprite, isFocusable ? "Focused" : "");
             button.disabledFgSprite = string.Concat(foregroundSprite, "Disabled");
             if (atlas != null) button.atlas = atlas;
+            
             return button;
         }
 
-        protected virtual void RefreshUI() {
+        protected virtual void RefreshUI(NetInfo netInfo) {
 
         }
     }

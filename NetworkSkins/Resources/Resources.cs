@@ -8,19 +8,22 @@ namespace NetworkSkins
     public class Resources
     {
         public static Resources Atlas { get; private set; } = new Resources();
+        public static string DragHandle = "DragHandle";
 
         private UITextureAtlas UITextureAtlas { get; set; }
         private string[] spriteNames = new string[] {
             "DragHandle",
         };
 
-        public static string DragHandle = "DragHandle";
-
         public Resources() {
-            Create();
+            CreateAtlas();
         }
 
-        private void Create() {
+        public static implicit operator UITextureAtlas(Resources atlas) {
+            return atlas.UITextureAtlas;
+        }
+
+        private void CreateAtlas() {
             UITextureAtlas textureAtlas = ScriptableObject.CreateInstance<UITextureAtlas>();
 
             Texture2D[] textures = new Texture2D[spriteNames.Length];
@@ -61,10 +64,6 @@ namespace NetworkSkins
             }
             texture2D.Apply();
             return texture2D;
-        }
-
-        public static implicit operator UITextureAtlas(Resources atlas) {
-            return atlas.UITextureAtlas;
         }
     }
 }

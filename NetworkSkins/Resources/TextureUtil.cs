@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using ColossalFramework.UI;
+using UnityEngine;
 
 namespace NetworkSkins
 {
@@ -20,6 +21,10 @@ namespace NetworkSkins
             texture2D.Apply();
             RenderTexture.active = active;
             return texture2D;
+        }
+
+        public static Texture2D GetSpriteTexture(this UITextureAtlas atlas, string spriteName) {
+            return atlas?.sprites?.Find(sprite => sprite?.name == spriteName)?.texture;
         }
     }
 }
