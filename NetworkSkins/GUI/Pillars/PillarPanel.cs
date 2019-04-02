@@ -1,7 +1,10 @@
 ﻿using ColossalFramework.UI;
+using NetworkSkins.Net;
+using UnityEngine;
+
 namespace NetworkSkins.GUI
 {
-    public class LightPanel : ListPanelBase<LightList, PropInfo>
+    public class PillarPanel : ListPanelBase<PillarList, BuildingInfo>
     {
         protected override void RefreshUI(NetInfo netInfo) {
 

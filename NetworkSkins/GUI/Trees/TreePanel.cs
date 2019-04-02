@@ -7,7 +7,6 @@ namespace NetworkSkins.GUI
     public class TreePanel : ListPanelBase<TreeList, TreeInfo>
     {
         protected override void RefreshUI(NetInfo netInfo) {
-            base.RefreshUI(netInfo);
             Vector2 size = Vector2.zero;
             int lanesWithTrees = 0;
             for (int i = 0; i < (int)LanePosition.Count; i++) {
@@ -30,12 +29,8 @@ namespace NetworkSkins.GUI
 
         }
 
-        protected override void OnPrefabChanged(NetInfo netInfo) {
-            RefreshUI(netInfo);
-        }
-
-        protected override void OnPanelCreated() {
-
+        protected override void OnPanelBuilt() {
+            RefreshAfterBuild();
         }
     }
 }

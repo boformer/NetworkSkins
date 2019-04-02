@@ -22,5 +22,9 @@ namespace NetworkSkins.GUI
             panel.backgroundSprite = Resources.DragHandle;
             panel.isInteractive = false;
         }
+
+        protected override void RefreshUI(NetInfo netInfo) {
+
+        }
     }
 }

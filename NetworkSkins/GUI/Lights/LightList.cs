@@ -1,5 +1,6 @@
 ﻿
 using NetworkSkins.Net;
+using UnityEngine;
 
 namespace NetworkSkins.GUI
 {
@@ -18,6 +19,10 @@ namespace NetworkSkins.GUI
         }
 
         protected override void OnSelectedChanged(string itemID, bool selected) {
+
+        }
+
+        protected override void RefreshUI(NetInfo netInfo) {
 
         }
 

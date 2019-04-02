@@ -1,6 +1,8 @@
 ﻿using ColossalFramework.UI;
 using NetworkSkins.Locale;
+using NetworkSkins.Skins;
 using NetworkSkins.TranslationFramework;
+using System;
 using UnityEngine;
 
 namespace NetworkSkins.GUI
@@ -12,6 +14,8 @@ namespace NetworkSkins.GUI
 
         public delegate void FavouriteChangedEventHandler(string itemID, bool favourite);
         public event FavouriteChangedEventHandler EventFavouriteChanged;
+
+        private static string[] enumNames = Enum.GetNames(typeof(NetworkGroundType));
 
         private UIPanel thumbnailPanel;
         private UITextureSprite thumbnailSprite;
@@ -44,8 +48,8 @@ namespace NetworkSkins.GUI
             thumbnailPanel.backgroundSprite = "WhiteRect";
             thumbnailPanel.color = thumbnailBackgroundColor;
             thumbnailSprite = thumbnailPanel.AddUIComponent<UITextureSprite>();
-            thumbnailSprite.size = new Vector2(33.0f, 30.0f);
-            thumbnailSprite.relativePosition = Vector2.zero;
+            thumbnailSprite.size = new Vector2(31.0f, 28.0f);
+            thumbnailSprite.relativePosition = new Vector2(1.0f, 1.0f);
         }
 
         private void CreateLabel() {
@@ -111,7 +115,12 @@ namespace NetworkSkins.GUI
             thumbnailSprite.texture = itemData.Thumbnail;
             nameLabel.text = itemData.DisplayName;
             favouriteCheckbox.isChecked = itemData.IsFavourite;
-            favouriteCheckbox.isVisible = itemData.ID != "None";
+            favouriteCheckbox.isVisible = true;
+            for (int i = 0; i < enumNames.Length; i++) {
+                if (itemData.ID == enumNames[i]) {
+                    favouriteCheckbox.isVisible = false;
+                }
+            }
             UpdateCheckboxTooltip();
         }
 
@@ -134,6 +143,10 @@ namespace NetworkSkins.GUI
             itemData.IsFavourite = value;
             UpdateCheckboxTooltip();
             EventFavouriteChanged?.Invoke(itemData.ID, value);
+        }
+
+        protected override void RefreshUI(NetInfo netInfo) {
+            throw new System.NotImplementedException();
         }
     }
 }

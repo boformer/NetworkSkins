@@ -1,17 +1,18 @@
-﻿using UnityEngine;
+﻿using NetworkSkins.Net;
+using UnityEngine;
 
 namespace NetworkSkins.GUI
 {
-    public class TreeList : ListBase<TreeInfo>
+    public class CatenaryList : ListBase<PropInfo>
     {
         protected override void RefreshUI(NetInfo netInfo) {
 
         }
-        protected override bool IsFavourite(TreeInfo prefabInfo) {
+        protected override bool IsFavourite(PropInfo prefabInfo) {
             return false;
         }
 
-        protected override bool IsSelected(TreeInfo prefabInfo) {
+        protected override bool IsSelected(PropInfo prefabInfo) {
             return false;
         }
 
@@ -26,15 +27,17 @@ namespace NetworkSkins.GUI
         protected override void SetupRowsData() {
             int prefabCount, selectedIndex = 0;
             fastList.RowsData = new FastList<object>();
-            prefabCount = PrefabCollection<TreeInfo>.LoadedCount();
+            prefabCount = PrefabCollection<PropInfo>.LoadedCount();
             fastList.RowsData.SetCapacity(prefabCount + 1);
             ListItem noneItem = CreateListItem(null);
             fastList.RowsData.Add(noneItem);
             for (uint prefabIndex = 0; prefabIndex < prefabCount; prefabIndex++) {
-                TreeInfo prefab = PrefabCollection<TreeInfo>.GetLoaded(prefabIndex);
-                ListItem listItem = CreateListItem(prefab);
-                if (listItem.IsSelected) selectedIndex = (int)prefabIndex + 1;
-                fastList.RowsData.Add(listItem);
+                PropInfo prefab = PrefabCollection<PropInfo>.GetLoaded(prefabIndex);
+                if (CatenaryUtils.IsCatenaryProp(prefab)) {
+                    ListItem listItem = CreateListItem(prefab);
+                    if (listItem.IsSelected) selectedIndex = (int)prefabIndex + 1;
+                    fastList.RowsData.Add(listItem);
+                }
             }
             fastList.DisplayAt(selectedIndex);
         }

@@ -1,13 +1,12 @@
-﻿using ColossalFramework.UI;
-using NetworkSkins.Locale;
-using NetworkSkins.TranslationFramework;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace NetworkSkins.GUI
 {
     public abstract class ListBase : PanelBase
     {
         protected UIFastList fastList;
+        protected abstract Vector2 ListSize { get; }
+        protected abstract float RowHeight { get; }
 
         public override void OnDestroy() {
             base.OnDestroy();
@@ -16,35 +15,9 @@ namespace NetworkSkins.GUI
 
         public override void Build(Layout layout) {
             base.Build(layout);
-            CreateFastList();
+            CreateFastList(ListSize, RowHeight);
             SetupRowsData();
             BindEvents();
-        }
-
-        private void CreateFastList() {
-            fastList = UIFastList.Create<ListRow>(this);
-            fastList.BackgroundSprite = "UnlockingPanel";
-            fastList.size = new Vector2(390.0f, 500.0f);
-            fastList.RowHeight = 50.0f;
-            fastList.CanSelect = true;
-        }
-
-        private void BindEvents() {
-            for (int rowIndex = 0; rowIndex < fastList.Rows.m_size; rowIndex++) {
-                if (fastList.Rows[rowIndex] is ListRow row) {
-                    row.EventSelectedChanged += OnSelectedChanged;
-                    row.EventFavouriteChanged += OnFavouriteChanged;
-                }
-            }
-        }
-
-        private void UnbindEvents() {
-            for (int rowIndex = 0; rowIndex < fastList.Rows.m_size; rowIndex++) {
-                if (fastList.Rows[rowIndex] is ListRow row) {
-                    row.EventSelectedChanged -= OnSelectedChanged;
-                    row.EventFavouriteChanged -= OnFavouriteChanged;
-                }
-            }
         }
 
         /// <summary>
@@ -65,5 +38,31 @@ namespace NetworkSkins.GUI
         /// <param name="itemID">The PrefabInfo.name, used as a unique identifier.</param>
         /// <param name="favourite"></param>
         protected abstract void OnFavouriteChanged(string itemID, bool favourite);
+
+        private void CreateFastList(Vector2 size, float rowHeight) {
+            fastList = UIFastList.Create<ListRow>(this);
+            fastList.BackgroundSprite = "UnlockingPanel";
+            fastList.size = size;
+            fastList.RowHeight = rowHeight;
+            fastList.CanSelect = true;
+        }
+
+        private void BindEvents() {
+            for (int rowIndex = 0; rowIndex < fastList.Rows.m_size; rowIndex++) {
+                if (fastList.Rows[rowIndex] is ListRow row) {
+                    row.EventSelectedChanged += OnSelectedChanged;
+                    row.EventFavouriteChanged += OnFavouriteChanged;
+                }
+            }
+        }
+
+        private void UnbindEvents() {
+            for (int rowIndex = 0; rowIndex < fastList.Rows.m_size; rowIndex++) {
+                if (fastList.Rows[rowIndex] is ListRow row) {
+                    row.EventSelectedChanged -= OnSelectedChanged;
+                    row.EventFavouriteChanged -= OnFavouriteChanged;
+                }
+            }
+        }
     }
 }

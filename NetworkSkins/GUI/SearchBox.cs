@@ -42,6 +42,10 @@ namespace NetworkSkins.GUI
             label.text = Translation.Instance.GetTranslation(TranslationID.LABEL_SEARCH);
         }
 
+        protected override void RefreshUI(NetInfo netInfo) {
+
+        }
+
         private void OnSearchLostFocus(UIComponent component, UIFocusEventParameter eventParam) {
             EventLostFocus?.Invoke();
         }

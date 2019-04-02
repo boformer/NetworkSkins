@@ -34,49 +34,52 @@ namespace NetworkSkins
         private bool InGame => LoadingManager.exists && LoadingManager.instance.m_loadingComplete;
         private MainPanel panel;
         private GameObject monitorGameObject;
+
         public void OnEnabled() {
             if (InGame) {
                 Install();
             }
+            //InstallHarmony();
         }
 
         public void OnDisabled() {
+            //UninstallHarmony();
             Uninstall();
         }
 
         public override void OnLevelLoaded(LoadMode mode) {
             base.OnLevelLoaded(mode);
             while (!InGame) { }
-            OnEnabled();
+            Install();
         }
 
         public override void OnReleased() {
             base.OnReleased();
-            OnDisabled();
+            Uninstall();
         }
 
         private void Install() {
-            Uninstall();
             monitorGameObject = new GameObject(nameof(NetToolMonitor));
             NetToolMonitor.Instance = monitorGameObject.AddComponent<NetToolMonitor>();
             NetToolMonitor.Instance.EventToolStateChanged += OnNetToolStateChanged;
-            InstallHarmony();
+            
         }
 
         private void Uninstall() {
-            if (NetToolMonitor.Instance != null) {
-                NetToolMonitor.Instance.EventToolStateChanged -= OnNetToolStateChanged;
-                Destroy(monitorGameObject);
-                monitorGameObject = null;
-            }
             if (NetworkSkinManager.exists && NetworkSkinManager.instance.gameObject != null) {
                 Destroy(NetworkSkinManager.instance.gameObject);
+            }
+            if (NetToolMonitor.Instance != null) {
+                NetToolMonitor.Instance.EventToolStateChanged -= OnNetToolStateChanged;
+                if (monitorGameObject != null) {
+                    Destroy(monitorGameObject);
+                    monitorGameObject = null;
+                }
             }
             if (panel != null && panel.gameObject != null) {
                 Destroy(panel.gameObject);
                 panel = null;
             }
-            UninstallHarmony();
         }
 
         private void InstallHarmony() {

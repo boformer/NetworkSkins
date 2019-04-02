@@ -16,5 +16,9 @@ namespace NetworkSkins.GUI
             ButtonBar = AddUIComponent<ButtonBar>();
             ButtonBar.Build(new Layout(new Vector2(size.x, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5));
         }
+
+        protected override void RefreshUI(NetInfo netInfo) {
+
+        }
     }
 }

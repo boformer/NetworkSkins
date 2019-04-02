@@ -73,13 +73,13 @@
     public enum NetworkGroundType
     {
         Unchanged = -1,
-        Pavement = 0,
-        Gravel = 1,
-        Ruined = 2,
+        None = 0,
+        Pavement = 1,
+        Gravel = 2,
+        Ruined = 3,
         /// <summary>
         /// None only works when the network does not clip terrain. The option should be hidden for network which do clip terrain
         /// </summary>
-        None = 3,
         Count = 4
     }
 }

@@ -5,17 +5,23 @@ using NetworkSkins.TranslationFramework;
 using System;
 using UnityEngine;
 
-namespace NetworkSkins.GUI.Surfaces
+namespace NetworkSkins.GUI
 {
     public class SurfaceList : ListBase
     {
+        protected override Vector2 ListSize => new Vector2(390.0f, 200.0f);
+        protected override float RowHeight => 50.0f;
+
+        protected override void RefreshUI(NetInfo netInfo) {
+
+        }
 
         protected override void OnFavouriteChanged(string itemID, bool favourite) {
-            throw new NotImplementedException();
+
         }
 
         protected override void OnSelectedChanged(string itemID, bool selected) {
-            throw new NotImplementedException();
+
         }
 
         protected override void SetupRowsData() {
@@ -30,6 +36,7 @@ namespace NetworkSkins.GUI.Surfaces
             if (selectedIndex != -1) {
                 fastList.SelectedIndex = selectedIndex;
             }
+            fastList.DisplayAt(-1);
         }
 
         protected ListItem CreateListItem(NetworkGroundType surfaceType) {
@@ -67,15 +74,15 @@ namespace NetworkSkins.GUI.Surfaces
         }
 
         private bool IsDefault(NetworkGroundType surfaceType) {
-            throw new NotImplementedException();
+            return false;
         }
 
         private bool IsFavourite(NetworkGroundType surfaceType) {
-            throw new NotImplementedException();
+            return false;
         }
 
         private bool IsSelected(NetworkGroundType surfaceType) {
-            throw new NotImplementedException();
+            return false;
         }
     }
 }

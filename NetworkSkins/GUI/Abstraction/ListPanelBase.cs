@@ -8,20 +8,9 @@ namespace NetworkSkins.GUI
 {
     public abstract class ListPanelBase : PanelBase
     {
-        protected NetToolMonitor Monitor => NetToolMonitor.Instance;
         protected UITabstrip tabStrip;
         protected UIButton[] tabs;
         protected SearchBox searchBox;
-
-        public override void Awake() {
-            base.Awake();
-            Monitor.EventPrefabChanged += OnPrefabChanged;
-        }
-
-        public override void OnDestroy() {
-            base.OnDestroy();
-            Monitor.EventPrefabChanged -= OnPrefabChanged;
-        }
 
         public override void Build(Layout layout) {
             base.Build(layout);
@@ -32,23 +21,15 @@ namespace NetworkSkins.GUI
             CreateList();
             CreateSearchBox();
             CreateSpace(width - (Spacing * 2), 0.1f);
-            RefreshUI(Monitor.Prefab);
-            OnPanelCreated();
-        }
-
-        protected override void RefreshUI(NetInfo netInfo) {
-            base.RefreshUI(netInfo);
+            OnPanelBuilt();
         }
 
         protected abstract void CreateList();
 
         /// <summary>
-        /// This event is invoked when the NetTool switches to a different NetInfo.
+        /// Call this method at the end of your panel's Build(Layout layout) implementation.
         /// </summary>
-        /// <param name="netInfo"></param>
-        protected abstract void OnPrefabChanged(NetInfo netInfo);
-
-        protected abstract void OnPanelCreated();
+        protected abstract void OnPanelBuilt();
 
         protected abstract void OnSearchTextChanged(string text);
 

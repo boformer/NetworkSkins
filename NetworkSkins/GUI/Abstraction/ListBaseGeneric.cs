@@ -8,6 +8,9 @@ namespace NetworkSkins.GUI
     public abstract class ListBase<T> : ListBase
         where T : PrefabInfo
     {
+        protected override Vector2 ListSize => new Vector2(390.0f, 500.0f);
+        protected override float RowHeight => 50.0f;
+
         /// <summary>
         /// Used to check whether the PrefabInfo is currently being used in the skin.
         /// </summary>

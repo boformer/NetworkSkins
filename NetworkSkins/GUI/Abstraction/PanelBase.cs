@@ -7,7 +7,18 @@ namespace NetworkSkins.GUI
     {
         public Layout Layout { get; set; }
         public int Spacing { get; set; }
+        private NetToolMonitor Monitor => NetToolMonitor.Instance;
 
+
+        public override void Awake() {
+            base.Awake();
+            Monitor.EventPrefabChanged += OnPrefabChanged;
+        }
+
+        public override void OnDestroy() {
+            base.OnDestroy();
+            Monitor.EventPrefabChanged -= OnPrefabChanged;
+        }
         public virtual void Build(Layout layout) {
             Layout = layout;
             Layout.Apply(this);
@@ -40,5 +51,13 @@ namespace NetworkSkins.GUI
         }
 
         protected abstract void RefreshUI(NetInfo netInfo);
+
+        protected virtual void RefreshAfterBuild() {
+            RefreshUI(Monitor.Prefab);
+        }
+
+        private void OnPrefabChanged(NetInfo netInfo) {
+            RefreshUI(netInfo);
+        }
     }
 }

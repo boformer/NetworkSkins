@@ -12,6 +12,9 @@ namespace NetworkSkins.GUI
         private ToolBar toolBar;
         private TreePanel treesPanel;
         private LightPanel lightsPanel;
+        private SurfacePanel surfacePanel;
+        private PillarPanel pillarPanel;
+        private CatenaryPanel catenaryPanel;
 
         public override void OnDestroy() {
             UnregisterEvents();
@@ -25,6 +28,10 @@ namespace NetworkSkins.GUI
             autoFitChildrenVertically = true;
             CreateToolBar();
             RegisterEvents();
+        }
+
+        protected override void RefreshUI(NetInfo netInfo) {
+
         }
 
         private void CreateToolBar() {
@@ -42,6 +49,21 @@ namespace NetworkSkins.GUI
         private void CreateLightsPanel() {
             lightsPanel = AddUIComponent<LightPanel>();
             lightsPanel.Build(new Layout(new Vector2(400.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
+        }
+
+        private void CreateSurfacePanel() {
+            surfacePanel = AddUIComponent<SurfacePanel>();
+            surfacePanel.Build(new Layout(new Vector2(400.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
+        }
+
+        private void CreateCatenaryPanel() {
+            catenaryPanel = AddUIComponent<CatenaryPanel>();
+            catenaryPanel.Build(new Layout(new Vector2(400.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
+        }
+
+        private void CreatePillarsPanel() {
+            pillarPanel = AddUIComponent<PillarPanel>();
+            pillarPanel.Build(new Layout(new Vector2(400.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
         }
 
         private void RegisterEvents() {
@@ -125,21 +147,40 @@ namespace NetworkSkins.GUI
         }
 
         private void OnCatenaryClicked() {
+            if (catenaryPanel != null) {
+                Destroy(catenaryPanel.gameObject);
+            } else {
+                CloseAll();
+                CreateCatenaryPanel();
+            }
         }
 
         private void OnColorClicked() {
         }
 
         private void OnSurfacesClicked() {
+            if (surfacePanel != null) {
+                Destroy(surfacePanel.gameObject);
+            } else {
+                CloseAll();
+                CreateSurfacePanel();
+            }
         }
 
         private void OnPillarsClicked() {
+            if (pillarPanel != null) {
+                Destroy(pillarPanel.gameObject);
+            } else {
+                CloseAll();
+                CreatePillarsPanel();
+            }
         }
 
         private void OnLightsClicked() {
             if (lightsPanel != null) {
                 Destroy(lightsPanel.gameObject);
             } else {
+                CloseAll();
                 CreateLightsPanel();
             }
         }
@@ -148,7 +189,26 @@ namespace NetworkSkins.GUI
             if (treesPanel != null) {
                 Destroy(treesPanel.gameObject);
             } else {
+                CloseAll();
                 CreateTreesPanel();
+            }
+        }
+
+        private void CloseAll() {
+            if (treesPanel != null) {
+                Destroy(treesPanel.gameObject);
+            }
+            if (lightsPanel != null) {
+                Destroy(lightsPanel.gameObject);
+            }
+            if (surfacePanel != null) {
+                Destroy(surfacePanel.gameObject);
+            }
+            if (pillarPanel != null) {
+                Destroy(pillarPanel.gameObject);
+            }
+            if (catenaryPanel != null) {
+                Destroy(catenaryPanel.gameObject);
             }
         }
     }

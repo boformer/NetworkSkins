@@ -85,7 +85,6 @@ namespace NetworkSkins.GUI
         }
 
         protected override void RefreshUI(NetInfo netInfo) {
-            base.RefreshUI(netInfo);
             treesButton.isVisible = Monitor.NetInfoHasTrees;
             lightsButton.isVisible = Monitor.NetInfoHasStreetLights;
             surfacesButton.isVisible = Monitor.NetInfoHasSurfaces;

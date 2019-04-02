@@ -2,6 +2,10 @@
 {
     public static class PillarUtils
     {
+        public static bool IsPillar(BuildingInfo prefab) {
+            return false;
+        }
+
         // nullable
         public static BuildingInfo GetDefaultBridgePillar(NetInfo prefab)
         {
