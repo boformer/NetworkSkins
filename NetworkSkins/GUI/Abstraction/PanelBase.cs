@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace NetworkSkins.GUI
 {
-    public class PanelBase : UIPanel
+    public abstract class PanelBase : UIPanel
     {
         public Layout Layout { get; set; }
         public int Spacing { get; set; }
@@ -39,8 +39,6 @@ namespace NetworkSkins.GUI
             return button;
         }
 
-        protected virtual void RefreshUI(NetInfo netInfo) {
-
-        }
+        protected abstract void RefreshUI(NetInfo netInfo);
     }
 }

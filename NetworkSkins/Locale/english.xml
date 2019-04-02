@@ -5,6 +5,12 @@
     <Translation ID="LABEL_NONE" String="None" />
     <Translation ID="LABEL_DEFAULT" String="(Default) " />
     <Translation ID="LABEL_SEARCH" String="Search" />
+    <Translation ID="LABEL_LEFTLANE" String="Left Lane" />
+    <Translation ID="LABEL_MIDDLELANE" String="Middle Lane" />
+    <Translation ID="LABEL_RIGHTLANE" String="Right Lane" />
+    <Translation ID="LABEL_PAVEMENT" String="Pavement" />
+    <Translation ID="LABEL_GRAVEL" String="Gravel" />
+    <Translation ID="LABEL_RUINED" String="Ruined" />
     <Translation ID="TOOLTIP_TREES" String="Trees" />
     <Translation ID="TOOLTIP_LIGHTS" String="Lights" />
     <Translation ID="TOOLTIP_SIDEWALKS" String="Sidewalks" />
@@ -14,8 +20,5 @@
     <Translation ID="TOOLTIP_EXTRAS" String="Extras" />
     <Translation ID="TOOLTIP_ADDFAVOURITE" String="Add to favorites" />
     <Translation ID="TOOLTIP_REMOVEFAVOURITE" String="Remove from favorites" />
-    <Translation ID="LEFT_LANE" String="Left Lane" />
-    <Translation ID="MIDDLE_LANE" String="Middle Lane" />
-    <Translation ID="RIGHT_LANE" String="Right Lane" />
   </Translations>
 </Language>

@@ -60,6 +60,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GUI\ButtonBar.cs" />
+    <Compile Include="GUI\Abstraction\ListBaseGeneric.cs" />
+    <Compile Include="GUI\Abstraction\ListPanelBase.cs" />
     <Compile Include="Locale\TranslationID.cs" />
     <Compile Include="Resources\Resources.cs" />
     <Compile Include="Resources\TextureUtil.cs" />
@@ -68,7 +70,7 @@
     <Compile Include="GUI\Lights\LightPanel.cs" />
     <Compile Include="GUI\Abstraction\ListBase.cs" />
     <Compile Include="GUI\FastList\ListItem.cs" />
-    <Compile Include="GUI\Abstraction\ListPanelBase.cs" />
+    <Compile Include="GUI\Abstraction\ListPanelBaseGeneric.cs" />
     <Compile Include="GUI\FastList\ListRow.cs" />
     <Compile Include="GUI\Abstraction\PanelBase.cs" />
     <Compile Include="GUI\Layout.cs" />
