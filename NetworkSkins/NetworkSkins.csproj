@@ -55,6 +55,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NetworkSkinsSerializableData.cs" />
     <Compile Include="Net\CatenaryUtils.cs" />
     <Compile Include="Net\PillarUtils.cs" />
     <Compile Include="Net\StreetLightUtils.cs" />

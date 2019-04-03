@@ -31,7 +31,7 @@ namespace NetworkSkins.Skins.Serialization
             {
                 UIView.library.ShowModal<ExceptionPanel>("ExceptionPanel").SetMessage(
                     "Network Skins",
-                    "The skin data could not be loaded from the savegame because a major exception occured!" +
+                    "The skin data could not be loaded from the savegame because a major exception occured! " +
                     "Please report this error on the Network Skins workshop page.\n\n" +
                     $"{_exception}",
                     true

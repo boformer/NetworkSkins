@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using ColossalFramework;
 using ColossalFramework.IO;
+using UnityEngine;
 
 namespace NetworkSkins.Skins.Serialization
 {
@@ -11,22 +12,16 @@ namespace NetworkSkins.Skins.Serialization
 
         public readonly NetworkSkinLoadErrors Errors = new NetworkSkinLoadErrors();
 
-        public readonly List<NetworkSkin> AppliedSkins;
-
-        public readonly NetworkSkin[] SegmentSkins;
-        public readonly NetworkSkin[] NodeSkins;
-
-        // empty constructor is required!
-        public NetworkSkinDataContainer()
-        {
-            // This is not nice, but this is how the IDataContainer contract works!
-            AppliedSkins = NetworkSkinManager.instance.AppliedSkins;
-            SegmentSkins = NetworkSkinManager.SegmentSkins;
-            NodeSkins = NetworkSkinManager.NodeSkins;
-        }
+        public List<NetworkSkin> AppliedSkins;
+        public NetworkSkin[] SegmentSkins;
+        public NetworkSkin[] NodeSkins;
 
         public void Serialize(DataSerializer s)
         {
+            AppliedSkins = NetworkSkinManager.instance.AppliedSkins;
+            SegmentSkins = NetworkSkinManager.SegmentSkins;
+            NodeSkins = NetworkSkinManager.NodeSkins;
+
             if (AppliedSkins.Count >= ushort.MaxValue - 1)
             {
                 throw new Exception("Too many applied skins, cannot serialize!");
@@ -68,6 +63,11 @@ namespace NetworkSkins.Skins.Serialization
 
         public void Deserialize(DataSerializer s)
         {
+            // this must be set here, as the constructor is not called on deserialization
+            AppliedSkins = NetworkSkinManager.instance.AppliedSkins;
+            SegmentSkins = NetworkSkinManager.SegmentSkins;
+            NodeSkins = NetworkSkinManager.NodeSkins;
+
             var appliedSkinsLength = s.ReadInt32();
             AppliedSkins.Clear();
             for (var i = 0; i < appliedSkinsLength; i++)
@@ -98,7 +98,7 @@ namespace NetworkSkins.Skins.Serialization
 
         public NetworkSkin AppliedSkinForIndex(uint index)
         {
-            if (index > 0 && AppliedSkins.Count > index)
+            if (index > 0 && AppliedSkins.Count > index - 1)
             {
                 return AppliedSkins[(int)(index - 1)];
             }
@@ -115,6 +115,7 @@ namespace NetworkSkins.Skins.Serialization
             var netManager = NetManager.instance;
 
             // Remove invalid segment data
+            var removedSegmentCount = 0;
             for (var i = 0; i < SegmentSkins.Length; i++)
             {
                 if (SegmentSkins[i] == null)
@@ -125,6 +126,7 @@ namespace NetworkSkins.Skins.Serialization
                 if (!netManager.m_segments.m_buffer[i].m_flags.IsFlagSet(NetSegment.Flags.Created))
                 {
                     SegmentSkins[i] = null;
+                    removedSegmentCount++;
                     continue;
                 }
 
@@ -132,6 +134,7 @@ namespace NetworkSkins.Skins.Serialization
                 if (segmentPrefab != SegmentSkins[i].Prefab)
                 {
                     SegmentSkins[i] = null;
+                    removedSegmentCount++;
                     continue;
                 }
 
@@ -139,6 +142,7 @@ namespace NetworkSkins.Skins.Serialization
             }
 
             // remove invalid node data
+            var removedNodeCount = 0;
             for (var i = 0; i < NodeSkins.Length; i++)
             {
                 if (NodeSkins[i] == null)
@@ -149,6 +153,7 @@ namespace NetworkSkins.Skins.Serialization
                 if (!netManager.m_nodes.m_buffer[i].m_flags.IsFlagSet(NetNode.Flags.Created))
                 {
                     NodeSkins[i] = null;
+                    removedNodeCount++;
                     continue;
                 }
 
@@ -156,6 +161,7 @@ namespace NetworkSkins.Skins.Serialization
                 if (nodePrefab != NodeSkins[i].Prefab)
                 {
                     NodeSkins[i] = null;
+                    removedNodeCount++;
                     continue;
                 }
 
@@ -163,14 +169,19 @@ namespace NetworkSkins.Skins.Serialization
             }
 
             // remove unused and invalid skins
+            var removedSkinCount = 0;
             for (var i = AppliedSkins.Count - 1; i >= 0; i--)
             {
                 if (AppliedSkins[i] == null || AppliedSkins[i].UseCount <= 0)
                 {
                     AppliedSkins[i]?.Destroy();
                     AppliedSkins.RemoveAt(i);
+                    removedSkinCount++;
                 }
             }
+
+            Debug.Log($"NS: Savegame data validation succesful! {removedSegmentCount} | {removedNodeCount} | {removedSkinCount}");
+            Debug.Log($"NS: {AppliedSkins.Count} applied skins");
         }
     }
 }

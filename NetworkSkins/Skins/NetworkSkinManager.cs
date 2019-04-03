@@ -51,7 +51,7 @@ namespace NetworkSkins.Skins
         #endregion
 
         #region Level Events
-        public void OnPreUpdateData(SimulationManager.UpdateMode updateMode)
+        public void OnPreUpdateData(SimulationManager.UpdateMode mode)
         {
             // TODO this is not really necessary if the OnLevelUnloading hook works correctly
             ClearSkinData();
