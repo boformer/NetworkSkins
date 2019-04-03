@@ -1,12 +1,14 @@
-﻿using UnityEngine;
+﻿using ColossalFramework.IO;
+using NetworkSkins.Skins.Serialization;
+using UnityEngine;
 
 namespace NetworkSkins.Skins
 {
     public class ColorModifier : NetworkSkinModifier
     {
-        public readonly Color Color;
+        public readonly Color32 Color;
 
-        public ColorModifier(Color color)
+        public ColorModifier(Color color) : base(NetworkSkinModifierType.Color)
         {
             Color = color;
         }
@@ -15,6 +17,22 @@ namespace NetworkSkins.Skins
         {
             skin.m_color = Color;
         }
+
+        #region Serialization
+        protected override void SerializeImpl(DataSerializer s)
+        {
+            s.WriteUInt8(Color.r);
+            s.WriteUInt8(Color.g);
+            s.WriteUInt8(Color.b);
+            s.WriteUInt8(Color.a);
+        }
+
+        public static ColorModifier DeserializeImpl(DataSerializer s, NetworkSkinLoadErrors errors)
+        {
+            var color = new Color32((byte)s.ReadUInt8(), (byte)s.ReadUInt8(), (byte)s.ReadUInt8(), (byte)s.ReadUInt8());
+            return new ColorModifier(color);
+        }
+        #endregion
 
         #region Equality
         protected bool Equals(ColorModifier other)

@@ -1,10 +1,13 @@
-﻿namespace NetworkSkins.Skins
+﻿using ColossalFramework.IO;
+using NetworkSkins.Skins.Serialization;
+
+namespace NetworkSkins.Skins
 {
     public class TerrainSurfaceModifier : NetworkSkinModifier
     {
         public readonly NetworkGroundType GroundType;
 
-        public TerrainSurfaceModifier(NetworkGroundType groundType)
+        public TerrainSurfaceModifier(NetworkGroundType groundType) : base(NetworkSkinModifierType.TerrainSurface)
         {
             GroundType = groundType;
         }
@@ -36,6 +39,20 @@
                 skin.m_createRuining = false;
             }
         }
+
+        #region Serialization
+        protected override void SerializeImpl(DataSerializer s)
+        {
+            s.WriteUInt8((uint)GroundType);
+        }
+
+        public static TerrainSurfaceModifier DeserializeImpl(DataSerializer s, NetworkSkinLoadErrors errors)
+        {
+            var groundType = (NetworkGroundType)s.ReadUInt8();
+
+            return new TerrainSurfaceModifier(groundType);
+        }
+        #endregion
 
         #region Equality
         protected bool Equals(TerrainSurfaceModifier other)

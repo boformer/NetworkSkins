@@ -1,4 +1,7 @@
-﻿namespace NetworkSkins.Skins
+﻿using ColossalFramework.IO;
+using NetworkSkins.Skins.Serialization;
+
+namespace NetworkSkins.Skins
 {
     public class TreeModifier : NetworkSkinModifier
     {
@@ -12,12 +15,10 @@
         public readonly float RighTreeRepeatDistance;
 
         public TreeModifier(
-            TreeInfo leftTree = null,
-            float leftTreeRepeatDistance = 20,
-            TreeInfo middleTree = null,
-            float middleTreeRepeatDistance = 20,
-            TreeInfo rightTree = null,
-            float righTreeRepeatDistance = 20)
+            TreeInfo leftTree = null, float leftTreeRepeatDistance = 20,
+            TreeInfo middleTree = null, float middleTreeRepeatDistance = 20,
+            TreeInfo rightTree = null, float righTreeRepeatDistance = 20
+            ) : base(NetworkSkinModifierType.Tree)
         {
             LeftTree = leftTree;
             LeftTreeRepeatDistance = leftTreeRepeatDistance;
@@ -27,7 +28,7 @@
             RighTreeRepeatDistance = righTreeRepeatDistance;
         }
 
-        public TreeModifier(TreeInfo tree = null, float repeatDistance = 20)
+        public TreeModifier(TreeInfo tree = null, float repeatDistance = 20) : base(NetworkSkinModifierType.Tree)
         {
             LeftTree = tree;
             LeftTreeRepeatDistance = repeatDistance;
@@ -95,12 +96,43 @@
             }
         }
 
-        #region Equality
+        #region Serialization
+        protected override void SerializeImpl(DataSerializer s)
+        {
+            s.WriteUniqueString(LeftTree?.name);
+            s.WriteFloat(LeftTreeRepeatDistance);
 
+            s.WriteUniqueString(MiddleTree?.name);
+            s.WriteFloat(MiddleTreeRepeatDistance);
+
+            s.WriteUniqueString(RightTree?.name);
+            s.WriteFloat(RighTreeRepeatDistance);
+        }
+
+        public static TreeModifier DeserializeImpl(DataSerializer s, NetworkSkinLoadErrors errors)
+        {
+            var leftTree = NetworkSkinSerializationUtils.FindPrefab<TreeInfo>(s.ReadUniqueString(), errors);
+            var leftTreeRepeatDistance = s.ReadFloat();
+
+            var middleTree = NetworkSkinSerializationUtils.FindPrefab<TreeInfo>(s.ReadUniqueString(), errors);
+            var middleTreeRepeatDistance = s.ReadFloat();
+
+            var rightTree = NetworkSkinSerializationUtils.FindPrefab<TreeInfo>(s.ReadUniqueString(), errors);
+            var rightTreeRepeatDistance = s.ReadFloat();
+
+            return new TreeModifier(
+                leftTree, leftTreeRepeatDistance,
+                middleTree, middleTreeRepeatDistance,
+                rightTree, rightTreeRepeatDistance
+            );
+        }
+        #endregion
+
+        #region Equality
         protected bool Equals(TreeModifier other)
         {
-            return Equals(LeftTree, other.LeftTree) && LeftTreeRepeatDistance.Equals(other.LeftTreeRepeatDistance) 
-                && Equals(MiddleTree, other.MiddleTree) && MiddleTreeRepeatDistance.Equals(other.MiddleTreeRepeatDistance) 
+            return Equals(LeftTree, other.LeftTree) && LeftTreeRepeatDistance.Equals(other.LeftTreeRepeatDistance)
+                && Equals(MiddleTree, other.MiddleTree) && MiddleTreeRepeatDistance.Equals(other.MiddleTreeRepeatDistance)
                 && Equals(RightTree, other.RightTree) && RighTreeRepeatDistance.Equals(other.RighTreeRepeatDistance);
         }
 
@@ -137,7 +169,6 @@
                 return hashCode;
             }
         }
-
         #endregion
     }
 }

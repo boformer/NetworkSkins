@@ -3,6 +3,8 @@ using ICities;
 using NetworkSkins.Skins;
 using UnityEngine;
 
+// TODO remove key and sample skins thing when the UI is working
+
 namespace NetworkSkins
 {
     public class NetworkSkinsLoading : ILoadingExtension
@@ -12,28 +14,21 @@ namespace NetworkSkins
         public void OnCreated(ILoading loading)
         {
             NetworkSkinManager.Ensure(); // TODO remove here? it's on OnEnabled
-            LoadingManager.instance.m_simulationDataReady += OnSimulationDataReady;
-        }
-
-        public void OnSimulationDataReady()
-        {
-           Debug.Log("OnSimulationDataReady"); // TODO
         }
 
         public void OnLevelLoaded(LoadMode mode)
         {
+            NetworkSkinManager.instance.OnLevelLoaded();
+
             ToggleSampleSkins();
         }
 
         public void OnLevelUnloading()
         {
-            NetworkSkinManager.instance.ClearActiveModifiers();
+            NetworkSkinManager.instance.OnLevelUnloading();
         }
 
-        public void OnReleased()
-        {
-            LoadingManager.instance.m_simulationDataReady -= OnSimulationDataReady;
-        }
+        public void OnReleased() {}
 
         public static void ToggleSampleSkins()
         {
