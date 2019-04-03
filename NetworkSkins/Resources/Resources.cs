@@ -1,19 +1,100 @@
-﻿using System.IO;
+﻿using ColossalFramework.UI;
+using System.IO;
 using System.Reflection;
 using UnityEngine;
-using ColossalFramework.UI;
 
 namespace NetworkSkins
 {
     public class Resources
     {
         public static Resources Atlas { get; private set; } = new Resources();
-        public static string DragHandle = "DragHandle";
+        public static string DragHandle =       "DragHandle";
+        public static string Star =             "Star";
+        public static string StarOutline =      "StarOutline";
+        public static string Locked =           "Locked";
+        public static string LockedPressed =    "LockedPressed";
+        public static string LockedHovered =    "LockedHovered";
+        public static string Unlocked =         "Unlocked";
+        public static string UnlockedPressed =  "UnlockedPressed";
+        public static string UnlockedHovered =  "UnlockedHovered";
+        public static string Tree =             "Tree";
+        public static string TreePressed =      "TreePressed";
+        public static string TreeHovered =      "TreeHovered";
+        public static string TreeFocused =      "TreeFocused";
+        public static string Light =            "Light";
+        public static string LightPressed =     "LightPressed";
+        public static string LightHovered =     "LightHovered";
+        public static string LightFocused =     "LightFocused";
+        public static string Pillar =           "Pillar";
+        public static string PillarPressed =    "PillarPressed";
+        public static string PillarHovered =    "PillarHovered";
+        public static string PillarFocused =    "PillarFocused";
+        public static string Catenary =         "Catenary";
+        public static string CatenaryPressed =  "CatenaryPressed";
+        public static string CatenaryHovered =  "CatenaryHovered";
+        public static string CatenaryFocused =  "CatenaryFocused";
+        public static string Color =            "Color";
+        public static string ColorPressed =     "ColorPressed";
+        public static string ColorHovered =     "ColorHovered";
+        public static string ColorFocused =     "ColorFocused";
+        public static string Surface =          "Surface";
+        public static string SurfacePressed =   "SurfacePressed";
+        public static string SurfaceHovered =   "SurfaceHovered";
+        public static string SurfaceFocused =   "SurfaceFocused";
+        public static string Eyedropper =       "Eyedropper";
+        public static string EyedropperPressed ="EyedropperPressed";
+        public static string EyedropperHovered ="EyedropperHovered";
+        public static string EyedropperFocused ="EyedropperFocused";
+        public static string Settings =         "Settings";
+        public static string SettingsPressed =  "SettingsPressed";
+        public static string SettingsHovered =  "SettingsHovered";
+        public static string SettingsFocused =  "SettingsFocused";
 
         private UITextureAtlas UITextureAtlas { get; set; }
         private string[] spriteNames = new string[] {
             "DragHandle",
-        };
+            "DragHandle",
+            "Star",
+            "StarOutline",
+            "Locked",
+            "LockedPressed",
+            "LockedHovered",
+            "Unlocked",
+            "UnlockedPressed",
+            "UnlockedHovered",
+            "Tree",
+            "TreePressed",
+            "TreeHovered",
+            "TreeFocused",
+            "Light",
+            "LightPressed",
+            "LightHovered",
+            "LightFocused",
+            "Pillar",
+            "PillarPressed",
+            "PillarHovered",
+            "PillarFocused",
+            "Catenary",
+            "CatenaryPressed",
+            "CatenaryHovered",
+            "CatenaryFocused",
+            "Color",
+            "ColorPressed",
+            "ColorHovered",
+            "ColorFocused",
+            "Surface",
+            "SurfacePressed",
+            "SurfaceHovered",
+            "SurfaceFocused",
+            "Eyedropper",
+            "EyedropperPressed",
+            "EyedropperHovered",
+            "EyedropperFocused",
+            "Settings",
+            "SettingsPressed",
+            "SettingsHovered",
+            "SettingsFocused"
+    };
 
         public Resources() {
             CreateAtlas();

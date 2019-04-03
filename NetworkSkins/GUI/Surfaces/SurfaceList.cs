@@ -13,7 +13,7 @@ namespace NetworkSkins.GUI
         protected override float RowHeight => 50.0f;
 
         protected override void RefreshUI(NetInfo netInfo) {
-
+            fastList.width = 378.0f;
         }
 
         protected override void OnFavouriteChanged(string itemID, bool favourite) {

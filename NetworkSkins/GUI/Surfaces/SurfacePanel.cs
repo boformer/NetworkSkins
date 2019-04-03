@@ -17,7 +17,7 @@ namespace NetworkSkins.GUI
 
         protected override void CreateList() {
             list = AddUIComponent<SurfaceList>();
-            list.Build(new Layout(new Vector2(390.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 0));
+            list.Build(new Layout(new Vector2(378.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 0));
         }
 
         protected override void OnPanelBuilt() {

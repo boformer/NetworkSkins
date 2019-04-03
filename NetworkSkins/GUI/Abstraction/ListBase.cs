@@ -18,6 +18,7 @@ namespace NetworkSkins.GUI
             CreateFastList(ListSize, RowHeight);
             SetupRowsData();
             BindEvents();
+            RefreshAfterBuild();
         }
 
         /// <summary>
@@ -45,6 +46,7 @@ namespace NetworkSkins.GUI
             fastList.size = size;
             fastList.RowHeight = rowHeight;
             fastList.CanSelect = true;
+            fastList.AutoHideScrollbar = true;
         }
 
         private void BindEvents() {

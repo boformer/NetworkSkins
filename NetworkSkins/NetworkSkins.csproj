@@ -64,6 +64,7 @@
     <Compile Include="GUI\Abstraction\ListPanelBase.cs" />
     <Compile Include="GUI\Catenaries\CatenaryList.cs" />
     <Compile Include="GUI\Catenaries\CatenaryPanel.cs" />
+    <Compile Include="GUI\Color\ColorPanel.cs" />
     <Compile Include="GUI\Pillars\PillarList.cs" />
     <Compile Include="GUI\Pillars\PillarPanel.cs" />
     <Compile Include="Locale\TranslationID.cs" />
@@ -154,9 +155,51 @@
     <Content Include="Patches\NetSegment\NetSegmentCalculateGroupDataPatch.txt" />
     <Content Include="Patches\NetSegment\NetSegmentPopulateGroupDataPatch.txt" />
     <Content Include="Patches\NetSegment\NetSegmentRenderInstancePatch.txt" />
+    <EmbeddedResource Include="Resources\Catenary.png" />
+    <EmbeddedResource Include="Resources\CatenaryFocused.png" />
+    <EmbeddedResource Include="Resources\CatenaryHovered.png" />
+    <EmbeddedResource Include="Resources\CatenaryPressed.png" />
+    <EmbeddedResource Include="Resources\Color.png" />
+    <EmbeddedResource Include="Resources\ColorFocused.png" />
+    <EmbeddedResource Include="Resources\ColorHovered.png" />
+    <EmbeddedResource Include="Resources\ColorPressed.png" />
+    <EmbeddedResource Include="Resources\Eyedropper.png" />
+    <EmbeddedResource Include="Resources\EyedropperFocused.png" />
+    <EmbeddedResource Include="Resources\EyedropperHovered.png" />
+    <EmbeddedResource Include="Resources\EyedropperPressed.png" />
+    <EmbeddedResource Include="Resources\Light.png" />
+    <EmbeddedResource Include="Resources\LightFocused.png" />
+    <EmbeddedResource Include="Resources\LightHovered.png" />
+    <EmbeddedResource Include="Resources\LightPressed.png" />
+    <EmbeddedResource Include="Resources\Locked.png" />
+    <EmbeddedResource Include="Resources\LockedHovered.png" />
+    <EmbeddedResource Include="Resources\LockedPressed.png" />
+    <EmbeddedResource Include="Resources\Pillar.png" />
+    <EmbeddedResource Include="Resources\PillarFocused.png" />
+    <EmbeddedResource Include="Resources\PillarHovered.png" />
+    <EmbeddedResource Include="Resources\PillarPressed.png" />
+    <EmbeddedResource Include="Resources\Settings.png" />
+    <EmbeddedResource Include="Resources\SettingsFocused.png" />
+    <EmbeddedResource Include="Resources\SettingsHovered.png" />
+    <EmbeddedResource Include="Resources\SettingsPressed.png" />
+    <EmbeddedResource Include="Resources\StarOutline.png" />
+    <EmbeddedResource Include="Resources\Star.png" />
+    <EmbeddedResource Include="Resources\Surface.png" />
+    <EmbeddedResource Include="Resources\SurfaceFocused.png" />
+    <EmbeddedResource Include="Resources\SurfaceHovered.png" />
+    <EmbeddedResource Include="Resources\SurfacePressed.png" />
+    <EmbeddedResource Include="Resources\Tree.png" />
+    <EmbeddedResource Include="Resources\TreeFocused.png" />
+    <EmbeddedResource Include="Resources\TreeHovered.png" />
+    <EmbeddedResource Include="Resources\TreePressed.png" />
+    <EmbeddedResource Include="Resources\Unlocked.png" />
+    <EmbeddedResource Include="Resources\UnlockedHovered.png" />
+    <EmbeddedResource Include="Resources\UnlockedPressed.png" />
     <EmbeddedResource Include="Resources\DragHandle.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\Buttons.psd" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if not exist "$(LOCALAPPDATA)\Colossal Order\Cities_Skylines\Addons\Mods\$(SolutionName)" mkdir "$(LOCALAPPDATA)\Colossal Order\Cities_Skylines\Addons\Mods\$(SolutionName)"

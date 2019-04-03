@@ -1,4 +1,5 @@
-﻿using ColossalFramework.UI;
+﻿using System;
+using ColossalFramework.UI;
 using NetworkSkins.Locale;
 using NetworkSkins.TranslationFramework;
 using UnityEngine;
@@ -7,46 +8,46 @@ namespace NetworkSkins.GUI
 {
     public class ButtonBar : PanelBase
     {
-        public delegate void TreesButtonClickedEventHandler();
+        public delegate void TreesButtonClickedEventHandler(UIButton focusedButton, UIButton[] buttons);
         public event TreesButtonClickedEventHandler EventTreesClicked;
 
-        public delegate void LightsButtonClickedEventHandler();
+        public delegate void LightsButtonClickedEventHandler(UIButton focusedButton, UIButton[] buttons);
         public event LightsButtonClickedEventHandler EventLightsClicked;
 
-        public delegate void SurfacesButtonClickedEventHandler();
+        public delegate void SurfacesButtonClickedEventHandler(UIButton focusedButton, UIButton[] buttons);
         public event SurfacesButtonClickedEventHandler EventSurfacesClicked;
 
-        public delegate void PillarsButtonClickedEventHandler();
+        public delegate void PillarsButtonClickedEventHandler(UIButton focusedButton, UIButton[] buttons);
         public event PillarsButtonClickedEventHandler EventPillarsClicked;
 
-        public delegate void CatenaryButtonClickedEventHandler();
+        public delegate void CatenaryButtonClickedEventHandler(UIButton focusedButton, UIButton[] buttons);
         public event CatenaryButtonClickedEventHandler EventCatenaryClicked;
 
-        public delegate void ColorButtonClickedEventHandler();
+        public delegate void ColorButtonClickedEventHandler(UIButton focusedButton, UIButton[] buttons);
         public event ColorButtonClickedEventHandler EventColorClicked;
 
-        public delegate void ExtrasButtonClickedEventHandler();
+        public delegate void ExtrasButtonClickedEventHandler(UIButton focusedButton, UIButton[] buttons);
         public event ExtrasButtonClickedEventHandler EventExtrasClicked;
 
-        public delegate void TreesButtonVisibilityChangedEventHandler(bool visible);
+        public delegate void TreesButtonVisibilityChangedEventHandler(UIButton focusedButton, UIButton[] buttons, bool visible);
         public event TreesButtonVisibilityChangedEventHandler EventTreesVisibilityChanged;
 
-        public delegate void LightsButtonVisibilityChangedEventHandler(bool visible);
+        public delegate void LightsButtonVisibilityChangedEventHandler(UIButton focusedButton, UIButton[] buttons, bool visible);
         public event LightsButtonVisibilityChangedEventHandler EventLightsVisibilityChanged;
 
-        public delegate void SurfacesButtonVisibilityChangedEventHandler(bool visible);
+        public delegate void SurfacesButtonVisibilityChangedEventHandler(UIButton focusedButton, UIButton[] buttons, bool visible);
         public event SurfacesButtonVisibilityChangedEventHandler EventSurfacesVisibilityChanged;
 
-        public delegate void PillarsButtonVisibilityChangedEventHandler(bool visible);
+        public delegate void PillarsButtonVisibilityChangedEventHandler(UIButton focusedButton, UIButton[] buttons, bool visible);
         public event PillarsButtonVisibilityChangedEventHandler EventPillarsVisibilityChanged;
 
-        public delegate void CatenaryButtonVisibilityChangedEventHandler(bool visible);
+        public delegate void CatenaryButtonVisibilityChangedEventHandler(UIButton focusedButton, UIButton[] buttons, bool visible);
         public event CatenaryButtonVisibilityChangedEventHandler EventCatenaryVisibilityChanged;
 
-        public delegate void ColorButtonVisibilityChangedEventHandler(bool visible);
+        public delegate void ColorButtonVisibilityChangedEventHandler(UIButton focusedButton, UIButton[] buttons, bool visible);
         public event ColorButtonVisibilityChangedEventHandler EventColorVisibilityChanged;
 
-        public delegate void ExtrasButtonVisibilityChangedEventHandler(bool visible);
+        public delegate void ExtrasButtonVisibilityChangedEventHandler(UIButton focusedButton, UIButton[] buttons, bool visible);
         public event ExtrasButtonVisibilityChangedEventHandler EventExtrasVisibilityChanged;
 
         private NetToolMonitor Monitor => NetToolMonitor.Instance;
@@ -57,6 +58,8 @@ namespace NetworkSkins.GUI
         private UIButton catenaryButton;
         private UIButton colorButton;
         private UIButton extrasButton;
+
+        private UIButton[] buttons;
 
         public override void Awake() {
             base.Awake();
@@ -100,89 +103,104 @@ namespace NetworkSkins.GUI
         private void CreateButtons() {
             Vector2 buttonSize = new Vector2(Layout.Size.x - Layout.Spacing * 2, size.x - Layout.Spacing * 2);
 
-            treesButton = CreateButton(buttonSize, "T", Translation.Instance.GetTranslation(TranslationID.TOOLTIP_TREES));
+            treesButton = CreateButton(buttonSize, backgroundSprite: Resources.Tree, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_TREES));
             treesButton.eventClicked += OnTreesButtonClicked;
             treesButton.eventVisibilityChanged += OnTreesButtonVisibilityChanged;
 
-            lightsButton = CreateButton(buttonSize, "L", Translation.Instance.GetTranslation(TranslationID.TOOLTIP_LIGHTS));
+            lightsButton = CreateButton(buttonSize, backgroundSprite: Resources.Light, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_LIGHTS));
             lightsButton.eventClicked += OnLightsButtonClicked;
             lightsButton.eventVisibilityChanged += OnLightsButtonVisibilityChanged;
 
-            surfacesButton = CreateButton(buttonSize, "S", Translation.Instance.GetTranslation(TranslationID.TOOLTIP_SIDEWALKS));
+            surfacesButton = CreateButton(buttonSize, backgroundSprite: Resources.Surface, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_SIDEWALKS));
             surfacesButton.eventClicked += OnSurfacesButtonClicked;
             surfacesButton.eventVisibilityChanged += OnSurfacesButtonVisibilityChanged;
 
-            pillarsButton = CreateButton(buttonSize, "P", Translation.Instance.GetTranslation(TranslationID.TOOLTIP_PILLARS));
+            pillarsButton = CreateButton(buttonSize, backgroundSprite: Resources.Pillar, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_PILLARS));
             pillarsButton.eventClicked += OnPillarsButtonClicked;
             pillarsButton.eventVisibilityChanged += OnPillarsButtonVisibilityChanged;
 
-            catenaryButton = CreateButton(buttonSize, "C", Translation.Instance.GetTranslation(TranslationID.TOOLTIP_CATENARY));
+            catenaryButton = CreateButton(buttonSize, backgroundSprite: Resources.Catenary, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_CATENARY));
             catenaryButton.eventClicked += OnCatenaryButtonClicked;
             catenaryButton.eventVisibilityChanged += OnCatenaryButtonVisibilityChanged;
 
-            colorButton = CreateButton(buttonSize, "C", Translation.Instance.GetTranslation(TranslationID.TOOLTIP_COLOR));
+            colorButton = CreateButton(buttonSize, backgroundSprite: Resources.Color, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_COLOR));
             colorButton.eventClicked += OnColorButtonClicked;
             colorButton.eventVisibilityChanged += OnColorButtonVisibilityChanged;
 
-            extrasButton = CreateButton(buttonSize, "E", Translation.Instance.GetTranslation(TranslationID.TOOLTIP_EXTRAS));
+            extrasButton = CreateButton(buttonSize, backgroundSprite: Resources.Settings, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_EXTRAS));
+            extrasButton.textPadding = new RectOffset(0, 0, 0, 8);
             extrasButton.eventClicked += OnExtrasButtonClicked;
             extrasButton.eventVisibilityChanged += OnExtraButtonVisibilityChanged;
+
+            CreateButtonArray();
+        }
+
+        private void CreateButtonArray() {
+            buttons = new UIButton[] {
+                treesButton,
+                lightsButton,
+                surfacesButton,
+                pillarsButton,
+                catenaryButton,
+                colorButton,
+                extrasButton
+            };
         }
 
         private void OnTreesButtonVisibilityChanged(UIComponent component, bool value) {
-            EventTreesVisibilityChanged?.Invoke(value);
+            EventTreesVisibilityChanged?.Invoke(component as UIButton, buttons, value);
         }
 
         private void OnLightsButtonVisibilityChanged(UIComponent component, bool value) {
-            EventLightsVisibilityChanged?.Invoke(value);
+            EventLightsVisibilityChanged?.Invoke(component as UIButton, buttons, value);
         }
 
         private void OnSurfacesButtonVisibilityChanged(UIComponent component, bool value) {
-            EventSurfacesVisibilityChanged?.Invoke(value);
+            EventSurfacesVisibilityChanged?.Invoke(component as UIButton, buttons, value);
         }
 
         private void OnPillarsButtonVisibilityChanged(UIComponent component, bool value) {
-            EventPillarsVisibilityChanged?.Invoke(value);
+            EventPillarsVisibilityChanged?.Invoke(component as UIButton, buttons, value);
         }
 
         private void OnCatenaryButtonVisibilityChanged(UIComponent component, bool value) {
-            EventCatenaryVisibilityChanged?.Invoke(value);
+            EventCatenaryVisibilityChanged?.Invoke(component as UIButton, buttons, value);
         }
 
         private void OnColorButtonVisibilityChanged(UIComponent component, bool value) {
-            EventColorVisibilityChanged?.Invoke(value);
+            EventColorVisibilityChanged?.Invoke(component as UIButton, buttons, value);
         }
 
         private void OnExtraButtonVisibilityChanged(UIComponent component, bool value) {
-            EventExtrasVisibilityChanged?.Invoke(value);
+            EventExtrasVisibilityChanged?.Invoke(component as UIButton, buttons, value);
         }
 
         private void OnTreesButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
-            EventTreesClicked?.Invoke();
+            EventTreesClicked?.Invoke(component as UIButton, buttons);
         }
 
         private void OnLightsButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
-            EventLightsClicked?.Invoke();
+            EventLightsClicked?.Invoke(component as UIButton, buttons);
         }
 
         private void OnSurfacesButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
-            EventSurfacesClicked?.Invoke();
+            EventSurfacesClicked?.Invoke(component as UIButton, buttons);
         }
 
         private void OnPillarsButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
-            EventPillarsClicked?.Invoke();
+            EventPillarsClicked?.Invoke(component as UIButton, buttons);
         }
 
         private void OnCatenaryButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
-            EventCatenaryClicked?.Invoke();
+            EventCatenaryClicked?.Invoke(component as UIButton, buttons);
         }
 
         private void OnColorButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
-            EventColorClicked?.Invoke();
+            EventColorClicked?.Invoke(component as UIButton, buttons);
         }
 
         private void OnExtrasButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
-            EventExtrasClicked?.Invoke();
+            EventExtrasClicked?.Invoke(component as UIButton, buttons);
         }
     }
 }

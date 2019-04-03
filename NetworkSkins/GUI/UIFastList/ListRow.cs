@@ -23,11 +23,11 @@ namespace NetworkSkins.GUI
         private UIPanel checkboxPanel;
         private UICheckBox favouriteCheckbox;
         private ListItem itemData;
-        private Color thumbnailBackgroundColor = new Color32(131, 141, 145, 255);
-        private Color evenColor = new Color32(67, 76, 80, 255); 
-        private Color oddColor = new Color32(57, 67, 70, 255);
-        private Color hoverColor = new Color32(131, 141, 145, 255);
-        private Color selectedColor = new Color32(88, 181, 205, 255);
+        private Color32 thumbnailBackgroundColor = new Color32(131, 141, 145, 255);
+        private Color32 evenColor = new Color32(67, 76, 80, 255); 
+        private Color32 oddColor = new Color32(57, 67, 70, 255);
+        private Color32 hoverColor = new Color32(131, 141, 145, 255);
+        private Color32 selectedColor = PanelBase.FocusedColor;
         private bool isRowOdd;
 
         public override void Build(Layout layout) {
@@ -63,14 +63,16 @@ namespace NetworkSkins.GUI
             checkboxPanel = AddUIComponent<UIPanel>();
             checkboxPanel.size = new Vector2(32.0f, 30.0f);
             favouriteCheckbox = checkboxPanel.AddUIComponent<UICheckBox>();
-            favouriteCheckbox.size = new Vector2(32f, 22f);
+            favouriteCheckbox.size = new Vector2(22f, 22f);
             favouriteCheckbox.relativePosition = new Vector3(0.0f, 4.0f);
             UISprite uncheckedSprite = favouriteCheckbox.AddUIComponent<UISprite>();
-            uncheckedSprite.spriteName = "UpgradeIconGrey";
+            uncheckedSprite.atlas = Resources.Atlas;
+            uncheckedSprite.spriteName = Resources.StarOutline;
             uncheckedSprite.size = favouriteCheckbox.size;
             uncheckedSprite.relativePosition = Vector3.zero;
             UISprite checkedSprite = uncheckedSprite.AddUIComponent<UISprite>();
-            checkedSprite.spriteName = "UpgradeIcon";
+            checkedSprite.atlas = Resources.Atlas;
+            checkedSprite.spriteName = Resources.Star;
             checkedSprite.size = favouriteCheckbox.size;
             checkedSprite.relativePosition = Vector2.zero;
             favouriteCheckbox.checkedBoxObject = checkedSprite;
@@ -136,7 +138,7 @@ namespace NetworkSkins.GUI
         }
 
         private void OnMouseEnterEvent(UIComponent component, UIMouseEventParameter eventParam) {
-            if (!itemData.IsSelected) color = hoverColor;
+            if (!itemData.IsSelected) color = new Color32((byte)((int)oddColor.r + 25), (byte)(oddColor.g + (byte)25), (byte)(oddColor.b + (byte)25), 255);
         }
 
         private void OnFavouriteCheckboxCheckChanged(UIComponent component, bool value) {

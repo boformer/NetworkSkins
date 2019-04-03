@@ -7,6 +7,8 @@ namespace NetworkSkins.GUI
     {
         public Layout Layout { get; set; }
         public int Spacing { get; set; }
+        public static Color32 GUIColor { get; set; } = new Color32(128, 128, 128, 255);
+        public static Color32 FocusedColor = new Color32(88, 181, 205, 255);
         private NetToolMonitor Monitor => NetToolMonitor.Instance;
 
 
@@ -39,12 +41,10 @@ namespace NetworkSkins.GUI
             button.hoveredBgSprite = string.Concat(backgroundSprite, "Hovered");
             button.pressedBgSprite = string.Concat(backgroundSprite, "Pressed");
             button.focusedBgSprite = string.Concat(backgroundSprite, isFocusable ? "Focused" : "");
-            button.disabledBgSprite = string.Concat(backgroundSprite, "Disabled");
             button.normalFgSprite = foregroundSprite;
             button.hoveredFgSprite = string.Concat(foregroundSprite, "Hovered");
             button.pressedFgSprite = string.Concat(foregroundSprite, "Pressed");
             button.focusedFgSprite = string.Concat(foregroundSprite, isFocusable ? "Focused" : "");
-            button.disabledFgSprite = string.Concat(foregroundSprite, "Disabled");
             if (atlas != null) button.atlas = atlas;
             
             return button;
