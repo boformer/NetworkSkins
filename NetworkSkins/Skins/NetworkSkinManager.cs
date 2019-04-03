@@ -24,11 +24,10 @@ namespace NetworkSkins.Skins
         public static NetworkSkin[] NodeSkins;
 
         // Skins that are currently in use on the map
-        public ReadOnlyCollection<NetworkSkin> AppliedSkins => _appliedSkins.AsReadOnly();
-        private List<NetworkSkin> _appliedSkins;
+        public readonly List<NetworkSkin> AppliedSkins = new List<NetworkSkin>();
 
         // Skins that are currently selected in the UI and will be applied to new segments and nodes
-        private Dictionary<NetInfo, NetworkSkin> _activeSkins;
+        private readonly Dictionary<NetInfo, NetworkSkin> _activeSkins = new Dictionary<NetInfo, NetworkSkin>();
 
         private NetworkSkinLoadErrors _loadErrors;
 
@@ -37,9 +36,6 @@ namespace NetworkSkins.Skins
         {
             SegmentSkins = new NetworkSkin[NetManager.MAX_SEGMENT_COUNT];
             NodeSkins = new NetworkSkin[NetManager.MAX_NODE_COUNT];
-
-            _appliedSkins = new List<NetworkSkin>();
-            _activeSkins = new Dictionary<NetInfo, NetworkSkin>();
         }
 
         public void OnDestroy()
@@ -48,6 +44,9 @@ namespace NetworkSkins.Skins
 
             NodeSkins = null;
             SegmentSkins = null;
+
+            AppliedSkins.Clear();
+            _activeSkins.Clear();
         }
         #endregion
 
@@ -66,7 +65,7 @@ namespace NetworkSkins.Skins
 
         public void OnSaveData()
         {
-            if (_appliedSkins.Count > 0)
+            if (AppliedSkins.Count > 0)
             {
                 SaveSkinData();
             }
@@ -112,7 +111,7 @@ namespace NetworkSkins.Skins
                     continue;
                 }
 
-                var matchingAppliedSkin = NetworkSkin.GetMatchingSkinFromList(_appliedSkins, prefab, modifiers);
+                var matchingAppliedSkin = NetworkSkin.GetMatchingSkinFromList(AppliedSkins, prefab, modifiers);
                 if (matchingAppliedSkin != null)
                 {
                     // exact same skin is already present in the city,
@@ -151,7 +150,7 @@ namespace NetworkSkins.Skins
         public void OnSegmentPlaced(ushort segment)
         {
             // The maximum number of applied skins is 65535!
-            if (_appliedSkins.Count >= ushort.MaxValue - 1)
+            if (AppliedSkins.Count >= ushort.MaxValue - 1)
             {
                 return;
             }
@@ -241,7 +240,7 @@ namespace NetworkSkins.Skins
             if (skin.UseCount == 0)
             {
                 Debug.Log($"Adding skin to applied skins: {skin}");
-                _appliedSkins.Add(skin);
+                AppliedSkins.Add(skin);
             }
 
             skin.UseCount += count;
@@ -260,7 +259,7 @@ namespace NetworkSkins.Skins
             if (skin.UseCount <= 0)
             {
                 Debug.Log($"Removing skin from applied skins: {skin}");
-                _appliedSkins.Remove(skin);
+                AppliedSkins.Remove(skin);
 
                 if (!IsActive(skin))
                 {
@@ -286,7 +285,7 @@ namespace NetworkSkins.Skins
                 byte[] data;
                 using (var stream = new MemoryStream())
                 {
-                    DataSerializer.Serialize(stream, DataSerializer.Mode.Memory, NetworkSkinData.Version, new NetworkSkinData());
+                    DataSerializer.Serialize(stream, DataSerializer.Mode.Memory, NetworkSkinDataContainer.Version, new NetworkSkinDataContainer());
                     data = stream.ToArray();
                 }
 
@@ -326,10 +325,10 @@ namespace NetworkSkins.Skins
                     return;
                 }
 
-                NetworkSkinData dataContainer;
+                NetworkSkinDataContainer dataContainer;
                 using (var stream = new MemoryStream(data))
                 {
-                    dataContainer = DataSerializer.Deserialize<NetworkSkinData>(stream, DataSerializer.Mode.Memory);
+                    dataContainer = DataSerializer.Deserialize<NetworkSkinDataContainer>(stream, DataSerializer.Mode.Memory);
                 }
 
                 _loadErrors = dataContainer.Errors;
@@ -354,11 +353,11 @@ namespace NetworkSkins.Skins
                 SegmentSkins[s] = null;
             }
 
-            foreach (var skin in _appliedSkins)
+            foreach (var skin in AppliedSkins)
             {
                 skin.Destroy();
             }
-            _appliedSkins.Clear();
+            AppliedSkins.Clear();
 
             foreach (var skin in _activeSkins.Values)
             {

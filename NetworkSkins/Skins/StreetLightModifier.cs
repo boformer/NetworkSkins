@@ -1,5 +1,6 @@
 ﻿using ColossalFramework.IO;
 using NetworkSkins.Net;
+using NetworkSkins.Skins.Serialization;
 
 namespace NetworkSkins.Skins
 {

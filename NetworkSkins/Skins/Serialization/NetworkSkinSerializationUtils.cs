@@ -1,4 +1,4 @@
-﻿namespace NetworkSkins.Skins
+﻿namespace NetworkSkins.Skins.Serialization
 {
     public static class NetworkSkinSerializationUtils
     {

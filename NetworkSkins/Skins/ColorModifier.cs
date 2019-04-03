@@ -1,4 +1,5 @@
 ﻿using ColossalFramework.IO;
+using NetworkSkins.Skins.Serialization;
 using UnityEngine;
 
 namespace NetworkSkins.Skins

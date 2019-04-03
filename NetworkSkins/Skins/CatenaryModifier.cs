@@ -1,5 +1,6 @@
 ﻿using ColossalFramework.IO;
 using NetworkSkins.Net;
+using NetworkSkins.Skins.Serialization;
 
 // TODO currently only removes catenaries
 // TODO add support for railway: https://gist.github.com/ronyx69/b4cd41742803eaeac6d19322384a0f4a

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using ColossalFramework.IO;
 using NetworkSkins.Net;
+using NetworkSkins.Skins.Serialization;
 using UnityEngine;
 // ReSharper disable InconsistentNaming
 

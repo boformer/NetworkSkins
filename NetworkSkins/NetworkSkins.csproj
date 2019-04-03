@@ -87,7 +87,7 @@
     <Compile Include="Patches\NetSegment\NetSegmentTerrainUpdatedPatch.cs" />
     <Compile Include="Skins\CatenaryModifier.cs" />
     <Compile Include="Skins\ColorModifier.cs" />
-    <Compile Include="Skins\Serialization\NetworkSkinData.cs" />
+    <Compile Include="Skins\Serialization\NetworkSkinDataContainer.cs" />
     <Compile Include="Skins\Serialization\NetworkSkinLoadErrors.cs" />
     <Compile Include="Skins\PillarModifier.cs" />
     <Compile Include="Skins\RoadDecorationModifier.cs" />

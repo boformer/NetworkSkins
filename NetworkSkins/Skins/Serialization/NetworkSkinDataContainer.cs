@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using ColossalFramework;
 using ColossalFramework.IO;
 
 namespace NetworkSkins.Skins.Serialization
 {
-    public class NetworkSkinData : IDataContainer
+    public class NetworkSkinDataContainer : IDataContainer
     {
         public const int Version = 0;
 
@@ -16,10 +17,10 @@ namespace NetworkSkins.Skins.Serialization
         public readonly NetworkSkin[] NodeSkins;
 
         // empty constructor is required!
-        public NetworkSkinData()
+        public NetworkSkinDataContainer()
         {
             // This is not nice, but this is how the IDataContainer contract works!
-            AppliedSkins = new List<NetworkSkin>(NetworkSkinManager.instance.AppliedSkins);
+            AppliedSkins = NetworkSkinManager.instance.AppliedSkins;
             SegmentSkins = NetworkSkinManager.SegmentSkins;
             NodeSkins = NetworkSkinManager.NodeSkins;
         }
@@ -107,6 +108,69 @@ namespace NetworkSkins.Skins.Serialization
             }
         }
 
-        public void AfterDeserialize(DataSerializer s) { }
+        // validation for the data:
+        // This is important if the player loaded the savegame without the mod for a while
+        public void AfterDeserialize(DataSerializer s)
+        {
+            var netManager = NetManager.instance;
+
+            // Remove invalid segment data
+            for (var i = 0; i < SegmentSkins.Length; i++)
+            {
+                if (SegmentSkins[i] == null)
+                {
+                    continue;
+                }
+
+                if (!netManager.m_segments.m_buffer[i].m_flags.IsFlagSet(NetSegment.Flags.Created))
+                {
+                    SegmentSkins[i] = null;
+                    continue;
+                }
+
+                var segmentPrefab = netManager.m_segments.m_buffer[i].Info;
+                if (segmentPrefab != SegmentSkins[i].Prefab)
+                {
+                    SegmentSkins[i] = null;
+                    continue;
+                }
+
+                SegmentSkins[i].UseCount++;
+            }
+
+            // remove invalid node data
+            for (var i = 0; i < NodeSkins.Length; i++)
+            {
+                if (NodeSkins[i] == null)
+                {
+                    continue;
+                }
+
+                if (!netManager.m_nodes.m_buffer[i].m_flags.IsFlagSet(NetNode.Flags.Created))
+                {
+                    NodeSkins[i] = null;
+                    continue;
+                }
+
+                var nodePrefab = netManager.m_nodes.m_buffer[i].Info;
+                if (nodePrefab != NodeSkins[i].Prefab)
+                {
+                    NodeSkins[i] = null;
+                    continue;
+                }
+
+                NodeSkins[i].UseCount++;
+            }
+
+            // remove unused and invalid skins
+            for (var i = AppliedSkins.Count - 1; i >= 0; i--)
+            {
+                if (AppliedSkins[i] == null || AppliedSkins[i].UseCount <= 0)
+                {
+                    AppliedSkins[i]?.Destroy();
+                    AppliedSkins.RemoveAt(i);
+                }
+            }
+        }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ColossalFramework.UI;
 using UnityEngine;
 
-namespace NetworkSkins.Skins
+namespace NetworkSkins.Skins.Serialization
 {
     public class NetworkSkinLoadErrors
     {
