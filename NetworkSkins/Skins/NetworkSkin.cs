@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
+using ColossalFramework.IO;
 using NetworkSkins.Net;
 using UnityEngine;
 // ReSharper disable InconsistentNaming
@@ -10,6 +12,11 @@ namespace NetworkSkins.Skins
 {
     public class NetworkSkin
     {
+        public readonly NetInfo Prefab;
+
+        public ReadOnlyCollection<NetworkSkinModifier> Modifiers => _modifiers.AsReadOnly();
+        private readonly List<NetworkSkinModifier> _modifiers;
+
         public BuildingInfo m_bridgePillarInfo;
 
         // Monorail bend pillar
@@ -34,14 +41,14 @@ namespace NetworkSkins.Skins
         public Color m_color;
 
         public bool m_hasWires;
-
-        public readonly NetInfo Prefab;
-        public readonly List<NetworkSkinModifier> Modifiers = new List<NetworkSkinModifier>();
-
+        
         public int UseCount = 0;
 
-        public NetworkSkin(NetInfo prefab)
+        public NetworkSkin(NetInfo prefab, List<NetworkSkinModifier> modifiers)
         {
+            Prefab = prefab ?? throw new ArgumentNullException(nameof(prefab));
+            _modifiers = modifiers;
+
             m_bridgePillarInfo = PillarUtils.GetDefaultBridgePillar(prefab);
             m_bridgePillarInfo2 = PillarUtils.GetDefaultBridgePillar2(prefab);
             m_bridgePillarInfo3 = PillarUtils.GetDefaultBridgePillar3(prefab);
@@ -68,7 +75,10 @@ namespace NetworkSkins.Skins
 
             UpdateHasWires();
 
-            Prefab = prefab ?? throw new ArgumentNullException(nameof(prefab));
+            foreach (var modifier in _modifiers)
+            {
+                modifier.Apply(this);
+            }
         }
 
         // TODO make sure that this is called when a skin is no longer needed
@@ -86,12 +96,6 @@ namespace NetworkSkins.Skins
                     }
                 }
             }
-        }
-
-        public void ApplyModifier(NetworkSkinModifier modifier)
-        {
-            modifier.Apply(this);
-            Modifiers.Add(modifier);
         }
 
         #region Modifications
@@ -195,9 +199,47 @@ namespace NetworkSkins.Skins
         }
         #endregion
 
+        #region Serialization
+        public void Serialize(DataSerializer s)
+        {
+            s.WriteUniqueString(Prefab.name);
+            s.WriteInt32(_modifiers.Count);
+            foreach (var modifier in _modifiers)
+            {
+                modifier.Serialize(s);
+            }
+        }
+
+        // nullable
+        public static NetworkSkin Deserialize(DataSerializer s, NetworkSkinLoadErrors errors)
+        {
+            var prefab = NetworkSkinSerializationUtils.FindPrefab<NetInfo>(s.ReadUniqueString(), errors);
+
+            var modifiersCount = s.ReadInt32();
+            var modifiers = new List<NetworkSkinModifier>();
+            for (var m = 0; m < modifiersCount; m++)
+            {
+                var modifier = NetworkSkinModifier.Deserialize(s, errors);
+                if (modifier != null)
+                {
+                    modifiers.Add(modifier);
+                }
+            }
+
+            // We are checking if the prefab is null after all the modifiers are deserialized!
+            // This is important for the deserialization of the next items!
+            if (prefab == null)
+            {
+                return null;
+            }
+
+            return new NetworkSkin(prefab, modifiers);
+        }
+        #endregion
+
         public override string ToString()
         {
-            return $"Skin for {Prefab.name} with {Modifiers.Count} modifiers (used {UseCount} times)";
+            return $"Skin for {Prefab.name} with {_modifiers.Count} modifiers (used {UseCount} times)";
         }
 
         // nullable
@@ -205,7 +247,7 @@ namespace NetworkSkins.Skins
         {
             foreach (var skin in skins)
             {
-                if (skin.Prefab == prefab && skin.Modifiers.SequenceEqual(modifiers))
+                if (skin.Prefab == prefab && skin._modifiers.SequenceEqual(modifiers))
                 {
                     return skin;
                 }
@@ -214,8 +256,16 @@ namespace NetworkSkins.Skins
             return null;
         }
 
-        #region Skin Structures
-        internal class NetworkSkinLane : NetInfo.Lane
+        private static void CopyProperties(object target, object origin)
+        {
+            var fields = target.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public);
+            foreach (var fieldInfo in fields)
+            {
+                fieldInfo.SetValue(target, fieldInfo.GetValue(origin));
+            }
+        }
+
+        private class NetworkSkinLane : NetInfo.Lane
         {
             public NetworkSkinLane(NetInfo.Lane originalLane)
             {
@@ -231,15 +281,5 @@ namespace NetworkSkins.Skins
                 }
             }
         }
-
-        private static void CopyProperties(object target, object origin)
-        {
-            var fields = target.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public);
-            foreach (var fieldInfo in fields)
-            {
-                fieldInfo.SetValue(target, fieldInfo.GetValue(origin));
-            }
-        }
-        #endregion
     }
 }

@@ -1,15 +1,17 @@
-﻿using NetworkSkins.Net;
+﻿using ColossalFramework.IO;
+using NetworkSkins.Net;
 
 // TODO currently only removes catenaries
 // TODO add support for railway: https://gist.github.com/ronyx69/b4cd41742803eaeac6d19322384a0f4a
 
+// TODO change namespace of all modifiers after merge with GUI branch!
 namespace NetworkSkins.Skins
 {
     public class CatenaryModifier : NetworkSkinModifier
     {
         public readonly PropInfo Catenary;
 
-        public CatenaryModifier(PropInfo catenary)
+        public CatenaryModifier(PropInfo catenary) : base(NetworkSkinModifierType.Catenary)
         {
             Catenary = catenary;
         }
@@ -77,6 +79,20 @@ namespace NetworkSkins.Skins
                 }
             }
         }
+
+        #region Serialization
+        protected override void SerializeImpl(DataSerializer s)
+        {
+            s.WriteUniqueString(Catenary?.name);
+        }
+
+        public static CatenaryModifier DeserializeImpl(DataSerializer s, NetworkSkinLoadErrors errors)
+        {
+            var catenary = NetworkSkinSerializationUtils.FindPrefab<PropInfo>(s.ReadUniqueString(), errors);
+
+            return new CatenaryModifier(catenary);
+        }
+        #endregion
 
         #region Equality
         protected bool Equals(CatenaryModifier other)

@@ -1,4 +1,5 @@
-﻿using NetworkSkins.Net;
+﻿using ColossalFramework.IO;
+using NetworkSkins.Net;
 
 namespace NetworkSkins.Skins
 {
@@ -8,7 +9,7 @@ namespace NetworkSkins.Skins
 
         public readonly float RepeatDistance;
 
-        public StreetLightModifier(PropInfo streetLight, float repeatDistance = 40)
+        public StreetLightModifier(PropInfo streetLight, float repeatDistance = 40) : base(NetworkSkinModifierType.StreetLight)
         {
             StreetLight = streetLight;
             RepeatDistance = repeatDistance;
@@ -37,6 +38,22 @@ namespace NetworkSkins.Skins
                 }
             }
         }
+
+        #region Serialization
+        protected override void SerializeImpl(DataSerializer s)
+        {
+            s.WriteUniqueString(StreetLight?.name);
+            s.WriteFloat(RepeatDistance);
+        }
+
+        public static StreetLightModifier DeserializeImpl(DataSerializer s, NetworkSkinLoadErrors errors)
+        {
+            var streetLight = NetworkSkinSerializationUtils.FindPrefab<PropInfo>(s.ReadUniqueString(), errors);
+            var repeatDistance = s.ReadFloat();
+
+            return new StreetLightModifier(streetLight, repeatDistance);
+        }
+        #endregion
 
         #region Equality
         protected bool Equals(StreetLightModifier other)

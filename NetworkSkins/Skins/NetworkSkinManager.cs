@@ -1,5 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using ColossalFramework;
+using ColossalFramework.IO;
+using ColossalFramework.UI;
+using NetworkSkins.Skins.Serialization;
 using UnityEngine;
 
 // TODO same structure as old SegmentDataManager for compat with other mods
@@ -9,38 +15,71 @@ namespace NetworkSkins.Skins
 {
     public class NetworkSkinManager : Singleton<NetworkSkinManager>
     {
+        public const string DataKey = "NetworkSkins_APPLIED_SKINS";
+
         // stores which data is applied to a network segment
         // this is an array field for high lookup performance
         // can contain null values!
-        public static NetworkSkin[] SegmentSkins = new NetworkSkin[NetManager.MAX_SEGMENT_COUNT];
-        public static NetworkSkin[] NodeSkins = new NetworkSkin[NetManager.MAX_NODE_COUNT];
+        public static NetworkSkin[] SegmentSkins;
+        public static NetworkSkin[] NodeSkins;
 
         // Skins that are currently in use on the map
-        private readonly List<NetworkSkin> _appliedSkins = new List<NetworkSkin>();
+        public ReadOnlyCollection<NetworkSkin> AppliedSkins => _appliedSkins.AsReadOnly();
+        private List<NetworkSkin> _appliedSkins;
 
         // Skins that are currently selected in the UI and will be applied to new segments and nodes
-        private readonly Dictionary<NetInfo, NetworkSkin> _activeSkins = new Dictionary<NetInfo, NetworkSkin>();
+        private Dictionary<NetInfo, NetworkSkin> _activeSkins;
+
+        private NetworkSkinLoadErrors _loadErrors;
 
         #region Lifecycle
         public void Awake()
         {
             SegmentSkins = new NetworkSkin[NetManager.MAX_SEGMENT_COUNT];
             NodeSkins = new NetworkSkin[NetManager.MAX_NODE_COUNT];
+
+            _appliedSkins = new List<NetworkSkin>();
+            _activeSkins = new Dictionary<NetInfo, NetworkSkin>();
         }
 
         public void OnDestroy()
         {
-            for (var n = 0; n < NetworkSkinManager.NodeSkins.Length; n++)
-            {
-                NetworkSkinManager.NodeSkins[n]?.Destroy();
-                NetworkSkinManager.NodeSkins[n] = null;
-            }
+            ClearSkinData();
 
-            for (var s = 0; s < NetworkSkinManager.SegmentSkins.Length; s++)
+            NodeSkins = null;
+            SegmentSkins = null;
+        }
+        #endregion
+
+        #region Level Events
+        public void OnPreUpdateData(SimulationManager.UpdateMode updateMode)
+        {
+            // TODO this is not really necessary if the OnLevelUnloading hook works correctly
+            ClearSkinData();
+            LoadSkinData();
+        }
+
+        public void OnLevelLoaded()
+        {
+            _loadErrors?.MaybeShowErrors();
+        }
+
+        public void OnSaveData()
+        {
+            if (_appliedSkins.Count > 0)
             {
-                NetworkSkinManager.SegmentSkins[s]?.Destroy();
-                NetworkSkinManager.SegmentSkins[s] = null;
+                SaveSkinData();
             }
+            else
+            {
+                EraseSkinData();
+            }
+        }
+
+        public void OnLevelUnloading()
+        {
+            _loadErrors = null;
+            ClearSkinData();
         }
         #endregion
 
@@ -83,12 +122,7 @@ namespace NetworkSkins.Skins
                 }
 
                 // generate and use a new skin!
-                var skin = new NetworkSkin(prefab);
-                foreach (var modifier in modifiers)
-                {
-                    skin.ApplyModifier(modifier);
-                }
-                _activeSkins[prefab] = skin;
+                _activeSkins[prefab] = new NetworkSkin(prefab, modifiers);
             }
 
             // Destroy all unused skins that are not present in the city
@@ -116,6 +150,12 @@ namespace NetworkSkins.Skins
         #region Segment/Node Events
         public void OnSegmentPlaced(ushort segment)
         {
+            // The maximum number of applied skins is 65535!
+            if (_appliedSkins.Count >= ushort.MaxValue - 1)
+            {
+                return;
+            }
+
             var netManager = NetManager.instance;
             var startNode = netManager.m_segments.m_buffer[segment].m_startNode;
             var endNode = netManager.m_segments.m_buffer[segment].m_endNode;
@@ -235,5 +275,96 @@ namespace NetworkSkins.Skins
             return _activeSkins.TryGetValue(skin.Prefab, out var activeSkin) && Equals(activeSkin, skin);
         }
         #endregion
+
+        #region Serialization
+        private void SaveSkinData()
+        {
+            Debug.Log("NS: Saving skin data!");
+
+            try
+            {
+                byte[] data;
+                using (var stream = new MemoryStream())
+                {
+                    DataSerializer.Serialize(stream, DataSerializer.Mode.Memory, NetworkSkinData.Version, new NetworkSkinData());
+                    data = stream.ToArray();
+                }
+
+                SimulationManager.instance.m_SerializableDataWrapper.SaveData(DataKey, data);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("NS: Failed to save skin data!");
+                Debug.LogException(e);
+
+                UIView.library.ShowModal<ExceptionPanel>("ExceptionPanel").SetMessage(
+                    "Network Skins",
+                    "Error while saving skin data! If you leave the game now, all network skins will be lost forever!\n\n" +
+                    $"{e}",
+                    true
+                );
+            }
+        }
+
+        private void EraseSkinData()
+        {
+            Debug.Log("NS: Erasing skin data!");
+
+            SimulationManager.instance.m_SerializableDataWrapper.EraseData(DataKey);
+        }
+
+        private void LoadSkinData()
+        {
+            Debug.Log("NS: Loading skin data!");
+
+            try
+            {
+                var data = SimulationManager.instance.m_SerializableDataWrapper.LoadData(DataKey);
+                if (data == null)
+                {
+                    Debug.Log("NS: No data found!");
+                    return;
+                }
+
+                NetworkSkinData dataContainer;
+                using (var stream = new MemoryStream(data))
+                {
+                    dataContainer = DataSerializer.Deserialize<NetworkSkinData>(stream, DataSerializer.Mode.Memory);
+                }
+
+                _loadErrors = dataContainer.Errors;
+            }
+            catch (Exception e)
+            {
+                _loadErrors = new NetworkSkinLoadErrors();
+                _loadErrors.MajorException(e);
+            }
+        }
+        #endregion
+
+        private void ClearSkinData()
+        {
+            for (var n = 0; n < NetworkSkinManager.NodeSkins.Length; n++)
+            {
+                NodeSkins[n] = null;
+            }
+
+            for (var s = 0; s < NetworkSkinManager.SegmentSkins.Length; s++)
+            {
+                SegmentSkins[s] = null;
+            }
+
+            foreach (var skin in _appliedSkins)
+            {
+                skin.Destroy();
+            }
+            _appliedSkins.Clear();
+
+            foreach (var skin in _activeSkins.Values)
+            {
+                skin.Destroy();
+            }
+            _activeSkins.Clear();
+        }
     }
 }

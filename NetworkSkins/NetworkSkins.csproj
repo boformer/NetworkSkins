@@ -77,6 +77,7 @@
     <Compile Include="Patches\PedestrianBridgeAI\PedestrianBridgeAiGetNodeBuildingPatch.cs" />
     <Compile Include="Patches\PillarPatcher.cs" />
     <Compile Include="Patches\RoadBridgeAI\RoadBridgeAiGetNodeBuildingPatch.cs" />
+    <Compile Include="Patches\SimulationManager\SimulationManagerManagersUpdateDataPatch.cs" />
     <Compile Include="Patches\TrainTrackBridgeAI\TrainTrackBridgeAiGetNodeBuildingPatch.cs" />
     <Compile Include="Patches\TranspilerUtils.cs" />
     <Compile Include="Patches\TerrainSurfacePatcher.cs" />
@@ -86,8 +87,11 @@
     <Compile Include="Patches\NetSegment\NetSegmentTerrainUpdatedPatch.cs" />
     <Compile Include="Skins\CatenaryModifier.cs" />
     <Compile Include="Skins\ColorModifier.cs" />
+    <Compile Include="Skins\Serialization\NetworkSkinData.cs" />
+    <Compile Include="Skins\Serialization\NetworkSkinLoadErrors.cs" />
     <Compile Include="Skins\PillarModifier.cs" />
     <Compile Include="Skins\RoadDecorationModifier.cs" />
+    <Compile Include="Skins\Serialization\NetworkSkinSerializationUtils.cs" />
     <Compile Include="Skins\TreeModifier.cs" />
     <Compile Include="Skins\TerrainSurfaceModifier.cs" />
     <Compile Include="Skins\NetworkSkinManager.cs" />
