@@ -1,6 +1,4 @@
-﻿using ColossalFramework.IO;
-
-namespace NetworkSkins.Skins
+﻿namespace NetworkSkins.Skins.Modifiers
 {
     /*
     public class RoadDecorationModifier : NetworkSkinModifier

@@ -86,15 +86,15 @@
     <Compile Include="Patches\NetNode\NetNodeCalculateNodePatch.cs" />
     <Compile Include="Patches\NetNode\NetNodeTerrainUpdatedPatch.cs" />
     <Compile Include="Patches\NetSegment\NetSegmentTerrainUpdatedPatch.cs" />
-    <Compile Include="Skins\CatenaryModifier.cs" />
-    <Compile Include="Skins\ColorModifier.cs" />
+    <Compile Include="Skins\Modifiers\CatenaryModifier.cs" />
+    <Compile Include="Skins\Modifiers\ColorModifier.cs" />
     <Compile Include="Skins\Serialization\NetworkSkinDataContainer.cs" />
     <Compile Include="Skins\Serialization\NetworkSkinLoadErrors.cs" />
-    <Compile Include="Skins\PillarModifier.cs" />
-    <Compile Include="Skins\RoadDecorationModifier.cs" />
+    <Compile Include="Skins\Modifiers\PillarModifier.cs" />
+    <Compile Include="Skins\Modifiers\RoadDecorationModifier.cs" />
     <Compile Include="Skins\Serialization\NetworkSkinSerializationUtils.cs" />
-    <Compile Include="Skins\TreeModifier.cs" />
-    <Compile Include="Skins\TerrainSurfaceModifier.cs" />
+    <Compile Include="Skins\Modifiers\TreeModifier.cs" />
+    <Compile Include="Skins\Modifiers\TerrainSurfaceModifier.cs" />
     <Compile Include="Skins\NetworkSkinManager.cs" />
     <Compile Include="Skins\NetworkSkin.cs" />
     <Compile Include="NetworkSkinsLoading.cs" />
@@ -105,7 +105,7 @@
     <Compile Include="Patches\NetSegment\NetSegmentRenderInstancePatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Skins\NetworkSkinModifier.cs" />
-    <Compile Include="Skins\StreetLightModifier.cs" />
+    <Compile Include="Skins\Modifiers\StreetLightModifier.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Patches\NetNode\NetNodeCalculateGroupDataPatch.txt" />

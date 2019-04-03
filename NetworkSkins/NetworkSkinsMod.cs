@@ -9,7 +9,6 @@ namespace NetworkSkins
 {
     // TODO remove all debug logs
     // TODO ped crossings
-    // TODO serialization
     // TODO backup serialization outside of the savegame (or some other ways to prevent data loss!)
     // TODO proof-read harmony.log before release
     // TODO backup current assembly
@@ -32,8 +31,8 @@ namespace NetworkSkins
             if (_harmony == null)
             {
                 Debug.Log("NetworkSkins Patching...");
-                HarmonyInstance.SELF_PATCHING = false;
-                HarmonyInstance.DEBUG = true; // TODO remove
+                //HarmonyInstance.SELF_PATCHING = false;
+                //HarmonyInstance.DEBUG = true; // TODO remove
                 // TODO compile release version of harmony dll
                 _harmony = HarmonyInstance.Create(HarmonyId);
                 try // TODO maybe remove try catch to make clear something went wrong

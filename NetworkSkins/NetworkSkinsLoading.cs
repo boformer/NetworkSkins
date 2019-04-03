@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using ICities;
 using NetworkSkins.Skins;
+using NetworkSkins.Skins.Modifiers;
 using UnityEngine;
 
 // TODO remove key and sample skins thing when the UI is working

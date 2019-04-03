@@ -2,7 +2,7 @@
 using NetworkSkins.Net;
 using NetworkSkins.Skins.Serialization;
 
-namespace NetworkSkins.Skins
+namespace NetworkSkins.Skins.Modifiers
 {
     public class StreetLightModifier : NetworkSkinModifier
     {

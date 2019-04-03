@@ -6,7 +6,7 @@ using NetworkSkins.Skins.Serialization;
 // TODO add support for railway: https://gist.github.com/ronyx69/b4cd41742803eaeac6d19322384a0f4a
 
 // TODO change namespace of all modifiers after merge with GUI branch!
-namespace NetworkSkins.Skins
+namespace NetworkSkins.Skins.Modifiers
 {
     public class CatenaryModifier : NetworkSkinModifier
     {
