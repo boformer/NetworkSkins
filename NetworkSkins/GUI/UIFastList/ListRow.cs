@@ -1,8 +1,8 @@
 ﻿using ColossalFramework.UI;
 using NetworkSkins.Locale;
-using NetworkSkins.Skins;
 using NetworkSkins.TranslationFramework;
 using System;
+using NetworkSkins.Skins.Modifiers;
 using UnityEngine;
 
 namespace NetworkSkins.GUI
