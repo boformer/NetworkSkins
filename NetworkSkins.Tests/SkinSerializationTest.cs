@@ -15,7 +15,7 @@ namespace NetworkSkins.Tests
         {
             var prefabs = TestPrefabCollection.CreateInstance();
 
-            Debug.Log("prefabs found");
+            TestUtils.LogTest("prefabs found");
 
             var skin = new NetworkSkin(prefabs.TestNet, new List<NetworkSkinModifier>
             {
@@ -27,7 +27,7 @@ namespace NetworkSkins.Tests
                 new CatenaryModifier(prefabs.TestProp),
             }) {UseCount = 2};
 
-            Debug.Log("skin created");
+            TestUtils.LogTest("skin created");
 
             var dataContainer = new TestNetworkSkinDataContainer
             {
@@ -38,7 +38,7 @@ namespace NetworkSkins.Tests
             dataContainer.TestSegmentSkins[TestNetManager.TestSegment] = skin;
             dataContainer.TestNodeSkins[TestNetManager.TestNode] = skin;
 
-            Debug.Log("dataContainer created");
+            TestUtils.LogTest("dataContainer created");
 
             // Serialize
             byte[] data;
@@ -48,7 +48,7 @@ namespace NetworkSkins.Tests
                 data = stream.ToArray();
             }
 
-            Debug.Log("dataContainer serialized");
+            TestUtils.LogTest("dataContainer serialized");
 
             // Deserialize
             TestNetworkSkinDataContainer result;
@@ -57,34 +57,34 @@ namespace NetworkSkins.Tests
                 result = DataSerializer.Deserialize<TestNetworkSkinDataContainer>(stream, DataSerializer.Mode.Memory);
             }
 
-            Debug.Log("result.Errors.PrefabErrors.Count == 0");
-            Assert.IsTrue(result.Errors.PrefabErrors.Count == 0);
+            TestUtils.LogTest("result.Errors.PrefabErrors.Count == 0");
+            TestUtils.AssertTrue(result.Errors.PrefabErrors.Count == 0);
 
-            Debug.Log("result.TestAppliedSkins.Count == dataContainer.TestAppliedSkins.Count");
-            Assert.IsTrue(result.TestAppliedSkins.Count == dataContainer.TestAppliedSkins.Count);
+            TestUtils.LogTest("result.TestAppliedSkins.Count == dataContainer.TestAppliedSkins.Count");
+            TestUtils.AssertTrue(result.TestAppliedSkins.Count == dataContainer.TestAppliedSkins.Count);
 
             var resultSkin = result.TestAppliedSkins[0];
 
-            Debug.Log("resultSkin.UseCount == skin.UseCount");
-            Assert.IsTrue(resultSkin.UseCount == skin.UseCount);
+            TestUtils.LogTest("resultSkin.UseCount == skin.UseCount");
+            TestUtils.AssertTrue(resultSkin.UseCount == skin.UseCount);
 
-            Debug.Log("resultSkin.Prefab == skin.Prefab");
-            Assert.IsTrue(resultSkin.Prefab == skin.Prefab);
+            TestUtils.LogTest("resultSkin.Prefab == skin.Prefab");
+            TestUtils.AssertTrue(resultSkin.Prefab == skin.Prefab);
 
-            Debug.Log("resultSkin.Modifiers.SequenceEqual(skin.Modifiers)");
-            Assert.IsTrue(resultSkin.Modifiers.SequenceEqual(skin.Modifiers));
+            TestUtils.LogTest("resultSkin.Modifiers.SequenceEqual(skin.Modifiers)");
+            TestUtils.AssertTrue(resultSkin.Modifiers.SequenceEqual(skin.Modifiers));
 
-            Debug.Log("result.TestNodeSkins.Count(s => s == resultSkin) == 1");
-            Assert.IsTrue(result.TestSegmentSkins[TestNetManager.TestSegment] == resultSkin);
+            TestUtils.LogTest("result.TestNodeSkins.Count(s => s == resultSkin) == 1");
+            TestUtils.AssertTrue(result.TestSegmentSkins[TestNetManager.TestSegment] == resultSkin);
 
-            Debug.Log("result.TestSegmentSkins.Count(s => s != null) == 1");
-            Assert.IsTrue(result.TestSegmentSkins.Count(s => s != null) == 1);
+            TestUtils.LogTest("result.TestSegmentSkins.Count(s => s != null) == 1");
+            TestUtils.AssertTrue(result.TestSegmentSkins.Count(s => s != null) == 1);
 
-            Debug.Log("result.TestNodeSkins.Count(s => s == resultSkin) == 1");
-            Assert.IsTrue(result.TestNodeSkins[TestNetManager.TestNode] == resultSkin);
+            TestUtils.LogTest("result.TestNodeSkins.Count(s => s == resultSkin) == 1");
+            TestUtils.AssertTrue(result.TestNodeSkins[TestNetManager.TestNode] == resultSkin);
 
-            Debug.Log("result.TestNodeSkins.Count(s => s != null) == 1");
-            Assert.IsTrue(result.TestNodeSkins.Count(s => s != null) == 1);
+            TestUtils.LogTest("result.TestNodeSkins.Count(s => s != null) == 1");
+            TestUtils.AssertTrue(result.TestNodeSkins.Count(s => s != null) == 1);
 
             TestPrefabCollection.DestroyInstance();
         }

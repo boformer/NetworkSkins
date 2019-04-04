@@ -17,11 +17,11 @@ namespace NetworkSkins.Tests
             try
             {
                 new SkinSerializationTest().TestSerialization();
-                Debug.Log("Tests Successful!");
+                TestUtils.LogTest("Tests Successful!");
             }
             catch (Exception e)
             {
-                Debug.LogError("Tests Failed!");
+                TestUtils.LogTest("Tests Failed!");
                 throw e;
             }
         }

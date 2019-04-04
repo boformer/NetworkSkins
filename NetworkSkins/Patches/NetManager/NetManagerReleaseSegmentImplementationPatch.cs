@@ -31,8 +31,6 @@ namespace NetworkSkins.Patches.NetManager
             var caller1 = new System.Diagnostics.StackFrame(2).GetMethod();
             var caller2 = new System.Diagnostics.StackFrame(3).GetMethod();
 
-            // Debug.Log($"ReleaseSegment: {caller1.Name}");
-
             if (caller1.Name == "ReleaseSegment" || caller1.Name.StartsWith("ReleaseSegment_Patch"))
             {
                 // segment that was modified because user added network, keep data until replacement segments were created
@@ -41,7 +39,6 @@ namespace NetworkSkins.Patches.NetManager
                     // Delete data of last moved segment
                     if (MoveMiddleNode_releasedSegment > 0)
                     {
-                        Debug.Log("MoveMiddleNode_releasedSegment overflow!");
                         NetworkSkinManager.instance.OnSegmentRelease(MoveMiddleNode_releasedSegment);
                     }
 
@@ -54,7 +51,6 @@ namespace NetworkSkins.Patches.NetManager
                     // Delete data of last splitted segment
                     if (SplitSegment_releasedSegment > 0)
                     {
-                        Debug.Log("SplitSegment_releasedSegment overflow!");
                         NetworkSkinManager.instance.OnSegmentRelease(SplitSegment_releasedSegment);
                     }
 

@@ -38,8 +38,6 @@ namespace NetworkSkins.Patches.NetNode
                     }
                 }
 
-                Debug.Log($"CalculateNode: previous: {previousSkin}, next: {skinWithHighestPrio}");
-
                 if (previousSkin != skinWithHighestPrio)
                 {
                     NetworkSkinManager.instance.UpdateNodeSkin(nodeID, skinWithHighestPrio);

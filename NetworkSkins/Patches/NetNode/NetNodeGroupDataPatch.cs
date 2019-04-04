@@ -112,7 +112,7 @@ namespace NetworkSkins.Patches.NetNode
             if (segmentLocalVarLdloc == null || segment2LocalVarLdloc == null || nodeLocalVarLdLoc == null)
             {
                 Debug.LogError("NetNodeGroupDataPatch: Necessary field for junction not found. Cancelling transpiler!");
-                Debug.Log($"{segmentLocalVarLdloc}, {segment2LocalVarLdloc}, {nodeLocalVarLdLoc}");
+                Debug.LogError($"{segmentLocalVarLdloc}, {segment2LocalVarLdloc}, {nodeLocalVarLdLoc}");
                 return originalCodes;
             }
 
@@ -148,7 +148,7 @@ namespace NetworkSkins.Patches.NetNode
                     codes[insertionPosition].labels.Clear();
 
                     codes.InsertRange(insertionPosition, renderCheckInstructions);
-                    Debug.Log("Junction render check inserted");
+                    TranspilerUtils.LogDebug("Junction render check inserted");
 
                     index = insertionPosition + renderCheckInstructions.Length;
                     junctionRenderCheckInserted = true;
@@ -233,7 +233,7 @@ namespace NetworkSkins.Patches.NetNode
                     codes[insertionPosition].labels.Clear();
 
                     codes.InsertRange(insertionPosition, renderCheckInstructions);
-                    Debug.Log("Bend render check inserted");
+                    TranspilerUtils.LogDebug("Bend render check inserted");
 
                     index = insertionPosition + renderCheckInstructions.Length;
                     bendRenderCheckInserted = true;

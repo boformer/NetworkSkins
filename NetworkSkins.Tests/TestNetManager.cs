@@ -19,7 +19,7 @@ namespace NetworkSkins.Tests
 
         public bool IsSegmentCreated(ushort segment)
         {
-            Debug.Log($"IsSegmentCreated {segment}");
+            TestUtils.LogTest($"IsSegmentCreated {segment}");
             return segment == TestSegment || segment == TestSegment2;
         }
 
@@ -37,7 +37,7 @@ namespace NetworkSkins.Tests
 
         public bool IsNodeCreated(ushort node)
         {
-            Debug.Log($"IsNodeCreated {node}");
+            TestUtils.LogTest($"IsNodeCreated {node}");
             return node == TestNode || node == TestNode2;
         }
 

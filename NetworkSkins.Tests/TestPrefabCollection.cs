@@ -49,7 +49,7 @@ namespace NetworkSkins.Tests
 
         public T FindPrefab<T>(string prefabName, NetworkSkinLoadErrors errors) where T : PrefabInfo
         {
-            Debug.Log($"FindPrefab<{typeof(T)}> {prefabName}");
+            TestUtils.LogTest($"FindPrefab<{typeof(T)}> {prefabName}");
 
             if (typeof(T) == typeof(NetInfo) && prefabName == TestNet.name)
             {

@@ -88,8 +88,6 @@ namespace NetworkSkins.Patches.NetNode
                 }
             }
 
-            Debug.Log($"segmentId1: {segmentId1} segmentId2: {segmentId2}");
-
             var segmentSkin1 = NetworkSkinManager.SegmentSkins[segmentId1];
             var segmentSkin2 = NetworkSkinManager.SegmentSkins[segmentId2];
             return (segmentSkin1 == null || segmentSkin1.m_hasWires) && (segmentSkin2 == null || segmentSkin2.m_hasWires);
