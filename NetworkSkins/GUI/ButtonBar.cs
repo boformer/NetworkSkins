@@ -14,37 +14,28 @@ namespace NetworkSkins.GUI
 
         private PanelButton[] buttons;
 
-        public void SetVisiblePanelButtons(PanelType visibleTypes)
-        {
-            foreach (var button in buttons)
-            {
+        public void SetVisiblePanelButtons(PanelType visibleTypes) {
+            foreach (var button in buttons) {
                 button.isVisible = visibleTypes.IsFlagSet(button.type);
             }
         }
 
-        public void SetSelectedPanelButton(PanelType type)
-        {
-            foreach (PanelButton button in buttons)
-            {
-                if (button.type == type)
-                {
+        public void SetSelectedPanelButton(PanelType type) {
+            foreach (PanelButton button in buttons) {
+                if (button.type == type) {
                     SetButtonFocused(button);
-                }
-                else
-                {
+                } else {
                     SetButtonUnfocused(button);
                 }
             }
         }
 
-        protected override void RefreshUI(NetInfo netInfo)
-        {
+        protected override void RefreshUI(NetInfo netInfo) {
             // TODO not necessary? this is handled by the parent component
         }
 
-        public override void Build(Layout layout)
-        {
-            base.Build(layout);
+        public override void Build(PanelType panelType, Layout layout) {
+            base.Build(panelType, layout);
 
             CreateButtons();
 
@@ -54,8 +45,7 @@ namespace NetworkSkins.GUI
             SetVisiblePanelButtons(PanelType.None);
         }
 
-        private void CreateButtons()
-        {
+        private void CreateButtons() {
             buttons = new PanelButton[]
             {
                 CreatePanelButton(PanelType.Trees, Resources.Tree, TranslationID.TOOLTIP_TREES),
@@ -68,8 +58,7 @@ namespace NetworkSkins.GUI
             };
         }
 
-        private PanelButton CreatePanelButton(PanelType type, string backgroundSprite, string tooltipId)
-        {
+        private PanelButton CreatePanelButton(PanelType type, string backgroundSprite, string tooltipId) {
             PanelButton button = AddUIComponent<PanelButton>();
             button.type = type;
             button.size = new Vector2(Layout.Size.x - Layout.Spacing * 2, size.x - Layout.Spacing * 2);
@@ -84,13 +73,11 @@ namespace NetworkSkins.GUI
             return button;
         }
 
-        private static void SetButtonFocused(UIButton button)
-        {
+        private static void SetButtonFocused(UIButton button) {
             button.normalBgSprite = button.focusedBgSprite = button.hoveredBgSprite = string.Concat(button.normalBgSprite.Replace("Focused", ""), "Focused");
         }
 
-        private static void SetButtonUnfocused(UIButton button)
-        {
+        private static void SetButtonUnfocused(UIButton button) {
             button.normalBgSprite = button.focusedBgSprite = button.normalBgSprite.Replace("Focused", "");
             button.hoveredBgSprite = button.hoveredBgSprite.Replace("Focused", "Hovered");
         }

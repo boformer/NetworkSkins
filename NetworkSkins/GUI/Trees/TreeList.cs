@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
 
 namespace NetworkSkins.GUI
 {
@@ -7,20 +7,13 @@ namespace NetworkSkins.GUI
         protected override void RefreshUI(NetInfo netInfo) {
 
         }
+
         protected override bool IsFavourite(TreeInfo prefabInfo) {
-            return false;
+            return Persistence.IsFavourite(prefabInfo?.name, PanelType);
         }
 
         protected override bool IsSelected(TreeInfo prefabInfo) {
-            return false;
-        }
-
-        protected override void OnFavouriteChanged(string itemID, bool favourite) {
-
-        }
-
-        protected override void OnSelectedChanged(string itemID, bool selected) {
-
+            return false; // TODO
         }
 
         protected override void SetupRowsData() {
@@ -30,10 +23,30 @@ namespace NetworkSkins.GUI
             fastList.RowsData.SetCapacity(prefabCount + 1);
             ListItem noneItem = CreateListItem(null);
             fastList.RowsData.Add(noneItem);
+            favouritesList.Clear();
+            nonFavouritesList.Clear();
+            List<string> favList = Persistence.GetFavourites(PanelType);
             for (uint prefabIndex = 0; prefabIndex < prefabCount; prefabIndex++) {
                 TreeInfo prefab = PrefabCollection<TreeInfo>.GetLoaded(prefabIndex);
+                if (favList.Contains(prefab.name)) {
+                    favouritesList.Add(prefab);
+                } else nonFavouritesList.Add(prefab);
+            }
+            favouritesList.Sort((t1, t2) => t1.name.CompareTo(t2.name));
+            nonFavouritesList.Sort((t1, t2) => t1.name.CompareTo(t2.name));
+            int index = 0;
+            for (int i = 0; i < favouritesList.Count; i++) {
+                index++;
+                TreeInfo prefab = favouritesList[i] as TreeInfo;
                 ListItem listItem = CreateListItem(prefab);
-                if (listItem.IsSelected) selectedIndex = (int)prefabIndex + 1;
+                if (listItem.IsSelected) selectedIndex = index + 1;
+                fastList.RowsData.Add(listItem);
+            }
+            for (int i = 0; i < nonFavouritesList.Count; i++) {
+                index++;
+                TreeInfo prefab = nonFavouritesList[i] as TreeInfo;
+                ListItem listItem = CreateListItem(prefab);
+                if (listItem.IsSelected) selectedIndex = index + 1;
                 fastList.RowsData.Add(listItem);
             }
             fastList.DisplayAt(selectedIndex);

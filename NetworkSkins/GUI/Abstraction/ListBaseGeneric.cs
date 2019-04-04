@@ -47,7 +47,7 @@ namespace NetworkSkins.GUI
         }
 
         private static bool IsDefault(T prefabInfo) {
-            return NetToolMonitor.Instance.NetInfoDefaultEquals(prefabInfo);
+            return SkinController.Instance.NetInfoDefaultEquals(prefabInfo);
         }
     }
 }

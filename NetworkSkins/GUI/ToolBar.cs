@@ -8,13 +8,13 @@ namespace NetworkSkins.GUI
         private DragBar dragBar;
         public ButtonBar ButtonBar { get; private set; }
 
-        public override void Build(Layout configuration) {
-            base.Build(configuration);
+        public override void Build(PanelType panelType, Layout layout) {
+            base.Build(panelType, layout);
             color = MainPanel.GUIColor;
             dragBar = AddUIComponent<DragBar>();
-            dragBar.Build(new Layout(new Vector2(size.x, 18.0f), false, LayoutDirection.Horizontal, LayoutStart.TopLeft, 0));
+            dragBar.Build(PanelType.None, new Layout(new Vector2(size.x, 18.0f), false, LayoutDirection.Horizontal, LayoutStart.TopLeft, 0));
             ButtonBar = AddUIComponent<ButtonBar>();
-            ButtonBar.Build(new Layout(new Vector2(size.x, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5));
+            ButtonBar.Build(PanelType.None, new Layout(new Vector2(size.x, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5));
         }
 
         protected override void RefreshUI(NetInfo netInfo) {

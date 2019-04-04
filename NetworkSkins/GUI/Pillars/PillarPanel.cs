@@ -20,5 +20,13 @@ namespace NetworkSkins.GUI
             tabStrip.isVisible = false;
             RefreshAfterBuild();
         }
+
+        protected override void OnFavouriteChanged(string itemID, bool favourite) {
+
+        }
+
+        protected override void OnSelectedChanged(string itemID, bool selected) {
+            if (selected) SkinController.SetPillar(itemID);
+        }
     }
 }

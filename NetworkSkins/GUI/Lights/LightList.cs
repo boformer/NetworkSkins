@@ -1,5 +1,6 @@
 ﻿
 using NetworkSkins.Net;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace NetworkSkins.GUI
@@ -14,14 +15,6 @@ namespace NetworkSkins.GUI
             return false;
         }
 
-        protected override void OnFavouriteChanged(string itemID, bool favourite) {
-
-        }
-
-        protected override void OnSelectedChanged(string itemID, bool selected) {
-
-        }
-
         protected override void RefreshUI(NetInfo netInfo) {
 
         }
@@ -33,13 +26,33 @@ namespace NetworkSkins.GUI
             fastList.RowsData.SetCapacity(prefabCount + 1);
             ListItem noneItem = CreateListItem(null);
             fastList.RowsData.Add(noneItem);
+            favouritesList.Clear();
+            nonFavouritesList.Clear();
+            List<string> favList = Persistence.GetFavourites(PanelType);
             for (uint prefabIndex = 0; prefabIndex < prefabCount; prefabIndex++) {
                 PropInfo prefab = PrefabCollection<PropInfo>.GetLoaded(prefabIndex);
                 if (NetUtil.IsStreetLight(prefab)) {
-                    ListItem listItem = CreateListItem(prefab);
-                    if (listItem.IsSelected) selectedIndex = (int)prefabIndex + 1;
-                    fastList.RowsData.Add(listItem);
+                    if (favList.Contains(prefab.name)) {
+                        favouritesList.Add(prefab);
+                    } else nonFavouritesList.Add(prefab);
                 }
+            }
+            favouritesList.Sort((t1, t2) => t1.name.CompareTo(t2.name));
+            nonFavouritesList.Sort((t1, t2) => t1.name.CompareTo(t2.name));
+            int index = 0;
+            for (int i = 0; i < favouritesList.Count; i++) {
+                index++;
+                PropInfo prefab = favouritesList[i] as PropInfo;
+                ListItem listItem = CreateListItem(prefab);
+                if (listItem.IsSelected) selectedIndex = index + 1;
+                fastList.RowsData.Add(listItem);
+            }
+            for (int i = 0; i < nonFavouritesList.Count; i++) {
+                index++;
+                PropInfo prefab = nonFavouritesList[i] as PropInfo;
+                ListItem listItem = CreateListItem(prefab);
+                if (listItem.IsSelected) selectedIndex = index + 1;
+                fastList.RowsData.Add(listItem);
             }
             fastList.DisplayAt(selectedIndex);
         }

@@ -6,8 +6,6 @@ namespace NetworkSkins.GUI
 {
     public class MainPanel : PanelBase
     {
-        private NetToolMonitor Monitor => NetToolMonitor.Instance;
-
         public static NetInfo Prefab { get; set; }
 
         private ToolBar toolBar;
@@ -16,7 +14,7 @@ namespace NetworkSkins.GUI
         private PanelType currentPanelType = PanelType.None;
 
         public override void Start() {
-            Build(new Layout(new Vector2(0.0f, 234.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 0));
+            Build(PanelType.None, new Layout(new Vector2(0.0f, 234.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 0));
             color = PanelBase.GUIColor;
             relativePosition = new Vector3(100.0f, 100.0f);
             autoFitChildrenVertically = true;
@@ -30,12 +28,12 @@ namespace NetworkSkins.GUI
         protected override void RefreshUI(NetInfo netInfo)
         {
             PanelType visiblePanels = PanelType.Extras;
-            if (Monitor.NetInfoHasTrees) visiblePanels |= PanelType.Trees;
-            if (Monitor.NetInfoHasStreetLights) visiblePanels |= PanelType.Lights;
-            if (Monitor.NetInfoHasSurfaces) visiblePanels |= PanelType.Surfaces;
-            if (Monitor.NetInfoHasPillars) visiblePanels |= PanelType.Pillars;
-            if (Monitor.NetInfoIsColorable) visiblePanels |= PanelType.Color;
-            if (Monitor.NetInfoHasCatenaries) visiblePanels |= PanelType.Catenary;
+            if (SkinController.NetInfoHasTrees) visiblePanels |= PanelType.Trees;
+            if (SkinController.NetInfoHasStreetLights) visiblePanels |= PanelType.Lights;
+            if (SkinController.NetInfoHasSurfaces) visiblePanels |= PanelType.Surfaces;
+            if (SkinController.NetInfoHasPillars) visiblePanels |= PanelType.Pillars;
+            if (SkinController.NetInfoIsColorable) visiblePanels |= PanelType.Color;
+            if (SkinController.NetInfoHasCatenaries) visiblePanels |= PanelType.Catenary;
 
             if (currentPanel != null && !visiblePanels.IsFlagSet(currentPanelType))
             {
@@ -79,7 +77,7 @@ namespace NetworkSkins.GUI
         private void CreateToolBar()
         {
             toolBar = AddUIComponent<ToolBar>();
-            toolBar.Build(new Layout(new Vector2(40.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 0, "GenericPanel"));
+            toolBar.Build(PanelType.None, new Layout(new Vector2(40.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 0, "GenericPanel"));
             UIPanel panel = AddUIComponent<UIPanel>();
             panel.size = new Vector2(5.0f, toolBar.height);
         }
@@ -109,38 +107,38 @@ namespace NetworkSkins.GUI
         
         private PanelBase CreateTreesPanel() {
             var treesPanel = AddUIComponent<TreePanel>();
-            treesPanel.Build(new Layout(new Vector2(400.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
+            treesPanel.Build(PanelType.Trees, new Layout(new Vector2(400.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
             return treesPanel;
         }
 
         private PanelBase CreateLightsPanel() {
             var lightsPanel = AddUIComponent<LightPanel>();
-            lightsPanel.Build(new Layout(new Vector2(400.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
+            lightsPanel.Build(PanelType.Lights, new Layout(new Vector2(400.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
             return lightsPanel;
         }
 
         private PanelBase CreateSurfacePanel() {
             var surfacePanel = AddUIComponent<SurfacePanel>();
-            surfacePanel.Build(new Layout(new Vector2(388.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
+            surfacePanel.Build(PanelType.Surfaces, new Layout(new Vector2(388.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
             return surfacePanel;
         }
 
         private PanelBase CreatePillarsPanel() {
             var pillarPanel = AddUIComponent<PillarPanel>();
-            pillarPanel.Build(new Layout(new Vector2(400.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
+            pillarPanel.Build(PanelType.Pillars, new Layout(new Vector2(400.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
             return pillarPanel;
         }
 
         private PanelBase CreateColorsPanel()
         {
             var colorPanel = AddUIComponent<ColorPanel>();
-            colorPanel.Build(new Layout(new Vector2(400.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
+            colorPanel.Build(PanelType.Color, new Layout(new Vector2(400.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
             return colorPanel;
         }
 
         private PanelBase CreateCatenaryPanel() {
             var catenaryPanel = AddUIComponent<CatenaryPanel>();
-            catenaryPanel.Build(new Layout(new Vector2(400.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
+            catenaryPanel.Build(PanelType.Catenary, new Layout(new Vector2(400.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
             return catenaryPanel;
         }
         #endregion

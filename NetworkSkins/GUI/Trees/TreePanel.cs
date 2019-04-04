@@ -32,5 +32,17 @@ namespace NetworkSkins.GUI
         protected override void OnPanelBuilt() {
             RefreshAfterBuild();
         }
+
+        protected override void OnFavouriteChanged(string itemID, bool favourite) {
+
+        }
+
+        protected override void OnSelectedChanged(string itemID, bool selected) {
+            if(selected) SkinController.SetTree(itemID, GetLanePosition());
+        }
+
+        private LanePosition GetLanePosition() {
+            return (LanePosition)tabStrip.selectedIndex;
+        }
     }
 }

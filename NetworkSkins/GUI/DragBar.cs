@@ -8,8 +8,8 @@ namespace NetworkSkins.GUI
         private UIDragHandle dragHandle;
         private UIPanel panel;
 
-        public override void Build(Layout layout) {
-            base.Build(layout);
+        public override void Build(PanelType panelType, Layout layout) {
+            base.Build(panelType, layout);
             dragHandle = AddUIComponent<UIDragHandle>();
             dragHandle.target = parent.parent;
             dragHandle.isInteractive = true;

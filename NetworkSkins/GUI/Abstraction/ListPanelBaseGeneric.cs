@@ -9,9 +9,15 @@ namespace NetworkSkins.GUI
     {
         protected TListBase list;
 
+        public override void Build(PanelType panelType, Layout layout) {
+            base.Build(panelType, layout);
+            list.EventFavouriteChanged += OnFavouriteChanged;
+            list.EventSelectedChanged += OnSelectedChanged;
+        }
+
         protected override void CreateList() {
             list = AddUIComponent<TListBase>();
-            list.Build(new Layout(new Vector2(390.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 0));
+            list.Build(PanelType, new Layout(new Vector2(390.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 0));
         }
     }
 }

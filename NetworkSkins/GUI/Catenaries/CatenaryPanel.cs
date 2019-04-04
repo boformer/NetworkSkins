@@ -20,5 +20,14 @@ namespace NetworkSkins.GUI
             tabStrip.isVisible = false;
             RefreshAfterBuild();
         }
+
+        protected override void OnFavouriteChanged(string itemID, bool favourite) {
+            if (favourite) Persistence.AddFavourite(itemID, PanelType.Catenary);
+            else Persistence.RemoveFavourite(itemID, PanelType.Catenary);
+        }
+
+        protected override void OnSelectedChanged(string itemID, bool selected) {
+            if(selected) SkinController.SetCatenary(itemID);
+        }
     }
 }

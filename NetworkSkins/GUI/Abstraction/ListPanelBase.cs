@@ -1,4 +1,5 @@
-﻿using ColossalFramework.UI;
+﻿using System;
+using ColossalFramework.UI;
 using NetworkSkins.Locale;
 using NetworkSkins.Net;
 using NetworkSkins.TranslationFramework;
@@ -12,8 +13,8 @@ namespace NetworkSkins.GUI
         protected UIButton[] tabs;
         protected SearchBox searchBox;
 
-        public override void Build(Layout layout) {
-            base.Build(layout);
+        public override void Build(PanelType panelType, Layout layout) {
+            base.Build(panelType, layout);
             color = MainPanel.GUIColor;
 
             CreateTabstrip();
@@ -25,15 +26,16 @@ namespace NetworkSkins.GUI
         }
 
         protected abstract void CreateList();
-
-        /// <summary>
-        /// Call this method at the end of your panel's Build(Layout layout) implementation.
-        /// </summary>
+        
         protected abstract void OnPanelBuilt();
 
         protected abstract void OnSearchTextChanged(string text);
 
         protected abstract void OnSearchLostFocus();
+
+        protected abstract void OnFavouriteChanged(string itemID, bool favourite);
+
+        protected abstract void OnSelectedChanged(string itemID, bool selected);
 
         private void CreateTabstrip() {
             tabStrip = AddUIComponent<UITabstrip>();

@@ -56,7 +56,7 @@ namespace NetworkSkins
             var prefab = PrefabCollection<NetInfo>.FindLoaded("Basic Road");
             m.Add(prefab, new List<NetworkSkinModifier>
             {
-                new TerrainSurfaceModifier(groundType: NetworkGroundType.Gravel),
+                new TerrainSurfaceModifier(groundType: Surface.Gravel),
                 new ColorModifier(color: new Color32(90, 90, 90, 255)),
                 new StreetLightModifier(streetLight: PrefabCollection<PropInfo>.FindLoaded("Airport Light"), repeatDistance: 80)
             });
@@ -88,7 +88,7 @@ namespace NetworkSkins
             var prefab = PrefabCollection<NetInfo>.FindLoaded("Basic Road Decoration Trees");
             m.Add(prefab, new List<NetworkSkinModifier>
             {
-                new TerrainSurfaceModifier(groundType: NetworkGroundType.Gravel),
+                new TerrainSurfaceModifier(groundType: Surface.Gravel),
                 new ColorModifier(color: new Color32(173, 158, 147, 255)),
                 new StreetLightModifier(streetLight: null),
                 new TreeModifier(
@@ -115,7 +115,7 @@ namespace NetworkSkins
             var prefab = PrefabCollection<NetInfo>.FindLoaded("Medium Road");
             m.Add(prefab, new List<NetworkSkinModifier>
             {
-                new TerrainSurfaceModifier(groundType: NetworkGroundType.None),
+                new TerrainSurfaceModifier(groundType: Surface.None),
                 new ColorModifier(color: new Color32(160, 160, 160, 255)),
                 new StreetLightModifier(streetLight: PrefabCollection<PropInfo>.FindLoaded("StreetLamp02"))
             });
@@ -126,7 +126,7 @@ namespace NetworkSkins
             var prefab = PrefabCollection<NetInfo>.FindLoaded("Medium Road");
             m.Add(prefab, new List<NetworkSkinModifier>
             {
-                new TerrainSurfaceModifier(groundType: NetworkGroundType.Gravel),
+                new TerrainSurfaceModifier(groundType: Surface.Gravel),
                 new ColorModifier(color: new Color32(130, 90, 90, 255))
             });
         }
@@ -136,7 +136,7 @@ namespace NetworkSkins
             var prefab = PrefabCollection<NetInfo>.FindLoaded("Train Track");
             m.Add(prefab, new List<NetworkSkinModifier>
             {
-                new TerrainSurfaceModifier(groundType: NetworkGroundType.Pavement),
+                new TerrainSurfaceModifier(groundType: Surface.Pavement),
                 new CatenaryModifier(catenary: null)
             });
         }
@@ -155,7 +155,7 @@ namespace NetworkSkins
             var prefab = PrefabCollection<NetInfo>.FindLoaded("Train Oneway Track");
             m.Add(prefab, new List<NetworkSkinModifier>
             {
-                new TerrainSurfaceModifier(groundType: NetworkGroundType.Ruined),
+                new TerrainSurfaceModifier(groundType: Surface.Ruined),
                 new CatenaryModifier(catenary: null)
             });
         }

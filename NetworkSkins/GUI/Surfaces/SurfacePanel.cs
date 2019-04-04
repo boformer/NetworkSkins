@@ -1,8 +1,5 @@
 ﻿using ColossalFramework.UI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using NetworkSkins.Net;
 using UnityEngine;
 
 namespace NetworkSkins.GUI
@@ -17,7 +14,9 @@ namespace NetworkSkins.GUI
 
         protected override void CreateList() {
             list = AddUIComponent<SurfaceList>();
-            list.Build(new Layout(new Vector2(378.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 0));
+            list.Build(PanelType, new Layout(new Vector2(378.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 0));
+            list.EventFavouriteChanged += OnFavouriteChanged;
+            list.EventSelectedChanged += OnSelectedChanged;
         }
 
         protected override void OnPanelBuilt() {
@@ -31,6 +30,14 @@ namespace NetworkSkins.GUI
 
         protected override void OnSearchLostFocus() {
 
+        }
+
+        protected override void OnFavouriteChanged(string itemID, bool favourite) {
+
+        }
+
+        protected override void OnSelectedChanged(string itemID, bool selected) {
+            if (selected) SkinController.SetSurface(SurfaceUtil.StringToSurface(itemID));
         }
     }
 }

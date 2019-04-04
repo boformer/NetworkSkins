@@ -16,8 +16,8 @@ namespace NetworkSkins.GUI
         private UILabel label;
         private UITextField textField;
 
-        public override void Build(Layout layout) {
-            base.Build(layout);
+        public override void Build(PanelType panelType, Layout layout) {
+            base.Build(panelType, layout);
             textField = AddUIComponent<UITextField>();
             textField.size = new Vector2(230f, 30f);
             textField.relativePosition = new Vector3(160f, 0f);

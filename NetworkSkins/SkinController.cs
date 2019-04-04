@@ -1,12 +1,11 @@
-﻿using System;
-using NetworkSkins.Net;
+﻿using NetworkSkins.Net;
+using NetworkSkins.Skins.Modifiers;
 using UnityEngine;
 
 namespace NetworkSkins
 {
-    public class NetToolMonitor : MonoBehaviour
-    {
-        public static NetToolMonitor Instance;
+    public class SkinController : MonoBehaviour {
+        public static SkinController Instance;
 
         public delegate void ToolStateChangedEventHandler(bool state);
         public event ToolStateChangedEventHandler EventToolStateChanged;
@@ -21,8 +20,40 @@ namespace NetworkSkins
         public bool NetInfoHasStreetLights => NetUtil.HasStreetLights(Prefab);
 
         public NetInfo Prefab { get; private set; }
-
         private bool isNetToolEnabled;
+
+        public bool NetInfoDefaultEquals<Info>(Info prefab) where Info : PrefabInfo {
+            return false;
+        }
+
+        /// <summary>
+        /// LanePostion.None is passed when the "Lock lanes" options is enabled.
+        /// </summary>
+        /// <param name="prefabID">The prefab name usable to get the tree from PrefabCollection<TreeInfo></param>
+        /// <param name="lanePosition"></param>
+        public void SetTree(string prefabID, LanePosition lanePosition) {
+
+        }
+
+        public void SetLight(string prefabID) {
+
+        }
+
+        public void SetPillar(string prefabID) {
+
+        }
+
+        public void SetCatenary(string prefabID) {
+
+        }
+
+        public void SetSurface(Surface surface) {
+
+        }
+
+        public void SetColor(Color32 color) {
+
+        }
 
         private void Awake() {
             Instance = this;
@@ -36,6 +67,7 @@ namespace NetworkSkins
                 }
                 if (netTool.Prefab != null && Prefab != netTool.Prefab) {
                     Prefab = netTool.m_prefab;
+                    //UpdateSelectedOptions();
                     EventPrefabChanged?.Invoke(Prefab);
                 }
             } else {
@@ -44,10 +76,6 @@ namespace NetworkSkins
                     EventToolStateChanged?.Invoke(false);
                 }
             }
-        }
-
-        internal bool NetInfoDefaultEquals<Info>(Info prefab) where Info : PrefabInfo {
-            return false;
         }
     }
 }

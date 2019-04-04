@@ -5,34 +5,34 @@ namespace NetworkSkins.Skins.Modifiers
 {
     public class TerrainSurfaceModifier : NetworkSkinModifier
     {
-        public readonly NetworkGroundType GroundType;
+        public readonly Surface GroundType;
 
-        public TerrainSurfaceModifier(NetworkGroundType groundType) : base(NetworkSkinModifierType.TerrainSurface)
+        public TerrainSurfaceModifier(Surface groundType) : base(NetworkSkinModifierType.TerrainSurface)
         {
             GroundType = groundType;
         }
 
         public override void Apply(NetworkSkin skin)
         {
-            if (GroundType == NetworkGroundType.Pavement)
+            if (GroundType == Surface.Pavement)
             {
                 skin.m_createPavement = true;
                 skin.m_createGravel = false;
                 skin.m_createRuining = false;
             }
-            else if (GroundType == NetworkGroundType.Gravel)
+            else if (GroundType == Surface.Gravel)
             {
                 skin.m_createPavement = false;
                 skin.m_createGravel = true;
                 skin.m_createRuining = false;
             }
-            else if (GroundType == NetworkGroundType.Ruined)
+            else if (GroundType == Surface.Ruined)
             {
                 skin.m_createPavement = false;
                 skin.m_createGravel = false;
                 skin.m_createRuining = true;
             }
-            else if (GroundType == NetworkGroundType.None)
+            else if (GroundType == Surface.None)
             {
                 skin.m_createPavement = false;
                 skin.m_createGravel = false;
@@ -48,7 +48,7 @@ namespace NetworkSkins.Skins.Modifiers
 
         public static TerrainSurfaceModifier DeserializeImpl(DataSerializer s, NetworkSkinLoadErrors errors)
         {
-            var groundType = (NetworkGroundType)s.ReadUInt8();
+            var groundType = (Surface)s.ReadUInt8();
 
             return new TerrainSurfaceModifier(groundType);
         }
@@ -87,16 +87,16 @@ namespace NetworkSkins.Skins.Modifiers
         #endregion
     }
 
-    public enum NetworkGroundType
+    public enum Surface
     {
         Unchanged = -1,
+        /// <summary>
+        /// None only works when the network does not clip terrain. The option should be hidden for network which do clip terrain
+        /// </summary>
         None = 0,
         Pavement = 1,
         Gravel = 2,
         Ruined = 3,
-        /// <summary>
-        /// None only works when the network does not clip terrain. The option should be hidden for network which do clip terrain
-        /// </summary>
         Count = 4
     }
 }

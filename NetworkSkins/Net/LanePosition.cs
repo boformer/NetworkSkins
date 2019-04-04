@@ -9,10 +9,11 @@ namespace NetworkSkins.Net
     /// </summary>
     public enum LanePosition
     {
+        None = -1,
         Left = 0,
         Middle = 1,
         Right = 2,
-        Count
+        Count = 3
     }
 
     public static class LanePositionExtensions

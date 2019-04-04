@@ -15,7 +15,7 @@ namespace NetworkSkins.GUI
         public delegate void FavouriteChangedEventHandler(string itemID, bool favourite);
         public event FavouriteChangedEventHandler EventFavouriteChanged;
 
-        private static string[] enumNames = Enum.GetNames(typeof(NetworkGroundType));
+        private static string[] enumNames = Enum.GetNames(typeof(Surface));
 
         private UIPanel thumbnailPanel;
         private UITextureSprite thumbnailSprite;
@@ -30,8 +30,8 @@ namespace NetworkSkins.GUI
         private Color32 selectedColor = PanelBase.FocusedColor;
         private bool isRowOdd;
 
-        public override void Build(Layout layout) {
-            base.Build(layout);
+        public override void Build(PanelType panelType, Layout layout) {
+            base.Build(panelType, layout);
             backgroundSprite = "WhiteRect";
             CreateThumbnail();
             CreateLabel();
@@ -81,7 +81,7 @@ namespace NetworkSkins.GUI
 
         public override void Awake() {
             base.Awake();
-            Build(new Layout(new Vector2(380.0f, 50.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 10));
+            Build(PanelType.None, new Layout(new Vector2(380.0f, 50.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 10));
         }
 
         public override void OnDestroy() {
@@ -148,7 +148,6 @@ namespace NetworkSkins.GUI
         }
 
         protected override void RefreshUI(NetInfo netInfo) {
-            throw new System.NotImplementedException();
         }
     }
 }

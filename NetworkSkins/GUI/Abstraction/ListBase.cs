@@ -1,20 +1,29 @@
-﻿using UnityEngine;
+﻿using NetworkSkins.Net;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace NetworkSkins.GUI
 {
     public abstract class ListBase : PanelBase
     {
+        public delegate void FavouriteChangedEventHandler(string itemID, bool favourite);
+        public event FavouriteChangedEventHandler EventFavouriteChanged;
+        public delegate void SelectedChangedEventHandler(string itemID, bool selected);
+        public event SelectedChangedEventHandler EventSelectedChanged;
         protected UIFastList fastList;
         protected abstract Vector2 ListSize { get; }
         protected abstract float RowHeight { get; }
+        protected static List<PrefabInfo> favouritesList = new List<PrefabInfo>();
+        protected static List<PrefabInfo> nonFavouritesList = new List<PrefabInfo>();
+
 
         public override void OnDestroy() {
             base.OnDestroy();
             UnbindEvents();
         }
 
-        public override void Build(Layout layout) {
-            base.Build(layout);
+        public override void Build(PanelType panelType, Layout layout) {
+            base.Build(panelType, layout);
             CreateFastList(ListSize, RowHeight);
             SetupRowsData();
             BindEvents();
@@ -26,19 +35,16 @@ namespace NetworkSkins.GUI
         /// </summary>
         protected abstract void SetupRowsData();
 
-        /// <summary>
-        /// Event that's invoked when the prefab is selected to be used in the skin.
-        /// </summary>
-        /// <param name="itemID">The PrefabInfo.name, used as a unique identifier.</param>
-        /// <param name="selected"></param>
-        protected abstract void OnSelectedChanged(string itemID, bool selected);
+        private void OnSelectedChanged(string itemID, bool selected) {
+            EventSelectedChanged?.Invoke(itemID, selected);
+        }
 
-        /// <summary>
-        /// Event that's invoked when the favourite checkbox's state changes.
-        /// </summary>
-        /// <param name="itemID">The PrefabInfo.name, used as a unique identifier.</param>
-        /// <param name="favourite"></param>
-        protected abstract void OnFavouriteChanged(string itemID, bool favourite);
+        private void OnFavouriteChanged(string itemID, bool favourite) {
+            if (favourite) {
+                Persistence.AddFavourite(itemID, PanelType);
+            } else Persistence.RemoveFavourite(itemID, PanelType);
+            EventFavouriteChanged?.Invoke(itemID, favourite);
+        }
 
         private void CreateFastList(Vector2 size, float rowHeight) {
             fastList = UIFastList.Create<ListRow>(this);

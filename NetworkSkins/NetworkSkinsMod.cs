@@ -3,9 +3,9 @@ using Harmony;
 using ICities;
 using NetworkSkins.GUI;
 using NetworkSkins.Locale;
+using NetworkSkins.Persistence;
 using NetworkSkins.Skins;
 using NetworkSkins.TranslationFramework;
-using System;
 using UnityEngine;
 using static UnityEngine.Object;
 
@@ -20,10 +20,13 @@ namespace NetworkSkins
         public string Name => "Network Skins";
         public string Description => Translation.Instance.GetTranslation(TranslationID.MOD_DESCRIPTION);
         
-        private HarmonyInstance _harmony;
+        private HarmonyInstance harmony;
 
-        private MainPanel _panel;
-        private GameObject _monitorGameObject;
+        private MainPanel panel;
+        private GameObject skinControllerGameObject;
+        private GameObject persistenceServiceGameObject;
+        private SkinController skinController;
+        private PersistenceService persistenceService;
 
         #region Lifecycle
         private static bool InGame => LoadingManager.exists && LoadingManager.instance.m_loadingComplete;
@@ -46,8 +49,6 @@ namespace NetworkSkins
         {
             NetworkSkinManager.instance.OnLevelLoaded();
 
-            // TODO seems fishy
-            while (!InGame) { }
             Install();
         }
 
@@ -73,24 +74,24 @@ namespace NetworkSkins
         #region Harmony
         private void InstallHarmony()
         {
-            if (_harmony == null)
+            if (harmony == null)
             {
                 Debug.Log("NetworkSkins Patching...");
 
                 //HarmonyInstance.SELF_PATCHING = false;
                 //HarmonyInstance.DEBUG = true;
 
-                _harmony = HarmonyInstance.Create(HarmonyId);
-                _harmony.PatchAll(GetType().Assembly);
+                harmony = HarmonyInstance.Create(HarmonyId);
+                harmony.PatchAll(GetType().Assembly);
             }
         }
 
         private void UninstallHarmony()
         {
-            if (_harmony != null)
+            if (harmony != null)
             {
-                _harmony.UnpatchAll(HarmonyId);
-                _harmony = null;
+                harmony.UnpatchAll(HarmonyId);
+                harmony = null;
 
                 Debug.Log("NetworkSkins Reverted...");
             }
@@ -100,27 +101,38 @@ namespace NetworkSkins
         #region NetToolMonitor/GUI
         private void Install()
         {
-            _monitorGameObject = new GameObject(nameof(NetToolMonitor));
-            NetToolMonitor.Instance = _monitorGameObject.AddComponent<NetToolMonitor>();
-            NetToolMonitor.Instance.EventToolStateChanged += OnNetToolStateChanged;
+            persistenceServiceGameObject = new GameObject(nameof(PersistenceService));
+            skinControllerGameObject = new GameObject(nameof(SkinController));
+            persistenceServiceGameObject.transform.parent = NetworkSkinManager.instance.gameObject.transform;
+            skinControllerGameObject.transform.parent = NetworkSkinManager.instance.gameObject.transform;
+            SkinController.Instance = skinController = skinControllerGameObject.AddComponent<SkinController>();
+            PersistenceService.Instance = persistenceService = persistenceServiceGameObject.AddComponent<PersistenceService>();
+            skinController.EventToolStateChanged += OnNetToolStateChanged;
         }
 
         private void Uninstall()
         {
-            if (NetToolMonitor.Instance != null)
+            if (skinController != null)
             {
-                NetToolMonitor.Instance.EventToolStateChanged -= OnNetToolStateChanged;
-                if (_monitorGameObject != null)
+                skinController.EventToolStateChanged -= OnNetToolStateChanged;
+                if (skinControllerGameObject != null)
                 {
-                    Destroy(_monitorGameObject);
-                    _monitorGameObject = null;
+                    Destroy(skinControllerGameObject);
+                    skinControllerGameObject = null;
                 }
             }
 
-            if (_panel != null && _panel.gameObject != null)
+            if (persistenceService != null) {
+                if (persistenceService.gameObject != null) {
+                    Destroy(persistenceServiceGameObject);
+                    persistenceServiceGameObject = null;
+                }
+            }
+
+            if (panel != null && panel.gameObject != null)
             {
-                Destroy(_panel.gameObject);
-                _panel = null;
+                Destroy(panel.gameObject);
+                panel = null;
             }
         }
 
@@ -128,14 +140,14 @@ namespace NetworkSkins
         {
             if (isToolEnabled)
             {
-                _panel = UIView.GetAView().AddUIComponent(typeof(MainPanel)) as MainPanel;
+                panel = UIView.GetAView().AddUIComponent(typeof(MainPanel)) as MainPanel;
             }
             else
             {
-                if (_panel.gameObject != null)
+                if (panel.gameObject != null)
                 {
-                    Destroy(_panel.gameObject);
-                    _panel = null;
+                    Destroy(panel.gameObject);
+                    panel = null;
                 }
             }
         }

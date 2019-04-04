@@ -14,4 +14,16 @@ namespace NetworkSkins.GUI
         Catenary = 32,
         Extras = 64
     }
+
+    public enum ItemType
+    {
+        None = -1,
+        Trees,
+        Lights,
+        Surfaces,
+        Pillars,
+        Colors,
+        Catenary,
+        Count
+    }
 }

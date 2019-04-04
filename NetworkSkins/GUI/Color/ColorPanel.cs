@@ -1,8 +1,4 @@
 ﻿using ColossalFramework.UI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace NetworkSkins.GUI
@@ -18,9 +14,10 @@ namespace NetworkSkins.GUI
         public override void OnDestroy() {
             base.OnDestroy();
             colorField.eventColorPickerOpen -= OnColorPickerOpen;
+            colorField.eventSelectedColorChanged -= OnColorChanged;
         }
-        public override void Build(Layout layout) {
-            base.Build(layout);
+        public override void Build(PanelType panelType, Layout layout) {
+            base.Build(panelType, layout);
             wrapLayout = true;
             CreateColorField();
             CreateSwatches();
@@ -44,7 +41,7 @@ namespace NetworkSkins.GUI
         }
 
         private void OnColorChanged(UIComponent component, Color value) {
-
+            SkinController.SetColor(value);
         }
 
         private void OnColorPickerOpen(UIColorField dropdown, UIColorPicker popup, ref bool overridden) {

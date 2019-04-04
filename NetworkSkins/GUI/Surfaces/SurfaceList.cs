@@ -16,20 +16,12 @@ namespace NetworkSkins.GUI
             fastList.width = 378.0f;
         }
 
-        protected override void OnFavouriteChanged(string itemID, bool favourite) {
-
-        }
-
-        protected override void OnSelectedChanged(string itemID, bool selected) {
-
-        }
-
         protected override void SetupRowsData() {
             int selectedIndex = -1;
             fastList.RowsData = new FastList<object>();
-            fastList.RowsData.SetCapacity((int)NetworkGroundType.Count);
-            for (int surfaceIndex = 0; surfaceIndex < (int)NetworkGroundType.Count; surfaceIndex++) {
-                ListItem listItem = CreateListItem((NetworkGroundType)surfaceIndex);
+            fastList.RowsData.SetCapacity((int)Surface.Count);
+            for (int surfaceIndex = 0; surfaceIndex < (int)Surface.Count; surfaceIndex++) {
+                ListItem listItem = CreateListItem((Surface)surfaceIndex);
                 if (listItem.IsSelected) selectedIndex = (int)surfaceIndex;
                 fastList.RowsData.Add(listItem);
             }
@@ -39,7 +31,7 @@ namespace NetworkSkins.GUI
             fastList.DisplayAt(-1);
         }
 
-        protected ListItem CreateListItem(NetworkGroundType surfaceType) {
+        protected ListItem CreateListItem(Surface surfaceType) {
             TerrainManager terrainManager = TerrainManager.instance;
             Texture2D thumbnail;
             string id, displayName, prefix, name = string.Empty;
@@ -51,15 +43,15 @@ namespace NetworkSkins.GUI
                 ? Translation.Instance.GetTranslation(TranslationID.LABEL_DEFAULT)
                 : string.Empty;
             switch (surfaceType) {
-                case NetworkGroundType.Pavement:
+                case Surface.Pavement:
                     name = Translation.Instance.GetTranslation(TranslationID.LABEL_PAVEMENT);
                     thumbnail = terrainManager.m_properties.m_pavementDiffuse;
                     break;
-                case NetworkGroundType.Gravel:
+                case Surface.Gravel:
                     name = Translation.Instance.GetTranslation(TranslationID.LABEL_GRAVEL);
                     thumbnail = terrainManager.m_properties.m_gravelDiffuse;
                     break;
-                case NetworkGroundType.Ruined:
+                case Surface.Ruined:
                     name = Translation.Instance.GetTranslation(TranslationID.LABEL_RUINED);
                     thumbnail = terrainManager.m_properties.m_ruinedDiffuse;
                     break;
@@ -68,20 +60,20 @@ namespace NetworkSkins.GUI
                     thumbnail = UIView.GetAView()?.defaultAtlas?.GetSpriteTexture("Niet");
                     break;
             }
-            id = Enum.GetName(typeof(NetworkGroundType), surfaceType);
+            id = Enum.GetName(typeof(Surface), surfaceType);
             displayName = string.Concat(prefix, name);
             return new ListItem(id, displayName, thumbnail, isSelected, isFavourite);
         }
 
-        private bool IsDefault(NetworkGroundType surfaceType) {
+        private bool IsDefault(Surface surfaceType) {
             return false;
         }
 
-        private bool IsFavourite(NetworkGroundType surfaceType) {
+        private bool IsFavourite(Surface surfaceType) {
             return false;
         }
 
-        private bool IsSelected(NetworkGroundType surfaceType) {
+        private bool IsSelected(Surface surfaceType) {
             return false;
         }
     }

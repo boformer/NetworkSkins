@@ -66,9 +66,13 @@
     <Compile Include="GUI\Catenaries\CatenaryPanel.cs" />
     <Compile Include="GUI\Color\ColorPanel.cs" />
     <Compile Include="GUI\PanelType.cs" />
+    <Compile Include="GUI\UIUtil.cs" />
+    <Compile Include="Persistence\PersistenceService.cs" />
+    <Compile Include="Persistence\PersistentData.cs" />
     <Compile Include="GUI\Pillars\PillarList.cs" />
     <Compile Include="GUI\Pillars\PillarPanel.cs" />
     <Compile Include="Locale\TranslationID.cs" />
+    <Compile Include="Net\SurfaceUtil.cs" />
     <Compile Include="Resources\Resources.cs" />
     <Compile Include="Resources\TextureUtil.cs" />
     <Compile Include="TranslationFramework\Language.cs" />
@@ -92,7 +96,7 @@
     <Compile Include="GUI\Trees\TreeList.cs" />
     <Compile Include="GUI\Trees\TreePanel.cs" />
     <Compile Include="GUI\UIFastList\UIFastList.cs" />
-    <Compile Include="NetToolMonitor.cs" />
+    <Compile Include="SkinController.cs" />
     <Compile Include="Net\NetUtil.cs" />
     <Compile Include="Net\LanePosition.cs" />
     <Compile Include="NetworkSkinsSerializableData.cs" />
