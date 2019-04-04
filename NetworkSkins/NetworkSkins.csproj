@@ -71,10 +71,6 @@
     <Compile Include="Patches\NetSegment\NetSegmentRenderPatch.cs" />
     <Compile Include="Patches\NetSegment\NetSegmentPopulateGroupDataPatch.cs" />
     <Compile Include="Patches\NetTool\NetToolCreateNodePatch.cs" />
-    <Compile Include="Patches\Obsolete\NetNodeRefreshEndDataPatch.cs" />
-    <Compile Include="Patches\Obsolete\NetNodeRefreshBendDataPatch.cs" />
-    <Compile Include="Patches\Obsolete\RoadBaseAiGetSegmentColorPatch.cs" />
-    <Compile Include="Patches\Obsolete\RoadBaseAiGetNodeColorPatch.cs" />
     <Compile Include="Patches\PedestrianBridgeAI\PedestrianBridgeAiGetNodeBuildingPatch.cs" />
     <Compile Include="Patches\PillarPatcher.cs" />
     <Compile Include="Patches\RoadBridgeAI\RoadBridgeAiGetNodeBuildingPatch.cs" />
@@ -102,7 +98,6 @@
     <Compile Include="Skins\NetworkSkin.cs" />
     <Compile Include="NetworkSkinsLoading.cs" />
     <Compile Include="NetworkSkinsMod.cs" />
-    <Compile Include="Patches\Obsolete\NetLaneRenderInstancePatch.cs" />
     <Compile Include="Patches\NetManager\NetManagerReleaseSegmentImplementationPatch.cs" />
     <Compile Include="Patches\NetManager\NetManagerCreateSegmentPatch.cs" />
     <Compile Include="Patches\NetSegment\NetSegmentRenderInstancePatch.cs" />
