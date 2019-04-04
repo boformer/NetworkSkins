@@ -47,9 +47,9 @@ namespace NetworkSkins.Skins.Modifiers
             s.WriteFloat(RepeatDistance);
         }
 
-        public static StreetLightModifier DeserializeImpl(DataSerializer s, NetworkSkinLoadErrors errors)
+        public static StreetLightModifier DeserializeImpl(DataSerializer s, IPrefabCollection prefabCollection, NetworkSkinLoadErrors errors)
         {
-            var streetLight = NetworkSkinSerializationUtils.FindPrefab<PropInfo>(s.ReadUniqueString(), errors);
+            var streetLight = prefabCollection.FindPrefab<PropInfo>(s.ReadUniqueString(), errors);
             var repeatDistance = s.ReadFloat();
 
             return new StreetLightModifier(streetLight, repeatDistance);

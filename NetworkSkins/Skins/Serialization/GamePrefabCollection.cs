@@ -1,8 +1,8 @@
 ﻿namespace NetworkSkins.Skins.Serialization
 {
-    public static class NetworkSkinSerializationUtils
+    public class GamePrefabCollection : IPrefabCollection
     {
-        public static T FindPrefab<T>(string prefabName, NetworkSkinLoadErrors errors) where T : PrefabInfo
+        public T FindPrefab<T>(string prefabName, NetworkSkinLoadErrors errors) where T : PrefabInfo
         {
             if (prefabName != null)
             {

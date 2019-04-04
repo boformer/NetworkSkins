@@ -32,6 +32,8 @@ namespace NetworkSkins.Skins.Modifiers
 
         private void UpdateCatenaries(NetworkSkin skin)
         {
+            if (skin.m_lanes == null) return;
+
             for (var l = 0; l < skin.m_lanes.Length; l++)
             {
                 if (skin.m_lanes[l]?.m_laneProps?.m_props == null) continue;
@@ -54,6 +56,8 @@ namespace NetworkSkins.Skins.Modifiers
 
         private static void RemoveWireSegments(NetworkSkin skin)
         {
+            if (skin.m_segments == null) return;
+
             for (var s = skin.m_segments.Length - 1; s >= 0; s--)
             {
                 var segment = skin.m_segments[s];
@@ -66,6 +70,8 @@ namespace NetworkSkins.Skins.Modifiers
 
         private static void RemoveCatenaries(NetworkSkin skin)
         {
+            if (skin.m_lanes == null) return;
+
             for (var l = 0; l < skin.m_lanes.Length; l++)
             {
                 if (skin.m_lanes[l]?.m_laneProps?.m_props == null) continue;
@@ -87,9 +93,9 @@ namespace NetworkSkins.Skins.Modifiers
             s.WriteUniqueString(Catenary?.name);
         }
 
-        public static CatenaryModifier DeserializeImpl(DataSerializer s, NetworkSkinLoadErrors errors)
+        public static CatenaryModifier DeserializeImpl(DataSerializer s, IPrefabCollection prefabCollection, NetworkSkinLoadErrors errors)
         {
-            var catenary = NetworkSkinSerializationUtils.FindPrefab<PropInfo>(s.ReadUniqueString(), errors);
+            var catenary = prefabCollection.FindPrefab<PropInfo>(s.ReadUniqueString(), errors);
 
             return new CatenaryModifier(catenary);
         }

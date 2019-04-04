@@ -109,15 +109,15 @@ namespace NetworkSkins.Skins.Modifiers
             s.WriteFloat(RighTreeRepeatDistance);
         }
 
-        public static TreeModifier DeserializeImpl(DataSerializer s, NetworkSkinLoadErrors errors)
+        public static TreeModifier DeserializeImpl(DataSerializer s, IPrefabCollection prefabCollection, NetworkSkinLoadErrors errors)
         {
-            var leftTree = NetworkSkinSerializationUtils.FindPrefab<TreeInfo>(s.ReadUniqueString(), errors);
+            var leftTree = prefabCollection.FindPrefab<TreeInfo>(s.ReadUniqueString(), errors);
             var leftTreeRepeatDistance = s.ReadFloat();
 
-            var middleTree = NetworkSkinSerializationUtils.FindPrefab<TreeInfo>(s.ReadUniqueString(), errors);
+            var middleTree = prefabCollection.FindPrefab<TreeInfo>(s.ReadUniqueString(), errors);
             var middleTreeRepeatDistance = s.ReadFloat();
 
-            var rightTree = NetworkSkinSerializationUtils.FindPrefab<TreeInfo>(s.ReadUniqueString(), errors);
+            var rightTree = prefabCollection.FindPrefab<TreeInfo>(s.ReadUniqueString(), errors);
             var rightTreeRepeatDistance = s.ReadFloat();
 
             return new TreeModifier(

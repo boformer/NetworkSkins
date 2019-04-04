@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using ColossalFramework;
 using ColossalFramework.IO;
 using UnityEngine;
 
@@ -10,17 +9,29 @@ namespace NetworkSkins.Skins.Serialization
     {
         public const int Version = 0;
 
-        public readonly NetworkSkinLoadErrors Errors = new NetworkSkinLoadErrors();
+        protected List<NetworkSkin> AppliedSkins;
+        protected NetworkSkin[] SegmentSkins;
+        protected NetworkSkin[] NodeSkins;
 
-        public List<NetworkSkin> AppliedSkins;
-        public NetworkSkin[] SegmentSkins;
-        public NetworkSkin[] NodeSkins;
+        protected IPrefabCollection PrefabCollection;
+        protected INetManager NetManager;
 
-        public void Serialize(DataSerializer s)
+        public NetworkSkinLoadErrors Errors;
+
+        // can be overridden for testing
+        protected virtual void Initialize()
         {
+            // this must be set here, as the constructor is not called on deserialization
             AppliedSkins = NetworkSkinManager.instance.AppliedSkins;
             SegmentSkins = NetworkSkinManager.SegmentSkins;
             NodeSkins = NetworkSkinManager.NodeSkins;
+            PrefabCollection = new GamePrefabCollection();
+            NetManager = new GameNetManager();
+        }
+
+        public void Serialize(DataSerializer s)
+        {
+            Initialize();
 
             if (AppliedSkins.Count >= ushort.MaxValue - 1)
             {
@@ -63,16 +74,15 @@ namespace NetworkSkins.Skins.Serialization
 
         public void Deserialize(DataSerializer s)
         {
-            // this must be set here, as the constructor is not called on deserialization
-            AppliedSkins = NetworkSkinManager.instance.AppliedSkins;
-            SegmentSkins = NetworkSkinManager.SegmentSkins;
-            NodeSkins = NetworkSkinManager.NodeSkins;
+            Initialize();
+
+            Errors = new NetworkSkinLoadErrors();
 
             var appliedSkinsLength = s.ReadInt32();
             AppliedSkins.Clear();
             for (var i = 0; i < appliedSkinsLength; i++)
             {
-                AppliedSkins.Add(NetworkSkin.Deserialize(s, Errors));
+                AppliedSkins.Add(NetworkSkin.Deserialize(s, PrefabCollection, Errors));
             }
 
             var segmentSkinsLength = s.ReadInt32();
@@ -112,25 +122,23 @@ namespace NetworkSkins.Skins.Serialization
         // This is important if the player loaded the savegame without the mod for a while
         public void AfterDeserialize(DataSerializer s)
         {
-            var netManager = NetManager.instance;
-
             // Remove invalid segment data
             var removedSegmentCount = 0;
-            for (var i = 0; i < SegmentSkins.Length; i++)
+            for (ushort i = 0; i < SegmentSkins.Length; i++)
             {
                 if (SegmentSkins[i] == null)
                 {
                     continue;
                 }
 
-                if (!netManager.m_segments.m_buffer[i].m_flags.IsFlagSet(NetSegment.Flags.Created))
+                if (!NetManager.IsSegmentCreated(i))
                 {
                     SegmentSkins[i] = null;
                     removedSegmentCount++;
                     continue;
                 }
 
-                var segmentPrefab = netManager.m_segments.m_buffer[i].Info;
+                var segmentPrefab = NetManager.GetSegmentInfo(i);
                 if (segmentPrefab != SegmentSkins[i].Prefab)
                 {
                     SegmentSkins[i] = null;
@@ -143,21 +151,21 @@ namespace NetworkSkins.Skins.Serialization
 
             // remove invalid node data
             var removedNodeCount = 0;
-            for (var i = 0; i < NodeSkins.Length; i++)
+            for (ushort i = 0; i < NodeSkins.Length; i++)
             {
                 if (NodeSkins[i] == null)
                 {
                     continue;
                 }
 
-                if (!netManager.m_nodes.m_buffer[i].m_flags.IsFlagSet(NetNode.Flags.Created))
+                if (!NetManager.IsNodeCreated(i))
                 {
                     NodeSkins[i] = null;
                     removedNodeCount++;
                     continue;
                 }
 
-                var nodePrefab = netManager.m_nodes.m_buffer[i].Info;
+                var nodePrefab = NetManager.GetNodeInfo(i);
                 if (nodePrefab != NodeSkins[i].Prefab)
                 {
                     NodeSkins[i] = null;
