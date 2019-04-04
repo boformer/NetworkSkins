@@ -2,11 +2,7 @@
 using NetworkSkins.Net;
 using NetworkSkins.Skins.Serialization;
 
-// TODO currently only removes catenaries
-// TODO add support for railway: https://gist.github.com/ronyx69/b4cd41742803eaeac6d19322384a0f4a
-
-// TODO change namespace of all modifiers after merge with GUI branch!
-namespace NetworkSkins.Skins
+namespace NetworkSkins.Skins.Modifiers
 {
     public class CatenaryModifier : NetworkSkinModifier
     {
@@ -32,6 +28,8 @@ namespace NetworkSkins.Skins
 
         private void UpdateCatenaries(NetworkSkin skin)
         {
+            if (skin.m_lanes == null) return;
+
             for (var l = 0; l < skin.m_lanes.Length; l++)
             {
                 if (skin.m_lanes[l]?.m_laneProps?.m_props == null) continue;
@@ -54,6 +52,8 @@ namespace NetworkSkins.Skins
 
         private static void RemoveWireSegments(NetworkSkin skin)
         {
+            if (skin.m_segments == null) return;
+
             for (var s = skin.m_segments.Length - 1; s >= 0; s--)
             {
                 var segment = skin.m_segments[s];
@@ -66,6 +66,8 @@ namespace NetworkSkins.Skins
 
         private static void RemoveCatenaries(NetworkSkin skin)
         {
+            if (skin.m_lanes == null) return;
+
             for (var l = 0; l < skin.m_lanes.Length; l++)
             {
                 if (skin.m_lanes[l]?.m_laneProps?.m_props == null) continue;
@@ -87,9 +89,9 @@ namespace NetworkSkins.Skins
             s.WriteUniqueString(Catenary?.name);
         }
 
-        public static CatenaryModifier DeserializeImpl(DataSerializer s, NetworkSkinLoadErrors errors)
+        public static CatenaryModifier DeserializeImpl(DataSerializer s, IPrefabCollection prefabCollection, NetworkSkinLoadErrors errors)
         {
-            var catenary = NetworkSkinSerializationUtils.FindPrefab<PropInfo>(s.ReadUniqueString(), errors);
+            var catenary = prefabCollection.FindPrefab<PropInfo>(s.ReadUniqueString(), errors);
 
             return new CatenaryModifier(catenary);
         }

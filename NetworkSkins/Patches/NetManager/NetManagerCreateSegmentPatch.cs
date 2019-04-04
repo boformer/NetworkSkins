@@ -29,8 +29,6 @@ namespace NetworkSkins.Patches.NetManager
                 caller3 = new System.Diagnostics.StackFrame(firstStackFrameIndex + 2).GetMethod();
             }
 
-            // Debug.Log($"CreateSegment: caller1: {caller1.Name}, caller2: {caller2.Name}, caller3: {caller3.Name}");
-
             if (caller1.Name == "CreateNode" || caller1.Name.StartsWith("CreateNode_Patch"))
             {
                 if (caller2.Name == "CreateNode" || caller2.Name.StartsWith("CreateNode_Patch"))

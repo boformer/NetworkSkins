@@ -83,7 +83,7 @@ namespace NetworkSkins.Patches.NetNode
                     && TranspilerUtils.IsStLoc(codes[index + 5])
                     )
                 {
-                    Debug.Log("Found NetInfo netInfo2 = (num14 > num13 >> 1) ? netInfo : info4;");
+                    TranspilerUtils.LogDebug("Found NetInfo netInfo2 = (num14 > num13 >> 1) ? netInfo : info4;");
                     num14LocalVarLdLoc = TranspilerUtils.BuildLdLocFromLdLoc(codes[index - 3]);
                     num13LocalVarLdLoc = TranspilerUtils.BuildLdLocFromLdLoc(codes[index - 2]);
                     info4LocalVarLdLoc = TranspilerUtils.BuildLdLocFromLdLoc(codes[index + 2]); // 40
@@ -97,11 +97,12 @@ namespace NetworkSkins.Patches.NetNode
                 }
             }
 
-            Debug.Log($"num14: {num14LocalVarLdLoc}, num13: {num13LocalVarLdLoc}, info4: {info4LocalVarLdLoc}, netInfo2: {netInfo2LocalVarLdLoc}, segment7: {segment7LocalVarLdLoc}, num6: {num6LocalVarLdLoc}");
+
 
             if (num14LocalVarLdLoc == null || num13LocalVarLdLoc == null || info4LocalVarLdLoc == null || netInfo2LocalVarLdLoc == null || segment7LocalVarLdLoc == null || num6LocalVarLdLoc == null)
             {
                 Debug.LogError("NetNodeTerrainUpdatedPatch: Some local variables not found! Cancelling transpiler!");
+                Debug.LogError($"num14: {num14LocalVarLdLoc}, num13: {num13LocalVarLdLoc}, info4: {info4LocalVarLdLoc}, netInfo2: {netInfo2LocalVarLdLoc}, segment7: {segment7LocalVarLdLoc}, num6: {num6LocalVarLdLoc}");
 
                 return originalInstructions;
             }
@@ -118,7 +119,7 @@ namespace NetworkSkins.Patches.NetNode
                 if (TranspilerUtils.IsSameInstruction(codes[index], netInfo2LocalVarLdLoc)
                     && codes[index + 1].opcode == OpCodes.Ldfld && codes[index + 1].operand == netInfoCreatePavementField)
                 {
-                    Debug.Log("Found info4.m_createPavement");
+                    TranspilerUtils.LogDebug("Found info4.m_createPavement");
 
                     var ldLocSegment7Label = il.DefineLabel();
                     var ldElemtRefLabel = il.DefineLabel();
@@ -147,7 +148,7 @@ namespace NetworkSkins.Patches.NetNode
                     apply1Instructions[10].labels.Add(ldElemtRefLabel);
 
                     codes.InsertRange(index, apply1Instructions);
-                    Debug.Log("Apply 1 inserted");
+                    TranspilerUtils.LogDebug("Apply 1 inserted");
 
                     apply1Inserted = true;
                     index += apply1Instructions.Length;
@@ -171,7 +172,7 @@ namespace NetworkSkins.Patches.NetNode
                 if (TranspilerUtils.IsSameInstruction(codes[index], netInfo2LocalVarLdLoc)
                     && codes[index + 1].opcode == OpCodes.Ldfld && codes[index + 1].operand == netInfoFlattenTerrainField)
                 {
-                    Debug.Log("Found info4.m_flattenTerrain");
+                    TranspilerUtils.LogDebug("Found info4.m_flattenTerrain");
 
                     var revert1Instructions = new[]
                     {
@@ -184,7 +185,7 @@ namespace NetworkSkins.Patches.NetNode
                     codes[index].labels.Clear();
 
                     codes.InsertRange(index, revert1Instructions);
-                    Debug.Log("Revert 1 inserted");
+                    TranspilerUtils.LogDebug("Revert 1 inserted");
 
                     revert1Inserted = true;
                     index += revert1Instructions.Length;
@@ -207,7 +208,7 @@ namespace NetworkSkins.Patches.NetNode
                 if (TranspilerUtils.IsSameInstruction(codes[index], info4LocalVarLdLoc)
                     && codes[index + 1].opcode == OpCodes.Ldfld && codes[index + 1].operand == netInfoCreatePavementField)
                 {
-                    Debug.Log("Found info4.m_createPavement");
+                    TranspilerUtils.LogDebug("Found info4.m_createPavement");
 
                     // patcherState = NetworkSkins.TerrainSurfacePatcher.Apply(info4, NetworkSkins.Skins.NetworkSkinManager.SegmentSkins[segment7]);
                     var apply2Instructions = new[]
@@ -224,7 +225,7 @@ namespace NetworkSkins.Patches.NetNode
                     codes[index].labels.Clear();
 
                     codes.InsertRange(index, apply2Instructions);
-                    Debug.Log("Apply 2 inserted");
+                    TranspilerUtils.LogDebug("Apply 2 inserted");
 
                     apply2Inserted = true;
                     index += apply2Instructions.Length;
@@ -247,7 +248,7 @@ namespace NetworkSkins.Patches.NetNode
                 if (TranspilerUtils.IsSameInstruction(codes[index], info4LocalVarLdLoc)
                     && codes[index + 1].opcode == OpCodes.Ldfld && codes[index + 1].operand == netInfoFlattenTerrainField)
                 {
-                    Debug.Log("Found info4.m_flattenTerrain");
+                    TranspilerUtils.LogDebug("Found info4.m_flattenTerrain");
 
                     // NetworkSkins.TerrainSurfacePatcher.Revert(info4, patcherState);
                     var revert2Instructions = new[]
@@ -261,7 +262,7 @@ namespace NetworkSkins.Patches.NetNode
                     codes[index].labels.Clear();
 
                     codes.InsertRange(index, revert2Instructions);
-                    Debug.Log("Revert 2 inserted");
+                    TranspilerUtils.LogDebug("Revert 2 inserted");
 
                     revert2Inserted = true;
                     index += revert2Instructions.Length;
@@ -303,12 +304,12 @@ namespace NetworkSkins.Patches.NetNode
                 // IL_05cd: stloc.s 40
                 if (TranspilerUtils.IsSameInstruction(codes[index], info4LocalVarStLoc))
                 {
-                    Debug.Log("Found info4 = ...");
+                    TranspilerUtils.LogDebug("Found info4 = ...");
 
                     // // IL_05b8: ldloc.s 38
                     if (TranspilerUtils.IsLdLoc(codes[index - 6]))
                     {
-                        Debug.Log("Found segment7");
+                        TranspilerUtils.LogDebug("Found segment7");
                         return TranspilerUtils.BuildLdLocFromLdLoc(codes[index - 6]);
                     }
                 }
@@ -343,12 +344,12 @@ namespace NetworkSkins.Patches.NetNode
                 // IL_07f0: stloc.s 48
                 if (TranspilerUtils.IsSameInstruction(codes[index], netInfoLocalVarStLoc))
                 {
-                    Debug.Log("Found netInfo = ...");
+                    TranspilerUtils.LogDebug("Found netInfo = ...");
 
                     // IL_07db: ldloc.s 51
                     if (TranspilerUtils.IsLdLoc(codes[index - 6]))
                     {
-                        Debug.Log("Found num6");
+                        TranspilerUtils.LogDebug("Found num6");
                         return TranspilerUtils.BuildLdLocFromLdLoc(codes[index - 6]);
                     }
                 }

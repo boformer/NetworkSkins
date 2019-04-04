@@ -46,7 +46,7 @@ namespace NetworkSkins.Patches.NetTool
 
             var netAiGetNodeBuildingMethod = typeof(NetAI).GetMethod("GetNodeBuilding");
 
-            var pillarPatcherGetActiveNodeBuildingMethod = typeof(PillarPatcher).GetMethod("GetActiveNodeBuilding");
+            var pillarPatcherGetActiveNodeBuildingMethod = typeof(ActivePillarPatcher).GetMethod("GetActiveNodeBuilding");
 
             if (netAiGetNodeBuildingMethod == null || pillarPatcherGetActiveNodeBuildingMethod == null)
             {
@@ -63,7 +63,7 @@ namespace NetworkSkins.Patches.NetTool
                 {
                     if (codes[index].operand == netAiGetNodeBuildingMethod)
                     {
-                        Debug.Log("Found GetNodeBuilding(ushort nodeID, ref NetNode data, out BuildingInfo building, out float heightOffset)");
+                        TranspilerUtils.LogDebug("Found GetNodeBuilding(ushort nodeID, ref NetNode data, out BuildingInfo building, out float heightOffset)");
                         codes[index] = new CodeInstruction(codes[index])
                         {
                             opcode = OpCodes.Call,
@@ -75,18 +75,5 @@ namespace NetworkSkins.Patches.NetTool
 
             return codes;
         }
-
-        /*
-        public static void Prefix(NetInfo info, out PillarPatcherState? __state)
-        {
-            var skin = NetworkSkinManager.instance.GetActiveSkin(info);
-            __state = PillarPatcher.Apply(info, skin);
-        }
-
-        public static void Postfix(NetInfo info, ref PillarPatcherState? __state)
-        {
-            PillarPatcher.Revert(info, __state);
-        }
-        */
     }
 }

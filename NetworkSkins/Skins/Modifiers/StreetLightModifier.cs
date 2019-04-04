@@ -2,7 +2,7 @@
 using NetworkSkins.Net;
 using NetworkSkins.Skins.Serialization;
 
-namespace NetworkSkins.Skins
+namespace NetworkSkins.Skins.Modifiers
 {
     public class StreetLightModifier : NetworkSkinModifier
     {
@@ -47,9 +47,9 @@ namespace NetworkSkins.Skins
             s.WriteFloat(RepeatDistance);
         }
 
-        public static StreetLightModifier DeserializeImpl(DataSerializer s, NetworkSkinLoadErrors errors)
+        public static StreetLightModifier DeserializeImpl(DataSerializer s, IPrefabCollection prefabCollection, NetworkSkinLoadErrors errors)
         {
-            var streetLight = NetworkSkinSerializationUtils.FindPrefab<PropInfo>(s.ReadUniqueString(), errors);
+            var streetLight = prefabCollection.FindPrefab<PropInfo>(s.ReadUniqueString(), errors);
             var repeatDistance = s.ReadFloat();
 
             return new StreetLightModifier(streetLight, repeatDistance);

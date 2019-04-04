@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using ICities;
 using NetworkSkins.Skins;
+using NetworkSkins.Skins.Modifiers;
 using UnityEngine;
 
 // TODO remove key and sample skins thing when the UI is working
@@ -13,7 +14,7 @@ namespace NetworkSkins
 
         public void OnCreated(ILoading loading)
         {
-            NetworkSkinManager.Ensure(); // TODO remove here? it's on OnEnabled
+            NetworkSkinManager.Ensure();
         }
 
         public void OnLevelLoaded(LoadMode mode)

@@ -34,9 +34,6 @@ namespace NetworkSkins.Patches.NetSegment
             var customSegmentsLocalVar = il.DeclareLocal(typeof(NetInfo.Segment[]));
             customSegmentsLocalVar.SetLocalSymInfo("customSegments");
 
-            // TODO at this point it is exactly the same code as in NetSegmentRenderInstancePatch!
-            // only difference is infoLocalVarLdloc, beginLabel and index
-
             var customLanesInstructions = new[]
             {
                 // NetInfo.Lane[] customLanes = info.m_lanes;

@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using ColossalFramework;
 using ColossalFramework.IO;
 using ColossalFramework.UI;
 using NetworkSkins.Skins.Serialization;
 using UnityEngine;
-
-// TODO same structure as old SegmentDataManager for compat with other mods
-// TODO add clear applied skins, segment skins and node skins on level unload
 
 namespace NetworkSkins.Skins
 {
@@ -53,8 +49,8 @@ namespace NetworkSkins.Skins
         #region Level Events
         public void OnPreUpdateData(SimulationManager.UpdateMode mode)
         {
-            // TODO this is not really necessary if the OnLevelUnloading hook works correctly
             ClearSkinData();
+
             LoadSkinData();
         }
 
@@ -85,8 +81,6 @@ namespace NetworkSkins.Skins
         #region Active Skins
         public void SetActiveModifiers(Dictionary<NetInfo, List<NetworkSkinModifier>> prefabsWithModifiers)
         {
-            // TODO Destroy skins which are no longer in use
-
             var possiblyUnusedSkins = new List<NetworkSkin>(_activeSkins.Values);
 
             _activeSkins.Clear();
@@ -160,8 +154,8 @@ namespace NetworkSkins.Skins
             var endNode = netManager.m_segments.m_buffer[segment].m_endNode;
             var prefab = netManager.m_segments.m_buffer[segment].Info;
 
-            var previousStartSkin = NetworkSkinManager.NodeSkins[startNode];
-            var previousEndSkin = NetworkSkinManager.NodeSkins[endNode];
+            var previousStartSkin = NodeSkins[startNode];
+            var previousEndSkin = NodeSkins[endNode];
 
             _activeSkins.TryGetValue(prefab, out var skin);
             SegmentSkins[segment] = skin;
@@ -178,8 +172,6 @@ namespace NetworkSkins.Skins
             UsageAdded(skin, count: 3);
             UsageRemoved(previousStartSkin);
             UsageRemoved(previousEndSkin);
-
-            Debug.Log($"OnSegmentCreate {segment}, startNode: {startNode}, endNode {endNode}, prefab: {prefab}, skin: {skin}");
         }
 
         public void OnSegmentTransferData(ushort oldSegment, ushort newSegment)
@@ -189,8 +181,6 @@ namespace NetworkSkins.Skins
             SegmentSkins[newSegment] = oldSkin;
 
             UsageAdded(oldSkin);
-
-            Debug.Log($"OnSegmentTransferData {oldSegment} --> {newSegment}, skin: {oldSkin}");
         }
 
         public void OnSegmentRelease(ushort segment)
@@ -200,8 +190,6 @@ namespace NetworkSkins.Skins
             SegmentSkins[segment] = null;
 
             UsageRemoved(skin);
-
-            Debug.Log($"OnSegmentRelease {segment}, skin: {NetworkSkinManager.SegmentSkins[segment]}");
         }
 
         public void UpdateNodeSkin(ushort node, NetworkSkin skin)
@@ -209,9 +197,8 @@ namespace NetworkSkins.Skins
             var previousSkin = NodeSkins[node];
             if (Equals(previousSkin, skin)) return;
 
-            NetworkSkinManager.NodeSkins[node] = skin;
+            NodeSkins[node] = skin;
 
-            // Make sure that the color map is updated when a skin with a different color is applied!
             if (previousSkin?.m_color != skin?.m_color)
             {
                 NetManager.instance.UpdateNodeColors(node);
@@ -223,12 +210,10 @@ namespace NetworkSkins.Skins
 
         public void OnNodeRelease(ushort node)
         {
-            var skin = NetworkSkinManager.NodeSkins[node];
-            NetworkSkinManager.NodeSkins[node] = null;
+            var skin = NodeSkins[node];
+            NodeSkins[node] = null;
 
             UsageRemoved(skin);
-
-            Debug.Log($"OnNodeRelease {node}, skin: {NetworkSkinManager.NodeSkins[node]}");
         }
         #endregion
         
@@ -239,13 +224,10 @@ namespace NetworkSkins.Skins
 
             if (skin.UseCount == 0)
             {
-                Debug.Log($"Adding skin to applied skins: {skin}");
                 AppliedSkins.Add(skin);
             }
 
             skin.UseCount += count;
-
-            Debug.Log($"Usage added: {skin}");
         }
 
         private void UsageRemoved(NetworkSkin skin)
@@ -254,16 +236,12 @@ namespace NetworkSkins.Skins
 
             skin.UseCount--;
 
-            Debug.Log($"Usage removed: {skin}");
-
             if (skin.UseCount <= 0)
             {
-                Debug.Log($"Removing skin from applied skins: {skin}");
                 AppliedSkins.Remove(skin);
 
                 if (!IsActive(skin))
                 {
-                    Debug.Log($"Destroying unused skin {skin}");
                     skin.Destroy();
                 }
             }
@@ -343,12 +321,12 @@ namespace NetworkSkins.Skins
 
         private void ClearSkinData()
         {
-            for (var n = 0; n < NetworkSkinManager.NodeSkins.Length; n++)
+            for (var n = 0; n < NodeSkins.Length; n++)
             {
                 NodeSkins[n] = null;
             }
 
-            for (var s = 0; s < NetworkSkinManager.SegmentSkins.Length; s++)
+            for (var s = 0; s < SegmentSkins.Length; s++)
             {
                 SegmentSkins[s] = null;
             }

@@ -37,7 +37,7 @@ namespace NetworkSkins.Patches.NetManager
                 {
                     if (codes[index].operand == netAiGetSegmentColorMethod)
                     {
-                        Debug.Log("Found GetColor(ushort segmentID, ref NetSegment data, InfoManager.InfoMode infoMode)");
+                        TranspilerUtils.LogDebug("Found GetColor(ushort segmentID, ref NetSegment data, InfoManager.InfoMode infoMode)");
                         codes[index] = new CodeInstruction(codes[index])
                         {
                             opcode = OpCodes.Call,
@@ -46,7 +46,7 @@ namespace NetworkSkins.Patches.NetManager
                     }
                     else if(codes[index].operand == netAiGetNodeColorMethod)
                     {
-                        Debug.Log("Found GetColor(ushort nodeID, ref NetNode data, InfoManager.InfoMode infoMode)");
+                        TranspilerUtils.LogDebug("Found GetColor(ushort nodeID, ref NetNode data, InfoManager.InfoMode infoMode)");
                         codes[index] = new CodeInstruction(codes[index])
                         {
                             opcode = OpCodes.Call,

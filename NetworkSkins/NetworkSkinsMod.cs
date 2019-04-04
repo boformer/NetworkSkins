@@ -12,19 +12,8 @@ using static UnityEngine.Object;
 
 namespace NetworkSkins
 {
-    // TODO remove all debug logs
-    // TODO ped crossings
-    // TODO serialization
-    // TODO backup serialization outside of the savegame (or some other ways to prevent data loss!)
-    // TODO proof-read harmony.log before release
-    // TODO backup current assembly
-    // TODO delete obsolete patches
-    // TODO add legacy light enaber
-    // TODO add function to modify building built in roads
-    // TODO tram catenaries!
     // TODO ListBase.cs -> IsSelected, IsFavourite, OnSelectedChanged, OnFavouriteChanged, and SearchBox events implementation
     // TODO NetToolMonitor.cs -> NetInfoDefaultEquals
-
     public class NetworkSkinsMod : LoadingExtensionBase, IUserMod
     {
         public string Name => "Network Skins";
@@ -86,9 +75,8 @@ namespace NetworkSkins
             if (_harmony == null)
             {
                 Debug.Log("NetworkSkins Patching...");
-                HarmonyInstance.SELF_PATCHING = false;
-                HarmonyInstance.DEBUG = true; // TODO remove
-                // TODO compile release version of harmony dll
+                //HarmonyInstance.SELF_PATCHING = false;
+                //HarmonyInstance.DEBUG = true;
                 _harmony = HarmonyInstance.Create(HarmonyId);
                 try // TODO maybe remove try catch to make clear something went wrong
                 {

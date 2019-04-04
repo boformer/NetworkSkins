@@ -1,4 +1,5 @@
 ﻿using ColossalFramework.IO;
+using NetworkSkins.Skins.Modifiers;
 using NetworkSkins.Skins.Serialization;
 
 namespace NetworkSkins.Skins
@@ -24,7 +25,7 @@ namespace NetworkSkins.Skins
         protected abstract void SerializeImpl(DataSerializer s);
 
         // nullable
-        public static NetworkSkinModifier Deserialize(DataSerializer s, NetworkSkinLoadErrors errors)
+        public static NetworkSkinModifier Deserialize(DataSerializer s, IPrefabCollection prefabCollection, NetworkSkinLoadErrors errors)
         {
             var type = (NetworkSkinModifierType)s.ReadUInt8();
             switch (type)
@@ -34,13 +35,13 @@ namespace NetworkSkins.Skins
                 case NetworkSkinModifierType.Color:
                     return ColorModifier.DeserializeImpl(s, errors);
                 case NetworkSkinModifierType.StreetLight:
-                    return StreetLightModifier.DeserializeImpl(s, errors);
+                    return StreetLightModifier.DeserializeImpl(s, prefabCollection, errors);
                 case NetworkSkinModifierType.Tree:
-                    return TreeModifier.DeserializeImpl(s, errors);
+                    return TreeModifier.DeserializeImpl(s, prefabCollection, errors);
                 case NetworkSkinModifierType.Pillar:
-                    return PillarModifier.DeserializeImpl(s, errors);
+                    return PillarModifier.DeserializeImpl(s, prefabCollection, errors);
                 case NetworkSkinModifierType.Catenary:
-                    return CatenaryModifier.DeserializeImpl(s, errors);
+                    return CatenaryModifier.DeserializeImpl(s, prefabCollection, errors);
                 default:
                     return null;
             }

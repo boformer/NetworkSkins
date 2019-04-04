@@ -82,7 +82,6 @@ namespace NetworkSkins.Skins
             }
         }
 
-        // TODO make sure that this is called when a skin is no longer needed
         public void Destroy()
         {
             if (m_lanes != null)
@@ -212,15 +211,15 @@ namespace NetworkSkins.Skins
         }
 
         // nullable
-        public static NetworkSkin Deserialize(DataSerializer s, NetworkSkinLoadErrors errors)
+        public static NetworkSkin Deserialize(DataSerializer s, IPrefabCollection prefabCollection, NetworkSkinLoadErrors errors)
         {
-            var prefab = NetworkSkinSerializationUtils.FindPrefab<NetInfo>(s.ReadUniqueString(), errors);
+            var prefab = prefabCollection.FindPrefab<NetInfo>(s.ReadUniqueString(), errors);
 
             var modifiersCount = s.ReadInt32();
             var modifiers = new List<NetworkSkinModifier>();
             for (var m = 0; m < modifiersCount; m++)
             {
-                var modifier = NetworkSkinModifier.Deserialize(s, errors);
+                var modifier = NetworkSkinModifier.Deserialize(s, prefabCollection, errors);
                 if (modifier != null)
                 {
                     modifiers.Add(modifier);

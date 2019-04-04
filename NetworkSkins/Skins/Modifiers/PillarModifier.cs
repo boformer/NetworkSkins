@@ -3,7 +3,7 @@ using System.Linq;
 using ColossalFramework.IO;
 using NetworkSkins.Skins.Serialization;
 
-namespace NetworkSkins.Skins
+namespace NetworkSkins.Skins.Modifiers
 {
     public class PillarModifier : NetworkSkinModifier
     {
@@ -59,19 +59,19 @@ namespace NetworkSkins.Skins
             s.WriteUniqueString(MiddlePillarInfo?.name);
         }
 
-        public static PillarModifier DeserializeImpl(DataSerializer s, NetworkSkinLoadErrors errors)
+        public static PillarModifier DeserializeImpl(DataSerializer s, IPrefabCollection prefabCollection, NetworkSkinLoadErrors errors)
         {
-            var bridgePillarInfo = NetworkSkinSerializationUtils.FindPrefab<BuildingInfo>(s.ReadUniqueString(), errors);
+            var bridgePillarInfo = prefabCollection.FindPrefab<BuildingInfo>(s.ReadUniqueString(), errors);
 
-            var bridgePillarInfo2 = NetworkSkinSerializationUtils.FindPrefab<BuildingInfo>(s.ReadUniqueString(), errors);
+            var bridgePillarInfo2 = prefabCollection.FindPrefab<BuildingInfo>(s.ReadUniqueString(), errors);
 
-            var bridgePillarInfo3 = NetworkSkinSerializationUtils.FindPrefab<BuildingInfo>(s.ReadUniqueString(), errors);
+            var bridgePillarInfo3 = prefabCollection.FindPrefab<BuildingInfo>(s.ReadUniqueString(), errors);
 
             var bridgePillarNames = s.ReadUniqueStringArray();
             BuildingInfo[] bridgePillarInfos = null;
             if (bridgePillarNames != null)
             {
-                bridgePillarInfos = bridgePillarNames.Select(prefabName => NetworkSkinSerializationUtils.FindPrefab<BuildingInfo>(prefabName, errors)).ToArray();
+                bridgePillarInfos = bridgePillarNames.Select(prefabName => prefabCollection.FindPrefab<BuildingInfo>(prefabName, errors)).ToArray();
 
                 // bridgePillarInfos is not allowed to contain null (will cause exceptions in NetTool)
                 if (bridgePillarInfos.Contains(null)) 
@@ -80,7 +80,7 @@ namespace NetworkSkins.Skins
                 }
             }
 
-            var middlePillarInfo = NetworkSkinSerializationUtils.FindPrefab<BuildingInfo>(s.ReadUniqueString(), errors);
+            var middlePillarInfo = prefabCollection.FindPrefab<BuildingInfo>(s.ReadUniqueString(), errors);
 
             return new PillarModifier(bridgePillarInfo, bridgePillarInfo2, bridgePillarInfo3, bridgePillarInfos, middlePillarInfo);
         }

@@ -1,7 +1,5 @@
 ﻿using System;
 
-// TODO add support for railway
-
 namespace NetworkSkins.Net
 {
     public static class CatenaryUtils

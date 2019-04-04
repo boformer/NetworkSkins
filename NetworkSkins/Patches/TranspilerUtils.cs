@@ -6,6 +6,12 @@ namespace NetworkSkins.Patches
 {
     public static class TranspilerUtils
     {
+        public static void LogDebug(object message)
+        {
+#if DEBUG
+            UnityEngine.Debug.Log(message);
+#endif
+        }
         public static bool IsSameInstruction(CodeInstruction a, CodeInstruction b, bool debug = false)
         {
             if (a.opcode == b.opcode)

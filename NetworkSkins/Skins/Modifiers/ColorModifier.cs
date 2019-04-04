@@ -2,7 +2,7 @@
 using NetworkSkins.Skins.Serialization;
 using UnityEngine;
 
-namespace NetworkSkins.Skins
+namespace NetworkSkins.Skins.Modifiers
 {
     public class ColorModifier : NetworkSkinModifier
     {
