@@ -64,7 +64,7 @@ namespace NetworkSkins
             var prefab = PrefabCollection<NetInfo>.FindLoaded("Basic Road");
             m.Add(prefab, new List<NetworkSkinModifier>
             {
-                new TerrainSurfaceModifier(groundType: NetworkGroundType.Gravel),
+                new TerrainSurfaceModifier(groundType: NetworkGroundType.Ruined),
                 new ColorModifier(color: new Color32(90, 90, 90, 255)),
                 new StreetLightModifier(streetLight: PrefabCollection<PropInfo>.FindLoaded("Airport Light"), repeatDistance: 80)
             });
@@ -75,6 +75,7 @@ namespace NetworkSkins
             var prefab = PrefabCollection<NetInfo>.FindLoaded("Basic Road");
             m.Add(prefab, new List<NetworkSkinModifier>
             {
+                new TerrainSurfaceModifier(groundType: NetworkGroundType.Gravel),
                 new ColorModifier(color: new Color32(118, 130, 118, 255)),
                 new StreetLightModifier(streetLight: PrefabCollection<PropInfo>.FindLoaded("StreetLamp02"), repeatDistance: 80)
             });
@@ -85,6 +86,7 @@ namespace NetworkSkins
             var prefab = PrefabCollection<NetInfo>.FindLoaded("Basic Road Elevated");
             m.Add(prefab, new List<NetworkSkinModifier>
             {
+                new TerrainSurfaceModifier(groundType: NetworkGroundType.Pavement),
                 new ColorModifier(color: new Color32(110, 90, 90, 255)),
                 new StreetLightModifier(streetLight: null),
                 new PillarModifier(bridgePillarInfo: PrefabCollection<BuildingInfo>.FindLoaded("RailwayElevatedPillar"))
@@ -123,7 +125,7 @@ namespace NetworkSkins
             var prefab = PrefabCollection<NetInfo>.FindLoaded("Medium Road");
             m.Add(prefab, new List<NetworkSkinModifier>
             {
-                new TerrainSurfaceModifier(groundType: NetworkGroundType.None),
+                new TerrainSurfaceModifier(groundType: NetworkGroundType.Pavement),
                 new ColorModifier(color: new Color32(160, 160, 160, 255)),
                 new StreetLightModifier(streetLight: PrefabCollection<PropInfo>.FindLoaded("StreetLamp02"))
             });

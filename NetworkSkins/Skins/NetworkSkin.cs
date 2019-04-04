@@ -102,7 +102,7 @@ namespace NetworkSkins.Skins
         // Updates a lane prop without affecting the original lane props of the network
         public void UpdateLaneProp(int laneIndex, int propIndex, Action<NetLaneProps.Prop> updater)
         {
-            if (m_lanes.Length <= laneIndex)
+            if (m_lanes == null || m_lanes.Length <= laneIndex)
             {
                 Debug.LogError($"Invalid lane index {laneIndex} for prefab {Prefab}!");
                 return;
@@ -140,7 +140,7 @@ namespace NetworkSkins.Skins
 
         public void RemoveLaneProp(int laneIndex, int propIndex)
         {
-            if (m_lanes.Length <= laneIndex)
+            if (m_lanes == null || m_lanes.Length <= laneIndex)
             {
                 Debug.LogError($"Invalid lane index {laneIndex} for prefab {Prefab}!");
                 return;
@@ -169,6 +169,31 @@ namespace NetworkSkins.Skins
             var props = new List<NetLaneProps.Prop>(lane.m_laneProps.m_props);
             props.RemoveAt(propIndex);
             lane.m_laneProps.m_props = props.ToArray();
+        }
+
+        public void UpdateSegmentMaterial(int segmentIndex, Action<Material> updater)
+        {
+            if (m_segments == null || m_segments.Length <= segmentIndex)
+            {
+                Debug.LogError($"Invalid segment index {segmentIndex} for prefab {Prefab}!");
+                return;
+            }
+
+            var segment = m_segments[segmentIndex];
+            if (segment == null || segment.m_material == null)
+            {
+                Debug.LogError($"Segment {segmentIndex} is null or doesn't have a material!");
+                return;
+            }
+
+            // duplicate the segment so we do not affect the original prefab
+            if (!(segment is NetworkSkinSegment))
+            {
+                segment = new NetworkSkinSegment(segment);
+                m_segments[segmentIndex] = segment;
+            }
+
+            updater(segment.m_segmentMaterial);
         }
 
         public void RemoveSegment(int segmentIndex)
@@ -278,6 +303,19 @@ namespace NetworkSkins.Skins
                         m_laneProps.m_props[i] = new NetLaneProps.Prop();
                         CopyProperties(m_laneProps.m_props[i], originalLane.m_laneProps.m_props[i]);
                     }
+                }
+            }
+        }
+
+        private class NetworkSkinSegment : NetInfo.Segment
+        {
+            public NetworkSkinSegment(NetInfo.Segment originalSegment)
+            {
+                CopyProperties(this, originalSegment);
+
+                if (originalSegment.m_segmentMaterial != null)
+                {
+                    m_segmentMaterial = UnityEngine.Object.Instantiate(originalSegment.m_segmentMaterial);
                 }
             }
         }

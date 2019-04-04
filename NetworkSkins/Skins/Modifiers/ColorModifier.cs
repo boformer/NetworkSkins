@@ -15,7 +15,7 @@ namespace NetworkSkins.Skins.Modifiers
 
         public override void Apply(NetworkSkin skin)
         {
-            skin.m_color = Color;
+            //skin.m_color = Color;
         }
 
         #region Serialization

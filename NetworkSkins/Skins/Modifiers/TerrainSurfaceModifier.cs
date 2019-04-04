@@ -1,5 +1,6 @@
 ﻿using ColossalFramework.IO;
 using NetworkSkins.Skins.Serialization;
+using UnityEngine;
 
 namespace NetworkSkins.Skins.Modifiers
 {
@@ -14,6 +15,47 @@ namespace NetworkSkins.Skins.Modifiers
 
         public override void Apply(NetworkSkin skin)
         {
+
+            // TODO just for testing
+            var terrainProps = TerrainManager.instance.m_properties;
+            var buildingProps = BuildingManager.instance.m_properties;
+
+
+            if (GroundType == NetworkGroundType.Pavement)
+            {
+                skin.UpdateSegmentMaterial(0, material =>
+                {
+                    material.SetTexture("_RoadUpwardDiffuse", buildingProps.m_baseDiffuse);
+                });
+                skin.m_color = Color.white; ;
+            }
+            else if (GroundType == NetworkGroundType.Gravel)
+            {
+                skin.UpdateSegmentMaterial(0, material =>
+                {
+                    material.SetTexture("_RoadUpwardDiffuse", buildingProps.m_floorDiffuse);
+                });
+                skin.m_color = Color.white; ;
+            }
+            else if (GroundType == NetworkGroundType.Ruined)
+            {
+                skin.UpdateSegmentMaterial(0, material =>
+                {
+                    material.SetTexture("_RoadUpwardDiffuse", terrainProps.m_cliffDiffuse);
+                });
+                skin.m_color = Color.white; ;
+            }
+            else if (GroundType == NetworkGroundType.None)
+            {
+                skin.UpdateSegmentMaterial(0, material =>
+                {
+                    material.SetTexture("_RoadUpwardDiffuse", terrainProps.m_oilDiffuse);
+                });
+                skin.m_color = Color.white;;
+            }
+
+
+            /*
             if (GroundType == NetworkGroundType.Pavement)
             {
                 skin.m_createPavement = true;
@@ -38,6 +80,7 @@ namespace NetworkSkins.Skins.Modifiers
                 skin.m_createGravel = false;
                 skin.m_createRuining = false;
             }
+            */
         }
 
         #region Serialization
