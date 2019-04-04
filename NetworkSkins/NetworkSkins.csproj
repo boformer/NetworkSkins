@@ -72,7 +72,7 @@
     <Compile Include="Patches\NetSegment\NetSegmentPopulateGroupDataPatch.cs" />
     <Compile Include="Patches\NetTool\NetToolCreateNodePatch.cs" />
     <Compile Include="Patches\PedestrianBridgeAI\PedestrianBridgeAiGetNodeBuildingPatch.cs" />
-    <Compile Include="Patches\PillarPatcher.cs" />
+    <Compile Include="Patches\ActivePillarPatcher.cs" />
     <Compile Include="Patches\RoadBridgeAI\RoadBridgeAiGetNodeBuildingPatch.cs" />
     <Compile Include="Patches\SimulationManager\SimulationManagerManagersUpdateDataPatch.cs" />
     <Compile Include="Patches\TrainTrackBridgeAI\TrainTrackBridgeAiGetNodeBuildingPatch.cs" />

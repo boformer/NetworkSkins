@@ -46,7 +46,7 @@ namespace NetworkSkins.Patches.NetTool
 
             var netAiGetNodeBuildingMethod = typeof(NetAI).GetMethod("GetNodeBuilding");
 
-            var pillarPatcherGetActiveNodeBuildingMethod = typeof(PillarPatcher).GetMethod("GetActiveNodeBuilding");
+            var pillarPatcherGetActiveNodeBuildingMethod = typeof(ActivePillarPatcher).GetMethod("GetActiveNodeBuilding");
 
             if (netAiGetNodeBuildingMethod == null || pillarPatcherGetActiveNodeBuildingMethod == null)
             {
