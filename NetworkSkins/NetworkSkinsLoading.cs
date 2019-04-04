@@ -4,7 +4,7 @@ using NetworkSkins.Skins;
 using NetworkSkins.Skins.Modifiers;
 using UnityEngine;
 
-// TODO remove key and sample skins thing when the UI is working
+// TODO remove when the UI is working
 
 namespace NetworkSkins
 {
@@ -12,22 +12,14 @@ namespace NetworkSkins
     {
         private static int _skinEnabled = 0;
 
-        public void OnCreated(ILoading loading)
-        {
-            NetworkSkinManager.Ensure();
-        }
+        public void OnCreated(ILoading loading) {}
 
         public void OnLevelLoaded(LoadMode mode)
         {
-            NetworkSkinManager.instance.OnLevelLoaded();
-
             ToggleSampleSkins();
         }
 
-        public void OnLevelUnloading()
-        {
-            NetworkSkinManager.instance.OnLevelUnloading();
-        }
+        public void OnLevelUnloading() {}
 
         public void OnReleased() {}
 
