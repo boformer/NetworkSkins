@@ -1,13 +1,14 @@
 ﻿using NetworkSkins.Net;
 using NetworkSkins.Skins;
-using UnityEngine;
 // ReSharper disable InconsistentNaming
-
-// TODO maybe replace PedestrianBridgePillarPatcherState, RoadBridgePillarPatcherState, TrainTrackBridgeAiGetNodeBuildingPatch and MonorailTrackPillarPatcherState with this
 
 namespace NetworkSkins.Patches
 {
-    public static class PillarPatcher
+    /// <summary>
+    /// Temporarily patches the pillars of the NetInfo with the ones selected in the GUI.
+    /// Used to patch NetTool.
+    /// </summary>
+    public static class ActivePillarPatcher
     {
         public static void GetActiveNodeBuilding(NetAI netAI, ushort nodeID, ref global::NetNode data, out BuildingInfo building, out float heightOffset)
         {

@@ -82,7 +82,6 @@ namespace NetworkSkins.Skins
             }
         }
 
-        // TODO make sure that this is called when a skin is no longer needed
         public void Destroy()
         {
             if (m_lanes != null)

@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using ColossalFramework;
 using ColossalFramework.IO;
 using ColossalFramework.UI;
 using NetworkSkins.Skins.Serialization;
 using UnityEngine;
-
-// TODO same structure as old SegmentDataManager for compat with other mods
-// TODO add clear applied skins, segment skins and node skins on level unload
 
 namespace NetworkSkins.Skins
 {
@@ -53,8 +49,8 @@ namespace NetworkSkins.Skins
         #region Level Events
         public void OnPreUpdateData(SimulationManager.UpdateMode mode)
         {
-            // TODO this is not really necessary if the OnLevelUnloading hook works correctly
             ClearSkinData();
+
             LoadSkinData();
         }
 
@@ -85,8 +81,6 @@ namespace NetworkSkins.Skins
         #region Active Skins
         public void SetActiveModifiers(Dictionary<NetInfo, List<NetworkSkinModifier>> prefabsWithModifiers)
         {
-            // TODO Destroy skins which are no longer in use
-
             var possiblyUnusedSkins = new List<NetworkSkin>(_activeSkins.Values);
 
             _activeSkins.Clear();

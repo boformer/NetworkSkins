@@ -14,7 +14,7 @@ namespace NetworkSkins
 
         public void OnCreated(ILoading loading)
         {
-            NetworkSkinManager.Ensure(); // TODO remove here? it's on OnEnabled
+            NetworkSkinManager.Ensure();
         }
 
         public void OnLevelLoaded(LoadMode mode)

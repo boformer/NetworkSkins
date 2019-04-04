@@ -16,7 +16,7 @@ namespace NetworkSkins.Patches.NetNode
         {
             if (_electricityNetShader == null)
             {
-                _electricityNetShader = Shader.Find("Custom/Net/Electricity"); // TODO maybe move this out for better perf?
+                _electricityNetShader = Shader.Find("Custom/Net/Electricity");
             }
 
             if (node.m_material?.shader != _electricityNetShader)

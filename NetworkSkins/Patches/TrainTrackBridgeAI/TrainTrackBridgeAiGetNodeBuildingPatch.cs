@@ -4,7 +4,6 @@ using NetworkSkins.Skins;
 
 namespace NetworkSkins.Patches.TrainTrackBridgeAI
 {
-    // TODO removed because it's throwing exce
     [HarmonyPatch(typeof(global::TrainTrackBridgeAI), "GetNodeBuilding")]
     public static class TrainTrackBridgeAiGetNodeBuildingPatch
     {
