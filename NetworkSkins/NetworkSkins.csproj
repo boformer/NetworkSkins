@@ -65,6 +65,7 @@
     <Compile Include="GUI\Catenaries\CatenaryList.cs" />
     <Compile Include="GUI\Catenaries\CatenaryPanel.cs" />
     <Compile Include="GUI\Color\ColorPanel.cs" />
+    <Compile Include="GUI\PanelType.cs" />
     <Compile Include="GUI\Pillars\PillarList.cs" />
     <Compile Include="GUI\Pillars\PillarPanel.cs" />
     <Compile Include="Locale\TranslationID.cs" />
