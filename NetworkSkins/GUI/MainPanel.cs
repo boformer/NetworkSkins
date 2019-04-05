@@ -45,23 +45,27 @@ namespace NetworkSkins.GUI
 
         private void OnPanelButtonClicked(PanelType type)
         {
-            currentPanelType = currentPanelType != type ? type : PanelType.None;
-
-            CloseCurrentPanel();
-
-            if (currentPanelType != PanelType.None)
+            if (currentPanelType != type)
             {
                 ShowPanel(currentPanelType);
             }
-
-            toolBar.ButtonBar.SetSelectedPanelButton(currentPanelType);
+            else
+            {
+                CloseCurrentPanel();
+            }
         }
 
         private void ShowPanel(PanelType type)
         {
-            CloseCurrentPanel();
+            if (currentPanel != null)
+            {
+                Destroy(currentPanel.gameObject);
+            }
 
             currentPanel = CreatePanel(type);
+            currentPanelType = type;
+
+            toolBar.ButtonBar.SetSelectedPanelButton(currentPanelType);
         }
 
         private void CloseCurrentPanel()
@@ -69,8 +73,12 @@ namespace NetworkSkins.GUI
             if (currentPanel != null)
             {
                 Destroy(currentPanel.gameObject);
-                currentPanel = null;
             }
+
+            currentPanel = null;
+            currentPanelType = PanelType.None;
+
+            toolBar.ButtonBar.SetSelectedPanelButton(currentPanelType);
         }
 
         #region Child Component Builders
