@@ -1,5 +1,7 @@
 ﻿using NetworkSkins.Net;
+using NetworkSkins.Skins;
 using NetworkSkins.Skins.Modifiers;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace NetworkSkins
@@ -15,14 +17,17 @@ namespace NetworkSkins
         public bool NetInfoHasTrees => NetUtil.HasTrees(Prefab);
         public bool NetInfoHasCatenaries => NetUtil.HasCatenaries(Prefab);
         public bool NetInfoHasPillars => NetUtil.HasPillars(Prefab);
-        public bool NetInfoIsColorable => NetUtil.IsColorable(Prefab);
         public bool NetInfoHasSurfaces => NetUtil.HasSurfaces(Prefab);
         public bool NetInfoHasStreetLights => NetUtil.HasStreetLights(Prefab);
+        public bool NetInfoIsColorable => NetUtil.IsColorable(Prefab);
+        public bool NetInfoCanHaveNoneSurface => NetUtil.CanHaveNoneSurface(Prefab);
 
         public NetInfo Prefab { get; private set; }
+
         private bool isNetToolEnabled;
 
         public bool NetInfoDefaultEquals<Info>(Info prefab) where Info : PrefabInfo {
+            // TODO return whether the passed prefab is the default for current net
             return false;
         }
 

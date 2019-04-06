@@ -49,8 +49,10 @@ namespace NetworkSkins
         public static string SettingsPressed =  "SettingsPressed";
         public static string SettingsHovered =  "SettingsHovered";
         public static string SettingsFocused =  "SettingsFocused";
+        public static string Swatch = "Swatch";
 
         private UITextureAtlas UITextureAtlas { get; set; }
+
         private string[] spriteNames = new string[] {
             "DragHandle",
             "DragHandle",
@@ -93,7 +95,8 @@ namespace NetworkSkins
             "Settings",
             "SettingsPressed",
             "SettingsHovered",
-            "SettingsFocused"
+            "SettingsFocused",
+            "Swatch"
     };
 
         public Resources() {

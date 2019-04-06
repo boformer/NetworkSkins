@@ -66,7 +66,9 @@
     <Compile Include="GUI\Catenaries\CatenaryPanel.cs" />
     <Compile Include="GUI\Color\ColorPanel.cs" />
     <Compile Include="GUI\PanelType.cs" />
+    <Compile Include="GUI\Swatches.cs" />
     <Compile Include="GUI\UIUtil.cs" />
+    <Compile Include="Net\NetType.cs" />
     <Compile Include="Persistence\PersistenceService.cs" />
     <Compile Include="Persistence\PersistentData.cs" />
     <Compile Include="GUI\Pillars\PillarList.cs" />
@@ -161,6 +163,7 @@
     <Content Include="Patches\NetSegment\NetSegmentCalculateGroupDataPatch.txt" />
     <Content Include="Patches\NetSegment\NetSegmentPopulateGroupDataPatch.txt" />
     <Content Include="Patches\NetSegment\NetSegmentRenderInstancePatch.txt" />
+    <EmbeddedResource Include="Resources\Swatch.png" />
     <EmbeddedResource Include="Resources\Catenary.png" />
     <EmbeddedResource Include="Resources\CatenaryFocused.png" />
     <EmbeddedResource Include="Resources\CatenaryHovered.png" />

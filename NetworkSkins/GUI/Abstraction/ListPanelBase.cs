@@ -26,7 +26,7 @@ namespace NetworkSkins.GUI
         }
 
         protected abstract void CreateList();
-        
+
         protected abstract void OnPanelBuilt();
 
         protected abstract void OnSearchTextChanged(string text);
@@ -53,7 +53,7 @@ namespace NetworkSkins.GUI
                     case LanePosition.Right: lane = Translation.Instance.GetTranslation(TranslationID.LABEL_RIGHTLANE); break;
                     default: break;
                 }
-                tabs[i] = CreateButton(Vector2.zero, lane, backgroundSprite: "GenericTab", parentComponent: tabStrip, isFocusable: true);
+                tabs[i] = UIUtil.CreateButton(Vector2.zero, lane, backgroundSprite: "GenericTab", parentComponent: tabStrip, isFocusable: true);
                 tabs[i].color = tabs[i].focusedColor = new Color32(210, 210, 210, 255);
                 tabs[i].size = new Vector2(tabStrip.width / 3.0f, tabStrip.height);
             }

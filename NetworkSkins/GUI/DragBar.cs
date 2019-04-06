@@ -7,6 +7,7 @@ namespace NetworkSkins.GUI
     {
         private UIDragHandle dragHandle;
         private UIPanel panel;
+        public event DragEndEventHandler EventDragEnd;
 
         public override void Build(PanelType panelType, Layout layout) {
             base.Build(panelType, layout);
@@ -15,12 +16,18 @@ namespace NetworkSkins.GUI
             dragHandle.isInteractive = true;
             dragHandle.size = new Vector2(parent.width, height);
             dragHandle.relativePosition = new Vector2(0.0f, 0.0f);
+            dragHandle.eventMouseUp += OnDragEnd;
             panel = AddUIComponent<UIPanel>();
             panel.size = new Vector2(parent.width, height);
             panel.relativePosition = new Vector2(0.0f, 0.0f);
             panel.atlas = Resources.Atlas;
             panel.backgroundSprite = Resources.DragHandle;
             panel.isInteractive = false;
+        }
+
+        private void OnDragEnd(UIComponent component, UIMouseEventParameter eventParam) {
+
+            EventDragEnd?.Invoke();
         }
 
         protected override void RefreshUI(NetInfo netInfo) {

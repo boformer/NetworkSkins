@@ -1,10 +1,44 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
 
 namespace NetworkSkins.Net
 {
     public class NetUtil
     {
+        public static readonly string[] NET_TYPE_NAMES = { "Tunnel", "Ground", "Elevated", "Bridge" };
+
+        // Get the specific variations of a network for tunnel, ground, elevated and bridge.
+        // Each network type has a distint AI, which stores this info.
+        // To support other network types (e.g. monorail), you have to add them here.
+        // Otherwise the NS settings window will not show up!
+        public static NetInfo[] GetSubPrefabs(NetInfo prefab) {
+            var subPrefabs = new NetInfo[NET_TYPE_NAMES.Length];
+
+            if (prefab.m_netAI is TrainTrackAI trackAI) {
+                subPrefabs[(int)NetType.Tunnel] = trackAI.m_tunnelInfo;
+                subPrefabs[(int)NetType.Ground] = trackAI.m_info;
+                subPrefabs[(int)NetType.Elevated] = trackAI.m_elevatedInfo;
+                subPrefabs[(int)NetType.Bridge] = trackAI.m_bridgeInfo;
+            } else if (prefab.m_netAI is RoadAI roadAI) {
+                subPrefabs[(int)NetType.Tunnel] = roadAI.m_tunnelInfo;
+                subPrefabs[(int)NetType.Ground] = roadAI.m_info;
+                subPrefabs[(int)NetType.Elevated] = roadAI.m_elevatedInfo;
+                subPrefabs[(int)NetType.Bridge] = roadAI.m_bridgeInfo;
+            } else if (prefab.m_netAI is PedestrianPathAI pedAI) {
+                subPrefabs[(int)NetType.Tunnel] = pedAI.m_tunnelInfo;
+                subPrefabs[(int)NetType.Ground] = pedAI.m_info;
+                subPrefabs[(int)NetType.Elevated] = pedAI.m_elevatedInfo;
+                subPrefabs[(int)NetType.Bridge] = pedAI.m_bridgeInfo;
+            } else if (prefab.m_netAI is PedestrianWayAI pedWayAI) {
+                subPrefabs[(int)NetType.Tunnel] = pedWayAI.m_tunnelInfo;
+                subPrefabs[(int)NetType.Ground] = pedWayAI.m_info;
+                subPrefabs[(int)NetType.Elevated] = pedWayAI.m_elevatedInfo;
+                subPrefabs[(int)NetType.Bridge] = pedWayAI.m_bridgeInfo;
+            }
+            return subPrefabs;
+        }
+
         public static bool HasTrees(NetInfo netInfo) {
             if (netInfo == null || netInfo.m_lanes == null) return false;
             foreach (NetInfo.Lane lane in netInfo.m_lanes)
@@ -22,6 +56,11 @@ namespace NetworkSkins.Net
                     foreach (var laneProp in lane.m_laneProps.m_props) {
                         if (laneProp?.m_finalTree != null) return true;
                     }
+            return false;
+        }
+
+        internal static bool CanHaveNoneSurface(NetInfo prefab) {
+            // TODO
             return false;
         }
 
@@ -70,6 +109,7 @@ namespace NetworkSkins.Net
         }
 
         public static bool HasSurfaces(NetInfo netInfo) {
+            // TODO
             return true;
         }
 
