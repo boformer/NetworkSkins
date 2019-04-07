@@ -25,8 +25,6 @@ namespace NetworkSkins
         private MainPanel panel;
         private GameObject skinControllerGameObject;
         private GameObject persistenceServiceGameObject;
-        private SkinController skinController;
-        private PersistenceService persistenceService;
 
         #region Lifecycle
         private static bool InGame => LoadingManager.exists && LoadingManager.instance.m_loadingComplete;
@@ -105,16 +103,16 @@ namespace NetworkSkins
             skinControllerGameObject = new GameObject(nameof(SkinController));
             persistenceServiceGameObject.transform.parent = NetworkSkinManager.instance.gameObject.transform;
             skinControllerGameObject.transform.parent = NetworkSkinManager.instance.gameObject.transform;
-            SkinController.Instance = skinController = skinControllerGameObject.AddComponent<SkinController>();
-            PersistenceService.Instance = persistenceService = persistenceServiceGameObject.AddComponent<PersistenceService>();
-            skinController.EventToolStateChanged += OnNetToolStateChanged;
+            SkinController.Instance = skinControllerGameObject.AddComponent<SkinController>();
+            PersistenceService.Instance = persistenceServiceGameObject.AddComponent<PersistenceService>();
+            SkinController.Instance.EventToolStateChanged += OnNetToolStateChanged;
         }
 
         private void Uninstall()
         {
-            if (skinController != null)
+            if (SkinController.Instance != null)
             {
-                skinController.EventToolStateChanged -= OnNetToolStateChanged;
+                SkinController.Instance.EventToolStateChanged -= OnNetToolStateChanged;
                 if (skinControllerGameObject != null)
                 {
                     Destroy(skinControllerGameObject);
@@ -122,8 +120,8 @@ namespace NetworkSkins
                 }
             }
 
-            if (persistenceService != null) {
-                if (persistenceService.gameObject != null) {
+            if (PersistenceService.Instance != null) {
+                if (persistenceServiceGameObject != null) {
                     Destroy(persistenceServiceGameObject);
                     persistenceServiceGameObject = null;
                 }

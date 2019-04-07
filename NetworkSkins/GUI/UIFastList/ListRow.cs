@@ -134,11 +134,15 @@ namespace NetworkSkins.GUI
         }
 
         private void OnMouseLeaveEvent(UIComponent component, UIMouseEventParameter eventParam) {
-            color = itemData.IsSelected ? selectedColor : isRowOdd ? oddColor :  evenColor;
+            if (itemData != null) {
+                color = itemData.IsSelected ? selectedColor : isRowOdd ? oddColor : evenColor;
+            }
         }
 
         private void OnMouseEnterEvent(UIComponent component, UIMouseEventParameter eventParam) {
-            if (!itemData.IsSelected) color = new Color32((byte)((int)oddColor.r + 25), (byte)(oddColor.g + (byte)25), (byte)(oddColor.b + (byte)25), 255);
+            if (itemData != null) {
+                if (!itemData.IsSelected) color = new Color32((byte)((int)oddColor.r + 25), (byte)(oddColor.g + (byte)25), (byte)(oddColor.b + (byte)25), 255);
+            }
         }
 
         private void OnFavouriteCheckboxCheckChanged(UIComponent component, bool value) {

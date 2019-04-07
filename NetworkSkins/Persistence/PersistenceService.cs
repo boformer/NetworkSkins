@@ -32,6 +32,24 @@ namespace NetworkSkins.Persistence
             }
         }
 
+        public List<Color32> GetSwatches() {
+            return new List<Color32>(Data.Swatches);
+        }
+
+        public void AddSwatch(Color32 color) {
+            if (!Data.Swatches.Contains(color)) {
+                Data.Swatches.Add(color);
+                SaveData();
+            }
+        }
+
+        public void RemoveSwatch(Color32 color) {
+            if (Data.Swatches.Contains(color)) {
+                Data.Swatches.Remove(color);
+                SaveData();
+            }
+        }
+
         public void AddFavourite(string itemID, PanelType panelType) {
             ItemType itemType = UIUtil.PanelToItemType(panelType);
             if (!Data.Favourites[(int)itemType].Contains(itemID)) {
@@ -48,6 +66,15 @@ namespace NetworkSkins.Persistence
         public bool IsFavourite(string name, PanelType panelType) {
             ItemType itemType = UIUtil.PanelToItemType(panelType);
             return Data.Favourites[(int)itemType].Contains(name);
+        }
+
+        public Vector3 GetToolbarPosition() {
+            return Data.ToolbarPosition;
+        }
+
+        public void SetToolbarPosition(Vector3 position) {
+            Data.ToolbarPosition = position;
+            SaveData();
         }
 
         public void SaveData() {
