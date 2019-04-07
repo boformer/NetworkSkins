@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using ICities;
+using NetworkSkins.Net;
 using NetworkSkins.Skins;
 using NetworkSkins.Skins.Modifiers;
 using UnityEngine;
@@ -92,10 +93,14 @@ namespace NetworkSkins
                 new ColorModifier(color: new Color32(173, 158, 147, 255)),
                 new StreetLightModifier(streetLight: null),
                 new TreeModifier(
-                    leftTree: PrefabCollection<TreeInfo>.FindLoaded("Flower Tree 01"), 
-                    leftTreeRepeatDistance: 5,
-                    rightTree: PrefabCollection<TreeInfo>.FindLoaded("Flower Tree 01"),
-                    righTreeRepeatDistance: 10
+                    LanePosition.Left,
+                    tree: PrefabCollection<TreeInfo>.FindLoaded("Flower Tree 01"), 
+                    repeatDistance: 10
+                ),
+                new TreeModifier(
+                    LanePosition.Right,
+                    tree: PrefabCollection<TreeInfo>.FindLoaded("Flower Tree 01"),
+                    repeatDistance: 20
                 )
             });
         }
@@ -106,7 +111,8 @@ namespace NetworkSkins
             m.Add(prefab, new List<NetworkSkinModifier>
             {
                 new ColorModifier(color: new Color32(160, 160, 160, 255)),
-                new TreeModifier(tree: PrefabCollection<TreeInfo>.FindLoaded("909448182.Royal Palm_Data"), repeatDistance: 20)
+                new TreeModifier(position: LanePosition.Left, tree: PrefabCollection<TreeInfo>.FindLoaded("909448182.Royal Palm_Data"), repeatDistance: 20),
+                new TreeModifier(position: LanePosition.Right, tree: PrefabCollection<TreeInfo>.FindLoaded("909448182.Royal Palm_Data"), repeatDistance: 20)
             });
         }
 

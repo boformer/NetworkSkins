@@ -1,4 +1,4 @@
-﻿using ColossalFramework.UI;
+﻿using System.Linq;
 using NetworkSkins.Net;
 using UnityEngine;
 
@@ -7,18 +7,22 @@ namespace NetworkSkins.GUI
     public class TreePanel : ListPanelBase<TreeList, TreeInfo>
     {
         protected override void RefreshUI(NetInfo netInfo) {
-            Vector2 size = Vector2.zero;
-            int lanesWithTrees = 0;
-            for (int i = 0; i < (int)LanePosition.Count; i++) {
-                bool hasTree = NetUtil.HasTreesInLane(netInfo, (LanePosition)i);
-                tabs[i].isVisible = hasTree;
-                if (hasTree) ++lanesWithTrees;
-            }
-            if (lanesWithTrees != 0) {
+            SetTabEnabled(LanePosition.Left, SkinController.LeftTree.Enabled);
+            SetTabEnabled(LanePosition.Middle, SkinController.MiddleTree.Enabled);
+            SetTabEnabled(LanePosition.Right, SkinController.RighTree.Enabled);
+
+            int tabCount = tabs.Count(tab => tab.isVisible);
+
+            if (tabCount != 0) {
                 for (int i = 0; i < (int)LanePosition.Count; i++) {
-                    tabs[i].width = tabStrip.width / lanesWithTrees;
+                    tabs[i].width = tabStrip.width / tabCount;
                 }
             }
+        }
+
+        private void SetTabEnabled(LanePosition lanePos, bool enabled)
+        {
+            tabs[(int) lanePos].isVisible = enabled;
         }
 
         protected override void OnSearchLostFocus() {
@@ -38,7 +42,21 @@ namespace NetworkSkins.GUI
         }
 
         protected override void OnSelectedChanged(string itemID, bool selected) {
-            if(selected) SkinController.SetTree(itemID, GetLanePosition());
+            if(!selected) return;
+
+            var lanePosition = GetLanePosition();
+            if (lanePosition == LanePosition.Left)
+            {
+                //SkinController.LeftTree.OnSelectedItemChanged();
+            }
+            else if (lanePosition == LanePosition.Middle)
+            {
+                //SkinController.MiddleTree.OnSelectedItemChanged();
+            }
+            else if (lanePosition == LanePosition.Right)
+            {
+                //SkinController.RighTree.OnSelectedItemChanged();
+            }
         }
 
         private LanePosition GetLanePosition() {
