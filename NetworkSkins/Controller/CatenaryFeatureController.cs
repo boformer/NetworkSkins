@@ -10,10 +10,8 @@ namespace NetworkSkins.Controller
 {
     public class CatenaryFeatureController : ItemListFeatureController<PropInfo>
     {
-        protected override List<Item> BuildItems(out Item defaultItem)
+        protected override List<Item> BuildItems(ref Item defaultItem)
         {
-            defaultItem = null;
-
             if (!(Prefab.m_netAI is TrainTrackBaseAI))
             {
                 return new List<Item>();

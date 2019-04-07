@@ -18,6 +18,8 @@ namespace NetworkSkins
 
         private bool _ignoreModifierEvents = false;
 
+        public TerrainSurfaceFeatureController TerrainSurface;
+
         public ColorFeatureController Color;
 
         public StreetLightFeatureController StreetLight;
@@ -34,12 +36,6 @@ namespace NetworkSkins
         public PillarFeatureController BridgeMiddlePillar;
 
         public CatenaryFeatureController Catenary;
-
-        // surfaces, pillars, color, catenary, extras
-        
-        public bool NetInfoHasSurfaces => NetUtil.HasSurfaces(Prefab);
-        public bool NetInfoIsColorable => NetUtil.IsColorable(Prefab);
-        public bool NetInfoCanHaveNoneSurface => NetUtil.CanHaveNoneSurface(Prefab);
 
         public NetInfo Prefab { get; private set; }
 
@@ -82,6 +78,9 @@ namespace NetworkSkins
 
         private void Awake() {
             Instance = this;
+
+            TerrainSurface = new TerrainSurfaceFeatureController();
+            TerrainSurface.EventModifiersChanged += OnModifiersChanged;
 
             Color = new ColorFeatureController();
             Color.EventModifiersChanged += OnModifiersChanged;
@@ -141,6 +140,8 @@ namespace NetworkSkins
         {
             _ignoreModifierEvents = true;
 
+            TerrainSurface.OnPrefabChanged(prefab);
+
             Color.OnPrefabChanged(prefab);
 
             StreetLight.OnPrefabChanged(prefab);
@@ -174,6 +175,8 @@ namespace NetworkSkins
         private void UpdateActiveModifiers()
         {
             var modifiers = new Dictionary<NetInfo, List<NetworkSkinModifier>>();
+
+            MergeModifiers(modifiers, TerrainSurface.Modifiers);
 
             MergeModifiers(modifiers, Color.Modifiers);
 

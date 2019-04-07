@@ -40,10 +40,8 @@ namespace NetworkSkins.Controller
             base.OnChanged();
         }
 
-        protected override List<Item> BuildItems(out Item defaultItem)
+        protected override List<Item> BuildItems(ref Item defaultItem)
         {
-            defaultItem = null;
-
             var defaultStreetLights = GetDefaultStreetLights();
             if (defaultStreetLights.Count == 0)
             {

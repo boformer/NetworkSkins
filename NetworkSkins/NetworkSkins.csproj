@@ -59,13 +59,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controller\ActiveSelectionData.cs" />
+    <Compile Include="Persistence\ActiveSelectionData.cs" />
     <Compile Include="Controller\CatenaryFeatureController.cs" />
     <Compile Include="Controller\ColorFeatureController.cs" />
     <Compile Include="Controller\FeatureController.cs" />
     <Compile Include="Controller\ItemListFeatureController.cs" />
     <Compile Include="Controller\PillarFeatureController.cs" />
     <Compile Include="Controller\StreetLightFeatureController.cs" />
+    <Compile Include="Controller\TerrainSurfaceFeatureController.cs" />
     <Compile Include="Controller\TreeFeatureController.cs" />
     <Compile Include="GUI\ButtonBar.cs" />
     <Compile Include="GUI\Abstraction\ListBaseGeneric.cs" />

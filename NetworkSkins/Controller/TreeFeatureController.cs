@@ -40,10 +40,8 @@ namespace NetworkSkins.Controller
             }
         }
 
-        protected override List<Item> BuildItems(out Item defaultItem)
+        protected override List<Item> BuildItems(ref Item defaultItem)
         {
-            defaultItem = null;
-
             if (Prefab == null)
             {
                 return new List<Item>();
