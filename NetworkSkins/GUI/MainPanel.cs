@@ -22,6 +22,7 @@ namespace NetworkSkins.GUI
         }
 
         public override void Start() {
+            base.Start();
             Build(PanelType.None, new Layout(new Vector2(0.0f, 234.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 0));
             color = PanelBase.GUIColor;
             relativePosition = Persistence.GetToolbarPosition();

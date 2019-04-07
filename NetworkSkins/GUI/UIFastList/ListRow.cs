@@ -35,9 +35,9 @@ namespace NetworkSkins.GUI
             backgroundSprite = "WhiteRect";
             CreateThumbnail();
             CreateLabel();
-            CreateSpace(5.0f, 30.0f);
+            UIUtil.CreateSpace(5.0f, 30.0f, this);
             CreateCheckbox();
-            CreateSpace(5.0f, 30.0f);
+            UIUtil.CreateSpace(5.0f, 30.0f, this);
             eventMouseEnter += OnMouseEnterEvent;
             eventMouseLeave += OnMouseLeaveEvent;
         }

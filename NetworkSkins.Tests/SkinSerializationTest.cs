@@ -22,7 +22,7 @@ namespace NetworkSkins.Tests
                 new TerrainSurfaceModifier(Surface.Ruined),
                 new ColorModifier(new Color32(1, 2, 3, 4)),
                 new StreetLightModifier(prefabs.TestProp, 42f),
-                new TreeModifier(prefabs.TestTree, 42f, null, 1f, prefabs.TestTree2, 69f),
+                //new TreeModifier(prefabs.TestTree, 42f, null, 1f, prefabs.TestTree2, 69f),
                 new PillarModifier(prefabs.TestBuilding, null, null, null, prefabs.TestBuilding2),
                 new CatenaryModifier(prefabs.TestProp),
             }) {UseCount = 2};

@@ -13,7 +13,15 @@ namespace NetworkSkins.GUI
         }
 
         protected override bool IsSelected(TreeInfo prefabInfo) {
-            return false; // TODO
+            return SkinController.LeftTree.Enabled
+                ? SkinController.LeftTree.SelectedItem.Id == prefabInfo?.name
+                : SkinController.MiddleTree.Enabled
+                ? SkinController.MiddleTree.SelectedItem.Id == prefabInfo?.name
+                : false;
+        }
+
+        protected override bool IsDefault(TreeInfo prefabInfo) {
+            return prefabInfo == SkinController.DefaultTree();
         }
 
         protected override void SetupRowsData() {

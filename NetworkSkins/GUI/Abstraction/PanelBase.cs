@@ -33,11 +33,6 @@ namespace NetworkSkins.GUI
             Layout.Apply(this);
         }
 
-        public void CreateSpace(float width, float height) {
-            UIPanel panel = AddUIComponent<UIPanel>();
-            panel.size = new Vector2(width, height);
-        }
-
         protected abstract void RefreshUI(NetInfo netInfo);
 
         protected virtual void RefreshAfterBuild() {

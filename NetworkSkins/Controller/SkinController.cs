@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NetworkSkins.Controller;
 using NetworkSkins.Net;
@@ -54,9 +55,8 @@ namespace NetworkSkins
 
         private bool isNetToolEnabled;
 
-        public bool NetInfoDefaultEquals<Info>(Info prefab) where Info : PrefabInfo {
-            // TODO return whether the passed prefab is the default for current net
-            return false;
+        public TreeInfo DefaultTree() {
+            return TreeUtils.GetDefaultTree(Prefab, LanePosition.Left) ?? TreeUtils.GetDefaultTree(Prefab, LanePosition.Middle);
         }
 
         /// <summary>

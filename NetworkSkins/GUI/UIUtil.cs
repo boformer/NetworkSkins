@@ -35,5 +35,10 @@ namespace NetworkSkins.GUI
 
             return button;
         }
+
+        public static void CreateSpace(float width, float height, UIComponent parent) {
+            UIPanel panel = parent.AddUIComponent<UIPanel>();
+            panel.size = new Vector2(width, height);
+        }
     }
 }

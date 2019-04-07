@@ -21,7 +21,7 @@ namespace NetworkSkins.GUI
             SetupTabs();
             CreateList();
             CreateSearchBox();
-            CreateSpace(width - (Spacing * 2), 0.1f);
+            UIUtil.CreateSpace(width - (Spacing * 2), 0.1f, this);
             OnPanelBuilt();
         }
 

@@ -47,15 +47,15 @@ namespace NetworkSkins.GUI
             var lanePosition = GetLanePosition();
             if (lanePosition == LanePosition.Left)
             {
-                //SkinController.LeftTree.OnSelectedItemChanged();
+                SkinController.LeftTree.OnSelectedItemChanged(itemID);
             }
             else if (lanePosition == LanePosition.Middle)
             {
-                //SkinController.MiddleTree.OnSelectedItemChanged();
+                SkinController.MiddleTree.OnSelectedItemChanged(itemID);
             }
             else if (lanePosition == LanePosition.Right)
             {
-                //SkinController.RighTree.OnSelectedItemChanged();
+                SkinController.RighTree.OnSelectedItemChanged(itemID);
             }
         }
 

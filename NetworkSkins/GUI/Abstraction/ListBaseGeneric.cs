@@ -11,19 +11,9 @@ namespace NetworkSkins.GUI
         protected override Vector2 ListSize => new Vector2(390.0f, 500.0f);
         protected override float RowHeight => 50.0f;
 
-        /// <summary>
-        /// Used to check whether the PrefabInfo is currently being used in the skin.
-        /// </summary>
-        /// <param name="prefabInfo"></param>
-        /// <returns></returns>
         protected abstract bool IsSelected(T prefabInfo);
-
-        /// <summary>
-        /// Used to check whether the PrefabInfo is currently saved as a favourite.
-        /// </summary>
-        /// <param name="prefabInfo"></param>
-        /// <returns></returns>
         protected abstract bool IsFavourite(T prefabInfo);
+        protected abstract bool IsDefault(T prefabInfo);
 
         protected ListItem CreateListItem(T prefabInfo) {
             Texture2D thumbnail;
@@ -38,16 +28,12 @@ namespace NetworkSkins.GUI
             name = prefabInfo == null
                 ? Translation.Instance.GetTranslation(TranslationID.LABEL_NONE)
                 : prefabInfo.GetUncheckedLocalizedTitle();
-            id = prefabInfo == null ? "None" : prefabInfo.name;
+            id = prefabInfo == null ? "#None#" : prefabInfo.name;
             displayName = string.Concat(prefix, name);
             thumbnail = prefabInfo == null
                 ? UIView.GetAView()?.defaultAtlas?.GetSpriteTexture("Niet")
                 : prefabInfo.m_Atlas?.GetSpriteTexture(prefabInfo.m_Thumbnail);
             return new ListItem(id, displayName, thumbnail, isSelected, isFavourite);
-        }
-
-        private static bool IsDefault(T prefabInfo) {
-            return SkinController.Instance.NetInfoDefaultEquals(prefabInfo);
         }
     }
 }

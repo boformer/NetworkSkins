@@ -76,6 +76,10 @@ namespace NetworkSkins.GUI
             colorField.eventColorPickerOpen += OnColorPickerOpen;
             colorField.eventSelectedColorChanged += OnColorChanged;
             colorField.size = new Vector2(50.0f, 50.0f);
+
+            UIColorPicker picker = GameObject.Instantiate<UIColorPicker>(colorField.colorPicker);
+            colorFieldPanel.AttachUIComponent(picker.gameObject);
+
         }
 
         private void OnColorChanged(UIComponent component, Color value) {
