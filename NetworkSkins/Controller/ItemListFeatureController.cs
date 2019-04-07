@@ -97,7 +97,7 @@ namespace NetworkSkins.Controller
 
         public class DefaultVariantItem : Item
         {
-            public DefaultVariantItem() : base("#DEFAULT") {};
+            public DefaultVariantItem() : base("#DEFAULT") {}
         }
         #endregion
     }
