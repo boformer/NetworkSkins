@@ -53,6 +53,7 @@ namespace NetworkSkins
         public bool NetInfoHasSurfaces => NetUtil.HasSurfaces(Prefab);
         public bool NetInfoHasStreetLights => NetUtil.HasStreetLights(Prefab);
         public bool NetInfoIsColorable => NetUtil.IsColorable(Prefab);
+        public bool NetInfoCanHaveNoneSurface => NetUtil.CanHaveNoneSurface(Prefab);
 
         public NetInfo Prefab { get; private set; }
 
