@@ -67,21 +67,21 @@ namespace NetworkSkins.Controller
             var groundCatenary = CatenaryUtils.GetDefaultCatenary(Prefab);
             if (groundCatenary != null) defaultCatenaries[Prefab] = groundCatenary;
 
-            var slopePrefab = NetUtil.GetSlopePrefab(Prefab);
+            var slopePrefab = NetUtils.GetSlopePrefab(Prefab);
             if (slopePrefab != null)
             {
                 var slopeCatenary = CatenaryUtils.GetDefaultCatenary(slopePrefab);
                 if (slopeCatenary != null) defaultCatenaries[slopePrefab] = slopeCatenary;
             }
 
-            var elevatedPrefab = NetUtil.GetElevatedPrefab(Prefab);
+            var elevatedPrefab = NetUtils.GetElevatedPrefab(Prefab);
             if (elevatedPrefab != null)
             {
                 var elevatedCatenary = CatenaryUtils.GetDefaultCatenary(elevatedPrefab);
                 if (elevatedCatenary != null) defaultCatenaries[elevatedPrefab] = elevatedCatenary;
             }
 
-            var bridgePrefab = NetUtil.GetBridgePrefab(Prefab);
+            var bridgePrefab = NetUtils.GetBridgePrefab(Prefab);
             if (bridgePrefab != null)
             {
                 var bridgeCatenary = CatenaryUtils.GetDefaultCatenary(bridgePrefab);
@@ -138,13 +138,13 @@ namespace NetworkSkins.Controller
 
                 modifiers.Add(Prefab, prefabModifiers);
 
-                var slopePrefab = NetUtil.GetSlopePrefab(Prefab);
+                var slopePrefab = NetUtils.GetSlopePrefab(Prefab);
                 if (slopePrefab != null) modifiers.Add(slopePrefab, prefabModifiers);
 
-                var elevatedPrefab = NetUtil.GetElevatedPrefab(Prefab);
+                var elevatedPrefab = NetUtils.GetElevatedPrefab(Prefab);
                 if (elevatedPrefab != null) modifiers.Add(elevatedPrefab, prefabModifiers);
 
-                var bridgePrefab = NetUtil.GetBridgePrefab(Prefab);
+                var bridgePrefab = NetUtils.GetBridgePrefab(Prefab);
                 if (bridgePrefab != null) modifiers.Add(bridgePrefab, prefabModifiers);
             }
 

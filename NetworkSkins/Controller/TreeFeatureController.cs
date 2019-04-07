@@ -53,7 +53,7 @@ namespace NetworkSkins.Controller
                 return new List<Item>();
             }
 
-            var trees = GetAvailableTrees();
+            var trees = TreeUtils.GetAvailableTrees();
 
             var items = new List<Item> { new SimpleItem("#NONE#", null) };
             foreach (var tree in trees)
@@ -70,21 +70,6 @@ namespace NetworkSkins.Controller
             Debug.Log($"Built {items.Count} tree items with default {defaultTree} in lane {Position}");
 
             return items;
-        }
-
-        private List<TreeInfo> GetAvailableTrees()
-        {
-            var trees = new List<TreeInfo>();
-
-            var prefabCount = PrefabCollection<TreeInfo>.LoadedCount();
-            for (uint prefabIndex = 0; prefabIndex < prefabCount; prefabIndex++)
-            {
-                trees.Add(PrefabCollection<TreeInfo>.GetLoaded(prefabIndex));
-            }
-
-            trees.Sort((a, b) => string.Compare(a.GetUncheckedLocalizedTitle(), b.GetUncheckedLocalizedTitle(), StringComparison.Ordinal));
-
-            return trees;
         }
 
         protected override Dictionary<NetInfo, List<NetworkSkinModifier>> BuildModifiers()

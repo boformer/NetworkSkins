@@ -37,8 +37,10 @@ namespace NetworkSkins.Net
             }
         }
 
-        public static Surface StringToSurface(string name) {
-            switch (name) {
+        public static Surface StringToSurface(string name)
+        {
+            switch (name)
+            {
                 case "None": return Surface.None;
                 case "Pavement": return Surface.Pavement;
                 case "Gravel": return Surface.Gravel;

@@ -150,11 +150,11 @@ namespace NetworkSkins
             MiddleTree.OnPrefabChanged(prefab);
             RighTree.OnPrefabChanged(prefab);
             
-            var elevatedPrefab = NetUtil.GetElevatedPrefab(prefab);
+            var elevatedPrefab = NetUtils.GetElevatedPrefab(prefab);
             ElevatedBridgePillar.OnPrefabChanged(elevatedPrefab);
             ElevatedMiddlePillar.OnPrefabChanged(elevatedPrefab);
 
-            var bridgePrefab = NetUtil.GetBridgePrefab(prefab);
+            var bridgePrefab = NetUtils.GetBridgePrefab(prefab);
             BridgeBridgePillar.OnPrefabChanged(bridgePrefab);
             BridgeMiddlePillar.OnPrefabChanged(bridgePrefab);
 

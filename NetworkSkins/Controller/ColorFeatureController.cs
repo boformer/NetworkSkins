@@ -42,7 +42,7 @@ namespace NetworkSkins.Controller
 
         protected override void Build()
         {
-            var subPrefabs = NetUtil.GetSubPrefabs2(Prefab);
+            var subPrefabs = NetUtils.GetPrefabVariations(Prefab);
 
             _colorable = false;
             foreach (var subPrefab in subPrefabs)
@@ -66,7 +66,7 @@ namespace NetworkSkins.Controller
                     new ColorModifier(SelectedColor)
                 };
 
-                var subPrefabs = NetUtil.GetSubPrefabs2(Prefab);
+                var subPrefabs = NetUtils.GetPrefabVariations(Prefab);
                 foreach (var subPrefab in subPrefabs)
                 {
                     if (NetTextureUtils.HasRoadTexture(subPrefab))
