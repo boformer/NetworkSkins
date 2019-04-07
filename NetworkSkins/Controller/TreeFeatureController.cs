@@ -62,7 +62,11 @@ namespace NetworkSkins.Controller
             {
                 var item = new SimpleItem(tree.name, tree);
                 items.Add(item);
-                if (tree == defaultTree) defaultItem = item;
+
+                if (tree == defaultTree)
+                {
+                    defaultItem = item;
+                }
             }
 
             Debug.Log($"Built {items.Count} tree items with default {defaultTree} in lane {Position}");

@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\ActiveSelectionData.cs" />
+    <Compile Include="Controller\CatenaryFeatureController.cs" />
     <Compile Include="Controller\FeatureController.cs" />
     <Compile Include="Controller\ItemListFeatureController.cs" />
     <Compile Include="Controller\StreetLightFeatureController.cs" />

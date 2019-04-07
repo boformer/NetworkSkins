@@ -1,47 +1,18 @@
-﻿namespace NetworkSkins.Net
+﻿using JetBrains.Annotations;
+
+namespace NetworkSkins.Net
 {
     public static class TreeUtils
     {
+        [CanBeNull]
         public static TreeInfo GetDefaultTree(NetInfo prefab, LanePosition position)
         {
-            if (prefab?.m_lanes != null)
-            {
-                foreach (var lane in prefab.m_lanes)
-                {
-                    if (lane?.m_laneProps?.m_props == null || !position.IsCorrectSide(lane.m_position)) continue;
-
-                    foreach (var laneProp in lane.m_laneProps.m_props)
-                    {
-                        if (laneProp?.m_finalTree != null)
-                        {
-                            return laneProp.m_finalTree;
-                        }
-                    }
-                }
-            }
- 
-            return null;
+            return NetUtil.GetMatchingLaneProp(prefab, laneProp => laneProp.m_finalTree != null, position)?.m_finalTree;
         }
 
         public static float GetDefaultRepeatDistance(NetInfo prefab, LanePosition position)
         {
-            if (prefab?.m_lanes != null)
-            {
-                foreach (var lane in prefab.m_lanes)
-                {
-                    if (lane?.m_laneProps?.m_props == null || !position.IsCorrectSide(lane.m_position)) continue;
-
-                    foreach (var laneProp in lane.m_laneProps.m_props)
-                    {
-                        if (laneProp?.m_finalTree != null)
-                        {
-                            return laneProp.m_repeatDistance;
-                        }
-                    }
-                }
-            }
-            
-            return 20f;
+            return NetUtil.GetMatchingLaneProp(prefab, laneProp => laneProp.m_finalTree != null, position)?.m_repeatDistance ?? 20f;
         }
     }
 }
