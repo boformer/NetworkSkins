@@ -14,6 +14,11 @@ namespace NetworkSkins.Controller
         {
             defaultItem = null;
 
+            if (!(Prefab.m_netAI is TrainTrackBaseAI))
+            {
+                return new List<Item>();
+            }
+
             var defaultCatenaries = GetDefaultCatenaries();
             if (defaultCatenaries.Count == 0)
             {
@@ -117,7 +122,7 @@ namespace NetworkSkins.Controller
                 }
             }
 
-            catenaries.Sort((a, b) => string.Compare(a.GetLocalizedTitle(), b.GetLocalizedTitle(), StringComparison.Ordinal));
+            catenaries.Sort((a, b) => string.Compare(a.GetUncheckedLocalizedTitle(), b.GetUncheckedLocalizedTitle(), StringComparison.Ordinal));
 
             return catenaries;
         }
