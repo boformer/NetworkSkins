@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 using NetworkSkins.Skins;
 
 namespace NetworkSkins.Controller
 {
     public abstract class FeatureController
     {
+        [CanBeNull]
         protected NetInfo Prefab { get; private set; } = null;
 
         public Dictionary<NetInfo, List<NetworkSkinModifier>> Modifiers { get; private set; } = new Dictionary<NetInfo, List<NetworkSkinModifier>>();
@@ -26,7 +27,7 @@ namespace NetworkSkins.Controller
         {
             if (Prefab == prefab) return;
 
-            Prefab = prefab ?? throw new ArgumentNullException(nameof(prefab));
+            Prefab = prefab;
 
             Build();
 
@@ -35,7 +36,7 @@ namespace NetworkSkins.Controller
 
         protected abstract void Build();
 
-        protected void OnChanged()
+        protected virtual void OnChanged()
         {
             Modifiers = BuildModifiers();
 

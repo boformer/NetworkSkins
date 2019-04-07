@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using NetworkSkins.Net;
 using NetworkSkins.Skins;
 using NetworkSkins.Skins.Modifiers;
@@ -34,13 +33,21 @@ namespace NetworkSkins.Controller
         {
             base.Build();
 
-            DefaultRepeatDistance = TreeUtils.GetDefaultRepeatDistance(Prefab, Position);
-            SelectedRepeatDistance = LoadSelectedRepeatDistance() ?? DefaultRepeatDistance;
+            if (Prefab != null)
+            {
+                DefaultRepeatDistance = TreeUtils.GetDefaultRepeatDistance(Prefab, Position);
+                SelectedRepeatDistance = LoadSelectedRepeatDistance() ?? DefaultRepeatDistance;
+            }
         }
 
         protected override List<Item> BuildItems(out Item defaultItem)
         {
             defaultItem = null;
+
+            if (Prefab == null)
+            {
+                return new List<Item>();
+            }
 
             var defaultTree = TreeUtils.GetDefaultTree(Prefab, Position);
             if (defaultTree == null)
@@ -48,17 +55,9 @@ namespace NetworkSkins.Controller
                 return new List<Item>();
             }
 
-            var trees = new List<TreeInfo>();
+            var trees = GetAvailableTrees();
 
-            var prefabCount = PrefabCollection<TreeInfo>.LoadedCount();
-            for (uint prefabIndex = 0; prefabIndex < prefabCount; prefabIndex++)
-            {
-                trees.Add(PrefabCollection<TreeInfo>.GetLoaded(prefabIndex));
-            }
-
-            trees.Sort((a, b) => string.Compare(a.name, b.name, StringComparison.Ordinal));
-
-            var items = new List<Item> { new NoneItem() };
+            var items = new List<Item> { new SimpleItem("#NONE#", null) };
             foreach (var tree in trees)
             {
                 var item = new SimpleItem(tree.name, tree);
@@ -71,22 +70,37 @@ namespace NetworkSkins.Controller
             return items;
         }
 
-        protected override Dictionary<NetInfo, List<NetworkSkinModifier>> BuildModifiers()
+        private List<TreeInfo> GetAvailableTrees()
         {
-            if (SelectedItem == null || SelectedItem == DefaultItem)
+            var trees = new List<TreeInfo>();
+
+            var prefabCount = PrefabCollection<TreeInfo>.LoadedCount();
+            for (uint prefabIndex = 0; prefabIndex < prefabCount; prefabIndex++)
             {
-                return new Dictionary<NetInfo, List<NetworkSkinModifier>>();
+                trees.Add(PrefabCollection<TreeInfo>.GetLoaded(prefabIndex));
             }
 
-            return new Dictionary<NetInfo, List<NetworkSkinModifier>>
+            trees.Sort((a, b) => string.Compare(a.GetLocalizedTitle(), b.GetLocalizedTitle(), StringComparison.Ordinal));
+
+            return trees;
+        }
+
+        protected override Dictionary<NetInfo, List<NetworkSkinModifier>> BuildModifiers()
+        {
+            var modifiers = new Dictionary<NetInfo, List<NetworkSkinModifier>>();
+
+            if (Prefab != null && SelectedItem != null && SelectedItem is SimpleItem item)
             {
+                if (item != DefaultItem || SelectedRepeatDistance != DefaultRepeatDistance)
                 {
-                    Prefab, new List<NetworkSkinModifier>
+                    modifiers[Prefab] = new List<NetworkSkinModifier>()
                     {
-                        new TreeModifier(Position, SelectedItem.GetValue(Prefab), SelectedRepeatDistance)
-                    }
+                        new TreeModifier(Position, item.Value, SelectedRepeatDistance)
+                    };
                 }
-            };
+            }
+
+            return modifiers;
         }
 
         #region Active Selection Data
@@ -96,26 +110,14 @@ namespace NetworkSkins.Controller
 
         private float? LoadSelectedRepeatDistance()
         {
-            var value = ActiveSelectionData.Instance.GetValue(Prefab, SelectedRepeatDistanceKey);
-            if (value == null) return null;
-
-            try
-            {
-                return float.Parse(value, CultureInfo.InvariantCulture);
-            }
-            catch (FormatException e)
-            {
-                Debug.LogException(e);
-                return null;
-            }
+            return ActiveSelectionData.Instance.GetFloatValue(Prefab, SelectedRepeatDistanceKey);
         }
 
         private void SaveSelectedRepeatDistance()
         {
             if (SelectedRepeatDistance != DefaultRepeatDistance)
             {
-                var value = SelectedRepeatDistance.ToString("R", CultureInfo.InvariantCulture);
-                ActiveSelectionData.Instance.SetValue(Prefab, SelectedRepeatDistanceKey, value);
+                ActiveSelectionData.Instance.SetFloatValue(Prefab, SelectedRepeatDistanceKey, SelectedRepeatDistance);
             }
             else
             {

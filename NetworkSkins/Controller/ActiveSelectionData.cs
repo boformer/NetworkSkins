@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using ColossalFramework.IO;
 using ICities;
+using UnityEngine;
 
 namespace NetworkSkins.Controller
 {
@@ -68,9 +71,31 @@ namespace NetworkSkins.Controller
             return _values.TryGetValue(new ValueKey(prefab.name, key), out var value) ? value : null;
         }
 
+        public float? GetFloatValue(NetInfo prefab, string key)
+        {
+            var value = GetValue(prefab, key);
+            if (value == null) return null;
+
+            try
+            {
+                return float.Parse(value, CultureInfo.InvariantCulture);
+            }
+            catch (FormatException e)
+            {
+                Debug.LogError($"Error while parsing {key} float value for {prefab.name}");
+                Debug.LogException(e);
+                return null;
+            }
+        }
+
         public void SetValue(NetInfo prefab, string key, string value)
         {
             _values[new ValueKey(prefab.name, key)] = value;
+        }
+
+        public void SetFloatValue(NetInfo prefab, string key, float value)
+        {
+            _values[new ValueKey(prefab.name, key)] = value.ToString("R", CultureInfo.InvariantCulture);
         }
 
         public void ClearValue(NetInfo prefab, string key)

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using NetworkSkins.Controller;
 using NetworkSkins.Net;
 using NetworkSkins.Skins;
@@ -24,11 +25,7 @@ namespace NetworkSkins
         public readonly TreeFeatureController MiddleTree = new TreeFeatureController(LanePosition.Middle);
         public readonly TreeFeatureController RighTree = new TreeFeatureController(LanePosition.Right);
 
-
-        public bool HasStreetLights { get; private set; } = false;
-        public PropInfo DefaultStreetLight { get; private set; } = null;
-        public PropInfo SelectedStreetLight { get; private set; } = null;
-        public PropInfo[] StreetLights { get; private set; } = new PropInfo[0];
+        public readonly StreetLightFeatureController StreetLight = new StreetLightFeatureController();
 
         public bool HasSurfaces { get; private set; } = false;
         public Surface DefaultSurface { get; private set; } = Surface.Pavement;
@@ -71,6 +68,7 @@ namespace NetworkSkins
         /// <param name="lanePosition"></param>
         public void SetTree(string prefabID, LanePosition lanePosition)
         {
+
         }
 
         public void SetLight(string prefabID) {
@@ -99,6 +97,7 @@ namespace NetworkSkins
             LeftTree.EventChanged += OnFeatureChanged;
             MiddleTree.EventChanged += OnFeatureChanged;
             RighTree.EventChanged += OnFeatureChanged;
+            StreetLight.EventChanged += OnFeatureChanged;
         }
 
         private void Update() {
@@ -127,6 +126,7 @@ namespace NetworkSkins
             LeftTree.OnPrefabChanged(prefab);
             MiddleTree.OnPrefabChanged(prefab);
             RighTree.OnPrefabChanged(prefab);
+            StreetLight.OnPrefabChanged(prefab);
             _ignoreEvents = false;
 
             UpdateActiveModifiers();
@@ -142,13 +142,30 @@ namespace NetworkSkins
         private void UpdateActiveModifiers()
         {
             var modifiers = new Dictionary<NetInfo, List<NetworkSkinModifier>>();
-            modifiers.Merge(LeftTree.Modifiers);
-            modifiers.Merge(MiddleTree.Modifiers);
-            modifiers.Merge(RighTree.Modifiers);
+            MergeModifiers(modifiers, LeftTree.Modifiers);
+            MergeModifiers(modifiers, MiddleTree.Modifiers);
+            MergeModifiers(modifiers, RighTree.Modifiers);
+            MergeModifiers(modifiers, StreetLight.Modifiers);
 
-            Debug.Log($"Built {modifiers.Count} modifiers");
+            Debug.Log($"Built {modifiers.Values.Sum(p => p.Count)} modifiers for {modifiers.Count} prefabs.");
 
             NetworkSkinManager.instance.SetActiveModifiers(modifiers);
+        }
+
+        private static void MergeModifiers(Dictionary<NetInfo, List<NetworkSkinModifier>> mergedModifiers,
+            Dictionary<NetInfo, List<NetworkSkinModifier>> featureModifiers)
+        {
+            foreach (var pair in featureModifiers)
+            {
+                if (mergedModifiers.TryGetValue(pair.Key, out var prefabModifiers))
+                {
+                    prefabModifiers.AddRange(pair.Value);
+                }
+                else
+                {
+                    mergedModifiers[pair.Key] = new List<NetworkSkinModifier>(pair.Value);
+                }
+            }
         }
     }
 }

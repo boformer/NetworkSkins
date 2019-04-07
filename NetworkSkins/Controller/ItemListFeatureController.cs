@@ -83,14 +83,6 @@ namespace NetworkSkins.Controller
             {
                 Id = id;
             }
-
-            public abstract T GetValue(NetInfo prefab);
-        }
-
-        public class NoneItem : Item {
-            public NoneItem() : base("#NONE#"){}
-
-            public override T GetValue(NetInfo prefab) => default(T);
         }
 
         public class SimpleItem : Item
@@ -101,23 +93,11 @@ namespace NetworkSkins.Controller
             {
                 Value = value;
             }
-
-            public override T GetValue(NetInfo prefab) => Value;
         }
 
-        public class VariantItem : Item
+        public class DefaultVariantItem : Item
         {
-            public Dictionary<NetInfo, T> Values { get; set; }
-
-            public VariantItem(string id, Dictionary<NetInfo, T> values) : base(id)
-            {
-                Values = values;
-            }
-
-            public override T GetValue(NetInfo prefab)
-            {
-                return Values.TryGetValue(prefab, out var value) ? value : default(T);
-            }
+            public DefaultVariantItem() : base("#DEFAULT") {};
         }
         #endregion
     }

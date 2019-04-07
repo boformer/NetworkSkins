@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace NetworkSkins.Net
 {
-    public class NetUtil
+    public static class NetUtil
     {
         public static readonly string[] NET_TYPE_NAMES = { "Tunnel", "Ground", "Elevated", "Bridge" };
 
@@ -37,6 +37,54 @@ namespace NetworkSkins.Net
                 subPrefabs[(int)NetType.Bridge] = pedWayAI.m_bridgeInfo;
             }
             return subPrefabs;
+        }
+
+        public static NetInfo GetElevatedPrefab(NetInfo prefab)
+        {
+            if (prefab.m_netAI is RoadAI roadAi)
+            {
+                return roadAi.m_elevatedInfo;
+            }
+            else if (prefab.m_netAI is TrainTrackAI trainTrackAi)
+            {
+                return trainTrackAi.m_elevatedInfo;
+            }
+            else if (prefab.m_netAI is PedestrianPathAI pathAi)
+            {
+                return pathAi.m_elevatedInfo;
+            }
+            else if (prefab.m_netAI is PedestrianWayAI wayAi)
+            {
+                return wayAi.m_elevatedInfo;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public static NetInfo GetBridgePrefab(NetInfo prefab)
+        {
+            if (prefab.m_netAI is RoadAI roadAi)
+            {
+                return roadAi.m_bridgeInfo;
+            }
+            else if (prefab.m_netAI is TrainTrackAI trainTrackAi)
+            {
+                return trainTrackAi.m_bridgeInfo;
+            }
+            else if (prefab.m_netAI is PedestrianPathAI pathAi)
+            {
+                return pathAi.m_bridgeInfo;
+            }
+            else if (prefab.m_netAI is PedestrianWayAI wayAi)
+            {
+                return wayAi.m_bridgeInfo;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public static bool HasTrees(NetInfo netInfo) {

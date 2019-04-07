@@ -62,8 +62,8 @@
     <Compile Include="Controller\ActiveSelectionData.cs" />
     <Compile Include="Controller\FeatureController.cs" />
     <Compile Include="Controller\ItemListFeatureController.cs" />
+    <Compile Include="Controller\StreetLightFeatureController.cs" />
     <Compile Include="Controller\TreeFeatureController.cs" />
-    <Compile Include="DictionaryExtensions.cs" />
     <Compile Include="GUI\ButtonBar.cs" />
     <Compile Include="GUI\Abstraction\ListBaseGeneric.cs" />
     <Compile Include="GUI\Abstraction\ListPanelBase.cs" />
