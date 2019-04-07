@@ -28,6 +28,11 @@ namespace NetworkSkins.Net
             "774449380.Catenary Type EXPO1A_Data",
         };
 
+        public static PropInfo GetDefaultCatenary(NetInfo prefab)
+        {
+            return NetUtil.GetMatchingLaneProp(prefab, laneProp => IsCatenaryProp(laneProp.m_finalProp))?.m_finalProp;
+        }
+
         public static bool IsCatenaryProp(PropInfo prop)
         {
             return IsDoubleRailCatenaryProp(prop) || IsSingleRailCatenaryProp(prop);

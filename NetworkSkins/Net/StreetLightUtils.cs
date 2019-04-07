@@ -1,4 +1,6 @@
-﻿namespace NetworkSkins.Net
+﻿using JetBrains.Annotations;
+
+namespace NetworkSkins.Net
 {
     public static class StreetLightUtils
     {
@@ -23,51 +25,15 @@
             return false;
         }
 
-        // nullable
+        [CanBeNull]
         public static PropInfo GetDefaultStreetLight(NetInfo prefab)
         {
-            if (prefab?.m_lanes == null) return null;
-
-            foreach (var lane in prefab.m_lanes)
-            {
-                var laneProps = lane?.m_laneProps?.m_props;
-                if (laneProps == null) continue;
-
-                foreach (var laneProp in laneProps)
-                {
-                    var finalProp = laneProp?.m_finalProp;
-                    if (laneProp != null && IsStreetLightProp(finalProp))
-                    {
-                        return finalProp;
-                    }
-                }
-            }
-
-            return null;
+            return NetUtil.GetMatchingLaneProp(prefab, laneProp => IsStreetLightProp(laneProp.m_finalProp))?.m_finalProp;
         }
 
         public static float GetDefaultRepeatDistance(NetInfo prefab)
         {
-            if (prefab?.m_lanes != null)
-            {
-                foreach (var lane in prefab.m_lanes)
-                {
-                    var laneProps = lane?.m_laneProps?.m_props;
-                    if (laneProps == null) continue;
-
-                    foreach (var laneProp in laneProps)
-                    {
-                        var finalProp = laneProp?.m_finalProp;
-                        if (laneProp != null && IsStreetLightProp(finalProp))
-                        {
-                            return laneProp.m_repeatDistance;
-                        }
-                    }
-                }
-            }
-
-
-            return 40f;
+            return NetUtil.GetMatchingLaneProp(prefab, laneProp => IsStreetLightProp(laneProp.m_finalProp))?.m_repeatDistance ?? 40f;
         }
 
         public static bool IsStreetLightProp(PropInfo prefab)

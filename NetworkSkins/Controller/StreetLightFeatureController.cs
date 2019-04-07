@@ -56,10 +56,10 @@ namespace NetworkSkins.Controller
             };
 
             PropInfo singleDefaultStreetLight = null;
-            var uniqueStreetLights = new HashSet<PropInfo>(defaultStreetLights.Values);
-            if(uniqueStreetLights.Count == 1)
+            var uniqueDefaultStreetLights = new HashSet<PropInfo>(defaultStreetLights.Values);
+            if(uniqueDefaultStreetLights.Count == 1)
             {
-                singleDefaultStreetLight = uniqueStreetLights.First();
+                singleDefaultStreetLight = uniqueDefaultStreetLights.First();
             }
             else
             {
@@ -73,6 +73,11 @@ namespace NetworkSkins.Controller
             {
                 var item = new SimpleItem(streetLight.name, streetLight);
                 items.Add(item);
+
+                if (streetLight == singleDefaultStreetLight)
+                {
+                    defaultItem = item;
+                }
             }
 
             Debug.Log($"Built {items.Count} street light items with default {singleDefaultStreetLight}");

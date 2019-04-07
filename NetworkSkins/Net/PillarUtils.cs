@@ -1,4 +1,6 @@
-﻿namespace NetworkSkins.Net
+﻿using JetBrains.Annotations;
+
+namespace NetworkSkins.Net
 {
     public static class PillarUtils
     {
@@ -6,7 +8,7 @@
             return false;
         }
 
-        // nullable
+        [CanBeNull]
         public static BuildingInfo GetDefaultBridgePillar(NetInfo prefab)
         {
             var buildingAi = prefab.m_netAI;

@@ -4,7 +4,7 @@ namespace NetworkSkins.Controller
 {
     public abstract class ItemListFeatureController<T> : FeatureController
     {
-        public override bool Enabled => Items.Count > 1;
+        public override bool Enabled => base.Enabled && Items.Count > 1;
 
         /// <summary>
         /// Items available for selection.

@@ -44,11 +44,9 @@ namespace NetworkSkins
         // pillars, color, catenary, extras
 
 
-        public bool NetInfoHasTrees => NetUtil.HasTrees(Prefab);
         public bool NetInfoHasCatenaries => NetUtil.HasCatenaries(Prefab);
         public bool NetInfoHasPillars => NetUtil.HasPillars(Prefab);
         public bool NetInfoHasSurfaces => NetUtil.HasSurfaces(Prefab);
-        public bool NetInfoHasStreetLights => NetUtil.HasStreetLights(Prefab);
         public bool NetInfoIsColorable => NetUtil.IsColorable(Prefab);
         public bool NetInfoCanHaveNoneSurface => NetUtil.CanHaveNoneSurface(Prefab);
 
@@ -94,10 +92,10 @@ namespace NetworkSkins
         private void Awake() {
             Instance = this;
 
-            LeftTree.EventChanged += OnFeatureChanged;
-            MiddleTree.EventChanged += OnFeatureChanged;
-            RighTree.EventChanged += OnFeatureChanged;
-            StreetLight.EventChanged += OnFeatureChanged;
+            LeftTree.EventModifiersChanged += OnModifiersChanged;
+            MiddleTree.EventModifiersChanged += OnModifiersChanged;
+            RighTree.EventModifiersChanged += OnModifiersChanged;
+            StreetLight.EventModifiersChanged += OnModifiersChanged;
         }
 
         private void Update() {
@@ -132,7 +130,7 @@ namespace NetworkSkins
             UpdateActiveModifiers();
         }
 
-        private void OnFeatureChanged()
+        private void OnModifiersChanged()
         {
             if (_ignoreEvents) return;
 

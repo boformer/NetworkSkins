@@ -7,21 +7,21 @@ namespace NetworkSkins.Controller
     public abstract class FeatureController
     {
         [CanBeNull]
-        protected NetInfo Prefab { get; private set; } = null;
+        public NetInfo Prefab { get; private set; }
 
         public Dictionary<NetInfo, List<NetworkSkinModifier>> Modifiers { get; private set; } = new Dictionary<NetInfo, List<NetworkSkinModifier>>();
 
         /// <summary>
         /// The button for this feature should only be show when this is true
         /// </summary>
-        public abstract bool Enabled { get; }
+        public virtual bool Enabled => Prefab != null;
 
         /// <summary>
         /// Event is called after the items for the new prefab have been built
         /// and after there was a change to the modifiers.
         /// </summary>
-        public event ChangedEventHandler EventChanged;
-        public delegate void ChangedEventHandler();
+        public event ModifiersChangedEventHandler EventModifiersChanged;
+        public delegate void ModifiersChangedEventHandler();
 
         public void OnPrefabChanged(NetInfo prefab)
         {
@@ -29,7 +29,10 @@ namespace NetworkSkins.Controller
 
             Prefab = prefab;
 
-            Build();
+            if (Prefab != null)
+            {
+                Build();
+            }
 
             OnChanged();
         }
@@ -38,11 +41,18 @@ namespace NetworkSkins.Controller
 
         protected virtual void OnChanged()
         {
-            Modifiers = BuildModifiers();
+            if (Prefab != null)
+            {
+                Modifiers = BuildModifiers();
+            }
+            else
+            {
+                Modifiers = new Dictionary<NetInfo, List<NetworkSkinModifier>>();
+            }
 
-            EventChanged?.Invoke();
+            EventModifiersChanged?.Invoke();
         }
-       
+
         protected abstract Dictionary<NetInfo, List<NetworkSkinModifier>> BuildModifiers();
     }
 }
