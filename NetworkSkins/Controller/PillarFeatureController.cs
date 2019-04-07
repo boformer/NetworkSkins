@@ -68,8 +68,6 @@ namespace NetworkSkins.Controller
             return modifiers;
         }
 
-
-
         protected override string SelectedItemKey => $"Pillar_{Type}";
     }
 }

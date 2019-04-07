@@ -93,7 +93,7 @@ namespace NetworkSkins.Controller
         {
             var modifiers = new Dictionary<NetInfo, List<NetworkSkinModifier>>();
 
-            if (Prefab != null && SelectedItem != null && SelectedItem is SimpleItem item)
+            if (SelectedItem != null && SelectedItem is SimpleItem item)
             {
                 if (item != DefaultItem || SelectedRepeatDistance != DefaultRepeatDistance)
                 {

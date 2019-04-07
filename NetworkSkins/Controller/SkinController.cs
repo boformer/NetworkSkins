@@ -18,13 +18,15 @@ namespace NetworkSkins
 
         private bool _ignoreModifierEvents = false;
 
+        public ColorFeatureController Color;
+
+        public StreetLightFeatureController StreetLight;
+
         public bool TreesEnabled => LeftTree.Enabled || MiddleTree.Enabled || RighTree.Enabled;
         public TreeFeatureController LeftTree;
         public TreeFeatureController MiddleTree;
         public TreeFeatureController RighTree;
-
-        public StreetLightFeatureController StreetLight;
-
+        
         public bool PillarsEnabled => ElevatedBridgePillar.Enabled || ElevatedMiddlePillar.Enabled || BridgeBridgePillar.Enabled || BridgeMiddlePillar.Enabled;
         public PillarFeatureController ElevatedBridgePillar;
         public PillarFeatureController ElevatedMiddlePillar;
@@ -81,6 +83,12 @@ namespace NetworkSkins
         private void Awake() {
             Instance = this;
 
+            Color = new ColorFeatureController();
+            Color.EventModifiersChanged += OnModifiersChanged;
+
+            StreetLight = new StreetLightFeatureController();
+            StreetLight.EventModifiersChanged += OnModifiersChanged;
+
             LeftTree = new TreeFeatureController(LanePosition.Left);
             LeftTree.EventModifiersChanged += OnModifiersChanged;
 
@@ -89,10 +97,7 @@ namespace NetworkSkins
 
             RighTree = new TreeFeatureController(LanePosition.Right);
             RighTree.EventModifiersChanged += OnModifiersChanged;
-
-            StreetLight = new StreetLightFeatureController();
-            StreetLight.EventModifiersChanged += OnModifiersChanged;
-
+            
             var availablePillars = PillarUtils.GetAvailablePillars();
 
             ElevatedBridgePillar = new PillarFeatureController(PillarType.Bridge, availablePillars);
@@ -127,6 +132,7 @@ namespace NetworkSkins
                 if (isNetToolEnabled) {
                     isNetToolEnabled = false;
                     EventToolStateChanged?.Invoke(false);
+                    NetworkSkinManager.instance.ClearActiveModifiers();
                 }
             }
         }
@@ -135,12 +141,14 @@ namespace NetworkSkins
         {
             _ignoreModifierEvents = true;
 
-            LeftTree.OnPrefabChanged(prefab);
-            MiddleTree.OnPrefabChanged(prefab);
-            RighTree.OnPrefabChanged(prefab);
+            Color.OnPrefabChanged(prefab);
 
             StreetLight.OnPrefabChanged(prefab);
 
+            LeftTree.OnPrefabChanged(prefab);
+            MiddleTree.OnPrefabChanged(prefab);
+            RighTree.OnPrefabChanged(prefab);
+            
             var elevatedPrefab = NetUtil.GetElevatedPrefab(prefab);
             ElevatedBridgePillar.OnPrefabChanged(elevatedPrefab);
             ElevatedMiddlePillar.OnPrefabChanged(elevatedPrefab);
@@ -167,12 +175,14 @@ namespace NetworkSkins
         {
             var modifiers = new Dictionary<NetInfo, List<NetworkSkinModifier>>();
 
-            MergeModifiers(modifiers, LeftTree.Modifiers);
-            MergeModifiers(modifiers, MiddleTree.Modifiers);
-            MergeModifiers(modifiers, RighTree.Modifiers);
+            MergeModifiers(modifiers, Color.Modifiers);
 
             MergeModifiers(modifiers, StreetLight.Modifiers);
 
+            MergeModifiers(modifiers, LeftTree.Modifiers);
+            MergeModifiers(modifiers, MiddleTree.Modifiers);
+            MergeModifiers(modifiers, RighTree.Modifiers);
+            
             MergeModifiers(modifiers, ElevatedBridgePillar.Modifiers);
             MergeModifiers(modifiers, ElevatedMiddlePillar.Modifiers);
             MergeModifiers(modifiers, BridgeBridgePillar.Modifiers);

@@ -131,26 +131,23 @@ namespace NetworkSkins.Controller
         {
             var modifiers = new Dictionary<NetInfo, List<NetworkSkinModifier>>();
 
-            if (Prefab != null && SelectedItem != null && SelectedItem is SimpleItem item)
+            if (SelectedItem != null && SelectedItem is SimpleItem item && item != DefaultItem)
             {
-                if (item != DefaultItem)
+                var prefabModifiers = new List<NetworkSkinModifier>
                 {
-                    var prefabModifiers = new List<NetworkSkinModifier>
-                    {
-                        new CatenaryModifier(item.Value)
-                    };
+                    new CatenaryModifier(item.Value)
+                };
 
-                    modifiers.Add(Prefab, prefabModifiers);
+                modifiers.Add(Prefab, prefabModifiers);
 
-                    var slopePrefab = NetUtil.GetSlopePrefab(Prefab);
-                    if (slopePrefab != null) modifiers.Add(slopePrefab, prefabModifiers);
+                var slopePrefab = NetUtil.GetSlopePrefab(Prefab);
+                if (slopePrefab != null) modifiers.Add(slopePrefab, prefabModifiers);
 
-                    var elevatedPrefab = NetUtil.GetElevatedPrefab(Prefab);
-                    if (elevatedPrefab != null) modifiers.Add(elevatedPrefab, prefabModifiers);
+                var elevatedPrefab = NetUtil.GetElevatedPrefab(Prefab);
+                if (elevatedPrefab != null) modifiers.Add(elevatedPrefab, prefabModifiers);
 
-                    var bridgePrefab = NetUtil.GetBridgePrefab(Prefab);
-                    if (bridgePrefab != null) modifiers.Add(bridgePrefab, prefabModifiers);
-                }
+                var bridgePrefab = NetUtil.GetBridgePrefab(Prefab);
+                if (bridgePrefab != null) modifiers.Add(bridgePrefab, prefabModifiers);
             }
 
             return modifiers;

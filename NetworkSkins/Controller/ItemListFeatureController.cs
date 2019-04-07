@@ -63,7 +63,7 @@ namespace NetworkSkins.Controller
 
         private void SaveSelectedItem()
         {
-            if (SelectedItem != DefaultItem)
+            if (SelectedItem != null && SelectedItem != DefaultItem)
             {
                 ActiveSelectionData.Instance.SetValue(Prefab, SelectedItemKey, SelectedItem.Id);
             }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -38,6 +39,22 @@ namespace NetworkSkins.Net
                 subPrefabs[(int)NetType.Bridge] = pedWayAI.m_bridgeInfo;
             }
             return subPrefabs;
+        }
+
+        public static HashSet<NetInfo> GetSubPrefabs2(NetInfo prefab)
+        {
+            var prefabs = new HashSet<NetInfo> {prefab};
+
+            var slopePrefab = GetSlopePrefab(prefab);
+            if (slopePrefab != null) prefabs.Add(slopePrefab);
+
+            var elevatedPrefab = GetElevatedPrefab(prefab);
+            if (elevatedPrefab != null) prefabs.Add(elevatedPrefab);
+
+            var bridgePrefab = GetBridgePrefab(prefab);
+            if (bridgePrefab != null) prefabs.Add(bridgePrefab);
+
+            return prefabs;
         }
 
         public static NetInfo GetSlopePrefab(NetInfo prefab)

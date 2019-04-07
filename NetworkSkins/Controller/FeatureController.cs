@@ -40,7 +40,7 @@ namespace NetworkSkins.Controller
 
         protected virtual void OnChanged()
         {
-            if (Prefab != null)
+            if (Enabled && Prefab != null)
             {
                 Modifiers = BuildModifiers();
             }
