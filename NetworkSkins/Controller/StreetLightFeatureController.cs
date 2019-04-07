@@ -117,7 +117,7 @@ namespace NetworkSkins.Controller
             for (uint prefabIndex = 0; prefabIndex < prefabCount; prefabIndex++)
             {
                 var prefab = PrefabCollection<PropInfo>.GetLoaded(prefabIndex);
-                if (NetUtil.IsStreetLight(prefab))
+                if (StreetLightUtils.IsStreetLightProp(prefab))
                 {
                     streetLights.Add(prefab);
                 }

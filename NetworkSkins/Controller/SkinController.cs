@@ -8,8 +8,6 @@ using UnityEngine;
 
 namespace NetworkSkins
 {
-
-
     public class SkinController : MonoBehaviour {
         public static SkinController Instance;
 
@@ -18,7 +16,7 @@ namespace NetworkSkins
         public delegate void PrefabChangedEventHandler(NetInfo netInfo);
         public event PrefabChangedEventHandler EventPrefabChanged;
 
-        public bool _ignoreEvents = false;
+        private bool _ignoreModifierEvents = false;
 
         public bool TreesEnabled => LeftTree.Enabled || MiddleTree.Enabled || RighTree.Enabled;
         public readonly TreeFeatureController LeftTree = new TreeFeatureController(LanePosition.Left);
@@ -26,6 +24,8 @@ namespace NetworkSkins
         public readonly TreeFeatureController RighTree = new TreeFeatureController(LanePosition.Right);
 
         public readonly StreetLightFeatureController StreetLight = new StreetLightFeatureController();
+
+        public readonly CatenaryFeatureController Catenary = new CatenaryFeatureController();
 
         public bool HasSurfaces { get; private set; } = false;
         public Surface DefaultSurface { get; private set; } = Surface.Pavement;
@@ -37,9 +37,6 @@ namespace NetworkSkins
         public BuildingInfo DefaultBridgePillar { get; private set; } = null;
 
         public bool HasMiddlePillar { get; private set; } = false;
-
-
-
 
         // pillars, color, catenary, extras
 
@@ -96,6 +93,7 @@ namespace NetworkSkins
             MiddleTree.EventModifiersChanged += OnModifiersChanged;
             RighTree.EventModifiersChanged += OnModifiersChanged;
             StreetLight.EventModifiersChanged += OnModifiersChanged;
+            Catenary.EventModifiersChanged += OnModifiersChanged;
         }
 
         private void Update() {
@@ -120,19 +118,22 @@ namespace NetworkSkins
 
         private void OnPrefabChanged(NetInfo prefab)
         {
-            _ignoreEvents = true;
+            _ignoreModifierEvents = true;
+
             LeftTree.OnPrefabChanged(prefab);
             MiddleTree.OnPrefabChanged(prefab);
             RighTree.OnPrefabChanged(prefab);
             StreetLight.OnPrefabChanged(prefab);
-            _ignoreEvents = false;
+            Catenary.OnPrefabChanged(prefab);
+
+            _ignoreModifierEvents = false;
 
             UpdateActiveModifiers();
         }
 
         private void OnModifiersChanged()
         {
-            if (_ignoreEvents) return;
+            if (_ignoreModifierEvents) return;
 
             UpdateActiveModifiers();
         }
@@ -140,10 +141,12 @@ namespace NetworkSkins
         private void UpdateActiveModifiers()
         {
             var modifiers = new Dictionary<NetInfo, List<NetworkSkinModifier>>();
+
             MergeModifiers(modifiers, LeftTree.Modifiers);
             MergeModifiers(modifiers, MiddleTree.Modifiers);
             MergeModifiers(modifiers, RighTree.Modifiers);
             MergeModifiers(modifiers, StreetLight.Modifiers);
+            MergeModifiers(modifiers, Catenary.Modifiers);
 
             Debug.Log($"Built {modifiers.Values.Sum(p => p.Count)} modifiers for {modifiers.Count} prefabs.");
 
