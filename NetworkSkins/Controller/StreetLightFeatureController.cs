@@ -123,7 +123,7 @@ namespace NetworkSkins.Controller
                 }
             }
 
-            streetLights.Sort((a, b) => string.Compare(a.GetLocalizedTitle(), b.GetLocalizedTitle(), StringComparison.Ordinal));
+            streetLights.Sort((a, b) => string.Compare(a.GetUncheckedLocalizedTitle(), b.GetUncheckedLocalizedTitle(), StringComparison.Ordinal));
 
             return streetLights;
         }

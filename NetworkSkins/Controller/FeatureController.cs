@@ -6,7 +6,6 @@ namespace NetworkSkins.Controller
 {
     public abstract class FeatureController
     {
-        [CanBeNull]
         public NetInfo Prefab { get; private set; }
 
         public Dictionary<NetInfo, List<NetworkSkinModifier>> Modifiers { get; private set; } = new Dictionary<NetInfo, List<NetworkSkinModifier>>();

@@ -70,9 +70,17 @@ namespace NetworkSkins.Net
             {
                 return roadAi.m_elevatedInfo;
             }
+            else if (prefab.m_netAI is RoadBridgeAI)
+            {
+                return prefab;
+            }
             else if (prefab.m_netAI is TrainTrackAI trainTrackAi)
             {
                 return trainTrackAi.m_elevatedInfo;
+            }
+            else if (prefab.m_netAI is TrainTrackBridgeAI)
+            {
+                return prefab;
             }
             else if (prefab.m_netAI is PedestrianPathAI pathAi)
             {
@@ -81,6 +89,14 @@ namespace NetworkSkins.Net
             else if (prefab.m_netAI is PedestrianWayAI wayAi)
             {
                 return wayAi.m_elevatedInfo;
+            }
+            else if (prefab.m_netAI is PedestrianBridgeAI)
+            {
+                return prefab;
+            }
+            else if (prefab.m_netAI is MonorailTrackAI)
+            {
+                return prefab;
             }
             else
             {
