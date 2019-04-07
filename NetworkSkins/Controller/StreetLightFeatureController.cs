@@ -117,13 +117,13 @@ namespace NetworkSkins.Controller
             for (uint prefabIndex = 0; prefabIndex < prefabCount; prefabIndex++)
             {
                 var prefab = PrefabCollection<PropInfo>.GetLoaded(prefabIndex);
-                if (NetUtil.IsStreetLight(prefab))
+                if (StreetLightUtils.IsStreetLightProp(prefab))
                 {
                     streetLights.Add(prefab);
                 }
             }
 
-            streetLights.Sort((a, b) => string.Compare(a.GetLocalizedTitle(), b.GetLocalizedTitle(), StringComparison.Ordinal));
+            streetLights.Sort((a, b) => string.Compare(a.GetUncheckedLocalizedTitle(), b.GetUncheckedLocalizedTitle(), StringComparison.Ordinal));
 
             return streetLights;
         }

@@ -90,8 +90,8 @@ namespace NetworkSkins.GUI
             treesButton.isVisible = SkinController.TreesEnabled;
             lightsButton.isVisible = SkinController.StreetLight.Enabled;
             surfacesButton.isVisible = SkinController.NetInfoHasSurfaces;
-            pillarsButton.isVisible = SkinController.NetInfoHasPillars;
-            catenaryButton.isVisible = SkinController.NetInfoHasCatenaries;
+            pillarsButton.isVisible = SkinController.PillarsEnabled;
+            catenaryButton.isVisible = SkinController.Catenary.Enabled;
             colorButton.isVisible = SkinController.NetInfoIsColorable;
         }
 

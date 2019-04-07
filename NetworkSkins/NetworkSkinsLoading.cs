@@ -80,7 +80,7 @@ namespace NetworkSkins
             {
                 new ColorModifier(color: new Color32(110, 90, 90, 255)),
                 new StreetLightModifier(streetLight: null),
-                new PillarModifier(bridgePillarInfo: PrefabCollection<BuildingInfo>.FindLoaded("RailwayElevatedPillar"))
+                new PillarModifier(PillarType.Bridge, PrefabCollection<BuildingInfo>.FindLoaded("RailwayElevatedPillar"))
             });
         }
 

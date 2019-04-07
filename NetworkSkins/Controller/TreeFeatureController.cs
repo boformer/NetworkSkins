@@ -84,7 +84,7 @@ namespace NetworkSkins.Controller
                 trees.Add(PrefabCollection<TreeInfo>.GetLoaded(prefabIndex));
             }
 
-            trees.Sort((a, b) => string.Compare(a.GetLocalizedTitle(), b.GetLocalizedTitle(), StringComparison.Ordinal));
+            trees.Sort((a, b) => string.Compare(a.GetUncheckedLocalizedTitle(), b.GetUncheckedLocalizedTitle(), StringComparison.Ordinal));
 
             return trees;
         }
