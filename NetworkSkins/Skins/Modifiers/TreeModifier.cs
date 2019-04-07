@@ -1,41 +1,21 @@
 ﻿using ColossalFramework.IO;
+using NetworkSkins.Net;
 using NetworkSkins.Skins.Serialization;
 
 namespace NetworkSkins.Skins.Modifiers
 {
     public class TreeModifier : NetworkSkinModifier
     {
-        public readonly TreeInfo LeftTree;
-        public readonly float LeftTreeRepeatDistance;
+        public readonly LanePosition Position;
 
-        public readonly TreeInfo MiddleTree;
-        public readonly float MiddleTreeRepeatDistance;
+        public readonly TreeInfo Tree;
+        public readonly float RepeatDistance;
 
-        public readonly TreeInfo RightTree;
-        public readonly float RighTreeRepeatDistance;
-
-        public TreeModifier(
-            TreeInfo leftTree = null, float leftTreeRepeatDistance = 20,
-            TreeInfo middleTree = null, float middleTreeRepeatDistance = 20,
-            TreeInfo rightTree = null, float righTreeRepeatDistance = 20
-            ) : base(NetworkSkinModifierType.Tree)
+        public TreeModifier(LanePosition position, TreeInfo tree = null, float repeatDistance = 20) : base(NetworkSkinModifierType.Tree)
         {
-            LeftTree = leftTree;
-            LeftTreeRepeatDistance = leftTreeRepeatDistance;
-            MiddleTree = middleTree;
-            MiddleTreeRepeatDistance = middleTreeRepeatDistance;
-            RightTree = rightTree;
-            RighTreeRepeatDistance = righTreeRepeatDistance;
-        }
-
-        public TreeModifier(TreeInfo tree = null, float repeatDistance = 20) : base(NetworkSkinModifierType.Tree)
-        {
-            LeftTree = tree;
-            LeftTreeRepeatDistance = repeatDistance;
-            MiddleTree = tree;
-            MiddleTreeRepeatDistance = repeatDistance;
-            RightTree = tree;
-            RighTreeRepeatDistance = repeatDistance;
+            Position = position;
+            Tree = tree;
+            RepeatDistance = repeatDistance;
         }
 
         public override void Apply(NetworkSkin skin)
@@ -44,6 +24,8 @@ namespace NetworkSkins.Skins.Modifiers
 
             for (var l = 0; l < skin.m_lanes.Length; l++)
             {
+                if(!Position.IsCorrectSide(skin.m_lanes[l].m_position)) continue;
+
                 var laneProps = skin.m_lanes[l]?.m_laneProps?.m_props;
                 if (laneProps == null) continue;
 
@@ -51,89 +33,42 @@ namespace NetworkSkins.Skins.Modifiers
                 {
                     if (laneProps[p]?.m_tree != null || laneProps[p]?.m_tree != null)
                     {
-                        var tree = GetTree(skin.m_lanes[l].m_position);
-                        var repeatDistance = GetRepeatDistance(skin.m_lanes[l].m_position);
                         skin.UpdateLaneProp(l, p, laneProp =>
                         {
-                            laneProp.m_tree = tree;
-                            laneProp.m_finalTree = tree;
-                            laneProp.m_repeatDistance = repeatDistance;
+                            laneProp.m_tree = Tree;
+                            laneProp.m_finalTree = Tree;
+                            laneProp.m_repeatDistance = RepeatDistance;
                         });
                     }
                 }
             }
         }
 
-        private TreeInfo GetTree(float lanePosition)
-        {
-            if (lanePosition < -0.5f)
-            {
-                return LeftTree;
-            }
-            else if (lanePosition > 0.5f)
-            {
-                return RightTree;
-            }
-            else
-            {
-                return MiddleTree;
-            }
-        }
 
-        private float GetRepeatDistance(float lanePosition)
-        {
-            if (lanePosition < -0.5f)
-            {
-                return LeftTreeRepeatDistance;
-            }
-            else if (lanePosition > 0.5f)
-            {
-                return RighTreeRepeatDistance;
-            }
-            else
-            {
-                return MiddleTreeRepeatDistance;
-            }
-        }
 
         #region Serialization
         protected override void SerializeImpl(DataSerializer s)
         {
-            s.WriteUniqueString(LeftTree?.name);
-            s.WriteFloat(LeftTreeRepeatDistance);
-
-            s.WriteUniqueString(MiddleTree?.name);
-            s.WriteFloat(MiddleTreeRepeatDistance);
-
-            s.WriteUniqueString(RightTree?.name);
-            s.WriteFloat(RighTreeRepeatDistance);
+            s.WriteInt32((int)Position);
+            s.WriteUniqueString(Tree?.name);
+            s.WriteFloat(RepeatDistance);
         }
 
         public static TreeModifier DeserializeImpl(DataSerializer s, IPrefabCollection prefabCollection, NetworkSkinLoadErrors errors)
         {
-            var leftTree = prefabCollection.FindPrefab<TreeInfo>(s.ReadUniqueString(), errors);
-            var leftTreeRepeatDistance = s.ReadFloat();
+            var position = (LanePosition) s.ReadInt32();
+            var tree = prefabCollection.FindPrefab<TreeInfo>(s.ReadUniqueString(), errors);
+            var repeatDistance = s.ReadFloat();
 
-            var middleTree = prefabCollection.FindPrefab<TreeInfo>(s.ReadUniqueString(), errors);
-            var middleTreeRepeatDistance = s.ReadFloat();
-
-            var rightTree = prefabCollection.FindPrefab<TreeInfo>(s.ReadUniqueString(), errors);
-            var rightTreeRepeatDistance = s.ReadFloat();
-
-            return new TreeModifier(
-                leftTree, leftTreeRepeatDistance,
-                middleTree, middleTreeRepeatDistance,
-                rightTree, rightTreeRepeatDistance
-            );
+            return new TreeModifier(position, tree, repeatDistance);
         }
         #endregion
 
         #region Equality
+
         protected bool Equals(TreeModifier other)
         {
-            return Equals(LeftTree, other.LeftTree) && LeftTreeRepeatDistance.Equals(other.LeftTreeRepeatDistance)
-                && Equals(MiddleTree, other.MiddleTree) && MiddleTreeRepeatDistance.Equals(other.MiddleTreeRepeatDistance)
-                && Equals(RightTree, other.RightTree) && RighTreeRepeatDistance.Equals(other.RighTreeRepeatDistance);
+            return Position == other.Position && Equals(Tree, other.Tree) && RepeatDistance.Equals(other.RepeatDistance);
         }
 
         public override bool Equals(object obj)
@@ -153,19 +88,16 @@ namespace NetworkSkins.Skins.Modifiers
                 return false;
             }
 
-            return Equals((TreeModifier)obj);
+            return Equals((TreeModifier) obj);
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                var hashCode = (LeftTree != null ? LeftTree.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ LeftTreeRepeatDistance.GetHashCode();
-                hashCode = (hashCode * 397) ^ (MiddleTree != null ? MiddleTree.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ MiddleTreeRepeatDistance.GetHashCode();
-                hashCode = (hashCode * 397) ^ (RightTree != null ? RightTree.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ RighTreeRepeatDistance.GetHashCode();
+                var hashCode = (int) Position;
+                hashCode = (hashCode * 397) ^ (Tree != null ? Tree.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ RepeatDistance.GetHashCode();
                 return hashCode;
             }
         }
