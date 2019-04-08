@@ -9,16 +9,20 @@ namespace NetworkSkins.GUI
 {
     public abstract class ListPanelBase : PanelBase
     {
-        protected UITabstrip tabStrip;
-        protected UIButton[] tabs;
+        protected UITabstrip laneTabStrip;
+        protected UITabstrip pillarTabStrip;
+        protected UIButton[] laneTabs;
+        protected UIButton[] pillarTabs;
         protected SearchBox searchBox;
 
         public override void Build(PanelType panelType, Layout layout) {
             base.Build(panelType, layout);
             color = MainPanel.GUIColor;
 
-            CreateTabstrip();
-            SetupTabs();
+            CreatePillarTabstrip();
+            SetupPillarTabs();
+            CreateLaneTabstrip();
+            SetupLaneTabs();
             CreateList();
             CreateSearchBox();
             UIUtil.CreateSpace(width - (Spacing * 2), 0.1f, this);
@@ -37,15 +41,32 @@ namespace NetworkSkins.GUI
 
         protected abstract void OnSelectedChanged(string itemID, bool selected);
 
-        private void CreateTabstrip() {
-            tabStrip = AddUIComponent<UITabstrip>();
-            tabStrip.builtinKeyNavigation = true;
-            tabStrip.size = new Vector2(width - (Spacing * 2.0f), 30.0f);
+        private void CreateLaneTabstrip() {
+            laneTabStrip = AddUIComponent<UITabstrip>();
+            laneTabStrip.builtinKeyNavigation = true;
+            laneTabStrip.size = new Vector2(width - (Spacing * 2.0f), 30.0f);
+            laneTabStrip.eventSelectedIndexChanged += OnLaneTabstripSelectedIndexChanged;
         }
 
-        private void SetupTabs() {
-            tabs = new UIButton[LanePositionExtensions.LanePositionCount];
-            for (int i = 0; i < tabs.Length; i++) {
+        private void CreatePillarTabstrip() {
+            pillarTabStrip = AddUIComponent<UITabstrip>();
+            pillarTabStrip.builtinKeyNavigation = true;
+            pillarTabStrip.size = new Vector2(width - (Spacing * 2.0f), 30.0f);
+            pillarTabStrip.eventSelectedIndexChanged += OnPillarTabstripSelectedIndexChanged;
+        }
+
+        private void OnPillarTabstripSelectedIndexChanged(UIComponent component, int value) {
+            SkinController.PillarElevationCombination = (Pillar)value;
+            RefreshUI(SkinController.Prefab);
+        }
+
+        private void OnLaneTabstripSelectedIndexChanged(UIComponent component, int value) {
+            SkinController.LanePosition = (LanePosition)value;
+        }
+
+        private void SetupLaneTabs() {
+            laneTabs = new UIButton[LanePositionExtensions.LanePositionCount];
+            for (int i = 0; i < laneTabs.Length; i++) {
                 string lane = string.Empty;
                 switch ((LanePosition)i) {
                     case LanePosition.Left: lane = Translation.Instance.GetTranslation(TranslationID.LABEL_LEFTLANE); break;
@@ -53,9 +74,25 @@ namespace NetworkSkins.GUI
                     case LanePosition.Right: lane = Translation.Instance.GetTranslation(TranslationID.LABEL_RIGHTLANE); break;
                     default: break;
                 }
-                tabs[i] = UIUtil.CreateButton(Vector2.zero, lane, backgroundSprite: "GenericTab", parentComponent: tabStrip, isFocusable: true);
-                tabs[i].color = tabs[i].focusedColor = new Color32(210, 210, 210, 255);
-                tabs[i].size = new Vector2(tabStrip.width / 3.0f, tabStrip.height);
+                laneTabs[i] = UIUtil.CreateButton(Vector2.zero, lane, backgroundSprite: "GenericTab", parentComponent: laneTabStrip, isFocusable: true);
+                laneTabs[i].color = laneTabs[i].focusedColor = new Color32(210, 210, 210, 255);
+                laneTabs[i].size = new Vector2(laneTabStrip.width / LanePositionExtensions.LanePositionCount, laneTabStrip.height);
+            }
+        }
+
+        private void SetupPillarTabs() {
+            pillarTabs = new UIButton[(int)Pillar.Count];
+            for (int i = 0; i < pillarTabs.Length; i++) {
+                string pillarElevationCombination = string.Empty;
+                switch ((Pillar)i) {
+                    case Pillar.Elevated: pillarElevationCombination = Translation.Instance.GetTranslation(TranslationID.LABEL_ELEVATED); break;
+                    case Pillar.ElevatedMiddle: pillarElevationCombination = Translation.Instance.GetTranslation(TranslationID.LABEL_ELEVATEDMIDDLE); break;
+                    case Pillar.Bridge: pillarElevationCombination = Translation.Instance.GetTranslation(TranslationID.LABEL_BRIDGE); break;
+                    case Pillar.BridgeMiddle: pillarElevationCombination =  Translation.Instance.GetTranslation(TranslationID.LABEL_BRIDGEMIDDLE); break;
+                }
+                pillarTabs[i] = UIUtil.CreateButton(Vector2.zero, pillarElevationCombination, backgroundSprite: "GenericTab", parentComponent: pillarTabStrip, isFocusable: true);
+                pillarTabs[i].color = pillarTabs[i].focusedColor = new Color32(210, 210, 210, 255);
+                pillarTabs[i].size = new Vector2(pillarTabStrip.width / (int)Pillar.Count, pillarTabStrip.height);
             }
         }
 

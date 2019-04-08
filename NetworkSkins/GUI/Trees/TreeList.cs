@@ -12,14 +12,6 @@ namespace NetworkSkins.GUI
             return Persistence.IsFavourite(itemID, UIUtil.PanelToItemType(PanelType));
         }
 
-        protected override bool IsSelected(string itemID) {
-            return SkinController.LeftTree.Enabled
-                ? SkinController.LeftTree.SelectedItem.Id == itemID
-                : SkinController.MiddleTree.Enabled
-                ? SkinController.MiddleTree.SelectedItem.Id == itemID
-                : false;
-        }
-
         protected override bool IsDefault(string itemID) {
             return itemID == SkinController.DefaultTree().name;
         }
@@ -36,7 +28,7 @@ namespace NetworkSkins.GUI
             foreach (SimpleItem item in SkinController.LeftTree.Items) {
                 if (item.Id == "#NONE#") {
                     ListItem listItem = CreateListItem(null);
-                    if (listItem.IsSelected) selectedIndex = index;
+                    if (SkinController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
                     fastList.RowsData.Add(listItem);
                     index++;
                     continue;
@@ -48,14 +40,14 @@ namespace NetworkSkins.GUI
             for (int i = 0; i < favouritesList.Count; i++) {
                 TreeInfo prefab = favouritesList[i] as TreeInfo;
                 ListItem listItem = CreateListItem(prefab);
-                if (listItem.IsSelected) selectedIndex = index;
+                if (SkinController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
                 fastList.RowsData.Add(listItem);
                 index++;
             }
             for (int i = 0; i < nonFavouritesList.Count; i++) {
                 TreeInfo prefab = nonFavouritesList[i] as TreeInfo;
                 ListItem listItem = CreateListItem(prefab);
-                if (listItem.IsSelected) selectedIndex = index;
+                if (SkinController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
                 fastList.RowsData.Add(listItem);
                 index++;
             }

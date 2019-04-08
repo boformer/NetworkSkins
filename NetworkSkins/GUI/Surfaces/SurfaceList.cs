@@ -1,9 +1,10 @@
-﻿using ColossalFramework.UI;
-using NetworkSkins.Locale;
-using NetworkSkins.TranslationFramework;
-using System;
-using NetworkSkins.Skins.Modifiers;
+﻿using System;
 using UnityEngine;
+using ColossalFramework.UI;
+using NetworkSkins.Locale;
+using NetworkSkins.Skins.Modifiers;
+using NetworkSkins.TranslationFramework;
+using static NetworkSkins.Controller.ItemListFeatureController<NetworkSkins.Skins.Modifiers.Surface>;
 
 namespace NetworkSkins.GUI
 {
@@ -16,34 +17,36 @@ namespace NetworkSkins.GUI
             fastList.width = 378.0f;
         }
 
+        protected override bool IsFavourite(string itemID) {
+            return Persistence.IsFavourite(itemID, ItemType.Surfaces);
+        }
+
+        protected override bool IsDefault(string itemID) {
+            return false;
+        }
+
         protected override void SetupRowsData() {
             int selectedIndex = -1;
             fastList.RowsData = new FastList<object>();
             fastList.RowsData.SetCapacity((int)Surface.Count);
-            for (int surfaceIndex = 0; surfaceIndex < (int)Surface.Count; surfaceIndex++) {
-                // TODO NetInfoCanHaveNoneSurface no longer exists, use SkinController.TerrainSurface
-                /*
-                if (surfaceIndex == 0 && !SkinController.NetInfoCanHaveNoneSurface) {
-                    fastList.height = ListSize.y - RowHeight;
-                    continue;
-                }
-                */
-                ListItem listItem = CreateListItem((Surface)surfaceIndex);
-                if (listItem.IsSelected) selectedIndex = (int)surfaceIndex;
+            fastList.height = RowHeight * SkinController.TerrainSurface.Items.Count;
+            for (int i = 0; i < SkinController.TerrainSurface.Items.Count; i++) {
+                SimpleItem item = SkinController.TerrainSurface.Items[i] as SimpleItem;
+                ListItem listItem = CreateListItem(item.Value);
+                if (SkinController.TerrainSurface.SelectedItem.Id == listItem.ID) selectedIndex = (int)item.Value;
                 fastList.RowsData.Add(listItem);
             }
             if (selectedIndex != -1) {
                 fastList.SelectedIndex = selectedIndex;
             }
-            fastList.DisplayAt(-1);
+            fastList.DisplayAt(selectedIndex);
         }
 
         protected ListItem CreateListItem(Surface surfaceType) {
             TerrainManager terrainManager = TerrainManager.instance;
             Texture2D thumbnail;
             string id, displayName, prefix, name = string.Empty;
-            bool isFavourite, isDefault, isSelected;
-            isSelected = IsSelected(surfaceType.ToString());
+            bool isFavourite, isDefault;
             isFavourite = IsFavourite(surfaceType.ToString());
             isDefault = IsDefault(surfaceType.ToString());
             prefix = isDefault
@@ -69,19 +72,7 @@ namespace NetworkSkins.GUI
             }
             id = Enum.GetName(typeof(Surface), surfaceType);
             displayName = string.Concat(prefix, name);
-            return new ListItem(id, displayName, thumbnail, isSelected, isFavourite);
-        }
-
-        protected override bool IsSelected(string itemID) {
-            return false;
-        }
-
-        protected override bool IsFavourite(string itemID) {
-            return Persistence.IsFavourite(itemID, ItemType.Surfaces);
-        }
-
-        protected override bool IsDefault(string itemID) {
-            return false;
+            return new ListItem(id, displayName, thumbnail, isFavourite, ItemType.Surfaces);
         }
     }
 }

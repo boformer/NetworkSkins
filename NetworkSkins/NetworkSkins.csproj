@@ -59,6 +59,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Net\Pillar.cs" />
     <Compile Include="Net\Surface.cs" />
     <Compile Include="Persistence\ActiveSelectionData.cs" />
     <Compile Include="Controller\CatenaryFeatureController.cs" />

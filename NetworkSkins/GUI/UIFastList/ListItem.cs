@@ -10,15 +10,15 @@ namespace NetworkSkins.GUI
         public readonly string ID;
         public readonly string DisplayName;
         public readonly Texture2D Thumbnail;
-        public bool IsSelected;
         public bool IsFavourite;
+        public ItemType Type;
 
-        public ListItem(string id, string displayName, Texture2D thumbnail, bool isSelected, bool isFavourite) {
+        public ListItem(string id, string displayName, Texture2D thumbnail, bool isFavourite, ItemType type) {
             ID = id;
             DisplayName = displayName;
             Thumbnail = thumbnail;
-            IsSelected = isSelected;
             IsFavourite = isFavourite;
+            Type = type;
         }
     }
 }

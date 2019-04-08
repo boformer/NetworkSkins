@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NetworkSkins.Controller;
+using NetworkSkins.GUI;
 using NetworkSkins.Net;
 using NetworkSkins.Skins;
 using NetworkSkins.Skins.Modifiers;
@@ -26,11 +27,13 @@ namespace NetworkSkins
         public StreetLightFeatureController StreetLight;
 
         public bool TreesEnabled => LeftTree.Enabled || MiddleTree.Enabled || RighTree.Enabled;
+        public LanePosition LanePosition { get; set; } = LanePosition.Left;
         public TreeFeatureController LeftTree;
         public TreeFeatureController MiddleTree;
         public TreeFeatureController RighTree;
         
         public bool PillarsEnabled => ElevatedBridgePillar.Enabled || ElevatedMiddlePillar.Enabled || BridgeBridgePillar.Enabled || BridgeMiddlePillar.Enabled;
+        public Pillar PillarElevationCombination { get; set; } = Pillar.Bridge;
         public PillarFeatureController ElevatedBridgePillar;
         public PillarFeatureController ElevatedMiddlePillar;
         public PillarFeatureController BridgeBridgePillar;
@@ -170,6 +173,32 @@ namespace NetworkSkins
             if (_ignoreModifierEvents) return;
 
             UpdateActiveModifiers();
+        }
+
+        internal bool IsSelected(string id, ItemType type) {
+            switch (type) {
+                case ItemType.Trees: {
+                    switch (LanePosition) {
+                        case LanePosition.Left: return LeftTree.SelectedItem.Id == id;
+                        case LanePosition.Middle: return MiddleTree.SelectedItem.Id == id;
+                        case LanePosition.Right: return RighTree.SelectedItem.Id == id;
+                        default: return false;
+                    }
+                }
+                case ItemType.Lights: return StreetLight.SelectedItem.Id == id;
+                case ItemType.Surfaces: return TerrainSurface.SelectedItem.Id == id;
+                case ItemType.Pillars: {
+                    switch (PillarElevationCombination) {
+                        case Pillar.Elevated: return ElevatedBridgePillar.SelectedItem.Id == id;
+                        case Pillar.ElevatedMiddle: return ElevatedMiddlePillar.SelectedItem.Id == id;
+                        case Pillar.Bridge: return BridgeBridgePillar.SelectedItem.Id == id;
+                        case Pillar.BridgeMiddle: return BridgeMiddlePillar.SelectedItem.Id == id;
+                        default: return false;
+                    }
+                }
+                case ItemType.Catenary: return Catenary.SelectedItem.Id == id;
+                default: return false;
+            }
         }
 
         private void UpdateActiveModifiers()

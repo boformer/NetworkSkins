@@ -13,7 +13,8 @@
         }
 
         protected override void OnPanelBuilt() {
-            tabStrip.isVisible = false;
+            laneTabStrip.isVisible = false;
+            pillarTabStrip.isVisible = false;
             RefreshAfterBuild();
         }
 

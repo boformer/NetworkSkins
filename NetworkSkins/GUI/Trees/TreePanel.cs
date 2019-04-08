@@ -1,6 +1,5 @@
-﻿using System.Linq;
-using NetworkSkins.Net;
-using UnityEngine;
+﻿using NetworkSkins.Net;
+using System.Linq;
 
 namespace NetworkSkins.GUI
 {
@@ -10,19 +9,16 @@ namespace NetworkSkins.GUI
             SetTabEnabled(LanePosition.Left, SkinController.LeftTree.Enabled);
             SetTabEnabled(LanePosition.Middle, SkinController.MiddleTree.Enabled);
             SetTabEnabled(LanePosition.Right, SkinController.RighTree.Enabled);
-
-            int tabCount = tabs.Count(tab => tab.isVisible);
-
+            int tabCount = laneTabs.Count(tab => tab.isVisible);
             if (tabCount != 0) {
                 for (int i = 0; i < LanePositionExtensions.LanePositionCount; i++) {
-                    tabs[i].width = tabStrip.width / tabCount;
+                    laneTabs[i].width = laneTabStrip.width / tabCount;
                 }
             }
         }
 
-        private void SetTabEnabled(LanePosition lanePos, bool enabled)
-        {
-            tabs[(int) lanePos].isVisible = enabled;
+        private void SetTabEnabled(LanePosition lanePos, bool enabled) {
+            laneTabs[(int)lanePos].isVisible = enabled;
         }
 
         protected override void OnSearchLostFocus() {
@@ -34,6 +30,7 @@ namespace NetworkSkins.GUI
         }
 
         protected override void OnPanelBuilt() {
+            pillarTabStrip.isVisible = false;
             RefreshAfterBuild();
         }
 
@@ -42,25 +39,13 @@ namespace NetworkSkins.GUI
         }
 
         protected override void OnSelectedChanged(string itemID, bool selected) {
-            if(!selected) return;
-
-            var lanePosition = GetLanePosition();
-            if (lanePosition == LanePosition.Left)
-            {
-                SkinController.LeftTree.OnSelectedItemChanged(itemID);
+            if (!selected) return;
+            switch (SkinController.LanePosition) {
+                case LanePosition.Left: SkinController.LeftTree.OnSelectedItemChanged(itemID); break;
+                case LanePosition.Middle: SkinController.MiddleTree.OnSelectedItemChanged(itemID); break;
+                case LanePosition.Right: SkinController.RighTree.OnSelectedItemChanged(itemID); break;
+                default: break;
             }
-            else if (lanePosition == LanePosition.Middle)
-            {
-                SkinController.MiddleTree.OnSelectedItemChanged(itemID);
-            }
-            else if (lanePosition == LanePosition.Right)
-            {
-                SkinController.RighTree.OnSelectedItemChanged(itemID);
-            }
-        }
-
-        private LanePosition GetLanePosition() {
-            return (LanePosition)tabStrip.selectedIndex;
         }
     }
 }

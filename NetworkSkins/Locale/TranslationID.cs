@@ -12,6 +12,10 @@
         public const string LABEL_PAVEMENT = "LABEL_PAVEMENT";
         public const string LABEL_GRAVEL = "LABEL_GRAVEL";
         public const string LABEL_RUINED = "LABEL_RUINED";
+        public const string LABEL_ELEVATED = "LABEL_ELEVATED";
+        public const string LABEL_ELEVATEDMIDDLE = "LABEL_ELEVATEDMIDDLE";
+        public const string LABEL_BRIDGE = "LABEL_BRIDGE";
+        public const string LABEL_BRIDGEMIDDLE = "LABEL_BRIDGEMIDDLE";
         public const string TOOLTIP_TREES = "TOOLTIP_TREES";
         public const string TOOLTIP_LIGHTS = "TOOLTIP_LIGHTS";
         public const string TOOLTIP_SIDEWALKS = "TOOLTIP_SIDEWALKS";

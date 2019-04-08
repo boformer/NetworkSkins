@@ -1,61 +1,75 @@
-﻿using NetworkSkins.Net;
+﻿
+using NetworkSkins.Net;
+using NetworkSkins.Controller;
 using System.Collections.Generic;
-using UnityEngine;
+using static NetworkSkins.Controller.ItemListFeatureController<BuildingInfo>;
 
 namespace NetworkSkins.GUI
 {
     public class PillarList : ListBase<BuildingInfo>
     {
-        protected override void RefreshUI(NetInfo netInfo) {
+        public void RefreshRowsData() {
+            SetupRowsData();
+        }
 
-            Debug.LogWarning(PillarUtils.GetDefaultBridgePillar(netInfo));
+        protected override void RefreshUI(NetInfo netInfo) {
+            SetupRowsData();
         }
         protected override bool IsFavourite(string itemID) {
-            return false;
-        }
-
-        protected override bool IsSelected(string itemID) {
-            return false;
+            return Persistence.IsFavourite(itemID, UIUtil.PanelToItemType(PanelType));
         }
 
         protected override bool IsDefault(string itemID) {
-            return false;
+            switch (SkinController.PillarElevationCombination) {
+                case Pillar.Elevated: return SkinController.ElevatedBridgePillar.DefaultItem.Id == itemID;
+                case Pillar.ElevatedMiddle: return SkinController.ElevatedMiddlePillar.DefaultItem.Id == itemID;
+                case Pillar.Bridge: return SkinController.BridgeBridgePillar.DefaultItem.Id == itemID;
+                case Pillar.BridgeMiddle: return SkinController.BridgeMiddlePillar.DefaultItem.Id == itemID;
+                default: return false;
+            }
         }
 
         protected override void SetupRowsData() {
-            int prefabCount, selectedIndex = 0;
+            int itemCount = 0, selectedIndex = 0;
             fastList.RowsData = new FastList<object>();
-            prefabCount = PrefabCollection<BuildingInfo>.LoadedCount();
-            fastList.RowsData.SetCapacity(prefabCount + 1);
-            ListItem noneItem = CreateListItem(null);
-            fastList.RowsData.Add(noneItem);
+            ItemListFeatureController<BuildingInfo> controller = null;
+            switch (SkinController.PillarElevationCombination) {
+                case Pillar.Elevated: controller = SkinController.ElevatedBridgePillar; break;
+                case Pillar.ElevatedMiddle: controller = SkinController.ElevatedMiddlePillar; break;
+                case Pillar.Bridge: controller = SkinController.BridgeBridgePillar; break;
+                case Pillar.BridgeMiddle: controller = SkinController.BridgeMiddlePillar; break;
+            }
+            itemCount = controller.Items.Count;
+            fastList.RowsData.SetCapacity(itemCount);
             favouritesList.Clear();
             nonFavouritesList.Clear();
-            List<string> favList = Persistence.GetFavourites(UIUtil.PanelToItemType(PanelType));
-            for (uint prefabIndex = 0; prefabIndex < prefabCount; prefabIndex++) {
-                BuildingInfo prefab = PrefabCollection<BuildingInfo>.GetLoaded(prefabIndex);
-                if (true/*NetUtil.IsPillar(prefab)*/) {// TODO
-                    if (favList.Contains(prefab.name)) {
-                        favouritesList.Add(prefab);
-                    } else nonFavouritesList.Add(prefab);
-                }
-            }
-            favouritesList.Sort((t1, t2) => t1.name.CompareTo(t2.name));
-            nonFavouritesList.Sort((t1, t2) => t1.name.CompareTo(t2.name));
             int index = 0;
+            List<string> favList = Persistence.GetFavourites(UIUtil.PanelToItemType(PanelType));
+            foreach (SimpleItem item in controller.Items) {
+                if (item.Id == "#NONE#") {
+                    ListItem listItem = CreateListItem(null);
+                    if (SkinController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
+                    fastList.RowsData.Add(listItem);
+                    index++;
+                    continue;
+                }
+                if (favList.Contains(item.Id)) {
+                    favouritesList.Add(item.Value);
+                } else nonFavouritesList.Add(item.Value);
+            }
             for (int i = 0; i < favouritesList.Count; i++) {
-                index++;
                 BuildingInfo prefab = favouritesList[i] as BuildingInfo;
                 ListItem listItem = CreateListItem(prefab);
-                if (listItem.IsSelected) selectedIndex = index + 1;
+                if (SkinController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
                 fastList.RowsData.Add(listItem);
+                index++;
             }
             for (int i = 0; i < nonFavouritesList.Count; i++) {
-                index++;
                 BuildingInfo prefab = nonFavouritesList[i] as BuildingInfo;
                 ListItem listItem = CreateListItem(prefab);
-                if (listItem.IsSelected) selectedIndex = index + 1;
+                if (SkinController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
                 fastList.RowsData.Add(listItem);
+                index++;
             }
             fastList.DisplayAt(selectedIndex);
         }

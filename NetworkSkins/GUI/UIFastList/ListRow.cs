@@ -93,13 +93,11 @@ namespace NetworkSkins.GUI
         }
 
         public void Select(bool isRowOdd) {
-            itemData.IsSelected = true;
             color = selectedColor;
             EventSelectedChanged?.Invoke(itemData.ID, true);
         }
 
         public void Deselect(bool isRowOdd) {
-            itemData.IsSelected = false;
             color = isRowOdd ? oddColor : evenColor;
             EventSelectedChanged?.Invoke(itemData.ID, false);
         }
@@ -113,7 +111,7 @@ namespace NetworkSkins.GUI
         }
 
         private void DisplayItem(bool isRowOdd) {
-            color = itemData.IsSelected ? selectedColor : isRowOdd ? oddColor : evenColor;
+            color = SkinController.IsSelected(itemData.ID, itemData.Type) ? selectedColor : isRowOdd ? oddColor : evenColor;
             thumbnailSprite.texture = itemData.Thumbnail;
             nameLabel.text = itemData.DisplayName;
             favouriteCheckbox.isChecked = itemData.IsFavourite;
@@ -135,13 +133,13 @@ namespace NetworkSkins.GUI
 
         private void OnMouseLeaveEvent(UIComponent component, UIMouseEventParameter eventParam) {
             if (itemData != null) {
-                color = itemData.IsSelected ? selectedColor : isRowOdd ? oddColor : evenColor;
+                color = SkinController.IsSelected(itemData.ID, itemData.Type) ? selectedColor : isRowOdd ? oddColor : evenColor;
             }
         }
 
         private void OnMouseEnterEvent(UIComponent component, UIMouseEventParameter eventParam) {
             if (itemData != null) {
-                if (!itemData.IsSelected) color = new Color32((byte)((int)oddColor.r + 25), (byte)(oddColor.g + (byte)25), (byte)(oddColor.b + (byte)25), 255);
+                if (!SkinController.IsSelected(itemData.ID, itemData.Type)) color = new Color32((byte)((int)oddColor.r + 25), (byte)(oddColor.g + (byte)25), (byte)(oddColor.b + (byte)25), 255);
             }
         }
 
@@ -152,6 +150,7 @@ namespace NetworkSkins.GUI
         }
 
         protected override void RefreshUI(NetInfo netInfo) {
+            
         }
     }
 }

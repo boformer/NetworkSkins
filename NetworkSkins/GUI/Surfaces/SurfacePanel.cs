@@ -20,7 +20,7 @@ namespace NetworkSkins.GUI
         }
 
         protected override void OnPanelBuilt() {
-            tabStrip.isVisible = false;
+            laneTabStrip.isVisible = false;
             RefreshAfterBuild();
         }
 

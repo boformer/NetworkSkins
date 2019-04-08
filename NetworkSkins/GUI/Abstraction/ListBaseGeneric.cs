@@ -14,9 +14,8 @@ namespace NetworkSkins.GUI
         protected ListItem CreateListItem(T prefabInfo) {
             Texture2D thumbnail;
             string id, displayName, prefix, name;
-            bool isFavourite, isDefault, isSelected;
+            bool isFavourite, isDefault;
             id = prefabInfo == null ? "#NONE#" : prefabInfo.name;
-            isSelected = IsSelected(id);
             isFavourite = IsFavourite(id);
             isDefault = IsDefault(id);
             prefix = isDefault
@@ -29,7 +28,8 @@ namespace NetworkSkins.GUI
             thumbnail = prefabInfo == null
                 ? UIView.GetAView()?.defaultAtlas?.GetSpriteTexture("Niet")
                 : prefabInfo.m_Atlas?.GetSpriteTexture(prefabInfo.m_Thumbnail);
-            return new ListItem(id, displayName, thumbnail, isSelected, isFavourite);
+            ItemType type = UIUtil.PanelToItemType(PanelType);
+            return new ListItem(id, displayName, thumbnail, isFavourite, type);
         }
     }
 }

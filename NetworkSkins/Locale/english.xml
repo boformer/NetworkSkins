@@ -11,6 +11,10 @@
     <Translation ID="LABEL_PAVEMENT" String="Pavement" />
     <Translation ID="LABEL_GRAVEL" String="Gravel" />
     <Translation ID="LABEL_RUINED" String="Ruined" />
+    <Translation ID="LABEL_ELEVATED" String="Elevated" />
+    <Translation ID="LABEL_ELEVATEDMIDDLE" String="Elevated Middle" />
+    <Translation ID="LABEL_BRIDGE" String="Bridge" />
+    <Translation ID="LABEL_BRIDGEMIDDLE" String="Bridge Middle" />
     <Translation ID="TOOLTIP_TREES" String="Trees" />
     <Translation ID="TOOLTIP_LIGHTS" String="Lights" />
     <Translation ID="TOOLTIP_SIDEWALKS" String="Sidewalks" />
