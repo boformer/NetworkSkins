@@ -17,6 +17,19 @@ namespace NetworkSkins.GUI
             }
         }
 
+        public static PanelType ItemToPanelType(ItemType itemType) {
+            switch (itemType) {
+                case ItemType.Trees: return PanelType.Trees;
+                case ItemType.Lights: return PanelType.Lights;
+                case ItemType.Surfaces: return PanelType.Surfaces;
+                case ItemType.Pillars: return PanelType.Pillars;
+                case ItemType.Colors: return PanelType.Color;
+                case ItemType.Catenary: return PanelType.Catenary;
+                default: return PanelType.None;
+            }
+        }
+
+
         public static UIButton CreateButton(Vector2 size, string text = "", string tooltip = "", string foregroundSprite = "", string backgroundSprite = "ButtonSmall", bool isFocusable = false, UITextureAtlas atlas = null, UIComponent parentComponent = null) {
             UIButton button = parentComponent.AddUIComponent<UIButton>();
             button.size = size;

@@ -16,6 +16,9 @@ namespace NetworkSkins.GUI
         protected static List<PrefabInfo> favouritesList = new List<PrefabInfo>();
         protected static List<PrefabInfo> nonFavouritesList = new List<PrefabInfo>();
 
+        protected abstract bool IsSelected(string itemID);
+        protected abstract bool IsFavourite(string itemID);
+        protected abstract bool IsDefault(string itemID);
 
         public override void OnDestroy() {
             base.OnDestroy();
@@ -41,8 +44,8 @@ namespace NetworkSkins.GUI
 
         private void OnFavouriteChanged(string itemID, bool favourite) {
             if (favourite) {
-                Persistence.AddFavourite(itemID, PanelType);
-            } else Persistence.RemoveFavourite(itemID, PanelType);
+                Persistence.AddFavourite(itemID, UIUtil.PanelToItemType(PanelType));
+            } else Persistence.RemoveFavourite(itemID, UIUtil.PanelToItemType(PanelType));
             EventFavouriteChanged?.Invoke(itemID, favourite);
         }
 

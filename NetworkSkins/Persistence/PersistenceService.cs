@@ -24,8 +24,7 @@ namespace NetworkSkins.Persistence
 
         private PersistentData _data;
 
-        public void RemoveFavourite(string itemID, PanelType panelType) {
-            ItemType itemType = UIUtil.PanelToItemType(panelType);
+        public void RemoveFavourite(string itemID, ItemType itemType) {
             if (Data.Favourites[(int)itemType].Contains(itemID)) {
                 Data.Favourites[(int)itemType].Remove(itemID);
                 SaveData();
@@ -50,21 +49,18 @@ namespace NetworkSkins.Persistence
             }
         }
 
-        public void AddFavourite(string itemID, PanelType panelType) {
-            ItemType itemType = UIUtil.PanelToItemType(panelType);
+        public void AddFavourite(string itemID, ItemType itemType) {
             if (!Data.Favourites[(int)itemType].Contains(itemID)) {
                 Data.Favourites[(int)itemType].Add(itemID);
                 SaveData();
             }
         }
 
-        public List<string> GetFavourites(PanelType panelType) {
-            ItemType itemType = UIUtil.PanelToItemType(panelType);
+        public List<string> GetFavourites(ItemType itemType) {
             return Data.Favourites[(int)itemType];
         }
 
-        public bool IsFavourite(string name, PanelType panelType) {
-            ItemType itemType = UIUtil.PanelToItemType(panelType);
+        public bool IsFavourite(string name, ItemType itemType) {
             return Data.Favourites[(int)itemType].Contains(name);
         }
 

@@ -40,9 +40,9 @@ namespace NetworkSkins.GUI
             Texture2D thumbnail;
             string id, displayName, prefix, name = string.Empty;
             bool isFavourite, isDefault, isSelected;
-            isSelected = IsSelected(surfaceType);
-            isFavourite = IsFavourite(surfaceType);
-            isDefault = IsDefault(surfaceType);
+            isSelected = IsSelected(surfaceType.ToString());
+            isFavourite = IsFavourite(surfaceType.ToString());
+            isDefault = IsDefault(surfaceType.ToString());
             prefix = isDefault
                 ? Translation.Instance.GetTranslation(TranslationID.LABEL_DEFAULT)
                 : string.Empty;
@@ -69,15 +69,15 @@ namespace NetworkSkins.GUI
             return new ListItem(id, displayName, thumbnail, isSelected, isFavourite);
         }
 
-        private bool IsDefault(Surface surfaceType) {
+        protected override bool IsSelected(string itemID) {
             return false;
         }
 
-        private bool IsFavourite(Surface surfaceType) {
-            return false;
+        protected override bool IsFavourite(string itemID) {
+            return Persistence.IsFavourite(itemID, ItemType.Surfaces);
         }
 
-        private bool IsSelected(Surface surfaceType) {
+        protected override bool IsDefault(string itemID) {
             return false;
         }
     }

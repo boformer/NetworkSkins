@@ -22,11 +22,11 @@ namespace NetworkSkins.Controller
         /// </summary>
         public Item SelectedItem { get; private set; } = null;
 
-        public void OnSelectedItemChanged(Item selected)
+        public void OnSelectedItemChanged(string itemID)
         {
-            if (SelectedItem == selected) return;
+            if (SelectedItem.Id == itemID) return;
 
-            SelectedItem = selected;
+            SelectedItem = Items.Find(item => item.Id == itemID);
 
             SaveSelectedItem();
 

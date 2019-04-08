@@ -9,11 +9,15 @@ namespace NetworkSkins.GUI
         protected override void RefreshUI(NetInfo netInfo) {
 
         }
-        protected override bool IsFavourite(PropInfo prefabInfo) {
+        protected override bool IsFavourite(string itemID) {
             return false;
         }
 
-        protected override bool IsSelected(PropInfo prefabInfo) {
+        protected override bool IsSelected(string itemID) {
+            return false;
+        }
+
+        protected override bool IsDefault(string itemID) {
             return false;
         }
 
@@ -26,7 +30,7 @@ namespace NetworkSkins.GUI
             fastList.RowsData.Add(noneItem);
             favouritesList.Clear();
             nonFavouritesList.Clear();
-            List<string> favList = Persistence.GetFavourites(PanelType);
+            List<string> favList = Persistence.GetFavourites(UIUtil.PanelToItemType(PanelType));
             for (uint prefabIndex = 0; prefabIndex < prefabCount; prefabIndex++) {
                 PropInfo prefab = PrefabCollection<PropInfo>.GetLoaded(prefabIndex);
                 if (CatenaryUtils.IsCatenaryProp(prefab)) {

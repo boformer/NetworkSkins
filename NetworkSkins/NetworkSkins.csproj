@@ -73,7 +73,7 @@
     <Compile Include="GUI\Catenaries\CatenaryPanel.cs" />
     <Compile Include="GUI\Color\ColorPanel.cs" />
     <Compile Include="GUI\PanelType.cs" />
-    <Compile Include="GUI\Swatches.cs" />
+    <Compile Include="GUI\Color\Swatches.cs" />
     <Compile Include="GUI\UIUtil.cs" />
     <Compile Include="Net\PillarType.cs" />
     <Compile Include="Net\TreeUtils.cs" />

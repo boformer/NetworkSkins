@@ -10,11 +10,15 @@ namespace NetworkSkins.GUI
 
             Debug.LogWarning(PillarUtils.GetDefaultBridgePillar(netInfo));
         }
-        protected override bool IsFavourite(BuildingInfo prefabInfo) {
+        protected override bool IsFavourite(string itemID) {
             return false;
         }
 
-        protected override bool IsSelected(BuildingInfo prefabInfo) {
+        protected override bool IsSelected(string itemID) {
+            return false;
+        }
+
+        protected override bool IsDefault(string itemID) {
             return false;
         }
 
@@ -27,7 +31,7 @@ namespace NetworkSkins.GUI
             fastList.RowsData.Add(noneItem);
             favouritesList.Clear();
             nonFavouritesList.Clear();
-            List<string> favList = Persistence.GetFavourites(PanelType);            
+            List<string> favList = Persistence.GetFavourites(UIUtil.PanelToItemType(PanelType));
             for (uint prefabIndex = 0; prefabIndex < prefabCount; prefabIndex++) {
                 BuildingInfo prefab = PrefabCollection<BuildingInfo>.GetLoaded(prefabIndex);
                 if (true/*NetUtil.IsPillar(prefab)*/) {// TODO
