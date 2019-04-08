@@ -59,12 +59,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controller\ActiveSelectionData.cs" />
+    <Compile Include="Net\Surface.cs" />
+    <Compile Include="Persistence\ActiveSelectionData.cs" />
     <Compile Include="Controller\CatenaryFeatureController.cs" />
+    <Compile Include="Controller\ColorFeatureController.cs" />
     <Compile Include="Controller\FeatureController.cs" />
     <Compile Include="Controller\ItemListFeatureController.cs" />
     <Compile Include="Controller\PillarFeatureController.cs" />
     <Compile Include="Controller\StreetLightFeatureController.cs" />
+    <Compile Include="Controller\TerrainSurfaceFeatureController.cs" />
     <Compile Include="Controller\TreeFeatureController.cs" />
     <Compile Include="GUI\ButtonBar.cs" />
     <Compile Include="GUI\Abstraction\ListBaseGeneric.cs" />
@@ -75,9 +78,9 @@
     <Compile Include="GUI\PanelType.cs" />
     <Compile Include="GUI\Swatches.cs" />
     <Compile Include="GUI\UIUtil.cs" />
+    <Compile Include="Net\NetTextureUtils.cs" />
     <Compile Include="Net\PillarType.cs" />
     <Compile Include="Net\TreeUtils.cs" />
-    <Compile Include="Net\NetType.cs" />
     <Compile Include="Persistence\PersistenceService.cs" />
     <Compile Include="Persistence\PersistentData.cs" />
     <Compile Include="GUI\Pillars\PillarList.cs" />
@@ -108,7 +111,7 @@
     <Compile Include="GUI\Trees\TreePanel.cs" />
     <Compile Include="GUI\UIFastList\UIFastList.cs" />
     <Compile Include="Controller\SkinController.cs" />
-    <Compile Include="Net\NetUtil.cs" />
+    <Compile Include="Net\NetUtils.cs" />
     <Compile Include="Net\LanePosition.cs" />
     <Compile Include="NetworkSkinsSerializableData.cs" />
     <Compile Include="Net\CatenaryUtils.cs" />

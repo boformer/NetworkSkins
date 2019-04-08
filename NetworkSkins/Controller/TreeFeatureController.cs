@@ -40,10 +40,8 @@ namespace NetworkSkins.Controller
             }
         }
 
-        protected override List<Item> BuildItems(out Item defaultItem)
+        protected override List<Item> BuildItems(ref Item defaultItem)
         {
-            defaultItem = null;
-
             if (Prefab == null)
             {
                 return new List<Item>();
@@ -55,7 +53,7 @@ namespace NetworkSkins.Controller
                 return new List<Item>();
             }
 
-            var trees = GetAvailableTrees();
+            var trees = TreeUtils.GetAvailableTrees();
 
             var items = new List<Item> { new SimpleItem("#NONE#", null) };
             foreach (var tree in trees)
@@ -74,26 +72,11 @@ namespace NetworkSkins.Controller
             return items;
         }
 
-        private List<TreeInfo> GetAvailableTrees()
-        {
-            var trees = new List<TreeInfo>();
-
-            var prefabCount = PrefabCollection<TreeInfo>.LoadedCount();
-            for (uint prefabIndex = 0; prefabIndex < prefabCount; prefabIndex++)
-            {
-                trees.Add(PrefabCollection<TreeInfo>.GetLoaded(prefabIndex));
-            }
-
-            trees.Sort((a, b) => string.Compare(a.GetUncheckedLocalizedTitle(), b.GetUncheckedLocalizedTitle(), StringComparison.Ordinal));
-
-            return trees;
-        }
-
         protected override Dictionary<NetInfo, List<NetworkSkinModifier>> BuildModifiers()
         {
             var modifiers = new Dictionary<NetInfo, List<NetworkSkinModifier>>();
 
-            if (Prefab != null && SelectedItem != null && SelectedItem is SimpleItem item)
+            if (SelectedItem != null && SelectedItem is SimpleItem item)
             {
                 if (item != DefaultItem || SelectedRepeatDistance != DefaultRepeatDistance)
                 {

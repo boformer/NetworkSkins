@@ -9,23 +9,15 @@ namespace NetworkSkins.Net
     /// </summary>
     public enum LanePosition
     {
-        None = -1,
         Left = 0,
         Middle = 1,
-        Right = 2,
-        Count = 3
+        Right = 2
     }
 
     public static class LanePositionExtensions
     {
-        public static string GetDescription(this LanePosition position) {
-            switch (position) {
-                case LanePosition.Left: return "Left";
-                case LanePosition.Middle: return "Middle";
-                case LanePosition.Right: return "Right";
-                default: throw new ArgumentOutOfRangeException(nameof(position), position, null);
-            }
-        }
+        public const int LanePositionCount = 3;
+
         public static bool IsCorrectSide(this LanePosition position, float lanePosition) {
             switch (position) {
                 case LanePosition.Left: return lanePosition < 0f;
@@ -34,14 +26,5 @@ namespace NetworkSkins.Net
                 default: throw new ArgumentOutOfRangeException(nameof(position), position, null);
             }
         }
-
-        //public static SegmentData.FeatureFlags ToTreeFeatureFlag(this LanePosition position) {
-        //    switch (position) {
-        //        case LanePosition.Left: return SegmentData.FeatureFlags.TreeLeft;
-        //        case LanePosition.Middle: return SegmentData.FeatureFlags.TreeMiddle;
-        //        case LanePosition.Right: return SegmentData.FeatureFlags.TreeRight;
-        //        default: throw new ArgumentOutOfRangeException(nameof(position), position, null);
-        //    }
-        //}
     }
 }

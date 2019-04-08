@@ -65,10 +65,14 @@ namespace NetworkSkins.Controller
         }
         #endregion
 
-
         public string GetValue(NetInfo prefab, string key)
         {
             return _values.TryGetValue(new ValueKey(prefab.name, key), out var value) ? value : null;
+        }
+
+        public void SetValue(NetInfo prefab, string key, string value)
+        {
+            _values[new ValueKey(prefab.name, key)] = value;
         }
 
         public float? GetFloatValue(NetInfo prefab, string key)
@@ -88,14 +92,30 @@ namespace NetworkSkins.Controller
             }
         }
 
-        public void SetValue(NetInfo prefab, string key, string value)
-        {
-            _values[new ValueKey(prefab.name, key)] = value;
-        }
-
         public void SetFloatValue(NetInfo prefab, string key, float value)
         {
             _values[new ValueKey(prefab.name, key)] = value.ToString("R", CultureInfo.InvariantCulture);
+        }
+
+        public Color? GetColorValue(NetInfo prefab, string key)
+        {
+            var value = GetValue(prefab, key);
+            if (value == null) return null;
+
+            if (ColorUtility.TryParseHtmlString(value, out var color))
+            {
+                return color;
+            }
+            else
+            {
+                Debug.LogError($"Error while parsing {key} color value for {prefab.name}");
+                return null;
+            }
+        }
+
+        public void SetColorValue(NetInfo prefab, string key, Color value)
+        {
+            _values[new ValueKey(prefab.name, key)] = ColorUtility.ToHtmlStringRGB(value);
         }
 
         public void ClearValue(NetInfo prefab, string key)

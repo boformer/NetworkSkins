@@ -1,14 +1,15 @@
-﻿using System;
+﻿using ColossalFramework.Packaging;
+using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using ColossalFramework.Packaging;
-using JetBrains.Annotations;
 
 namespace NetworkSkins.Net
 {
     public static class PillarUtils
     {
-        public static bool SupportsPillars(NetInfo prefab, PillarType type) {
+        public static bool SupportsPillars(NetInfo prefab, PillarType type)
+        {
             var netAi = prefab.m_netAI;
             if (type == PillarType.Bridge)
             {
@@ -19,7 +20,7 @@ namespace NetworkSkins.Net
             }
             else
             {
-                return netAi.RequireDoubleSegments() 
+                return netAi.RequireDoubleSegments()
                        && (netAi is RoadBridgeAI
                        || netAi is TrainTrackBridgeAI
                        || netAi is MonorailTrackAI);
@@ -51,7 +52,7 @@ namespace NetworkSkins.Net
                 {
                     foreach (var pillar in bridgePillars)
                     {
-                        if(pillar != null) uniquePillars.Add(pillar);
+                        if (pillar != null) uniquePillars.Add(pillar);
                     }
                 }
 
@@ -115,18 +116,6 @@ namespace NetworkSkins.Net
                     return GetDefaultMiddlePillar(prefab);
                 default:
                     return null;
-            }
-        }
-
-        public static void SetPillar(NetInfo prefab, PillarType type, BuildingInfo pillar)
-        {
-            if (type == PillarType.Bridge)
-            {
-                SetBridgePillar(prefab, pillar);
-            }
-            else if (type == PillarType.Middle)
-            {
-                SetMiddlePillar(prefab, pillar);
             }
         }
 

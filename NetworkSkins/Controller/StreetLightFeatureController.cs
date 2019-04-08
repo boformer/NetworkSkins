@@ -40,10 +40,8 @@ namespace NetworkSkins.Controller
             base.OnChanged();
         }
 
-        protected override List<Item> BuildItems(out Item defaultItem)
+        protected override List<Item> BuildItems(ref Item defaultItem)
         {
-            defaultItem = null;
-
             var defaultStreetLights = GetDefaultStreetLights();
             if (defaultStreetLights.Count == 0)
             {
@@ -67,7 +65,7 @@ namespace NetworkSkins.Controller
                 items.Add(defaultItem);
             }
 
-            var streetLights = GetAvailableStreetLights();
+            var streetLights = StreetLightUtils.GetAvailableStreetLights();
             
             foreach (var streetLight in streetLights)
             {
@@ -92,14 +90,14 @@ namespace NetworkSkins.Controller
             var groundStreetLight = StreetLightUtils.GetDefaultStreetLight(Prefab);
             if (groundStreetLight != null) defaultStreetLights[Prefab] = groundStreetLight;
 
-            var elevatedPrefab = NetUtil.GetElevatedPrefab(Prefab);
+            var elevatedPrefab = NetUtils.GetElevatedPrefab(Prefab);
             if (elevatedPrefab != null)
             {
                 var elevatedStreetLight = StreetLightUtils.GetDefaultStreetLight(elevatedPrefab);
                 if (elevatedStreetLight != null) defaultStreetLights[elevatedPrefab] = elevatedStreetLight;
             }
 
-            var bridgePrefab = NetUtil.GetBridgePrefab(Prefab);
+            var bridgePrefab = NetUtils.GetBridgePrefab(Prefab);
             if (bridgePrefab != null)
             {
                 var bridgeStreetLight = StreetLightUtils.GetDefaultStreetLight(bridgePrefab);
@@ -109,30 +107,11 @@ namespace NetworkSkins.Controller
             return defaultStreetLights;
         }
 
-        public List<PropInfo> GetAvailableStreetLights()
-        {
-            var streetLights = new List<PropInfo>();
-
-            var prefabCount = PrefabCollection<PropInfo>.LoadedCount();
-            for (uint prefabIndex = 0; prefabIndex < prefabCount; prefabIndex++)
-            {
-                var prefab = PrefabCollection<PropInfo>.GetLoaded(prefabIndex);
-                if (StreetLightUtils.IsStreetLightProp(prefab))
-                {
-                    streetLights.Add(prefab);
-                }
-            }
-
-            streetLights.Sort((a, b) => string.Compare(a.GetUncheckedLocalizedTitle(), b.GetUncheckedLocalizedTitle(), StringComparison.Ordinal));
-
-            return streetLights;
-        }
-
         protected override Dictionary<NetInfo, List<NetworkSkinModifier>> BuildModifiers()
         {
             var modifiers = new Dictionary<NetInfo, List<NetworkSkinModifier>>();
             
-            if (Prefab != null && SelectedItem != null && SelectedItem is SimpleItem item)
+            if (SelectedItem != null && SelectedItem is SimpleItem item)
             {
                 if (item != DefaultItem || SelectedRepeatDistance != DefaultRepeatDistance)
                 {
@@ -143,10 +122,10 @@ namespace NetworkSkins.Controller
 
                     modifiers.Add(Prefab, prefabModifiers);
 
-                    var elevatedPrefab = NetUtil.GetElevatedPrefab(Prefab);
+                    var elevatedPrefab = NetUtils.GetElevatedPrefab(Prefab);
                     if (elevatedPrefab != null) modifiers.Add(elevatedPrefab, prefabModifiers);
 
-                    var bridgePrefab = NetUtil.GetBridgePrefab(Prefab);
+                    var bridgePrefab = NetUtils.GetBridgePrefab(Prefab);
                     if (bridgePrefab != null) modifiers.Add(bridgePrefab, prefabModifiers);
                 }
             }

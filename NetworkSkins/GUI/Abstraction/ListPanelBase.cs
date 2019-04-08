@@ -44,7 +44,7 @@ namespace NetworkSkins.GUI
         }
 
         private void SetupTabs() {
-            tabs = new UIButton[(int)LanePosition.Count];
+            tabs = new UIButton[LanePositionExtensions.LanePositionCount];
             for (int i = 0; i < tabs.Length; i++) {
                 string lane = string.Empty;
                 switch ((LanePosition)i) {

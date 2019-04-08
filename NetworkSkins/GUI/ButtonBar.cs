@@ -89,10 +89,10 @@ namespace NetworkSkins.GUI
         protected override void RefreshUI(NetInfo netInfo) {
             treesButton.isVisible = SkinController.TreesEnabled;
             lightsButton.isVisible = SkinController.StreetLight.Enabled;
-            surfacesButton.isVisible = SkinController.NetInfoHasSurfaces;
+            surfacesButton.isVisible = SkinController.TerrainSurface.Enabled;
             pillarsButton.isVisible = SkinController.PillarsEnabled;
             catenaryButton.isVisible = SkinController.Catenary.Enabled;
-            colorButton.isVisible = SkinController.NetInfoIsColorable;
+            colorButton.isVisible = SkinController.Color.Enabled;
         }
 
         private void OnPrefabChanged(NetInfo netInfo) {

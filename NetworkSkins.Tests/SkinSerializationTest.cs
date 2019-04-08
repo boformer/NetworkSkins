@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using ColossalFramework.IO;
+using NetworkSkins.Net;
 using NetworkSkins.Skins;
 using NetworkSkins.Skins.Modifiers;
 using NetworkSkins.Skins.Serialization;
@@ -22,8 +23,11 @@ namespace NetworkSkins.Tests
                 new TerrainSurfaceModifier(Surface.Ruined),
                 new ColorModifier(new Color32(1, 2, 3, 4)),
                 new StreetLightModifier(prefabs.TestProp, 42f),
-                new TreeModifier(prefabs.TestTree, 42f, null, 1f, prefabs.TestTree2, 69f),
-                new PillarModifier(prefabs.TestBuilding, null, null, null, prefabs.TestBuilding2),
+                new TreeModifier(LanePosition.Left, prefabs.TestTree, 42f),
+                new TreeModifier(LanePosition.Middle, null, 1f),
+                new TreeModifier(LanePosition.Right, prefabs.TestTree2, 69f),
+                new PillarModifier(PillarType.Bridge, prefabs.TestBuilding),
+                new PillarModifier(PillarType.Middle, prefabs.TestBuilding2),
                 new CatenaryModifier(prefabs.TestProp),
             }) {UseCount = 2};
 
