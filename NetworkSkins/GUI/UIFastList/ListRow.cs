@@ -42,6 +42,14 @@ namespace NetworkSkins.GUI
             eventMouseLeave += OnMouseLeaveEvent;
         }
 
+        public void UpdateColor(string itemID) {
+            if (itemData != null && itemData.ID == itemID) {
+                color = selectedColor;
+            } else {
+                color = isRowOdd ? oddColor : evenColor;
+            }
+        }
+
         private void CreateThumbnail() {
             thumbnailPanel = AddUIComponent<UIPanel>();
             thumbnailPanel.size = new Vector2(33.0f, 30.0f);
