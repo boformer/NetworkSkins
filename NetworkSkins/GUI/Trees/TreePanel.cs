@@ -14,7 +14,7 @@ namespace NetworkSkins.GUI
             int tabCount = tabs.Count(tab => tab.isVisible);
 
             if (tabCount != 0) {
-                for (int i = 0; i < (int)LanePosition.Count; i++) {
+                for (int i = 0; i < LanePositionExtensions.LanePositionCount; i++) {
                     tabs[i].width = tabStrip.width / tabCount;
                 }
             }

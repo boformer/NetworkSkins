@@ -10,10 +10,8 @@ namespace NetworkSkins.Controller
 {
     public class CatenaryFeatureController : ItemListFeatureController<PropInfo>
     {
-        protected override List<Item> BuildItems(out Item defaultItem)
+        protected override List<Item> BuildItems(ref Item defaultItem)
         {
-            defaultItem = null;
-
             if (!(Prefab.m_netAI is TrainTrackBaseAI))
             {
                 return new List<Item>();
@@ -69,21 +67,21 @@ namespace NetworkSkins.Controller
             var groundCatenary = CatenaryUtils.GetDefaultCatenary(Prefab);
             if (groundCatenary != null) defaultCatenaries[Prefab] = groundCatenary;
 
-            var slopePrefab = NetUtil.GetSlopePrefab(Prefab);
+            var slopePrefab = NetUtils.GetSlopePrefab(Prefab);
             if (slopePrefab != null)
             {
                 var slopeCatenary = CatenaryUtils.GetDefaultCatenary(slopePrefab);
                 if (slopeCatenary != null) defaultCatenaries[slopePrefab] = slopeCatenary;
             }
 
-            var elevatedPrefab = NetUtil.GetElevatedPrefab(Prefab);
+            var elevatedPrefab = NetUtils.GetElevatedPrefab(Prefab);
             if (elevatedPrefab != null)
             {
                 var elevatedCatenary = CatenaryUtils.GetDefaultCatenary(elevatedPrefab);
                 if (elevatedCatenary != null) defaultCatenaries[elevatedPrefab] = elevatedCatenary;
             }
 
-            var bridgePrefab = NetUtil.GetBridgePrefab(Prefab);
+            var bridgePrefab = NetUtils.GetBridgePrefab(Prefab);
             if (bridgePrefab != null)
             {
                 var bridgeCatenary = CatenaryUtils.GetDefaultCatenary(bridgePrefab);
@@ -131,26 +129,23 @@ namespace NetworkSkins.Controller
         {
             var modifiers = new Dictionary<NetInfo, List<NetworkSkinModifier>>();
 
-            if (Prefab != null && SelectedItem != null && SelectedItem is SimpleItem item)
+            if (SelectedItem != null && SelectedItem is SimpleItem item && item != DefaultItem)
             {
-                if (item != DefaultItem)
+                var prefabModifiers = new List<NetworkSkinModifier>
                 {
-                    var prefabModifiers = new List<NetworkSkinModifier>
-                    {
-                        new CatenaryModifier(item.Value)
-                    };
+                    new CatenaryModifier(item.Value)
+                };
 
-                    modifiers.Add(Prefab, prefabModifiers);
+                modifiers.Add(Prefab, prefabModifiers);
 
-                    var slopePrefab = NetUtil.GetSlopePrefab(Prefab);
-                    if (slopePrefab != null) modifiers.Add(slopePrefab, prefabModifiers);
+                var slopePrefab = NetUtils.GetSlopePrefab(Prefab);
+                if (slopePrefab != null) modifiers.Add(slopePrefab, prefabModifiers);
 
-                    var elevatedPrefab = NetUtil.GetElevatedPrefab(Prefab);
-                    if (elevatedPrefab != null) modifiers.Add(elevatedPrefab, prefabModifiers);
+                var elevatedPrefab = NetUtils.GetElevatedPrefab(Prefab);
+                if (elevatedPrefab != null) modifiers.Add(elevatedPrefab, prefabModifiers);
 
-                    var bridgePrefab = NetUtil.GetBridgePrefab(Prefab);
-                    if (bridgePrefab != null) modifiers.Add(bridgePrefab, prefabModifiers);
-                }
+                var bridgePrefab = NetUtils.GetBridgePrefab(Prefab);
+                if (bridgePrefab != null) modifiers.Add(bridgePrefab, prefabModifiers);
             }
 
             return modifiers;

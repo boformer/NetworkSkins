@@ -21,10 +21,13 @@ namespace NetworkSkins.GUI
             fastList.RowsData = new FastList<object>();
             fastList.RowsData.SetCapacity((int)Surface.Count);
             for (int surfaceIndex = 0; surfaceIndex < (int)Surface.Count; surfaceIndex++) {
+                // TODO NetInfoCanHaveNoneSurface no longer exists, use SkinController.TerrainSurface
+                /*
                 if (surfaceIndex == 0 && !SkinController.NetInfoCanHaveNoneSurface) {
                     fastList.height = ListSize.y - RowHeight;
                     continue;
                 }
+                */
                 ListItem listItem = CreateListItem((Surface)surfaceIndex);
                 if (listItem.IsSelected) selectedIndex = (int)surfaceIndex;
                 fastList.RowsData.Add(listItem);

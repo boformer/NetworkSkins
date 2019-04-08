@@ -1,39 +1,39 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace NetworkSkins.Net
 {
     public static class StreetLightUtils
     {
-        public static bool HasStreetLights(NetInfo prefab)
+        public static List<PropInfo> GetAvailableStreetLights()
         {
-            if (prefab.m_lanes == null) return false;
+            var streetLights = new List<PropInfo>();
 
-            foreach (var lane in prefab.m_lanes)
+            var prefabCount = PrefabCollection<PropInfo>.LoadedCount();
+            for (uint prefabIndex = 0; prefabIndex < prefabCount; prefabIndex++)
             {
-                var laneProps = lane?.m_laneProps?.m_props;
-                if (laneProps == null) continue;
-
-                foreach (var laneProp in laneProps)
+                var prefab = PrefabCollection<PropInfo>.GetLoaded(prefabIndex);
+                if (StreetLightUtils.IsStreetLightProp(prefab))
                 {
-                    if (IsStreetLightProp(laneProp?.m_finalProp))
-                    {
-                        return true;
-                    }
+                    streetLights.Add(prefab);
                 }
             }
 
-            return false;
+            streetLights.Sort((a, b) => string.Compare(a.GetUncheckedLocalizedTitle(), b.GetUncheckedLocalizedTitle(), StringComparison.Ordinal));
+
+            return streetLights;
         }
 
         [CanBeNull]
         public static PropInfo GetDefaultStreetLight(NetInfo prefab)
         {
-            return NetUtil.GetMatchingLaneProp(prefab, laneProp => IsStreetLightProp(laneProp.m_finalProp))?.m_finalProp;
+            return NetUtils.GetMatchingLaneProp(prefab, laneProp => IsStreetLightProp(laneProp.m_finalProp))?.m_finalProp;
         }
 
         public static float GetDefaultRepeatDistance(NetInfo prefab)
         {
-            return NetUtil.GetMatchingLaneProp(prefab, laneProp => IsStreetLightProp(laneProp.m_finalProp))?.m_repeatDistance ?? 40f;
+            return NetUtils.GetMatchingLaneProp(prefab, laneProp => IsStreetLightProp(laneProp.m_finalProp))?.m_repeatDistance ?? 40f;
         }
 
         public static bool IsStreetLightProp(PropInfo prefab)

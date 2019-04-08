@@ -35,12 +35,13 @@ namespace NetworkSkins.Controller
 
         protected override void Build()
         {
-            Items = BuildItems(out var defaultItem);
+            Item defaultItem = null;
+            Items = BuildItems(ref defaultItem);
             DefaultItem = defaultItem;
             SelectedItem = LoadSelectedItem() ?? defaultItem;
         }
 
-        protected abstract List<Item> BuildItems(out Item defaultItem);
+        protected abstract List<Item> BuildItems(ref Item defaultItem);
 
         #region Active Selection Data
         protected abstract string SelectedItemKey { get; }
@@ -63,7 +64,7 @@ namespace NetworkSkins.Controller
 
         private void SaveSelectedItem()
         {
-            if (SelectedItem != DefaultItem)
+            if (SelectedItem != null && SelectedItem != DefaultItem)
             {
                 ActiveSelectionData.Instance.SetValue(Prefab, SelectedItemKey, SelectedItem.Id);
             }

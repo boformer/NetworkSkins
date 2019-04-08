@@ -19,13 +19,17 @@ namespace NetworkSkins
 
         private bool _ignoreModifierEvents = false;
 
+        public TerrainSurfaceFeatureController TerrainSurface;
+
+        public ColorFeatureController Color;
+
+        public StreetLightFeatureController StreetLight;
+
         public bool TreesEnabled => LeftTree.Enabled || MiddleTree.Enabled || RighTree.Enabled;
         public TreeFeatureController LeftTree;
         public TreeFeatureController MiddleTree;
         public TreeFeatureController RighTree;
-
-        public StreetLightFeatureController StreetLight;
-
+        
         public bool PillarsEnabled => ElevatedBridgePillar.Enabled || ElevatedMiddlePillar.Enabled || BridgeBridgePillar.Enabled || BridgeMiddlePillar.Enabled;
         public PillarFeatureController ElevatedBridgePillar;
         public PillarFeatureController ElevatedMiddlePillar;
@@ -33,12 +37,6 @@ namespace NetworkSkins
         public PillarFeatureController BridgeMiddlePillar;
 
         public CatenaryFeatureController Catenary;
-
-        // surfaces, pillars, color, catenary, extras
-        
-        public bool NetInfoHasSurfaces => NetUtil.HasSurfaces(Prefab);
-        public bool NetInfoIsColorable => NetUtil.IsColorable(Prefab);
-        public bool NetInfoCanHaveNoneSurface => NetUtil.CanHaveNoneSurface(Prefab);
 
         public NetInfo Prefab { get; private set; }
 
@@ -81,6 +79,15 @@ namespace NetworkSkins
         private void Awake() {
             Instance = this;
 
+            TerrainSurface = new TerrainSurfaceFeatureController();
+            TerrainSurface.EventModifiersChanged += OnModifiersChanged;
+
+            Color = new ColorFeatureController();
+            Color.EventModifiersChanged += OnModifiersChanged;
+
+            StreetLight = new StreetLightFeatureController();
+            StreetLight.EventModifiersChanged += OnModifiersChanged;
+
             LeftTree = new TreeFeatureController(LanePosition.Left);
             LeftTree.EventModifiersChanged += OnModifiersChanged;
 
@@ -89,10 +96,7 @@ namespace NetworkSkins
 
             RighTree = new TreeFeatureController(LanePosition.Right);
             RighTree.EventModifiersChanged += OnModifiersChanged;
-
-            StreetLight = new StreetLightFeatureController();
-            StreetLight.EventModifiersChanged += OnModifiersChanged;
-
+            
             var availablePillars = PillarUtils.GetAvailablePillars();
 
             ElevatedBridgePillar = new PillarFeatureController(PillarType.Bridge, availablePillars);
@@ -127,6 +131,7 @@ namespace NetworkSkins
                 if (isNetToolEnabled) {
                     isNetToolEnabled = false;
                     EventToolStateChanged?.Invoke(false);
+                    NetworkSkinManager.instance.ClearActiveModifiers();
                 }
             }
         }
@@ -135,17 +140,21 @@ namespace NetworkSkins
         {
             _ignoreModifierEvents = true;
 
-            LeftTree.OnPrefabChanged(prefab);
-            MiddleTree.OnPrefabChanged(prefab);
-            RighTree.OnPrefabChanged(prefab);
+            TerrainSurface.OnPrefabChanged(prefab);
+
+            Color.OnPrefabChanged(prefab);
 
             StreetLight.OnPrefabChanged(prefab);
 
-            var elevatedPrefab = NetUtil.GetElevatedPrefab(prefab);
+            LeftTree.OnPrefabChanged(prefab);
+            MiddleTree.OnPrefabChanged(prefab);
+            RighTree.OnPrefabChanged(prefab);
+            
+            var elevatedPrefab = NetUtils.GetElevatedPrefab(prefab);
             ElevatedBridgePillar.OnPrefabChanged(elevatedPrefab);
             ElevatedMiddlePillar.OnPrefabChanged(elevatedPrefab);
 
-            var bridgePrefab = NetUtil.GetBridgePrefab(prefab);
+            var bridgePrefab = NetUtils.GetBridgePrefab(prefab);
             BridgeBridgePillar.OnPrefabChanged(bridgePrefab);
             BridgeMiddlePillar.OnPrefabChanged(bridgePrefab);
 
@@ -167,12 +176,16 @@ namespace NetworkSkins
         {
             var modifiers = new Dictionary<NetInfo, List<NetworkSkinModifier>>();
 
-            MergeModifiers(modifiers, LeftTree.Modifiers);
-            MergeModifiers(modifiers, MiddleTree.Modifiers);
-            MergeModifiers(modifiers, RighTree.Modifiers);
+            MergeModifiers(modifiers, TerrainSurface.Modifiers);
+
+            MergeModifiers(modifiers, Color.Modifiers);
 
             MergeModifiers(modifiers, StreetLight.Modifiers);
 
+            MergeModifiers(modifiers, LeftTree.Modifiers);
+            MergeModifiers(modifiers, MiddleTree.Modifiers);
+            MergeModifiers(modifiers, RighTree.Modifiers);
+            
             MergeModifiers(modifiers, ElevatedBridgePillar.Modifiers);
             MergeModifiers(modifiers, ElevatedMiddlePillar.Modifiers);
             MergeModifiers(modifiers, BridgeBridgePillar.Modifiers);

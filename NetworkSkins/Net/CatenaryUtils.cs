@@ -30,7 +30,7 @@ namespace NetworkSkins.Net
 
         public static PropInfo GetDefaultCatenary(NetInfo prefab)
         {
-            return NetUtil.GetMatchingLaneProp(prefab, laneProp => IsCatenaryProp(laneProp.m_finalProp))?.m_finalProp;
+            return NetUtils.GetMatchingLaneProp(prefab, laneProp => IsCatenaryProp(laneProp.m_finalProp))?.m_finalProp;
         }
 
         public static bool IsCatenaryProp(PropInfo prop)

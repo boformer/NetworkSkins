@@ -35,7 +35,7 @@ namespace NetworkSkins.GUI
             List<string> favList = Persistence.GetFavourites(UIUtil.PanelToItemType(PanelType));
             for (uint prefabIndex = 0; prefabIndex < prefabCount; prefabIndex++) {
                 PropInfo prefab = PrefabCollection<PropInfo>.GetLoaded(prefabIndex);
-                if (NetUtil.IsStreetLight(prefab)) {
+                if (StreetLightUtils.IsStreetLightProp(prefab)) {
                     if (favList.Contains(prefab.name)) {
                         favouritesList.Add(prefab);
                     } else nonFavouritesList.Add(prefab);
