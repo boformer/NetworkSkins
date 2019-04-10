@@ -13,8 +13,13 @@ namespace NetworkSkins.GUI
         protected override Vector2 ListSize => new Vector2(390.0f, 200.0f);
         protected override float RowHeight => 50.0f;
 
+        public void RefreshRowsData() {
+            SetupRowsData();
+        }
+
         protected override void RefreshUI(NetInfo netInfo) {
             fastList.width = 378.0f;
+            SetupRowsData();
         }
 
         protected override bool IsFavourite(string itemID) {
@@ -22,22 +27,22 @@ namespace NetworkSkins.GUI
         }
 
         protected override bool IsDefault(string itemID) {
-            return false;
+            return SkinController.TerrainSurface.DefaultItem.Id == itemID;
         }
 
         protected override void SetupRowsData() {
             int selectedIndex = -1;
-            fastList.RowsData = new FastList<object>();
-            fastList.RowsData.SetCapacity((int)Surface.Count);
+            if (fastList.RowsData == null) {
+                fastList.RowsData = new FastList<object>();
+            }
+            fastList.RowsData.Clear();
+            fastList.RowsData.SetCapacity(SkinController.TerrainSurface.Items.Count);
             fastList.height = RowHeight * SkinController.TerrainSurface.Items.Count;
             for (int i = 0; i < SkinController.TerrainSurface.Items.Count; i++) {
                 SimpleItem item = SkinController.TerrainSurface.Items[i] as SimpleItem;
                 ListItem listItem = CreateListItem(item.Value);
-                if (SkinController.TerrainSurface.SelectedItem.Id == listItem.ID) selectedIndex = (int)item.Value;
+                if (SkinController.TerrainSurface.SelectedItem.Id == listItem.ID) selectedIndex = i;
                 fastList.RowsData.Add(listItem);
-            }
-            if (selectedIndex != -1) {
-                fastList.SelectedIndex = selectedIndex;
             }
             fastList.DisplayAt(selectedIndex);
         }
@@ -50,7 +55,7 @@ namespace NetworkSkins.GUI
             isFavourite = IsFavourite(surfaceType.ToString());
             isDefault = IsDefault(surfaceType.ToString());
             prefix = isDefault
-                ? Translation.Instance.GetTranslation(TranslationID.LABEL_DEFAULT)
+                ? string.Concat("(", Translation.Instance.GetTranslation(TranslationID.LABEL_DEFAULT), ") ")
                 : string.Empty;
             switch (surfaceType) {
                 case Surface.Pavement:
@@ -70,7 +75,7 @@ namespace NetworkSkins.GUI
                     thumbnail = UIView.GetAView()?.defaultAtlas?.GetSpriteTexture("Niet");
                     break;
             }
-            id = Enum.GetName(typeof(Surface), surfaceType);
+            id = surfaceType == Surface.None ? "#NONE#" : Enum.GetName(typeof(Surface), surfaceType);
             displayName = string.Concat(prefix, name);
             return new ListItem(id, displayName, thumbnail, isFavourite, ItemType.Surfaces);
         }

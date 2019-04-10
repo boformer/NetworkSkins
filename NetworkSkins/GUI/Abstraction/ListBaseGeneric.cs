@@ -19,7 +19,7 @@ namespace NetworkSkins.GUI
             isFavourite = IsFavourite(id);
             isDefault = IsDefault(id);
             prefix = isDefault
-                ? Translation.Instance.GetTranslation(TranslationID.LABEL_DEFAULT)
+                ? string.Concat("(", Translation.Instance.GetTranslation(TranslationID.LABEL_DEFAULT), ") ")
                 : string.Empty;
             name = prefabInfo == null
                 ? Translation.Instance.GetTranslation(TranslationID.LABEL_NONE)

@@ -3,7 +3,6 @@ using NetworkSkins.Net;
 using NetworkSkins.Controller;
 using System.Collections.Generic;
 using static NetworkSkins.Controller.ItemListFeatureController<BuildingInfo>;
-using System;
 
 namespace NetworkSkins.GUI
 {
@@ -32,7 +31,10 @@ namespace NetworkSkins.GUI
 
         protected override void SetupRowsData() {
             int itemCount = 0, selectedIndex = 0;
-            fastList.RowsData = new FastList<object>();
+            if (fastList.RowsData == null) {
+                fastList.RowsData = new FastList<object>();
+            }
+            fastList.RowsData.Clear();
             ItemListFeatureController<BuildingInfo> controller = null;
             switch (SkinController.PillarElevationCombination) {
                 case Pillar.Elevated: controller = SkinController.ElevatedBridgePillar; break;

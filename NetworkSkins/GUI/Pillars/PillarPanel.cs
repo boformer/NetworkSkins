@@ -41,10 +41,10 @@ namespace NetworkSkins.GUI
         protected override void OnSelectedChanged(string itemID, bool selected) {
             if (!selected) return;
             switch (SkinController.PillarElevationCombination) {
-                case Pillar.Elevated: SkinController.ElevatedBridgePillar.OnSelectedItemChanged(itemID); break;
-                case Pillar.ElevatedMiddle: SkinController.ElevatedMiddlePillar.OnSelectedItemChanged(itemID); break;
-                case Pillar.Bridge: SkinController.BridgeBridgePillar.OnSelectedItemChanged(itemID); break;
-                case Pillar.BridgeMiddle: SkinController.BridgeMiddlePillar.OnSelectedItemChanged(itemID); break;
+                case Pillar.Elevated: SkinController.ElevatedBridgePillar.SetSelectedItem(itemID); break;
+                case Pillar.ElevatedMiddle: SkinController.ElevatedMiddlePillar.SetSelectedItem(itemID); break;
+                case Pillar.Bridge: SkinController.BridgeBridgePillar.SetSelectedItem(itemID); break;
+                case Pillar.BridgeMiddle: SkinController.BridgeMiddlePillar.SetSelectedItem(itemID); break;
                 default: break;
             }
             list.Select(itemID);

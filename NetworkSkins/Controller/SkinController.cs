@@ -49,36 +49,6 @@ namespace NetworkSkins
             return TreeUtils.GetDefaultTree(Prefab, LanePosition.Left) ?? TreeUtils.GetDefaultTree(Prefab, LanePosition.Middle);
         }
 
-        /// <summary>
-        /// LanePostion.None is passed when the "Lock lanes" options is enabled.
-        /// </summary>
-        /// <param name="prefabID">The prefab name usable to get the tree from PrefabCollection<TreeInfo></param>
-        /// <param name="lanePosition"></param>
-        public void SetTree(string prefabID, LanePosition lanePosition)
-        {
-
-        }
-
-        public void SetLight(string prefabID) {
-
-        }
-
-        public void SetPillar(string prefabID) {
-
-        }
-
-        public void SetCatenary(string prefabID) {
-
-        }
-
-        public void SetSurface(Surface surface) {
-
-        }
-
-        public void SetColor(Color32 color) {
-
-        }
-
         private void Awake() {
             Instance = this;
 

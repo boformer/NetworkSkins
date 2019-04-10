@@ -65,6 +65,7 @@ namespace NetworkSkins.GUI
             nameLabel.autoSize = false;
             nameLabel.size = new Vector2(253.0f, 30.0f);
             nameLabel.padding = new RectOffset(0, 0, 8, 0);
+            nameLabel.font = UIUtil.Font;
         }
 
         private void CreateCheckbox() {
@@ -72,7 +73,7 @@ namespace NetworkSkins.GUI
             checkboxPanel.size = new Vector2(32.0f, 30.0f);
             favouriteCheckbox = checkboxPanel.AddUIComponent<UICheckBox>();
             favouriteCheckbox.size = new Vector2(22f, 22f);
-            favouriteCheckbox.relativePosition = new Vector3(0.0f, 4.0f);
+            favouriteCheckbox.relativePosition = new Vector3(9.0f, 4.0f);
             UISprite uncheckedSprite = favouriteCheckbox.AddUIComponent<UISprite>();
             uncheckedSprite.atlas = Resources.Atlas;
             uncheckedSprite.spriteName = Resources.StarOutline;
@@ -158,7 +159,6 @@ namespace NetworkSkins.GUI
         }
 
         protected override void RefreshUI(NetInfo netInfo) {
-            
         }
     }
 }

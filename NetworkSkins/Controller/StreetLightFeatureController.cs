@@ -16,7 +16,7 @@ namespace NetworkSkins.Controller
 
         public bool CanEditRepeatDistance { get; private set; }
 
-        public void OnRepeatDistanceChanged(float repeatDistance)
+        public void SetRepeatDistance(float repeatDistance)
         {
             SelectedRepeatDistance = repeatDistance;
 

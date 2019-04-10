@@ -6,21 +6,28 @@ namespace NetworkSkins.GUI
 {
     public class LightList : ListBase<PropInfo>
     {
+        public void RefreshRowsData() {
+            SetupRowsData();
+        }
+
         protected override bool IsFavourite(string itemID) {
-            return false;
+            return Persistence.IsFavourite(itemID, UIUtil.PanelToItemType(PanelType));
         }
 
         protected override void RefreshUI(NetInfo netInfo) {
-
+            SetupRowsData();
         }
 
         protected override bool IsDefault(string itemID) {
-            return false;
+            return SkinController.StreetLight.DefaultItem.Id == itemID;
         }
 
         protected override void SetupRowsData() {
             int itemCount, selectedIndex = 0;
-            fastList.RowsData = new FastList<object>();
+            if (fastList.RowsData == null) {
+                fastList.RowsData = new FastList<object>();
+            }
+            fastList.RowsData.Clear();
             itemCount = SkinController.StreetLight.Items.Count;
             fastList.RowsData.SetCapacity(itemCount);
             favouritesList.Clear();

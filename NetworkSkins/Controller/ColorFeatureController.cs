@@ -16,7 +16,7 @@ namespace NetworkSkins.Controller
 
         private bool _default = true;
 
-        public void OnSelectedColorChanged(Color selected)
+        public void SetColor(Color selected)
         {
             if (SelectedColor == selected) return;
 

@@ -11,9 +11,9 @@ namespace NetworkSkins.GUI
         public int Spacing { get; set; }
         public static Color32 GUIColor { get; set; } = new Color32(128, 128, 128, 255);
         public static Color32 FocusedColor = new Color32(88, 181, 205, 255);
+        public PanelType PanelType { get; private set; }
         protected SkinController SkinController => SkinController.Instance;
         protected PersistenceService Persistence => PersistenceService.Instance;
-        protected PanelType PanelType { get; private set; }
 
 
         public override void Awake() {

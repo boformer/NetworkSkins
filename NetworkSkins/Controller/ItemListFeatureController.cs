@@ -22,7 +22,7 @@ namespace NetworkSkins.Controller
         /// </summary>
         public Item SelectedItem { get; private set; } = null;
 
-        public void OnSelectedItemChanged(string itemID)
+        public void SetSelectedItem(string itemID)
         {
             if (SelectedItem.Id == itemID) return;
 

@@ -1,10 +1,23 @@
 ﻿using ColossalFramework.UI;
+using System.Linq;
 using UnityEngine;
 
 namespace NetworkSkins.GUI
 {
     public class UIUtil
     {
+
+        public static UIFont Font {
+            get {
+                if (_font == null) {
+                    UIFont[] fonts = UnityEngine.Resources.FindObjectsOfTypeAll<UIFont>();
+                    _font = fonts.FirstOrDefault(f => f.name == "OpenSans-Regular");
+                }
+                return _font;
+            }
+        }
+        private static UIFont _font;
+
         public static ItemType PanelToItemType(PanelType panelType) {
             switch (panelType) {
                 case PanelType.Trees: return ItemType.Trees;

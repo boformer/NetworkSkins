@@ -9,7 +9,7 @@ namespace NetworkSkins.GUI
         private SurfaceList list;
 
         protected override void RefreshUI(NetInfo netInfo) {
-
+            list.RefreshRowsData();
         }
 
         protected override void CreateList() {
@@ -21,6 +21,7 @@ namespace NetworkSkins.GUI
 
         protected override void OnPanelBuilt() {
             laneTabStrip.isVisible = false;
+            pillarTabStrip.isVisible = false;
             RefreshAfterBuild();
         }
 
@@ -37,7 +38,9 @@ namespace NetworkSkins.GUI
         }
 
         protected override void OnSelectedChanged(string itemID, bool selected) {
-            if (selected) SkinController.SetSurface(SurfaceUtil.StringToSurface(itemID));
+            if (!selected) return;
+            SkinController.TerrainSurface.SetSelectedItem(itemID);
+            list.Select(itemID);
         }
     }
 }

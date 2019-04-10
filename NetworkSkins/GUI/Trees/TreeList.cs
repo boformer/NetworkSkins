@@ -5,7 +5,12 @@ namespace NetworkSkins.GUI
 {
     public class TreeList : ListBase<TreeInfo>
     {
+        public void RefreshRowsData() {
+            SetupRowsData();
+        }
+
         protected override void RefreshUI(NetInfo netInfo) {
+            SetupRowsData();
         }
 
         protected override bool IsFavourite(string itemID) {
@@ -18,7 +23,10 @@ namespace NetworkSkins.GUI
 
         protected override void SetupRowsData() {
             int itemCount, selectedIndex = 0;
-            fastList.RowsData = new FastList<object>();
+            if (fastList.RowsData == null) {
+                fastList.RowsData = new FastList<object>();
+            }
+            fastList.RowsData.Clear();
             itemCount = SkinController.LeftTree.Items.Count;
             fastList.RowsData.SetCapacity(itemCount);
             favouritesList.Clear();

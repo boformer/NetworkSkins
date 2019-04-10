@@ -20,7 +20,7 @@ namespace NetworkSkins.Controller
             Position = position;
         }
 
-        public void OnRepeatDistanceChanged(float repeatDistance)
+        public void SetRepeatDistance(float repeatDistance)
         {
             SelectedRepeatDistance = repeatDistance;
 

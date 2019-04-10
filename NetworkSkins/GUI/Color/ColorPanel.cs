@@ -40,16 +40,16 @@ namespace NetworkSkins.GUI
         internal void OnSwatchClicked(Color32 color, UIMouseEventParameter eventParam, UIComponent component) {
             if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftCommand) || Input.GetKey(KeyCode.RightCommand)) {
                 Persistence.RemoveSwatch(color);
-                UnityEngine.Object.Destroy(component.gameObject);
+                Destroy(component.gameObject);
             } else {
                 this.currentColor = color;
-                SkinController.SetColor(color);
+                SkinController.Color.SetColor(color);
             }
         }
 
         private void ColorChanged() {
             swatches.AddSwatch(this, swatches.Count < 10 ? swatchesPanel1 : swatchesPanel2, currentColor);
-            SkinController.SetColor(currentColor);
+            SkinController.Color.SetColor(color);
         }
 
         private void CreateSwatchesPanel() {

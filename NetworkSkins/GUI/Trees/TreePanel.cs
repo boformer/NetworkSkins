@@ -1,10 +1,19 @@
 ﻿using NetworkSkins.Net;
 using System.Linq;
+using UnityEngine;
 
 namespace NetworkSkins.GUI
 {
     public class TreePanel : ListPanelBase<TreeList, TreeInfo>
     {
+        private DistancePanel distancePanel;
+
+        public override void Build(PanelType panelType, Layout layout) {
+            base.Build(panelType, layout);
+            distancePanel = AddUIComponent<DistancePanel>();
+            distancePanel.Build(panelType, new Layout(new Vector2(390.0f, 0.0f), true, ColossalFramework.UI.LayoutDirection.Vertical, ColossalFramework.UI.LayoutStart.TopLeft, 5));
+        }
+
         protected override void RefreshUI(NetInfo netInfo) {
             SetTabEnabled(LanePosition.Left, SkinController.LeftTree.Enabled);
             SetTabEnabled(LanePosition.Middle, SkinController.MiddleTree.Enabled);
@@ -15,6 +24,7 @@ namespace NetworkSkins.GUI
                     laneTabs[i].width = laneTabStrip.width / tabCount;
                 }
             }
+            list.RefreshRowsData();
         }
 
         private void SetTabEnabled(LanePosition lanePos, bool enabled) {
@@ -41,11 +51,12 @@ namespace NetworkSkins.GUI
         protected override void OnSelectedChanged(string itemID, bool selected) {
             if (!selected) return;
             switch (SkinController.LanePosition) {
-                case LanePosition.Left: SkinController.LeftTree.OnSelectedItemChanged(itemID); break;
-                case LanePosition.Middle: SkinController.MiddleTree.OnSelectedItemChanged(itemID); break;
-                case LanePosition.Right: SkinController.RighTree.OnSelectedItemChanged(itemID); break;
+                case LanePosition.Left: SkinController.LeftTree.SetSelectedItem(itemID); break;
+                case LanePosition.Middle: SkinController.MiddleTree.SetSelectedItem(itemID); break;
+                case LanePosition.Right: SkinController.RighTree.SetSelectedItem(itemID); break;
                 default: break;
             }
+            list.Select(itemID);
         }
     }
 }

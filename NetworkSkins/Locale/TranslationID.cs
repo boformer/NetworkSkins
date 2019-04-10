@@ -16,6 +16,7 @@
         public const string LABEL_ELEVATEDMIDDLE = "LABEL_ELEVATEDMIDDLE";
         public const string LABEL_BRIDGE = "LABEL_BRIDGE";
         public const string LABEL_BRIDGEMIDDLE = "LABEL_BRIDGEMIDDLE";
+        public const string LABEL_DISTANCE = "LABEL_DISTANCE";
         public const string TOOLTIP_TREES = "TOOLTIP_TREES";
         public const string TOOLTIP_LIGHTS = "TOOLTIP_LIGHTS";
         public const string TOOLTIP_SIDEWALKS = "TOOLTIP_SIDEWALKS";

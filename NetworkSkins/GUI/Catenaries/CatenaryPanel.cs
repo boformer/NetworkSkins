@@ -7,7 +7,7 @@ namespace NetworkSkins.GUI
     public class CatenaryPanel : ListPanelBase<CatenaryList, PropInfo>
     {
         protected override void RefreshUI(NetInfo netInfo) {
-
+            list.RefreshRowsData();
         }
 
         protected override void OnSearchLostFocus() {
@@ -28,7 +28,9 @@ namespace NetworkSkins.GUI
         }
 
         protected override void OnSelectedChanged(string itemID, bool selected) {
-            if(selected) SkinController.SetCatenary(itemID);
+            if (!selected) return;
+            SkinController.Catenary.SetSelectedItem(itemID);
+            list.Select(itemID);
         }
     }
 }

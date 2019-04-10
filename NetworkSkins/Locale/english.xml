@@ -3,7 +3,7 @@
   <Translations>
     <Translation ID="MOD_DESCRIPTION" String="Change the visual appearance of roads, train tracks and other networks" />
     <Translation ID="LABEL_NONE" String="None" />
-    <Translation ID="LABEL_DEFAULT" String="(Default) " />
+    <Translation ID="LABEL_DEFAULT" String="Default" />
     <Translation ID="LABEL_SEARCH" String="Search" />
     <Translation ID="LABEL_LEFTLANE" String="Left Lane" />
     <Translation ID="LABEL_MIDDLELANE" String="Middle Lane" />
@@ -15,6 +15,7 @@
     <Translation ID="LABEL_ELEVATEDMIDDLE" String="Elevated Middle" />
     <Translation ID="LABEL_BRIDGE" String="Bridge" />
     <Translation ID="LABEL_BRIDGEMIDDLE" String="Bridge Middle" />
+    <Translation ID="LABEL_DISTANCE" String="Distance" />
     <Translation ID="TOOLTIP_TREES" String="Trees" />
     <Translation ID="TOOLTIP_LIGHTS" String="Lights" />
     <Translation ID="TOOLTIP_SIDEWALKS" String="Sidewalks" />
