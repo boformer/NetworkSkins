@@ -52,6 +52,8 @@ namespace NetworkSkins
         private void Awake() {
             Instance = this;
 
+            NetworkSkinManager.instance.EventSegmentPlaced += OnSegmentPlaced;
+
             TerrainSurface = new TerrainSurfaceFeatureController();
             TerrainSurface.EventModifiersChanged += OnModifiersChanged;
 
@@ -109,6 +111,11 @@ namespace NetworkSkins
             }
         }
 
+        private void OnDestroy()
+        {
+            NetworkSkinManager.instance.EventSegmentPlaced -= OnSegmentPlaced;
+        }
+
         private void OnPrefabChanged(NetInfo prefab)
         {
             _ignoreModifierEvents = true;
@@ -143,6 +150,11 @@ namespace NetworkSkins
             if (_ignoreModifierEvents) return;
 
             UpdateActiveModifiers();
+        }
+
+        private void OnSegmentPlaced(NetworkSkin skin)
+        {
+            Color.OnSegmentPlaced(skin);
         }
 
         internal bool IsSelected(string id, ItemType type) {
