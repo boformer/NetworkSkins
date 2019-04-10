@@ -27,6 +27,9 @@ namespace NetworkSkins.Skins
 
         private NetworkSkinLoadErrors _loadErrors;
 
+        public delegate void SegmentPlacedEventHandler(NetworkSkin skin);
+        public event SegmentPlacedEventHandler EventSegmentPlaced;
+
         #region Lifecycle
         public void Awake()
         {
@@ -172,6 +175,11 @@ namespace NetworkSkins.Skins
             UsageAdded(skin, count: 3);
             UsageRemoved(previousStartSkin);
             UsageRemoved(previousEndSkin);
+
+            if (skin != null)
+            {
+                EventSegmentPlaced?.Invoke(skin);
+            }
         }
 
         public void OnSegmentTransferData(ushort oldSegment, ushort newSegment)
