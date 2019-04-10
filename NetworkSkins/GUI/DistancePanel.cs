@@ -32,7 +32,7 @@ namespace NetworkSkins.GUI
             labelDefault.textAlignment = UIHorizontalAlignment.Left;
             labelDefault.verticalAlignment = UIVerticalAlignment.Middle;
             labelDefault.text = Translation.Instance.GetTranslation(TranslationID.LABEL_DISTANCE);
-            labelDefault.textColor = new Color32(220, 220, 220, 255);
+            labelDefault.textColor = UIUtil.TextColor;
             labelDefault.font = UIUtil.Font;
 
             labelValue = labelPanel.AddUIComponent<UILabel>();
@@ -41,7 +41,7 @@ namespace NetworkSkins.GUI
             labelValue.width = 190.0f;
             labelValue.textAlignment = UIHorizontalAlignment.Right;
             labelValue.verticalAlignment = UIVerticalAlignment.Middle;
-            labelValue.textColor = new Color32(220, 220, 220, 255);
+            labelValue.textColor = UIUtil.TextColor;
             labelValue.font = UIUtil.Font;
         }
 

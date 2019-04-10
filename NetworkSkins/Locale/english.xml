@@ -16,6 +16,9 @@
     <Translation ID="LABEL_BRIDGE" String="Bridge" />
     <Translation ID="LABEL_BRIDGEMIDDLE" String="Bridge Middle" />
     <Translation ID="LABEL_DISTANCE" String="Distance" />
+    <Translation ID="LABEL_RED" String="R" />
+    <Translation ID="LABEL_GREEN" String="G" />
+    <Translation ID="LABEL_BLUE" String="B" />
     <Translation ID="TOOLTIP_TREES" String="Trees" />
     <Translation ID="TOOLTIP_LIGHTS" String="Lights" />
     <Translation ID="TOOLTIP_SIDEWALKS" String="Sidewalks" />
