@@ -3,7 +3,6 @@ using Harmony;
 using ICities;
 using NetworkSkins.GUI;
 using NetworkSkins.Locale;
-using NetworkSkins.Patches.TrainTrackBridgeAI;
 using NetworkSkins.Persistence;
 using NetworkSkins.Skins;
 using NetworkSkins.TranslationFramework;
