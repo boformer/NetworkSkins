@@ -1,4 +1,5 @@
-﻿using ColossalFramework.UI;
+﻿using System;
+using ColossalFramework.UI;
 using NetworkSkins.Locale;
 using NetworkSkins.Net;
 using NetworkSkins.TranslationFramework;
@@ -21,7 +22,11 @@ namespace NetworkSkins.GUI
             UIUtil.CreateSpace(390.0f, 1.0f, this);
             CreateSlider();
             UIUtil.CreateSpace(390.0f, 15.0f, this);
-            RefreshAfterBuild();
+            Refresh();
+        }
+
+        internal void RefreshSlider() {
+            Refresh();
         }
 
         private void CreateLabels() {
@@ -32,7 +37,7 @@ namespace NetworkSkins.GUI
             labelDefault.textAlignment = UIHorizontalAlignment.Left;
             labelDefault.verticalAlignment = UIVerticalAlignment.Middle;
             labelDefault.text = Translation.Instance.GetTranslation(TranslationID.LABEL_DISTANCE);
-            labelDefault.textColor = new Color32(220, 220, 220, 255);
+            labelDefault.textColor = UIUtil.TextColor;
             labelDefault.font = UIUtil.Font;
 
             labelValue = labelPanel.AddUIComponent<UILabel>();
@@ -41,7 +46,7 @@ namespace NetworkSkins.GUI
             labelValue.width = 190.0f;
             labelValue.textAlignment = UIHorizontalAlignment.Right;
             labelValue.verticalAlignment = UIVerticalAlignment.Middle;
-            labelValue.textColor = new Color32(220, 220, 220, 255);
+            labelValue.textColor = UIUtil.TextColor;
             labelValue.font = UIUtil.Font;
         }
 

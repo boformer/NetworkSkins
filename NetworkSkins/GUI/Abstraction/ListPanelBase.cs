@@ -61,7 +61,7 @@ namespace NetworkSkins.GUI
         }
 
         private void OnLaneTabstripSelectedIndexChanged(UIComponent component, int value) {
-            SkinController.LanePosition = (LanePosition)value;
+            SkinController.SetActiveLane((LanePosition)value);
         }
 
         private void SetupLaneTabs() {
@@ -97,10 +97,7 @@ namespace NetworkSkins.GUI
         }
 
         private void CreateSearchBox() {
-            //searchBox = AddUIComponent<SearchBox>();
-            //searchBox.Build(new Layout(new Vector2(390.0f, 50.0f), true, LayoutDirection.Horizontal, LayoutStart.TopRight, Spacing));
-            //searchBox.EventSearchTextChanged += OnSearchTextChanged;
-            //searchBox.EventLostFocus += OnSearchLostFocus;
+            
         }
     }
 }

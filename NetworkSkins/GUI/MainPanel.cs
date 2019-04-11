@@ -68,7 +68,7 @@ namespace NetworkSkins.GUI
 
         private void CreateColorsPanel() {
             colorPanel = AddUIComponent<ColorPanel>();
-            colorPanel.Build(PanelType.Color, new Layout(new Vector2(245.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 0, "GenericPanel"));
+            colorPanel.Build(PanelType.Color, new Layout(new Vector2(228.6f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 0, "GenericPanel"));
             colorPanel.autoFitChildrenHorizontally = true;
         }
 
