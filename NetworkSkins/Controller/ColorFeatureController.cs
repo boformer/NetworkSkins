@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using NetworkSkins.Net;
+using NetworkSkins.Persistence;
 using NetworkSkins.Skins;
 using NetworkSkins.Skins.Modifiers;
 using UnityEngine;
@@ -8,20 +10,33 @@ namespace NetworkSkins.Controller
 {
     public class ColorFeatureController : FeatureController
     {
+        public const int MaxSwatchesCount = 16;
+
         public override bool Enabled => base.Enabled && _colorable;
 
         public Color SelectedColor { get; private set; }
 
+        public IEnumerable<Color32> Swatches => _swatches;
+        private readonly List<Color32> _swatches;
+
+        public event SwatchesChangedEventHandler EventSwatchesChanged;
+        public delegate void SwatchesChangedEventHandler();
+
         private bool _colorable = false;
 
         private bool _default = true;
+        
+        public ColorFeatureController()
+        {
+            _swatches = PersistenceService.Instance.GetSwatches();
+        }
 
         public void SetColor(Color selected)
         {
             if (SelectedColor == selected) return;
 
             SelectedColor = selected;
-            _default = false;
+            _default = (selected == Prefab.m_color);
 
             SaveSelectedColor();
 
@@ -38,6 +53,46 @@ namespace NetworkSkins.Controller
             SaveSelectedColor();
 
             OnChanged();
+        }
+
+        public void OnSegmentPlaced(NetworkSkin skin)
+        {
+            foreach (var modifier in skin.Modifiers)
+            {
+                if (modifier is ColorModifier colorModifier)
+                {
+                    OnColorUsed(colorModifier.Color);
+                    break;
+                }
+            }
+        }
+
+        private void OnColorUsed(Color color)
+        {
+            var colorIndex = _swatches.IndexOf(color);
+            if (colorIndex == 0)
+            {
+                // color is the last used color
+                return;
+            }
+
+            if (colorIndex != -1)
+            {
+                _swatches.RemoveAt(colorIndex);
+                _swatches.Insert(0, color);
+            }
+            else
+            {
+                _swatches.Insert(0, color);
+                if (_swatches.Count > MaxSwatchesCount)
+                {
+                    _swatches.RemoveRange(MaxSwatchesCount, _swatches.Count - MaxSwatchesCount);
+                }
+            }
+
+            EventSwatchesChanged?.Invoke();
+
+            PersistenceService.Instance.UpdateSwatches(_swatches);
         }
 
         protected override void Build()

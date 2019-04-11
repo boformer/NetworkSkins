@@ -35,6 +35,12 @@ namespace NetworkSkins.Persistence
             return new List<Color32>(Data.Swatches);
         }
 
+        public void UpdateSwatches(List<Color32> swatches)
+        {
+            Data.Swatches = new List<Color32>(swatches);
+            SaveData();
+        }
+
         public void AddSwatch(Color32 color) {
             if (!Data.Swatches.Contains(color)) {
                 Data.Swatches.Add(color);
