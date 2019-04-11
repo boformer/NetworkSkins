@@ -35,7 +35,7 @@ namespace NetworkSkins.GUI
 
         protected abstract void RefreshUI(NetInfo netInfo);
 
-        protected virtual void RefreshAfterBuild() {
+        protected virtual void Refresh() {
             RefreshUI(SkinController.Prefab);
         }
 

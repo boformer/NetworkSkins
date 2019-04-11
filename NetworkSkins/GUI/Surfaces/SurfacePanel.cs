@@ -22,7 +22,7 @@ namespace NetworkSkins.GUI
         protected override void OnPanelBuilt() {
             laneTabStrip.isVisible = false;
             pillarTabStrip.isVisible = false;
-            RefreshAfterBuild();
+            Refresh();
         }
 
         protected override void OnSearchTextChanged(string text) {

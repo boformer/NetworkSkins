@@ -31,7 +31,7 @@ namespace NetworkSkins.GUI
 
         protected override void OnPanelBuilt() {
             laneTabStrip.isVisible = false;
-            RefreshAfterBuild();
+            Refresh();
         }
 
         protected override void OnFavouriteChanged(string itemID, bool favourite) {

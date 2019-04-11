@@ -10,7 +10,7 @@ namespace NetworkSkins.Controller
 {
     public class ColorFeatureController : FeatureController
     {
-        public const int MaxSwatchesCount = 16;
+        public const int MaxSwatchesCount = 12;
 
         public override bool Enabled => base.Enabled && _colorable;
 
@@ -20,7 +20,7 @@ namespace NetworkSkins.Controller
         private readonly List<Color32> _swatches;
 
         public event SwatchesChangedEventHandler EventSwatchesChanged;
-        public delegate void SwatchesChangedEventHandler();
+        public delegate void SwatchesChangedEventHandler(Color32 color);
 
         private bool _colorable = false;
 
@@ -90,7 +90,7 @@ namespace NetworkSkins.Controller
                 }
             }
 
-            EventSwatchesChanged?.Invoke();
+            EventSwatchesChanged?.Invoke(color);
 
             PersistenceService.Instance.UpdateSwatches(_swatches);
         }

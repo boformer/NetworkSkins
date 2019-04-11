@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using NetworkSkins.Controller;
+using System.Collections.Generic;
 using static NetworkSkins.Controller.ItemListFeatureController<TreeInfo>;
 
 namespace NetworkSkins.GUI
@@ -27,13 +28,14 @@ namespace NetworkSkins.GUI
                 fastList.RowsData = new FastList<object>();
             }
             fastList.RowsData.Clear();
-            itemCount = SkinController.LeftTree.Items.Count;
+            TreeFeatureController controller = SkinController.LanePosition == Net.LanePosition.Middle ? SkinController.MiddleTree : SkinController.LeftTree;
+            itemCount = controller.Items.Count;
             fastList.RowsData.SetCapacity(itemCount);
             favouritesList.Clear();
             nonFavouritesList.Clear();
             int index = 0;
             List<string> favList = Persistence.GetFavourites(UIUtil.PanelToItemType(PanelType));
-            foreach (SimpleItem item in SkinController.LeftTree.Items) {
+            foreach (SimpleItem item in controller.Items) {
                 if (item.Id == "#NONE#") {
                     ListItem listItem = CreateListItem(null);
                     if (SkinController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;

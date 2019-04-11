@@ -17,6 +17,8 @@ namespace NetworkSkins
         public event ToolStateChangedEventHandler EventToolStateChanged;
         public delegate void PrefabChangedEventHandler(NetInfo netInfo);
         public event PrefabChangedEventHandler EventPrefabChanged;
+        public delegate void ActiveLaneChangedEventHandler(LanePosition lane);
+        public event ActiveLaneChangedEventHandler EventLaneChanged;
 
         private bool _ignoreModifierEvents = false;
 
@@ -90,6 +92,11 @@ namespace NetworkSkins
             Catenary.EventModifiersChanged += OnModifiersChanged;
         }
 
+        public void SetActiveLane(LanePosition value) {
+            LanePosition = value;
+            EventLaneChanged?.Invoke(value);
+        }
+
         private void Update() {
             if (ToolsModifierControl.toolController.CurrentTool is NetTool netTool) {
                 if (!isNetToolEnabled) {
@@ -161,24 +168,24 @@ namespace NetworkSkins
             switch (type) {
                 case ItemType.Trees: {
                     switch (LanePosition) {
-                        case LanePosition.Left: return LeftTree.SelectedItem.Id == id;
-                        case LanePosition.Middle: return MiddleTree.SelectedItem.Id == id;
-                        case LanePosition.Right: return RighTree.SelectedItem.Id == id;
+                        case LanePosition.Left: return LeftTree.SelectedItem?.Id == id;
+                        case LanePosition.Middle: return MiddleTree.SelectedItem?.Id == id;
+                        case LanePosition.Right: return RighTree.SelectedItem?.Id == id;
                         default: return false;
                     }
                 }
-                case ItemType.Lights: return StreetLight.SelectedItem.Id == id;
-                case ItemType.Surfaces: return TerrainSurface.SelectedItem.Id == id;
+                case ItemType.Lights: return StreetLight.SelectedItem?.Id == id;
+                case ItemType.Surfaces: return TerrainSurface.SelectedItem?.Id == id;
                 case ItemType.Pillars: {
                     switch (PillarElevationCombination) {
-                        case Pillar.Elevated: return ElevatedBridgePillar.SelectedItem.Id == id;
-                        case Pillar.ElevatedMiddle: return ElevatedMiddlePillar.SelectedItem.Id == id;
-                        case Pillar.Bridge: return BridgeBridgePillar.SelectedItem.Id == id;
-                        case Pillar.BridgeMiddle: return BridgeMiddlePillar.SelectedItem.Id == id;
+                        case Pillar.Elevated: return ElevatedBridgePillar.SelectedItem?.Id == id;
+                        case Pillar.ElevatedMiddle: return ElevatedMiddlePillar.SelectedItem?.Id == id;
+                        case Pillar.Bridge: return BridgeBridgePillar.SelectedItem?.Id == id;
+                        case Pillar.BridgeMiddle: return BridgeMiddlePillar.SelectedItem?.Id == id;
                         default: return false;
                     }
                 }
-                case ItemType.Catenary: return Catenary.SelectedItem.Id == id;
+                case ItemType.Catenary: return Catenary.SelectedItem?.Id == id;
                 default: return false;
             }
         }

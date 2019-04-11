@@ -1,4 +1,5 @@
-﻿using ColossalFramework.UI;
+﻿using System;
+using ColossalFramework.UI;
 using NetworkSkins.Locale;
 using NetworkSkins.Net;
 using NetworkSkins.TranslationFramework;
@@ -21,7 +22,11 @@ namespace NetworkSkins.GUI
             UIUtil.CreateSpace(390.0f, 1.0f, this);
             CreateSlider();
             UIUtil.CreateSpace(390.0f, 15.0f, this);
-            RefreshAfterBuild();
+            Refresh();
+        }
+
+        internal void RefreshSlider() {
+            Refresh();
         }
 
         private void CreateLabels() {

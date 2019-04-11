@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ColossalFramework.UI;
 using NetworkSkins.Locale;
 using NetworkSkins.TranslationFramework;
@@ -10,8 +11,7 @@ namespace NetworkSkins.GUI
     {
         private RGBPanel rgbPanel;
         private UIPanel colorPanel;
-        private SwatchesPanel swatchesPanel1;
-        private SwatchesPanel swatchesPanel2;
+        private SwatchesPanel swatchesPanel;
         private UIColorPicker colorPicker;
         private UILabel redLabel;
         private UILabel greenLabel;
@@ -19,8 +19,8 @@ namespace NetworkSkins.GUI
         private UITextField redTextField;
         private UITextField greenTextField;
         private UITextField blueTextField;
-        private Swatches swatches;
         private Color32 currentColor;
+        private Queue<SwatchButton> SwatchButtonsList;
         private bool updateNeeded;
 
         public override void Update() {
@@ -33,20 +33,37 @@ namespace NetworkSkins.GUI
 
         public override void Build(PanelType panelType, Layout layout) {
             base.Build(panelType, layout);
+            SwatchButtonsList = new Queue<SwatchButton>(20);
             color = GUIColor;
             CreateColorPicker();
             CreateRGBPanel();
             CreateSwatchesPanel();
+            SkinController.Color.EventSwatchesChanged += OnColorUsed; ;
             currentColor = SkinController.Color.SelectedColor;
+        }
+
+        private void CreateColorPicker() {
+            UIColorField field = UITemplateManager.Get<UIPanel>("LineTemplate").Find<UIColorField>("LineColor");
+            field = GameObject.Instantiate<UIColorField>(field);
+            UIColorPicker picker = GameObject.Instantiate<UIColorPicker>(field.colorPicker);
+            picker.eventColorUpdated += OnColorUpdated;
+            picker.color = SkinController.Color.SelectedColor;
+            picker.component.color = GUIColor;
+            UIPanel pickerPanel = picker.component as UIPanel;
+            pickerPanel.backgroundSprite = "";
+            picker.component.size = new Vector2(254f, 217f);
+            AttachUIComponent(picker.gameObject);
+            colorPicker = picker;
         }
 
         private void CreateRGBPanel() {
             rgbPanel = AddUIComponent<RGBPanel>();
             rgbPanel.Build(PanelType.None, new Layout(new Vector2(0.0f, 35.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 5));
+            rgbPanel.padding = new RectOffset(10, 0, 5, 0);
 
             colorPanel = rgbPanel.AddUIComponent<UIPanel>();
             colorPanel.backgroundSprite = "WhiteRect";
-            colorPanel.size = new Vector2(35.0f, 25.0f);
+            colorPanel.size = new Vector2(25.0f, 25.0f);
             colorPanel.color = SkinController.Color.SelectedColor;
 
             Color32 color32 = colorPicker.color;
@@ -68,13 +85,13 @@ namespace NetworkSkins.GUI
             label.size = new Vector2(15.0f, 25.0f);
             label.verticalAlignment = UIVerticalAlignment.Middle;
             label.textAlignment = UIHorizontalAlignment.Right;
-            label.padding = new RectOffset();
+            label.padding = new RectOffset(0, 0, 5, 0);
             return label;
         }
 
         private UITextField CreateTextfield(string text) {
             UITextField textField = rgbPanel.AddUIComponent<UITextField>();
-            textField.size = new Vector2(45.0f, 25.0f);
+            textField.size = new Vector2(44.0f, 25.0f);
             textField.padding = new RectOffset(6, 6, 6, 6);
             textField.builtinKeyNavigation = true;
             textField.isInteractive = true;
@@ -94,6 +111,38 @@ namespace NetworkSkins.GUI
             textField.eventTextSubmitted += OnTextSubmitted;
             textField.text = text;
             return textField;
+        }
+
+        private void CreateSwatchesPanel() {
+            swatchesPanel = AddUIComponent<SwatchesPanel>();
+            swatchesPanel.Build(PanelType.None, new Layout(new Vector2(254.0f, 30.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 4));
+            swatchesPanel.padding = new RectOffset(11, 0, 5, 0);
+            foreach (Color32 swatch in SkinController.Color.Swatches) {
+                AddSwatch(swatch);
+            }
+            UIUtil.CreateSpace(0f, 30.0f, swatchesPanel);
+        }
+
+        private void AddSwatch(Color32 color) {
+            SwatchButtonsList.Enqueue(MakeSwatchButton(color));
+            if (SwatchButtonsList.Count > 12) {
+                SwatchButton button = SwatchButtonsList.Dequeue();
+                UnityEngine.Object.Destroy(button?.gameObject);
+            }
+        }
+
+        private SwatchButton MakeSwatchButton(Color32 color) {
+            SwatchButton button = swatchesPanel.AddUIComponent<SwatchButton>();
+            button.size = new Vector2(15.5f, 15.0f);
+            button.atlas = Resources.Atlas;
+            button.normalBgSprite = Resources.Swatch;
+            button.hoveredColor = new Color32((byte)Mathf.Min((color.r + 32), 255), (byte)Mathf.Min((color.g + 32), 255), (byte)Mathf.Min((color.b + 32), 255), 255);
+            button.pressedColor = new Color32((byte)Mathf.Min((color.r + 64), 255), (byte)Mathf.Min((color.g + 64), 255), (byte)Mathf.Min((color.b + 64), 255), 255);
+            button.focusedColor = color;
+            button.color = color;
+            button.swatch = color;
+            button.EventSwatchClicked += OnSwatchClicked;
+            return button;
         }
 
         private void OnLostFocus(UIComponent component, UIFocusEventParameter eventParam) {
@@ -143,52 +192,15 @@ namespace NetworkSkins.GUI
         }
 
         internal void OnSwatchClicked(Color32 color, UIMouseEventParameter eventParam, UIComponent component) {
-            if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftCommand) || Input.GetKey(KeyCode.RightCommand)) {
-                Persistence.RemoveSwatch(color);
-                Destroy(component.gameObject);
-            } else {
-                this.currentColor = color;
-                SkinController.Color.SetColor(color);
-            }
+            colorPicker.color = color;
+        }
+
+        private void OnColorUsed(Color32 color) {
+            AddSwatch(color);
         }
 
         private void ColorChanged() {
-            swatches.AddSwatch(this, swatches.Count < 10 ? swatchesPanel1 : swatchesPanel2, currentColor);
-            SkinController.Color.SetColor(color);
-        }
-
-        private void CreateSwatchesPanel() {
-            swatchesPanel1 = AddUIComponent<SwatchesPanel>();
-            swatchesPanel1.Build(PanelType.None, new Layout(new Vector2(0.0f, 25.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 5));
-            swatchesPanel1.autoFitChildrenHorizontally = true;
-            swatchesPanel2 = AddUIComponent<SwatchesPanel>();
-            swatchesPanel2.Build(PanelType.None, new Layout(new Vector2(0.0f, 30.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 5));
-            swatchesPanel2.autoFitChildrenHorizontally = true;
-            swatches = new Swatches(20, Persistence);
-            int count = 0;
-            foreach (Color32 swatch in Persistence.GetSwatches()) {
-                swatches.AddSwatch(this, count < 10 ? swatchesPanel1 : swatchesPanel2, swatch);
-                count++;
-            }
-            UIUtil.CreateSpace(0.1f, 30.0f, swatchesPanel2);
-        }
-
-        private void CreateColorPicker() {
-            UIColorField field = UITemplateManager.Get<UIPanel>("LineTemplate").Find<UIColorField>("LineColor");
-            field = GameObject.Instantiate<UIColorField>(field);
-            UIColorPicker picker = GameObject.Instantiate<UIColorPicker>(field.colorPicker);
-            picker.eventColorUpdated += OnColorUpdated;
-            picker.color = SkinController.Color.SelectedColor;
-            picker.component.color = GUIColor;
-            UIPanel pickerPanel = picker.component as UIPanel;
-            pickerPanel.backgroundSprite = "";
-            picker.component.size = new Vector2(254f, 217f);
-            //picker.m_HSBField.size = new Vector2(180.0f, 180.0f);
-            //picker.m_HueSlider.size = new Vector2(16.2f, 180.0f);
-            //picker.m_HueSlider.relativePosition = new Vector2(201.0f, picker.m_HueSlider.relativePosition.y);
-            //picker.m_Indicator.size = new Vector2(14.4f, 14.4f);
-            AttachUIComponent(picker.gameObject);
-            colorPicker = picker;
+            SkinController.Color.SetColor(currentColor);
         }
 
         private void OnColorUpdated(Color value) {

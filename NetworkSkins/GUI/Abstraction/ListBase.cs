@@ -1,5 +1,4 @@
-﻿using NetworkSkins.Net;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace NetworkSkins.GUI
@@ -29,7 +28,7 @@ namespace NetworkSkins.GUI
             CreateFastList(ListSize, RowHeight);
             SetupRowsData();
             BindEvents();
-            RefreshAfterBuild();
+            Refresh();
         }
 
         public void Select(string itemID) {

@@ -41,20 +41,6 @@ namespace NetworkSkins.Persistence
             SaveData();
         }
 
-        public void AddSwatch(Color32 color) {
-            if (!Data.Swatches.Contains(color)) {
-                Data.Swatches.Add(color);
-                SaveData();
-            }
-        }
-
-        public void RemoveSwatch(Color32 color) {
-            if (Data.Swatches.Contains(color)) {
-                Data.Swatches.Remove(color);
-                SaveData();
-            }
-        }
-
         public void AddFavourite(string itemID, ItemType itemType) {
             if (!Data.Favourites[(int)itemType].Contains(itemID)) {
                 Data.Favourites[(int)itemType].Add(itemID);

@@ -11,8 +11,6 @@ using static UnityEngine.Object;
 
 namespace NetworkSkins
 {
-    // TODO ListBase.cs -> IsSelected, IsFavourite, OnSelectedChanged, OnFavouriteChanged, and SearchBox events implementation
-    // TODO NetToolMonitor.cs -> NetInfoDefaultEquals
     public class NetworkSkinsMod : ILoadingExtension, IUserMod
     {
         private const string HarmonyId = "boformer.NetworkSkins";
@@ -103,8 +101,8 @@ namespace NetworkSkins
             skinControllerGameObject = new GameObject(nameof(SkinController));
             persistenceServiceGameObject.transform.parent = NetworkSkinManager.instance.gameObject.transform;
             skinControllerGameObject.transform.parent = NetworkSkinManager.instance.gameObject.transform;
-            SkinController.Instance = skinControllerGameObject.AddComponent<SkinController>();
             PersistenceService.Instance = persistenceServiceGameObject.AddComponent<PersistenceService>();
+            SkinController.Instance = skinControllerGameObject.AddComponent<SkinController>();
             SkinController.Instance.EventToolStateChanged += OnNetToolStateChanged;
         }
 

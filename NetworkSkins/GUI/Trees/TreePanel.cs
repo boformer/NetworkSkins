@@ -12,23 +12,37 @@ namespace NetworkSkins.GUI
             base.Build(panelType, layout);
             distancePanel = AddUIComponent<DistancePanel>();
             distancePanel.Build(panelType, new Layout(new Vector2(390.0f, 0.0f), true, ColossalFramework.UI.LayoutDirection.Vertical, ColossalFramework.UI.LayoutStart.TopLeft, 5));
+            SkinController.EventLaneChanged += OnLaneChanged;
+        }
+
+        private void OnLaneChanged(LanePosition lane) {
+            list.RefreshRowsData();
+            distancePanel.RefreshSlider();
         }
 
         protected override void RefreshUI(NetInfo netInfo) {
-            SetTabEnabled(LanePosition.Left, SkinController.LeftTree.Enabled);
-            SetTabEnabled(LanePosition.Middle, SkinController.MiddleTree.Enabled);
+            laneTabStrip.isVisible = true;
             SetTabEnabled(LanePosition.Right, SkinController.RighTree.Enabled);
+            SetTabEnabled(LanePosition.Middle, SkinController.MiddleTree.Enabled);
+            SetTabEnabled(LanePosition.Left, SkinController.LeftTree.Enabled);
             int tabCount = laneTabs.Count(tab => tab.isVisible);
             if (tabCount != 0) {
                 for (int i = 0; i < LanePositionExtensions.LanePositionCount; i++) {
-                    laneTabs[i].width = laneTabStrip.width / tabCount;
+                laneTabs[i].width = laneTabStrip.width / tabCount;
                 }
             }
             list.RefreshRowsData();
+            if (tabCount == 1) {
+                laneTabStrip.isVisible = false;
+            }
         }
 
         private void SetTabEnabled(LanePosition lanePos, bool enabled) {
             laneTabs[(int)lanePos].isVisible = enabled;
+            if (enabled) {
+                laneTabStrip.selectedIndex = (int)lanePos;
+                laneTabs[(int)lanePos].Focus();
+            } 
         }
 
         protected override void OnSearchLostFocus() {
@@ -41,7 +55,7 @@ namespace NetworkSkins.GUI
 
         protected override void OnPanelBuilt() {
             pillarTabStrip.isVisible = false;
-            RefreshAfterBuild();
+            Refresh();
         }
 
         protected override void OnFavouriteChanged(string itemID, bool favourite) {
