@@ -3,6 +3,7 @@ using Harmony;
 using ICities;
 using NetworkSkins.GUI;
 using NetworkSkins.Locale;
+using NetworkSkins.Patches.TrainTrackBridgeAI;
 using NetworkSkins.Persistence;
 using NetworkSkins.Skins;
 using NetworkSkins.TranslationFramework;
@@ -33,7 +34,7 @@ namespace NetworkSkins
         {
             NetworkSkinManager.Ensure();
 
-            //InstallHarmony();
+            InstallHarmony();
 
             if (InGame)
             {
@@ -65,7 +66,7 @@ namespace NetworkSkins
 
             UninstallHarmony();
 
-            Destroy(NetworkSkinManager.instance.gameObject);
+            NetworkSkinManager.Uninstall();
         }
         #endregion
 
