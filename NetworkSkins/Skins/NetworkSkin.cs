@@ -96,13 +96,26 @@ namespace NetworkSkins.Skins
                     }
                 }
             }
+
+            if (m_segments != null)
+            {
+                foreach (var segment in m_segments)
+                {
+                    if (segment is NetworkSkinSegment && segment.m_material != null)
+                    {
+                        // NetLaneProps is a ScriptableObject, must be destroyed when no longer in use!
+                        UnityEngine.Object.Destroy(segment.m_material);
+                        segment.m_material = null;
+                    }
+                }
+            }
         }
 
         #region Modifications
         // Updates a lane prop without affecting the original lane props of the network
         public void UpdateLaneProp(int laneIndex, int propIndex, Action<NetLaneProps.Prop> updater)
         {
-            if (m_lanes.Length <= laneIndex)
+            if (m_lanes == null || m_lanes.Length <= laneIndex)
             {
                 Debug.LogError($"Invalid lane index {laneIndex} for prefab {Prefab}!");
                 return;
@@ -140,7 +153,7 @@ namespace NetworkSkins.Skins
 
         public void RemoveLaneProp(int laneIndex, int propIndex)
         {
-            if (m_lanes.Length <= laneIndex)
+            if (m_lanes == null || m_lanes.Length <= laneIndex)
             {
                 Debug.LogError($"Invalid lane index {laneIndex} for prefab {Prefab}!");
                 return;
@@ -171,6 +184,34 @@ namespace NetworkSkins.Skins
             lane.m_laneProps.m_props = props.ToArray();
         }
 
+        public void UpdateSegmentMaterial(int segmentIndex, Action<Material> updater)
+        {
+            if (m_segments == null || m_segments.Length <= segmentIndex)
+            {
+                Debug.LogError($"Invalid segment index {segmentIndex} for prefab {Prefab}!");
+                return;
+            }
+
+            var segment = m_segments[segmentIndex];
+            if (segment == null || segment.m_segmentMaterial == null)
+            {
+                Debug.LogError($"Segment {segmentIndex} is null or doesn't have a material!");
+                return;
+            }
+
+            // duplicate the segment so we do not affect the original prefab
+            if (!(segment is NetworkSkinSegment))
+            {
+                Debug.Log("Creating custom NetworkSkinSegment");
+                segment = new NetworkSkinSegment(segment);
+                m_segments[segmentIndex] = segment;
+            }
+
+            updater(segment.m_segmentMaterial);
+
+            UpdateHasWires();
+        }
+
         public void RemoveSegment(int segmentIndex)
         {
             var segments = new List<NetInfo.Segment>(m_segments);
@@ -183,14 +224,12 @@ namespace NetworkSkins.Skins
         private void UpdateHasWires()
         {
             m_hasWires = false;
-            if (m_segments == null)
-            {
-                return;
-            }
+
+            if (m_segments == null) return;
 
             foreach (var segment in m_segments)
             {
-                if (segment.m_material?.shader?.name == "Custom/Net/Electricity")
+                if (segment.m_segmentMaterial?.shader?.name == "Custom/Net/Electricity")
                 {
                     m_hasWires = true;
                     break;
@@ -278,6 +317,20 @@ namespace NetworkSkins.Skins
                         m_laneProps.m_props[i] = new NetLaneProps.Prop();
                         CopyProperties(m_laneProps.m_props[i], originalLane.m_laneProps.m_props[i]);
                     }
+                }
+            }
+        }
+
+        // TODO check if m_lodValue is shared with the original segment. it should!
+        private class NetworkSkinSegment : NetInfo.Segment
+        {
+            public NetworkSkinSegment(NetInfo.Segment originalSegment)
+            {
+                CopyProperties(this, originalSegment);
+
+                if (originalSegment.m_segmentMaterial != null)
+                {
+                    m_segmentMaterial = UnityEngine.Object.Instantiate(originalSegment.m_segmentMaterial);
                 }
             }
         }

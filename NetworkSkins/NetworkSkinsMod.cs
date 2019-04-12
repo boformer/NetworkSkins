@@ -44,6 +44,7 @@ namespace NetworkSkins
         public void OnLevelLoaded(LoadMode mode)
         {
             NetworkSkinManager.instance.OnLevelLoaded();
+            ThemeTextureManager.instance.LoadTextures();
 
             Install();
         }
@@ -53,6 +54,7 @@ namespace NetworkSkins
             Uninstall();
 
             NetworkSkinManager.instance.OnLevelUnloading();
+            ThemeTextureManager.instance.ClearTextures();
         }
 
         public void OnReleased() {}
@@ -64,6 +66,7 @@ namespace NetworkSkins
             UninstallHarmony();
 
             NetworkSkinManager.Uninstall();
+            ThemeTextureManager.Uninstall();
         }
         #endregion
 
@@ -99,6 +102,7 @@ namespace NetworkSkins
         #region NetToolMonitor/GUI
         private void Install()
         {
+            return;
             persistenceServiceGameObject = new GameObject(nameof(PersistenceService));
             skinControllerGameObject = new GameObject(nameof(SkinController));
             persistenceServiceGameObject.transform.parent = NetworkSkinManager.instance.gameObject.transform;

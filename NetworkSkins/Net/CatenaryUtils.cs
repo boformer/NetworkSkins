@@ -63,7 +63,7 @@ namespace NetworkSkins.Net
 
         public static bool IsWireSegment(NetInfo.Segment segment)
         {
-            return segment?.m_material?.shader?.name == "Custom/Net/Electricity";
+            return segment?.m_segmentMaterial?.shader?.name == "Custom/Net/Electricity";
         }
     }
 }

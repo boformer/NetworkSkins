@@ -8,41 +8,9 @@ using UnityEngine;
 
 namespace NetworkSkins.Skins
 {
-    public class NetworkSkinManager : MonoBehaviour
+    public class NetworkSkinManager : ModSingleton<NetworkSkinManager>
     {
         public const string DataKey = "NetworkSkins_APPLIED_SKINS";
-
-        private static NetworkSkinManager _instance;
-        public static NetworkSkinManager instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = FindObjectOfType<NetworkSkinManager>();
-                    if (_instance == null)
-                    {
-                        var gameObject = new GameObject(nameof(NetworkSkinManager));
-                        _instance = gameObject.AddComponent<NetworkSkinManager>();
-                        DontDestroyOnLoad(_instance.gameObject);
-                    }
-                }
-                return _instance;
-            }
-        }
-
-        public static NetworkSkinManager Ensure()
-        {
-            return NetworkSkinManager.instance;
-        }
-
-        public static void Uninstall()
-        {
-            if (_instance != null)
-            {
-                Destroy(_instance.gameObject);
-            }
-        }
 
         // stores which data is applied to a network segment
         // this is an array field for high lookup performance

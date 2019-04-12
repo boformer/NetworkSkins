@@ -58,6 +58,8 @@ namespace NetworkSkins
             m.Add(prefab, new List<NetworkSkinModifier>
             {
                 new TerrainSurfaceModifier(groundType: Surface.Gravel),
+                new ThemeTextureModifier(ThemeTextureType.Gravel, "marble_tiles"),
+                new ThemeTextureModifier(ThemeTextureType.Road, "straight_cobblestone"),
                 new ColorModifier(color: new Color32(90, 90, 90, 255)),
                 new StreetLightModifier(streetLight: PrefabCollection<PropInfo>.FindLoaded("Airport Light"), repeatDistance: 80)
             });
@@ -68,7 +70,7 @@ namespace NetworkSkins
             var prefab = PrefabCollection<NetInfo>.FindLoaded("Basic Road");
             m.Add(prefab, new List<NetworkSkinModifier>
             {
-                new ColorModifier(color: new Color32(118, 130, 118, 255)),
+                new ThemeTextureModifier(ThemeTextureType.Pavement, "rectangle_pavers"),
                 new StreetLightModifier(streetLight: PrefabCollection<PropInfo>.FindLoaded("StreetLamp02"), repeatDistance: 80)
             });
         }
@@ -79,6 +81,8 @@ namespace NetworkSkins
             m.Add(prefab, new List<NetworkSkinModifier>
             {
                 new ColorModifier(color: new Color32(110, 90, 90, 255)),
+                new ThemeTextureModifier(ThemeTextureType.Pavement, "rectangle_pavers"),
+                new ThemeTextureModifier(ThemeTextureType.Road, "straight_cobblestone"),
                 new StreetLightModifier(streetLight: null),
                 new PillarModifier(PillarType.Bridge, PrefabCollection<BuildingInfo>.FindLoaded("RailwayElevatedPillar"))
             });
@@ -89,7 +93,8 @@ namespace NetworkSkins
             var prefab = PrefabCollection<NetInfo>.FindLoaded("Basic Road Decoration Trees");
             m.Add(prefab, new List<NetworkSkinModifier>
             {
-                new TerrainSurfaceModifier(groundType: Surface.Gravel),
+                new TerrainSurfaceModifier(groundType: Surface.Ruined),
+                new ThemeTextureModifier(ThemeTextureType.Ruined, "rectangle_pavers"),
                 new ColorModifier(color: new Color32(173, 158, 147, 255)),
                 new StreetLightModifier(streetLight: null),
                 new TreeModifier(
@@ -110,6 +115,8 @@ namespace NetworkSkins
             var prefab = PrefabCollection<NetInfo>.FindLoaded("Basic Road Decoration Trees");
             m.Add(prefab, new List<NetworkSkinModifier>
             {
+                new ThemeTextureModifier(ThemeTextureType.Pavement, "rectangle_pavers"),
+                new ThemeTextureModifier(ThemeTextureType.Road, "straight_cobblestone"),
                 new ColorModifier(color: new Color32(160, 160, 160, 255)),
                 new TreeModifier(position: LanePosition.Left, tree: PrefabCollection<TreeInfo>.FindLoaded("909448182.Royal Palm_Data"), repeatDistance: 20),
                 new TreeModifier(position: LanePosition.Right, tree: PrefabCollection<TreeInfo>.FindLoaded("909448182.Royal Palm_Data"), repeatDistance: 20)
@@ -121,7 +128,7 @@ namespace NetworkSkins
             var prefab = PrefabCollection<NetInfo>.FindLoaded("Medium Road");
             m.Add(prefab, new List<NetworkSkinModifier>
             {
-                new TerrainSurfaceModifier(groundType: Surface.None),
+                new ThemeTextureModifier(ThemeTextureType.Pavement, "marble_tiles"),
                 new ColorModifier(color: new Color32(160, 160, 160, 255)),
                 new StreetLightModifier(streetLight: PrefabCollection<PropInfo>.FindLoaded("StreetLamp02"))
             });
@@ -132,7 +139,8 @@ namespace NetworkSkins
             var prefab = PrefabCollection<NetInfo>.FindLoaded("Medium Road");
             m.Add(prefab, new List<NetworkSkinModifier>
             {
-                new TerrainSurfaceModifier(groundType: Surface.Gravel),
+                new TerrainSurfaceModifier(groundType: Surface.Ruined),
+                new ThemeTextureModifier(ThemeTextureType.Ruined, "marble_tiles"),
                 new ColorModifier(color: new Color32(130, 90, 90, 255))
             });
         }
@@ -143,6 +151,7 @@ namespace NetworkSkins
             m.Add(prefab, new List<NetworkSkinModifier>
             {
                 new TerrainSurfaceModifier(groundType: Surface.Pavement),
+                new ThemeTextureModifier(ThemeTextureType.Pavement, "rectangle_pavers"),
                 new CatenaryModifier(catenary: null)
             });
         }
