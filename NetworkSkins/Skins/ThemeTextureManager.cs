@@ -68,6 +68,34 @@ namespace NetworkSkins.Skins
                 tiling: 0.25f
             );
 
+            var squareTilesTexture = bundle.LoadAsset<Texture2D>("Assets/square_tiles.png");
+            _textures[new TextureKey(ThemeTextureType.Pavement, "square_tiles")] = new ThemeTexture(
+                diffuse: CreateTintedTexture(squareTilesTexture, averagePavementColor),
+                tiling: 0.25f
+            );
+            _textures[new TextureKey(ThemeTextureType.Gravel, "square_tiles")] = new ThemeTexture(
+                diffuse: CreateTintedTexture(squareTilesTexture, averageGravelColor),
+                tiling: 0.25f
+            );
+            _textures[new TextureKey(ThemeTextureType.Ruined, "square_tiles")] = new ThemeTexture(
+                diffuse: CreateTintedTexture(squareTilesTexture, averageRuinedColor),
+                tiling: 0.25f
+            );
+
+            var hexagonalPaversTexture = bundle.LoadAsset<Texture2D>("Assets/hexagonal_pavers.png");
+            _textures[new TextureKey(ThemeTextureType.Pavement, "hexagonal_pavers")] = new ThemeTexture(
+                diffuse: CreateTintedTexture(hexagonalPaversTexture, averagePavementColor),
+                tiling: 0.25f
+            );
+            _textures[new TextureKey(ThemeTextureType.Gravel, "hexagonal_pavers")] = new ThemeTexture(
+                diffuse: CreateTintedTexture(hexagonalPaversTexture, averageGravelColor),
+                tiling: 0.25f
+            );
+            _textures[new TextureKey(ThemeTextureType.Ruined, "hexagonal_pavers")] = new ThemeTexture(
+                diffuse: CreateTintedTexture(hexagonalPaversTexture, averageRuinedColor),
+                tiling: 0.25f
+            );
+
             var straightCobblestoneTexture = bundle.LoadAsset<Texture2D>("Assets/straight_cobblestone.png");
             _textures[new TextureKey(ThemeTextureType.Road, "straight_cobblestone")] = new ThemeTexture(
                 diffuse: CreateTintedTexture(straightCobblestoneTexture, averageRoadColor),

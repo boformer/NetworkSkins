@@ -21,42 +21,56 @@ namespace NetworkSkins.Skins.Modifiers
             var themeTexture = ThemeTextureManager.instance.GetTexture(TextureType, TextureName);
             if (themeTexture == null) return;
 
-            if (skin.m_segments == null) return;
-
-            for (var s = 0; s < skin.m_segments.Length; s++)
+            if (skin.m_segments != null)
             {
-                if (skin.m_segments[s].m_segmentMaterial != null)
+                for (var s = 0; s < skin.m_segments.Length; s++)
                 {
-                    skin.UpdateSegmentMaterial(s, material =>
+                    if (skin.m_segments[s].m_segmentMaterial != null)
                     {
-                        if (TextureType == ThemeTextureType.Pavement)
-                        {
-                            material.SetTexture("_TerrainPavementDiffuse", themeTexture.Diffuse);
-                            var tiling = GetVectorShaderParameter(material, "_TerrainTextureTiling1");
-                            tiling.x = themeTexture.Tiling;
-                            material.SetVector("_TerrainTextureTiling1", tiling);
-                        }
-                        else if (TextureType == ThemeTextureType.Gravel)
-                        {
-                            material.SetTexture("_TerrainGravelDiffuse", themeTexture.Diffuse);
-                            var tiling = GetVectorShaderParameter(material, "_TerrainTextureTiling2");
-                            tiling.y = themeTexture.Tiling;
-                            material.SetVector("_TerrainTextureTiling2", tiling);
-                        }
-                        else if (TextureType == ThemeTextureType.Ruined)
-                        {
-                            material.SetTexture("_TerrainRuinedDiffuse", themeTexture.Diffuse);
-                            var tiling = GetVectorShaderParameter(material, "_TerrainTextureTiling1");
-                            tiling.y = themeTexture.Tiling;
-                            material.SetVector("_TerrainTextureTiling1", tiling);
-                        }
-                        else if (TextureType == ThemeTextureType.Road)
-                        {
-                            material.SetTexture("_RoadUpwardDiffuse", themeTexture.Diffuse);
-                            // no tiling factor possible for road upwards diffuse. it is fixed to 16.4m!
-                        }
-                    });
+                        skin.UpdateSegmentMaterial(s, material => UpdateMaterial(material, themeTexture));
+                    }
                 }
+            }
+
+            if (skin.m_nodes != null)
+            {
+                for (var n = 0; n < skin.m_nodes.Length; n++)
+                {
+                    if (skin.m_nodes[n].m_nodeMaterial != null)
+                    {
+                        skin.UpdateNodeMaterial(n, material => UpdateMaterial(material, themeTexture));
+                    }
+                }
+            }
+        }
+
+        private void UpdateMaterial(Material material, ThemeTexture themeTexture)
+        {
+            if (TextureType == ThemeTextureType.Pavement)
+            {
+                material.SetTexture("_TerrainPavementDiffuse", themeTexture.Diffuse);
+                var tiling = GetVectorShaderParameter(material, "_TerrainTextureTiling1");
+                tiling.x = themeTexture.Tiling;
+                material.SetVector("_TerrainTextureTiling1", tiling);
+            }
+            else if (TextureType == ThemeTextureType.Gravel)
+            {
+                material.SetTexture("_TerrainGravelDiffuse", themeTexture.Diffuse);
+                var tiling = GetVectorShaderParameter(material, "_TerrainTextureTiling2");
+                tiling.y = themeTexture.Tiling;
+                material.SetVector("_TerrainTextureTiling2", tiling);
+            }
+            else if (TextureType == ThemeTextureType.Ruined)
+            {
+                material.SetTexture("_TerrainRuinedDiffuse", themeTexture.Diffuse);
+                var tiling = GetVectorShaderParameter(material, "_TerrainTextureTiling1");
+                tiling.y = themeTexture.Tiling;
+                material.SetVector("_TerrainTextureTiling1", tiling);
+            }
+            else if (TextureType == ThemeTextureType.Road)
+            {
+                material.SetTexture("_RoadUpwardDiffuse", themeTexture.Diffuse);
+                // no tiling factor possible for road upwards diffuse. it is fixed to 16.4m!
             }
         }
 

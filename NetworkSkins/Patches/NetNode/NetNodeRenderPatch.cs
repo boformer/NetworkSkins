@@ -19,7 +19,7 @@ namespace NetworkSkins.Patches.NetNode
                 _electricityNetShader = Shader.Find("Custom/Net/Electricity");
             }
 
-            if (node.m_material?.shader != _electricityNetShader)
+            if (node?.m_material?.shader != _electricityNetShader)
             {
                 return true;
             }
@@ -36,7 +36,7 @@ namespace NetworkSkins.Patches.NetNode
                 _electricityNetShader = Shader.Find("Custom/Net/Electricity");
             }
 
-            if (node.m_material?.shader != _electricityNetShader)
+            if (node?.m_material?.shader != _electricityNetShader)
             {
                 return true;
             }
@@ -53,7 +53,7 @@ namespace NetworkSkins.Patches.NetNode
                 _electricityNetShader = Shader.Find("Custom/Net/Electricity");
             }
 
-            if (node.m_material?.shader != _electricityNetShader)
+            if (node?.m_material?.shader != _electricityNetShader)
             {
                 return true;
             }

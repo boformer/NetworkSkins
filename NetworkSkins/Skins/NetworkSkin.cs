@@ -33,6 +33,7 @@ namespace NetworkSkins.Skins
 
         public NetInfo.Lane[] m_lanes;
         public NetInfo.Segment[] m_segments;
+        public NetInfo.Node[] m_nodes;
 
         public bool m_createPavement;
         public bool m_createGravel;
@@ -62,18 +63,25 @@ namespace NetworkSkins.Skins
                 Array.Copy(prefab.m_lanes, m_lanes, m_lanes.Length);
             }
 
-            m_hasWires = true;
             if (prefab.m_segments != null)
             {
                 m_segments = new NetInfo.Segment[prefab.m_segments.Length];
                 Array.Copy(prefab.m_segments, m_segments, m_segments.Length);
             }
+
+            if (prefab.m_nodes != null)
+            {
+                m_nodes = new NetInfo.Node[prefab.m_nodes.Length];
+                Array.Copy(prefab.m_nodes, m_nodes, m_nodes.Length);
+            }
+            
             m_createPavement = prefab.m_createPavement;
             m_createGravel = prefab.m_createGravel;
             m_createRuining = prefab.m_createRuining;
             m_clipTerrain = prefab.m_clipTerrain;
             m_color = prefab.m_color;
 
+            m_hasWires = false;
             UpdateHasWires();
 
             foreach (var modifier in _modifiers)
@@ -88,11 +96,9 @@ namespace NetworkSkins.Skins
             {
                 foreach (var lane in m_lanes)
                 {
-                    if (lane is NetworkSkinLane && lane.m_laneProps != null)
+                    if (lane is NetworkSkinLane nsLane)
                     {
-                        // NetLaneProps is a ScriptableObject, must be destroyed when no longer in use!
-                        UnityEngine.Object.Destroy(lane.m_laneProps);
-                        lane.m_laneProps = null;
+                        nsLane.Destroy();
                     }
                 }
             }
@@ -101,11 +107,20 @@ namespace NetworkSkins.Skins
             {
                 foreach (var segment in m_segments)
                 {
-                    if (segment is NetworkSkinSegment && segment.m_material != null)
+                    if (segment is NetworkSkinSegment nsSegment)
                     {
-                        // NetLaneProps is a ScriptableObject, must be destroyed when no longer in use!
-                        UnityEngine.Object.Destroy(segment.m_material);
-                        segment.m_material = null;
+                        nsSegment.Destroy();
+                    }
+                }
+            }
+
+            if (m_nodes != null)
+            {
+                foreach (var node in m_nodes)
+                {
+                    if (node is NetworkSkinNode nsNode)
+                    {
+                        nsNode.Destroy();
                     }
                 }
             }
@@ -202,7 +217,6 @@ namespace NetworkSkins.Skins
             // duplicate the segment so we do not affect the original prefab
             if (!(segment is NetworkSkinSegment))
             {
-                Debug.Log("Creating custom NetworkSkinSegment");
                 segment = new NetworkSkinSegment(segment);
                 m_segments[segmentIndex] = segment;
             }
@@ -214,6 +228,18 @@ namespace NetworkSkins.Skins
 
         public void RemoveSegment(int segmentIndex)
         {
+            if (m_segments == null || m_segments.Length <= segmentIndex)
+            {
+                Debug.LogError($"Invalid segment index {segmentIndex} for prefab {Prefab}!");
+                return;
+            }
+
+            var segment = m_segments[segmentIndex];
+            if (segment is NetworkSkinSegment nsSegment)
+            {
+                nsSegment.Destroy();
+            }
+
             var segments = new List<NetInfo.Segment>(m_segments);
             segments.RemoveAt(segmentIndex);
             m_segments = segments.ToArray();
@@ -235,6 +261,31 @@ namespace NetworkSkins.Skins
                     break;
                 }
             }
+        }
+
+        public void UpdateNodeMaterial(int nodeIndex, Action<Material> updater)
+        {
+            if (m_nodes == null || m_nodes.Length <= nodeIndex)
+            {
+                Debug.LogError($"Invalid node index {nodeIndex} for prefab {Prefab}!");
+                return;
+            }
+
+            var node = m_nodes[nodeIndex];
+            if (node == null || node.m_nodeMaterial == null)
+            {
+                Debug.LogError($"Node {nodeIndex} is null or doesn't have a material!");
+                return;
+            }
+
+            // duplicate the node so we do not affect the original prefab
+            if (!(node is NetworkSkinNode))
+            {
+                node = new NetworkSkinNode(node);
+                m_nodes[nodeIndex] = node;
+            }
+
+            updater(node.m_nodeMaterial);
         }
         #endregion
 
@@ -319,6 +370,16 @@ namespace NetworkSkins.Skins
                     }
                 }
             }
+
+            public void Destroy()
+            {
+                if (m_laneProps != null)
+                {
+                    // NetLaneProps is a ScriptableObject, must be destroyed when no longer in use!
+                    UnityEngine.Object.Destroy(m_laneProps);
+                    m_laneProps = null;
+                }
+            }
         }
 
         // TODO check if m_lodValue is shared with the original segment. it should!
@@ -331,6 +392,37 @@ namespace NetworkSkins.Skins
                 if (originalSegment.m_segmentMaterial != null)
                 {
                     m_segmentMaterial = UnityEngine.Object.Instantiate(originalSegment.m_segmentMaterial);
+                }
+            }
+
+            public void Destroy()
+            {
+                if (m_segmentMaterial != null)
+                {
+                    UnityEngine.Object.Destroy(m_segmentMaterial);
+                    m_segmentMaterial = null;
+                }
+            }
+        }
+
+        private class NetworkSkinNode : NetInfo.Node
+        {
+            public NetworkSkinNode(NetInfo.Node originalNode)
+            {
+                CopyProperties(this, originalNode);
+
+                if (originalNode.m_nodeMaterial != null)
+                {
+                    m_nodeMaterial = UnityEngine.Object.Instantiate(originalNode.m_nodeMaterial);
+                }
+            }
+
+            public void Destroy()
+            {
+                if (m_nodeMaterial != null)
+                {
+                    UnityEngine.Object.Destroy(m_nodeMaterial);
+                    m_nodeMaterial = null;
                 }
             }
         }
