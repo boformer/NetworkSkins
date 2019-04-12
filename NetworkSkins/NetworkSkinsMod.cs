@@ -74,9 +74,11 @@ namespace NetworkSkins
             {
                 Debug.Log("NetworkSkins Patching...");
 
+#if DEBUG
                 //HarmonyInstance.SELF_PATCHING = false;
-                //HarmonyInstance.DEBUG = true;
-
+                HarmonyInstance.DEBUG = true;
+#endif
+                
                 harmony = HarmonyInstance.Create(HarmonyId);
                 harmony.PatchAll(GetType().Assembly);
             }
