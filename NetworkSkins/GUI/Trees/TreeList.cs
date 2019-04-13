@@ -1,4 +1,5 @@
 ﻿using NetworkSkins.Controller;
+using NetworkSkins.Net;
 using System.Collections.Generic;
 using static NetworkSkins.Controller.ItemListFeatureController<TreeInfo>;
 
@@ -6,10 +7,6 @@ namespace NetworkSkins.GUI
 {
     public class TreeList : ListBase<TreeInfo>
     {
-        public void RefreshRowsData() {
-            SetupRowsData();
-        }
-
         protected override void RefreshUI(NetInfo netInfo) {
             SetupRowsData();
         }
@@ -19,7 +16,12 @@ namespace NetworkSkins.GUI
         }
 
         protected override bool IsDefault(string itemID) {
-            return itemID == SkinController.DefaultTree().name;
+            switch (SkinController.LanePosition) {
+                case LanePosition.Left: return SkinController.LeftTree.DefaultItem.Id == itemID;
+                case LanePosition.Middle: return SkinController.MiddleTree.DefaultItem.Id == itemID;
+                case LanePosition.Right: return SkinController.RighTree.DefaultItem.Id == itemID;
+                default: return false;
+            }
         }
 
         protected override void SetupRowsData() {
@@ -28,7 +30,12 @@ namespace NetworkSkins.GUI
                 fastList.RowsData = new FastList<object>();
             }
             fastList.RowsData.Clear();
-            TreeFeatureController controller = SkinController.LanePosition == Net.LanePosition.Middle ? SkinController.MiddleTree : SkinController.LeftTree;
+            TreeFeatureController controller = null;
+            switch (SkinController.LanePosition) {
+                case LanePosition.Left: controller = SkinController.LeftTree; break;
+                case LanePosition.Middle: controller = SkinController.MiddleTree; break;
+                case LanePosition.Right: controller = SkinController.RighTree; break;
+            }
             itemCount = controller.Items.Count;
             fastList.RowsData.SetCapacity(itemCount);
             favouritesList.Clear();

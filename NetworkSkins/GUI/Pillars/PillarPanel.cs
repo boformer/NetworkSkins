@@ -6,17 +6,22 @@ namespace NetworkSkins.GUI
     public class PillarPanel : ListPanelBase<PillarList, BuildingInfo>
     {
         protected override void RefreshUI(NetInfo netInfo) {
+            pillarTabStrip.isVisible = true;
             SetTabEnabled(Pillar.Bridge, SkinController.BridgeBridgePillar.Enabled);
             SetTabEnabled(Pillar.BridgeMiddle, SkinController.BridgeMiddlePillar.Enabled);
             SetTabEnabled(Pillar.Elevated, SkinController.ElevatedBridgePillar.Enabled);
             SetTabEnabled(Pillar.ElevatedMiddle, SkinController.ElevatedMiddlePillar.Enabled);
             int tabCount = pillarTabs.Count(tab => tab.isVisible);
             if (tabCount != 0) {
-                for (int i = 0; i < (int)Pillar.Count; i++) {
+                for (int i = (int)Pillar.Count - 1; i >= 0 ; i--) {
                     pillarTabs[i].width = pillarTabStrip.width / tabCount;
+                    if (!SkinController.TabClicked) pillarTabStrip.selectedIndex = i;
                 }
             }
-            list.RefreshRowsData();
+            if (tabCount == 1) {
+                pillarTabStrip.isVisible = false;
+            }
+            SkinController.TabClicked = false;
         }
 
         private void SetTabEnabled(Pillar pillar, bool enabled) {

@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using NetworkSkins.Controller;
 using NetworkSkins.GUI;
 using NetworkSkins.Net;
 using NetworkSkins.Skins;
-using NetworkSkins.Skins.Modifiers;
 using UnityEngine;
 
 namespace NetworkSkins
@@ -19,7 +17,7 @@ namespace NetworkSkins
         public event PrefabChangedEventHandler EventPrefabChanged;
 
         private bool _ignoreModifierEvents = false;
-        public bool LaneTabClicked { get; set; } = false;
+        public bool TabClicked { get; set; } = false;
 
         public TerrainSurfaceFeatureController TerrainSurface;
 
@@ -45,10 +43,6 @@ namespace NetworkSkins
         public NetInfo Prefab { get; private set; }
 
         private bool isNetToolEnabled;
-
-        public TreeInfo DefaultTree() {
-            return TreeUtils.GetDefaultTree(Prefab, LanePosition.Left) ?? TreeUtils.GetDefaultTree(Prefab, LanePosition.Middle);
-        }
 
         private void Awake() {
             Instance = this;
@@ -89,6 +83,11 @@ namespace NetworkSkins
 
             Catenary = new CatenaryFeatureController();
             Catenary.EventModifiersChanged += OnModifiersChanged;
+        }
+
+        public void SetActivePillarElevation(Pillar pillar) {
+            PillarElevationCombination = pillar;
+            EventPrefabChanged?.Invoke(Prefab);
         }
 
         public void SetActiveLane(LanePosition value) {

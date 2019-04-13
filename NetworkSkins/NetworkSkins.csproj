@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GUI\DistancePanel.cs" />
+    <Compile Include="GUI\SettingsPanel.cs" />
     <Compile Include="Net\Pillar.cs" />
     <Compile Include="Net\Surface.cs" />
     <Compile Include="Persistence\ActiveSelectionData.cs" />

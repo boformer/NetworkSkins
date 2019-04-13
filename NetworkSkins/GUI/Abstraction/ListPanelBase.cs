@@ -56,11 +56,12 @@ namespace NetworkSkins.GUI
         }
 
         private void OnPillarTabstripSelectedIndexChanged(UIComponent component, int value) {
-            SkinController.PillarElevationCombination = (Pillar)value;
+            SkinController.TabClicked = true;
+            SkinController.SetActivePillarElevation((Pillar)value);
         }
 
         private void OnLaneTabstripSelectedIndexChanged(UIComponent component, int value) {
-            SkinController.LaneTabClicked = true;
+            SkinController.TabClicked = true;
             SkinController.SetActiveLane((LanePosition)value);
         }
 

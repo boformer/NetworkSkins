@@ -1,5 +1,4 @@
-﻿
-using NetworkSkins.Net;
+﻿using NetworkSkins.Net;
 using NetworkSkins.Controller;
 using System.Collections.Generic;
 using static NetworkSkins.Controller.ItemListFeatureController<BuildingInfo>;
@@ -8,13 +7,10 @@ namespace NetworkSkins.GUI
 {
     public class PillarList : ListBase<BuildingInfo>
     {
-        public void RefreshRowsData() {
-            SetupRowsData();
-        }
-
         protected override void RefreshUI(NetInfo netInfo) {
             SetupRowsData();
         }
+
         protected override bool IsFavourite(string itemID) {
             return Persistence.IsFavourite(itemID, UIUtil.PanelToItemType(PanelType));
         }
@@ -35,7 +31,7 @@ namespace NetworkSkins.GUI
                 fastList.RowsData = new FastList<object>();
             }
             fastList.RowsData.Clear();
-            ItemListFeatureController<BuildingInfo> controller = null;
+            PillarFeatureController controller = null;
             switch (SkinController.PillarElevationCombination) {
                 case Pillar.Elevated: controller = SkinController.ElevatedBridgePillar; break;
                 case Pillar.ElevatedMiddle: controller = SkinController.ElevatedMiddlePillar; break;

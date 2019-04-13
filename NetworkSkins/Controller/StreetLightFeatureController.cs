@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NetworkSkins.Net;
+using NetworkSkins.Persistence;
 using NetworkSkins.Skins;
 using NetworkSkins.Skins.Modifiers;
 using UnityEngine;

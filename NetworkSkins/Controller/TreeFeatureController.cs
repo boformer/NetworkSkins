@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NetworkSkins.Net;
+using NetworkSkins.Persistence;
 using NetworkSkins.Skins;
 using NetworkSkins.Skins.Modifiers;
 using UnityEngine;

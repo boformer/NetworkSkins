@@ -28,8 +28,8 @@ namespace NetworkSkins.GUI
             if (tabCount == 1) {
                 laneTabStrip.isVisible = false;
                 laneTabStrip.selectedIndex = 1;
-            } else if (!SkinController.LaneTabClicked) laneTabStrip.selectedIndex = 0;
-            SkinController.LaneTabClicked = false;
+            } else if (!SkinController.TabClicked) laneTabStrip.selectedIndex = 0;
+            SkinController.TabClicked = false;
         }
 
         private void SetTabEnabled(LanePosition lanePos, bool enabled) {

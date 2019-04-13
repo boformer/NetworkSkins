@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using NetworkSkins.Net;
 using NetworkSkins.Persistence;
 using NetworkSkins.Skins;
@@ -19,8 +18,8 @@ namespace NetworkSkins.Controller
         public IEnumerable<Color32> Swatches => _swatches;
         private readonly List<Color32> _swatches;
 
-        public event SwatchesChangedEventHandler EventSwatchesChanged;
-        public delegate void SwatchesChangedEventHandler(Color32 color);
+        public event ColorUsedInSegmentEventHandler EventColorUsedInSegment;
+        public delegate void ColorUsedInSegmentEventHandler(Color32 color);
 
         private bool _colorable = false;
 
@@ -90,7 +89,7 @@ namespace NetworkSkins.Controller
                 }
             }
 
-            EventSwatchesChanged?.Invoke(color);
+            EventColorUsedInSegment?.Invoke(color);
 
             PersistenceService.Instance.UpdateSwatches(_swatches);
         }

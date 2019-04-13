@@ -38,7 +38,7 @@ namespace NetworkSkins.GUI
             CreateColorPicker();
             CreateRGBPanel();
             CreateSwatchesPanel();
-            SkinController.Color.EventSwatchesChanged += OnColorUsed; ;
+            SkinController.Color.EventColorUsedInSegment += OnColorUsed; ;
             currentColor = SkinController.Color.SelectedColor;
         }
 
@@ -124,9 +124,10 @@ namespace NetworkSkins.GUI
         }
 
         private void AddSwatch(Color32 color) {
-            SwatchButtonsList.Enqueue(MakeSwatchButton(color));
+            SwatchButton button = MakeSwatchButton(color);
+            SwatchButtonsList.Enqueue(button);
             if (SwatchButtonsList.Count > 12) {
-                SwatchButton button = SwatchButtonsList.Dequeue();
+                button = SwatchButtonsList.Dequeue();
                 UnityEngine.Object.Destroy(button?.gameObject);
             }
         }
@@ -225,7 +226,7 @@ namespace NetworkSkins.GUI
         }
 
         protected override void RefreshUI(NetInfo netInfo) {
-
+            currentColor = colorPicker.color = SkinController.Color.SelectedColor;
         }
 
         public class RGBPanel : PanelBase
