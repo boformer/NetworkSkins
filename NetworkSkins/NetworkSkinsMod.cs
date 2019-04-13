@@ -31,7 +31,7 @@ namespace NetworkSkins
         {
             NetworkSkinManager.Ensure();
 
-            //InstallHarmony();
+            InstallHarmony();
 
             if (InGame)
             {
@@ -63,7 +63,7 @@ namespace NetworkSkins
 
             UninstallHarmony();
 
-            Destroy(NetworkSkinManager.instance.gameObject);
+            NetworkSkinManager.Uninstall();
         }
         #endregion
 
@@ -74,9 +74,11 @@ namespace NetworkSkins
             {
                 Debug.Log("NetworkSkins Patching...");
 
+#if DEBUG
                 //HarmonyInstance.SELF_PATCHING = false;
-                //HarmonyInstance.DEBUG = true;
-
+                HarmonyInstance.DEBUG = true;
+#endif
+                
                 harmony = HarmonyInstance.Create(HarmonyId);
                 harmony.PatchAll(GetType().Assembly);
             }

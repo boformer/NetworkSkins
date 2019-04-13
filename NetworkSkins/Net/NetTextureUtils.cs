@@ -27,25 +27,29 @@ namespace NetworkSkins.Net
 
         private static bool CalculateHasMatchingPixels(NetInfo prefab, Func<Color, bool> predicate)
         {
-            if (prefab != null && prefab.m_class.m_service == ItemClass.Service.Road
-                                && prefab.m_segments != null && prefab.m_segments.Length > 0
-                                && prefab.m_segments[0].m_material != null)
+            if (prefab != null && prefab.m_segments != null)
             {
-                Texture2D texture = prefab.m_segments[0].m_material.GetTexture("_APRMap") as Texture2D;
-                if (texture != null)
+                foreach (var segment in prefab.m_segments)
                 {
-                    try
+                    if(segment.m_material == null) continue;
+
+                    Texture2D texture = segment.m_material.GetTexture("_APRMap") as Texture2D;
+                    if (texture != null)
                     {
-                        return HasMatchingPixels(texture.GetPixels(), predicate);
-                    }
-                    catch (UnityException) // texture not readable
-                    {
-                        Texture2D readableTexture = texture.MakeReadable();
-                        bool hasBluePixels = HasMatchingPixels(readableTexture.GetPixels(), predicate);
-                        Object.Destroy(readableTexture);
-                        return hasBluePixels;
+                        try
+                        {
+                            return HasMatchingPixels(texture.GetPixels(), predicate);
+                        }
+                        catch (UnityException) // texture not readable
+                        {
+                            Texture2D readableTexture = texture.MakeReadable();
+                            bool hasBluePixels = HasMatchingPixels(readableTexture.GetPixels(), predicate);
+                            Object.Destroy(readableTexture);
+                            return hasBluePixels;
+                        }
                     }
                 }
+
             }
             return false;
         }
