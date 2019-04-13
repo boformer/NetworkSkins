@@ -75,6 +75,7 @@ namespace NetworkSkins.GUI
                 index++;
             }
             fastList.DisplayAt(selectedIndex);
+            fastList.SelectedIndex = selectedIndex;
         }
     }
 }

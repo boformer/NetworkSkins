@@ -42,14 +42,6 @@ namespace NetworkSkins.GUI
             eventMouseLeave += OnMouseLeaveEvent;
         }
 
-        public void UpdateColor(string itemID) {
-            if (itemData != null && itemData.ID == itemID) {
-                color = selectedColor;
-            } else {
-                color = isRowOdd ? oddColor : evenColor;
-            }
-        }
-
         private void CreateThumbnail() {
             thumbnailPanel = AddUIComponent<UIPanel>();
             thumbnailPanel.size = new Vector2(33.0f, 30.0f);
@@ -148,7 +140,7 @@ namespace NetworkSkins.GUI
 
         private void OnMouseEnterEvent(UIComponent component, UIMouseEventParameter eventParam) {
             if (itemData != null) {
-                if (!SkinController.IsSelected(itemData.ID, itemData.Type)) color = new Color32((byte)((int)oddColor.r + 25), (byte)(oddColor.g + (byte)25), (byte)(oddColor.b + (byte)25), 255);
+                if (!SkinController.IsSelected(itemData.ID, itemData.Type)) color = new Color32((byte)((int)oddColor.r + 25), (byte)(oddColor.g + 25), (byte)(oddColor.b + 25), 255);
             }
         }
 
@@ -159,6 +151,9 @@ namespace NetworkSkins.GUI
         }
 
         protected override void RefreshUI(NetInfo netInfo) {
+            if (itemData != null) {
+                color = SkinController.IsSelected(itemData.ID, itemData.Type) ? selectedColor : isRowOdd ? oddColor : evenColor;
+            }
         }
     }
 }

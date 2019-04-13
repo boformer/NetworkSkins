@@ -47,7 +47,6 @@ namespace NetworkSkins.GUI
                 case Pillar.BridgeMiddle: SkinController.BridgeMiddlePillar.SetSelectedItem(itemID); break;
                 default: break;
             }
-            list.Select(itemID);
         }
     }
 }

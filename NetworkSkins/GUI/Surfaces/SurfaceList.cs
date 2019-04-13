@@ -45,6 +45,7 @@ namespace NetworkSkins.GUI
                 fastList.RowsData.Add(listItem);
             }
             fastList.DisplayAt(selectedIndex);
+            fastList.SelectedIndex = selectedIndex;
         }
 
         protected ListItem CreateListItem(Surface surfaceType) {

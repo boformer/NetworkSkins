@@ -31,11 +31,6 @@ namespace NetworkSkins.GUI
             Refresh();
         }
 
-        public void Select(string itemID) {
-            foreach (ListRow item in fastList.Rows) {
-                item.UpdateColor(itemID);
-            }
-        }
         /// <summary>
         /// Use this method to set up the UIFastList RowsData.
         /// </summary>

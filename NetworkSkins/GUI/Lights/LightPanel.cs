@@ -34,7 +34,6 @@ namespace NetworkSkins.GUI
         protected override void OnSelectedChanged(string itemID, bool selected) {
             if (!selected) return;
             SkinController.StreetLight.SetSelectedItem(itemID);
-            list.Select(itemID);
         }
     }
 }

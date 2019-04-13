@@ -17,10 +17,9 @@ namespace NetworkSkins
         public event ToolStateChangedEventHandler EventToolStateChanged;
         public delegate void PrefabChangedEventHandler(NetInfo netInfo);
         public event PrefabChangedEventHandler EventPrefabChanged;
-        public delegate void ActiveLaneChangedEventHandler(LanePosition lane);
-        public event ActiveLaneChangedEventHandler EventLaneChanged;
 
         private bool _ignoreModifierEvents = false;
+        public bool LaneTabClicked { get; set; } = false;
 
         public TerrainSurfaceFeatureController TerrainSurface;
 
@@ -94,7 +93,7 @@ namespace NetworkSkins
 
         public void SetActiveLane(LanePosition value) {
             LanePosition = value;
-            EventLaneChanged?.Invoke(value);
+            EventPrefabChanged?.Invoke(Prefab);
         }
 
         private void Update() {

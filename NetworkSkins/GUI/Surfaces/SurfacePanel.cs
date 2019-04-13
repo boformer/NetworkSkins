@@ -40,7 +40,6 @@ namespace NetworkSkins.GUI
         protected override void OnSelectedChanged(string itemID, bool selected) {
             if (!selected) return;
             SkinController.TerrainSurface.SetSelectedItem(itemID);
-            list.Select(itemID);
         }
     }
 }
