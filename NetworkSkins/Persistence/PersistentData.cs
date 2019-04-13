@@ -8,9 +8,11 @@ namespace NetworkSkins.Persistence
     [XmlRoot("NetworkSkinsSettings")]
     public class PersistentData
     {
+        public bool SaveActiveSelectionGlobally { get; set; } = true;
         public Vector2 ToolbarPosition { get; set; } = new Vector2(100.0f, 100.0f);
         public List<string>[] Favourites { get; set; } = new List<string>[(int)ItemType.Count];
-        public List<Color32> Swatches { get; internal set; } = new List<Color32>(20);
+        public List<Color32> Swatches { get; set; } = new List<Color32>(12);
+        public List<KeyValuePair<ActiveSelectionData.ValueKey, string>> GlobalActiveSelectionData { get; set; } = new List<KeyValuePair<ActiveSelectionData.ValueKey, string>>();
 
         public PersistentData() {
             for (int i = 0; i < (int)ItemType.Count; i++) {
@@ -18,8 +20,15 @@ namespace NetworkSkins.Persistence
             }
         }
 
-        public void OnPreSerialize() { }
+        public void OnPreSerialize() {
+            GlobalActiveSelectionData.Clear();
+            foreach (var kvp in ActiveSelectionData.Instance.GetGlobalData()) {
+                GlobalActiveSelectionData.Add(kvp);
+            }
+        }
 
-        public void OnPostDeserialize() { }
+        public void OnPostDeserialize() {
+            ActiveSelectionData.Instance.SetGlobalData(GlobalActiveSelectionData);
+        }
     }
 }

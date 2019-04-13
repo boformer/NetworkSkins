@@ -15,6 +15,7 @@ namespace NetworkSkins.GUI
         private PillarPanel pillarPanel;
         private CatenaryPanel catenaryPanel;
         private ColorPanel colorPanel;
+        private SettingsPanel settingsPanel;
 
         public override void OnDestroy() {
             UnregisterEvents();
@@ -72,6 +73,11 @@ namespace NetworkSkins.GUI
             colorPanel.autoFitChildrenHorizontally = true;
         }
 
+        private void CreateSettingsPanel() {
+            settingsPanel = AddUIComponent<SettingsPanel>();
+            settingsPanel.Build(PanelType.Settings, new Layout(new Vector2(228.6f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 0, "GenericPanel"));
+        }
+
         private void RegisterEvents() {
             toolBar.EventDragEnd += OnToolBarDragEnd;
             RegisterClickEvents();
@@ -104,7 +110,7 @@ namespace NetworkSkins.GUI
             toolBar.ButtonBar.EventPillarsVisibilityChanged += OnPillarsVisibilityChanged;
             toolBar.ButtonBar.EventColorVisibilityChanged += OnColorVisibilityChanged;
             toolBar.ButtonBar.EventCatenaryVisibilityChanged += OnCatenaryVisibilityChanged;
-            toolBar.ButtonBar.EventExtrasVisibilityChanged += OnExtrasVisibilityChanged;
+            toolBar.ButtonBar.EventExtrasVisibilityChanged += OnSettingsVisibilityChanged;
         }
 
         private void UnregisterClickEvents() {
@@ -124,10 +130,14 @@ namespace NetworkSkins.GUI
             toolBar.ButtonBar.EventPillarsVisibilityChanged -= OnPillarsVisibilityChanged;
             toolBar.ButtonBar.EventColorVisibilityChanged -= OnColorVisibilityChanged;
             toolBar.ButtonBar.EventCatenaryVisibilityChanged -= OnCatenaryVisibilityChanged;
-            toolBar.ButtonBar.EventExtrasVisibilityChanged -= OnExtrasVisibilityChanged;
+            toolBar.ButtonBar.EventExtrasVisibilityChanged -= OnSettingsVisibilityChanged;
         }
 
-        private void OnExtrasVisibilityChanged(UIButton button, UIButton[] buttons, bool visible) {
+        private void OnSettingsVisibilityChanged(UIButton button, UIButton[] buttons, bool visible) {
+            if (!visible && settingsPanel != null) {
+                SetButtonUnfocused(button);
+                Destroy(settingsPanel.gameObject);
+            }
         }
 
         private void OnCatenaryVisibilityChanged(UIButton button, UIButton[] buttons, bool visible) {
@@ -173,6 +183,14 @@ namespace NetworkSkins.GUI
         }
 
         private void OnExtrasClicked(UIButton button, UIButton[] buttons) {
+            if (settingsPanel != null) {
+                SetButtonUnfocused(button);
+                Destroy(settingsPanel.gameObject);
+            } else {
+                RefreshButtons(button, buttons);
+                CloseAll();
+                CreateSettingsPanel();
+            }
         }
 
         private void OnCatenaryClicked(UIButton button, UIButton[] buttons) {
@@ -259,6 +277,9 @@ namespace NetworkSkins.GUI
             }
             if (colorPanel != null) {
                 Destroy(colorPanel.gameObject);
+            }
+            if (settingsPanel != null) {
+                Destroy(settingsPanel.gameObject);
             }
         }
 

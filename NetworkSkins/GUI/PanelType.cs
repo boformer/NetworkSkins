@@ -12,7 +12,7 @@ namespace NetworkSkins.GUI
         Pillars = 8,
         Color = 16,
         Catenary = 32,
-        Extras = 64
+        Settings = 64
     }
 
     public enum ItemType

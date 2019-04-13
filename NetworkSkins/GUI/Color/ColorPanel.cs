@@ -120,7 +120,6 @@ namespace NetworkSkins.GUI
             foreach (Color32 swatch in SkinController.Color.Swatches) {
                 AddSwatch(swatch);
             }
-            UIUtil.CreateSpace(0f, 30.0f, swatchesPanel);
         }
 
         private void AddSwatch(Color32 color) {
@@ -192,7 +191,7 @@ namespace NetworkSkins.GUI
             }
         }
 
-        internal void OnSwatchClicked(Color32 color, UIMouseEventParameter eventParam, UIComponent component) {
+        private void OnSwatchClicked(Color32 color, UIMouseEventParameter eventParam, UIComponent component) {
             colorPicker.color = color;
         }
 
