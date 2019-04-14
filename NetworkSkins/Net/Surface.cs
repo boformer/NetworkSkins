@@ -9,7 +9,6 @@
         None = 0,
         Pavement = 1,
         Gravel = 2,
-        Ruined = 3,
-        Count = 4
+        Ruined = 3
     }
 }

@@ -42,7 +42,7 @@ namespace NetworkSkins.Controller
         public NetInfo Prefab { get; private set; }
 
         #region Lifecycle
-        private void Awake() {
+        public void Awake() {
             Instance = this;
 
             NetworkSkinManager.instance.EventSegmentPlaced += OnSegmentPlaced;
@@ -83,7 +83,7 @@ namespace NetworkSkins.Controller
             Catenary.EventModifiersChanged += OnModifiersChanged;
         }
 
-        private void Update()
+        public void Update()
         {
             if (ToolsModifierControl.toolController.CurrentTool is NetTool netTool && netTool.Prefab != null) {
                 if (Prefab == null) {
@@ -108,7 +108,7 @@ namespace NetworkSkins.Controller
             }
         }
 
-        private void OnDestroy()
+        public void OnDestroy()
         {
             NetworkSkinManager.instance.EventSegmentPlaced -= OnSegmentPlaced;
         }

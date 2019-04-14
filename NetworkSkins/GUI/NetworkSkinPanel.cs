@@ -3,10 +3,8 @@ using UnityEngine;
 
 namespace NetworkSkins.GUI
 {
-    public class MainPanel : PanelBase
+    public class NetworkSkinPanel : PanelBase
     {
-        public static NetInfo Prefab { get; set; }
-
         private ToolBar toolBar;
         private TreePanel treesPanel;
         private LightPanel lightsPanel;
