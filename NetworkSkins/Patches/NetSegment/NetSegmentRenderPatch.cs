@@ -59,7 +59,7 @@ namespace NetworkSkins.Patches.NetSegment
                 new CodeInstruction(OpCodes.Ldfld, networkSkinLanesField),
                 new CodeInstruction(OpCodes.Stloc, customLanesLocalVar),
 
-                // customSegments = SegmentSkinManager.SegmentSkins[segmentID].m:segments;
+                // customSegments = SegmentSkinManager.SegmentSkins[segmentID].m_segments;
                 new CodeInstruction(OpCodes.Ldsfld, segmentSkinsField),
                 new CodeInstruction(segmentIdLdInstruction), // segmentID
                 new CodeInstruction(OpCodes.Ldelem_Ref),

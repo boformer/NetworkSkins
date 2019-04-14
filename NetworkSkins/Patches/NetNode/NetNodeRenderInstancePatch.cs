@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using Harmony;
+using NetworkSkins.Skins;
 using UnityEngine;
 
 namespace NetworkSkins.Patches.NetNode
@@ -294,7 +295,109 @@ namespace NetworkSkins.Patches.NetNode
                 return originalCodes;
             }
 
+            if (!PatchSegmentsAndNodes(il, codes))
+            {
+                Debug.LogError("NetNodeRenderInstancePatch: Patch segments/nodes failed!");
+                return originalCodes;
+            }
+
             return codes;
+        }
+
+        private static bool PatchSegmentsAndNodes(ILGenerator il, List<CodeInstruction> codes)
+        {
+            var netInfoSegmentsField = typeof(NetInfo).GetField("m_segments");
+            var netInfoNodesField = typeof(NetInfo).GetField("m_nodes");
+            var nodeSkinsField = typeof(NetworkSkinManager).GetField("NodeSkins", BindingFlags.Static | BindingFlags.Public);
+            var networkSkinSegmentsField = typeof(NetworkSkin).GetField("m_segments");
+            var networkSkinNodesField = typeof(NetworkSkin).GetField("m_nodes");
+            if (netInfoSegmentsField == null || netInfoNodesField == null || nodeSkinsField == null || networkSkinSegmentsField == null || networkSkinNodesField == null)
+            {
+                Debug.LogError("Necessary field not found. Cancelling transpiler!");
+                return false;
+            }
+
+            var index = 0;
+
+            var infoLdInstruction = new CodeInstruction(OpCodes.Ldarg_3); // info is third argument
+            var nodeIdLdInstruction = new CodeInstruction(OpCodes.Ldarg_2); // nodeID is second argument
+
+            var beginLabel = il.DefineLabel();
+            codes[index].labels.Add(beginLabel);
+
+            var customSegmentsLocalVar = il.DeclareLocal(typeof(NetInfo.Segment[]));
+            customSegmentsLocalVar.SetLocalSymInfo("customSegments");
+
+            var customNodesLocalVar = il.DeclareLocal(typeof(NetInfo.Lane[]));
+            customNodesLocalVar.SetLocalSymInfo("customNodes");
+            
+            var customSegmentsNodesInstructions = new[]
+            {
+                // NetInfo.Node[] customNodes = info.m_nodes;
+                new CodeInstruction(infoLdInstruction), // info
+                new CodeInstruction(OpCodes.Ldfld, netInfoNodesField),
+                new CodeInstruction(OpCodes.Stloc, customNodesLocalVar),
+
+                // if (SegmentSkinManager.NodeSkins[nodeID] != null) {
+                new CodeInstruction(OpCodes.Ldsfld, nodeSkinsField),
+                new CodeInstruction(nodeIdLdInstruction), // nodeID
+                new CodeInstruction(OpCodes.Ldelem_Ref),
+                new CodeInstruction(OpCodes.Brfalse_S, beginLabel),
+
+                // customSegments = SegmentSkinManager.NodeSkins[nodeID].m_segments;
+                new CodeInstruction(OpCodes.Ldsfld, nodeSkinsField),
+                new CodeInstruction(nodeIdLdInstruction), // nodeID
+                new CodeInstruction(OpCodes.Ldelem_Ref),
+                new CodeInstruction(OpCodes.Ldfld, networkSkinSegmentsField),
+                new CodeInstruction(OpCodes.Stloc, customSegmentsLocalVar),
+
+                // customLanes = SegmentSkinManager.NodeSkins[nodeID].m_nodes;
+                new CodeInstruction(OpCodes.Ldsfld, nodeSkinsField),
+                new CodeInstruction(nodeIdLdInstruction), // nodeID
+                new CodeInstruction(OpCodes.Ldelem_Ref),
+                new CodeInstruction(OpCodes.Ldfld, networkSkinNodesField),
+                new CodeInstruction(OpCodes.Stloc, customNodesLocalVar),
+                // }
+            };
+            codes.InsertRange(index, customSegmentsNodesInstructions);
+
+            index += customSegmentsNodesInstructions.Length;
+
+            // Replace all occurences of:
+            //
+            // info.m_nodes
+            // -- with --
+            // customNodes
+            for (; index < codes.Count; index++)
+            {
+                if (TranspilerUtils.IsSameInstruction(codes[index], infoLdInstruction) && codes[index + 1].opcode == OpCodes.Ldfld)
+                {
+                    if (codes[index + 1].operand == netInfoSegmentsField)
+                    {
+                        // It is important that we copy the labels from the existing instruction!
+                        // Otherwise "Label not marked" exception
+                        codes[index] = new CodeInstruction(codes[index])
+                        {
+                            opcode = OpCodes.Ldloc,
+                            operand = customSegmentsLocalVar
+                        };
+                        codes.RemoveAt(index + 1);
+                    }/*
+                    else if (codes[index + 1].operand == netInfoNodesField)
+                    {
+                        // It is important that we copy the labels from the existing instruction!
+                        // Otherwise "Label not marked" exception
+                        codes[index] = new CodeInstruction(codes[index])
+                        {
+                            opcode = OpCodes.Ldloc,
+                            operand = customNodesLocalVar
+                        };
+                        codes.RemoveAt(index + 1);
+                    }*/
+                }
+            }
+
+            return true;
         }
     }
 }
