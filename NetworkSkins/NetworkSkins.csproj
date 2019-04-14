@@ -158,7 +158,6 @@
     <Compile Include="Skins\Modifiers\TerrainSurfaceModifier.cs" />
     <Compile Include="Skins\NetworkSkinManager.cs" />
     <Compile Include="Skins\NetworkSkin.cs" />
-    <Compile Include="NetworkSkinsLoading.cs" />
     <Compile Include="NetworkSkinsMod.cs" />
     <Compile Include="Patches\NetManager\NetManagerReleaseSegmentImplementationPatch.cs" />
     <Compile Include="Patches\NetManager\NetManagerCreateSegmentPatch.cs" />
