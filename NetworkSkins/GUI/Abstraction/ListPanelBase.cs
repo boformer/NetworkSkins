@@ -16,7 +16,7 @@ namespace NetworkSkins.GUI.Abstraction
 
         public override void Build(PanelType panelType, Layout layout) {
             base.Build(panelType, layout);
-            color = NetworkSkinPanel.GUIColor;
+            color = GUIColor;
 
             CreatePillarTabstrip();
             SetupPillarTabs();
