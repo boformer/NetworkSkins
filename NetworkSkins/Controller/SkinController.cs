@@ -109,6 +109,7 @@ namespace NetworkSkins
                 }
             } else {
                 if (isNetToolEnabled) {
+                    Prefab = null;
                     isNetToolEnabled = false;
                     EventToolStateChanged?.Invoke(false);
                     NetworkSkinManager.instance.ClearActiveModifiers();
