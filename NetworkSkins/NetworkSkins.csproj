@@ -59,6 +59,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GUI\CheckboxPanel.cs" />
     <Compile Include="GUI\DistancePanel.cs" />
     <Compile Include="GUI\SettingsPanel.cs" />
     <Compile Include="Net\Pillar.cs" />

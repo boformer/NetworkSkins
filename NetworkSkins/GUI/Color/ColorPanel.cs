@@ -1,7 +1,6 @@
 ﻿using ColossalFramework.UI;
 using NetworkSkins.Locale;
 using NetworkSkins.TranslationFramework;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace NetworkSkins.GUI
@@ -19,7 +18,6 @@ namespace NetworkSkins.GUI
         private UITextField greenTextField;
         private UITextField blueTextField;
         private Color32 currentColor;
-        private Queue<SwatchButton> SwatchButtonsList;
         private bool updateNeeded;
 
         public override void Update() {
@@ -37,13 +35,12 @@ namespace NetworkSkins.GUI
 
         public override void Build(PanelType panelType, Layout layout) {
             base.Build(panelType, layout);
-            SwatchButtonsList = new Queue<SwatchButton>(20);
             color = GUIColor;
             CreateColorPicker();
             CreateRGBPanel();
-            CreateSwatchesPanel();
+            RefreshSwatchesPanel();
             SkinController.Color.EventColorUsedInSegment += OnColorUsed;
-            currentColor = SkinController.Color.SelectedColor;
+            RefreshColors();
         }
 
         private void CreateColorPicker() {
@@ -117,26 +114,18 @@ namespace NetworkSkins.GUI
             return textField;
         }
 
-        private void CreateSwatchesPanel() {
+        private void RefreshSwatchesPanel() {
+            if (swatchesPanel != null) Destroy(swatchesPanel.gameObject);
             swatchesPanel = AddUIComponent<SwatchesPanel>();
             swatchesPanel.Build(PanelType.None, new Layout(new Vector2(254.0f, 30.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 4));
             swatchesPanel.padding = new RectOffset(11, 0, 5, 0);
-            for (int i = SkinController.Color.Swatches.Count - 1; i >= 0 ; i--) {
-                AddSwatch(SkinController.Color.Swatches[i]);
+            foreach (var swatch in SkinController.Color.Swatches) {
+                AddSwatch(swatch);
             }
         }
 
         private void AddSwatch(Color32 color) {
-            SwatchButton button = MakeSwatchButton(color);
-            SwatchButtonsList.Enqueue(button);
-            if (SwatchButtonsList.Count > 12) {
-                button = SwatchButtonsList.Dequeue();
-                Destroy(button?.gameObject);
-            }
-        }
-
-        private SwatchButton MakeSwatchButton(Color32 color) {
-            SwatchButton button = swatchesPanel?.AddUIComponent<SwatchButton>();
+            SwatchButton button = swatchesPanel.AddUIComponent<SwatchButton>();
             button.size = new Vector2(15.5f, 15.0f);
             button.atlas = Resources.Atlas;
             button.normalBgSprite = Resources.Swatch;
@@ -146,7 +135,6 @@ namespace NetworkSkins.GUI
             button.color = color;
             button.swatch = color;
             button.EventSwatchClicked += OnSwatchClicked;
-            return button;
         }
 
         private void OnLostFocus(UIComponent component, UIFocusEventParameter eventParam) {
@@ -199,8 +187,8 @@ namespace NetworkSkins.GUI
             colorPicker.color = color;
         }
 
-        private void OnColorUsed(Color32 color) {
-            AddSwatch(color);
+        private void OnColorUsed() {
+            RefreshSwatchesPanel();
         }
 
         private void ColorChanged() {
@@ -229,7 +217,13 @@ namespace NetworkSkins.GUI
         }
 
         protected override void RefreshUI(NetInfo netInfo) {
+            RefreshColors();
+        }
+
+        private void RefreshColors() {
+            colorPicker.eventColorUpdated -= OnColorUpdated;
             currentColor = colorPicker.color = SkinController.Color.SelectedColor;
+            colorPicker.eventColorUpdated += OnColorUpdated;
         }
 
         public class RGBPanel : PanelBase

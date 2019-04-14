@@ -15,11 +15,11 @@ namespace NetworkSkins.Controller
 
         public Color SelectedColor { get; private set; }
 
-        public List<Color32> Swatches => _swatches;
+        public IEnumerable<Color32> Swatches => _swatches;
         private readonly List<Color32> _swatches;
 
         public event ColorUsedInSegmentEventHandler EventColorUsedInSegment;
-        public delegate void ColorUsedInSegmentEventHandler(Color32 color);
+        public delegate void ColorUsedInSegmentEventHandler();
 
         private bool _colorable = false;
 
@@ -89,7 +89,7 @@ namespace NetworkSkins.Controller
                 }
             }
 
-            EventColorUsedInSegment?.Invoke(color);
+            EventColorUsedInSegment?.Invoke();
 
             PersistenceService.Instance.UpdateSwatches(_swatches);
         }

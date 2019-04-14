@@ -76,6 +76,7 @@ namespace NetworkSkins.GUI
         private void CreateSettingsPanel() {
             settingsPanel = AddUIComponent<SettingsPanel>();
             settingsPanel.Build(PanelType.Settings, new Layout(new Vector2(228.6f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 0, "GenericPanel"));
+            settingsPanel.autoFitChildrenHorizontally = true;
         }
 
         private void RegisterEvents() {

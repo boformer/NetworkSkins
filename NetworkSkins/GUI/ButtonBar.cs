@@ -102,7 +102,7 @@ namespace NetworkSkins.GUI
             lightsButton.eventClicked += OnLightsButtonClicked;
             lightsButton.eventVisibilityChanged += OnLightsButtonVisibilityChanged;
 
-            surfacesButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Surface, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_SIDEWALKS));
+            surfacesButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Surface, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_SURFACE));
             surfacesButton.eventClicked += OnSurfacesButtonClicked;
             surfacesButton.eventVisibilityChanged += OnSurfacesButtonVisibilityChanged;
 
