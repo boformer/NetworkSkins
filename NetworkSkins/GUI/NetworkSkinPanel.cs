@@ -1,4 +1,11 @@
 ﻿using ColossalFramework.UI;
+using NetworkSkins.GUI.Abstraction;
+using NetworkSkins.GUI.Catenaries;
+using NetworkSkins.GUI.Colors;
+using NetworkSkins.GUI.Lights;
+using NetworkSkins.GUI.Pillars;
+using NetworkSkins.GUI.Surfaces;
+using NetworkSkins.GUI.Trees;
 using UnityEngine;
 
 namespace NetworkSkins.GUI
@@ -7,8 +14,8 @@ namespace NetworkSkins.GUI
     {
         private ToolBar toolBar;
         private TreePanel treesPanel;
-        private LightPanel lightsPanel;
-        private SurfacePanel surfacePanel;
+        private StreetLightPanel lightsPanel;
+        private TerrainSurfacePanel _terrainSurfacePanel;
         private PillarPanel pillarPanel;
         private CatenaryPanel catenaryPanel;
         private ColorPanel colorPanel;
@@ -45,13 +52,13 @@ namespace NetworkSkins.GUI
         }
 
         private void CreateLightsPanel() {
-            lightsPanel = AddUIComponent<LightPanel>();
+            lightsPanel = AddUIComponent<StreetLightPanel>();
             lightsPanel.Build(PanelType.Lights, new Layout(new Vector2(400.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
         }
 
         private void CreateSurfacePanel() {
-            surfacePanel = AddUIComponent<SurfacePanel>();
-            surfacePanel.Build(PanelType.Surfaces, new Layout(new Vector2(388.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
+            _terrainSurfacePanel = AddUIComponent<TerrainSurfacePanel>();
+            _terrainSurfacePanel.Build(PanelType.Surfaces, new Layout(new Vector2(388.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
         }
 
         private void CreateCatenaryPanel() {
@@ -160,9 +167,9 @@ namespace NetworkSkins.GUI
         }
 
         private void OnSurfacesVisibilityChanged(UIButton button, UIButton[] buttons, bool visible) {
-            if (!visible && surfacePanel != null) {
+            if (!visible && _terrainSurfacePanel != null) {
                 SetButtonUnfocused(button);
-                Destroy(surfacePanel.gameObject);
+                Destroy(_terrainSurfacePanel.gameObject);
             }
         }
 
@@ -214,9 +221,9 @@ namespace NetworkSkins.GUI
         }
 
         private void OnSurfacesClicked(UIButton button, UIButton[] buttons) {
-            if (surfacePanel != null) {
+            if (_terrainSurfacePanel != null) {
                 SetButtonUnfocused(button);
-                Destroy(surfacePanel.gameObject);
+                Destroy(_terrainSurfacePanel.gameObject);
             } else {
                 RefreshButtons(button, buttons);
                 CloseAll();
@@ -264,8 +271,8 @@ namespace NetworkSkins.GUI
             if (lightsPanel != null) {
                 Destroy(lightsPanel.gameObject);
             }
-            if (surfacePanel != null) {
-                Destroy(surfacePanel.gameObject);
+            if (_terrainSurfacePanel != null) {
+                Destroy(_terrainSurfacePanel.gameObject);
             }
             if (pillarPanel != null) {
                 Destroy(pillarPanel.gameObject);

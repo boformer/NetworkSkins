@@ -1,9 +1,10 @@
 ﻿using ColossalFramework.UI;
+using NetworkSkins.GUI.UIFastList;
 using NetworkSkins.Locale;
 using NetworkSkins.TranslationFramework;
 using UnityEngine;
 
-namespace NetworkSkins.GUI
+namespace NetworkSkins.GUI.Abstraction
 {
     public abstract class ListBase<T> : ListBase
         where T : PrefabInfo

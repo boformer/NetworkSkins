@@ -1,11 +1,12 @@
-﻿using ColossalFramework.UI;
+﻿using System;
+using ColossalFramework.UI;
+using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.Locale;
-using NetworkSkins.TranslationFramework;
-using System;
 using NetworkSkins.Skins.Modifiers;
+using NetworkSkins.TranslationFramework;
 using UnityEngine;
 
-namespace NetworkSkins.GUI
+namespace NetworkSkins.GUI.UIFastList
 {
     public class ListRow : PanelBase, IUIFastListRow
     {

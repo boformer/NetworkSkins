@@ -1,9 +1,9 @@
-﻿using NetworkSkins.Controller;
+﻿using System.Collections.Generic;
+using NetworkSkins.GUI.Abstraction;
+using NetworkSkins.GUI.UIFastList;
 using NetworkSkins.Net;
-using System.Collections.Generic;
-using static NetworkSkins.Controller.ListPanelController<TreeInfo>;
 
-namespace NetworkSkins.GUI
+namespace NetworkSkins.GUI.Trees
 {
     public class TreeList : ListBase<TreeInfo>
     {
@@ -42,7 +42,7 @@ namespace NetworkSkins.GUI
             nonFavouritesList.Clear();
             int index = 0;
             List<string> favList = Persistence.GetFavourites(UIUtil.PanelToItemType(PanelType));
-            foreach (SimpleItem item in controller.Items) {
+            foreach (ListPanelController<TreeInfo>.SimpleItem item in controller.Items) {
                 if (item.Id == "#NONE#") {
                     ListItem listItem = CreateListItem(null);
                     if (NetworkSkinPanelController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;

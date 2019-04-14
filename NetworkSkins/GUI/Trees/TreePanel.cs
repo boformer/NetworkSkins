@@ -1,8 +1,9 @@
-﻿using NetworkSkins.Net;
-using System.Linq;
+﻿using System.Linq;
+using NetworkSkins.GUI.Abstraction;
+using NetworkSkins.Net;
 using UnityEngine;
 
-namespace NetworkSkins.GUI
+namespace NetworkSkins.GUI.Trees
 {
     public class TreePanel : ListPanelBase<TreeList, TreeInfo>
     {

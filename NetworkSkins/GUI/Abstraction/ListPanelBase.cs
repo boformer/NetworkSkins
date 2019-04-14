@@ -4,7 +4,7 @@ using NetworkSkins.Net;
 using NetworkSkins.TranslationFramework;
 using UnityEngine;
 
-namespace NetworkSkins.GUI
+namespace NetworkSkins.GUI.Abstraction
 {
     public abstract class ListPanelBase : PanelBase
     {
@@ -16,7 +16,7 @@ namespace NetworkSkins.GUI
 
         public override void Build(PanelType panelType, Layout layout) {
             base.Build(panelType, layout);
-            color = MainPanel.GUIColor;
+            color = NetworkSkinPanel.GUIColor;
 
             CreatePillarTabstrip();
             SetupPillarTabs();

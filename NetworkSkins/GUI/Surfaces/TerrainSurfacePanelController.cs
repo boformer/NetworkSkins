@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.Net;
 using NetworkSkins.Skins;
 using NetworkSkins.Skins.Modifiers;
 
-namespace NetworkSkins.Controller
+namespace NetworkSkins.GUI.Surfaces
 {
     public class TerrainSurfacePanelController : ListPanelController<Surface>
     {

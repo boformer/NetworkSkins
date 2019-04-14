@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
-using static NetworkSkins.Controller.ListPanelController<PropInfo>;
+using NetworkSkins.Controller;
+using NetworkSkins.GUI.Abstraction;
+using NetworkSkins.GUI.UIFastList;
 
-
-namespace NetworkSkins.GUI
+namespace NetworkSkins.GUI.Catenaries
 {
     public class CatenaryList : ListBase<PropInfo>
     {
@@ -33,7 +34,7 @@ namespace NetworkSkins.GUI
             nonFavouritesList.Clear();
             int index = 0;
             List<string> favList = Persistence.GetFavourites(UIUtil.PanelToItemType(PanelType));
-            foreach (SimpleItem item in NetworkSkinPanelController.Catenary.Items) {
+            foreach (ListPanelController<PropInfo>.SimpleItem item in NetworkSkinPanelController.Catenary.Items) {
                 if (item.Id == "#NONE#") {
                     ListItem listItem = CreateListItem(null);
                     if (NetworkSkinPanelController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;

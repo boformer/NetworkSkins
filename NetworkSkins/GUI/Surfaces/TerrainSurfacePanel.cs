@@ -1,18 +1,19 @@
 ﻿using ColossalFramework.UI;
+using NetworkSkins.GUI.Abstraction;
 using UnityEngine;
 
-namespace NetworkSkins.GUI
+namespace NetworkSkins.GUI.Surfaces
 {
-    public class SurfacePanel : ListPanelBase
+    public class TerrainSurfacePanel : ListPanelBase
     {
-        private SurfaceList list;
+        private TerrainSurfaceList list;
 
         protected override void RefreshUI(NetInfo netInfo) {
             list.RefreshRowsData();
         }
 
         protected override void CreateList() {
-            list = AddUIComponent<SurfaceList>();
+            list = AddUIComponent<TerrainSurfaceList>();
             list.Build(PanelType, new Layout(new Vector2(378.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 0));
             list.EventFavouriteChanged += OnFavouriteChanged;
             list.EventSelectedChanged += OnSelectedChanged;

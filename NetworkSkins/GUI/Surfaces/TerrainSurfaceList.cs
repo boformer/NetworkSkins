@@ -1,14 +1,15 @@
 ﻿using System;
-using UnityEngine;
 using ColossalFramework.UI;
+using NetworkSkins.GUI.Abstraction;
+using NetworkSkins.GUI.UIFastList;
 using NetworkSkins.Locale;
 using NetworkSkins.Skins.Modifiers;
 using NetworkSkins.TranslationFramework;
-using static NetworkSkins.Controller.ListPanelController<NetworkSkins.Skins.Modifiers.Surface>;
+using UnityEngine;
 
-namespace NetworkSkins.GUI
+namespace NetworkSkins.GUI.Surfaces
 {
-    public class SurfaceList : ListBase
+    public class TerrainSurfaceList : ListBase
     {
         protected override Vector2 ListSize => new Vector2(390.0f, 200.0f);
         protected override float RowHeight => 50.0f;
@@ -39,7 +40,7 @@ namespace NetworkSkins.GUI
             fastList.RowsData.SetCapacity(NetworkSkinPanelController.TerrainSurface.Items.Count);
             fastList.height = RowHeight * NetworkSkinPanelController.TerrainSurface.Items.Count;
             for (int i = 0; i < NetworkSkinPanelController.TerrainSurface.Items.Count; i++) {
-                SimpleItem item = NetworkSkinPanelController.TerrainSurface.Items[i] as SimpleItem;
+                ListPanelController<Surface>.SimpleItem item = NetworkSkinPanelController.TerrainSurface.Items[i] as ListPanelController<Surface>.SimpleItem;
                 ListItem listItem = CreateListItem(item.Value);
                 if (NetworkSkinPanelController.TerrainSurface.SelectedItem.Id == listItem.ID) selectedIndex = i;
                 fastList.RowsData.Add(listItem);

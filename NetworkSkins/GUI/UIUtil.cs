@@ -6,7 +6,7 @@ namespace NetworkSkins.GUI
 {
     public class UIUtil
     {
-        public static Color TextColor = new Color32(220, 220, 220, 255);
+        public static UnityEngine.Color TextColor = new Color32(220, 220, 220, 255);
 
         public static UIFont Font {
             get {

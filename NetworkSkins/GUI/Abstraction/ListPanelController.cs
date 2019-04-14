@@ -1,7 +1,7 @@
-﻿using NetworkSkins.Persistence;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using NetworkSkins.Persistence;
 
-namespace NetworkSkins.Controller
+namespace NetworkSkins.GUI.Abstraction
 {
     public abstract class ListPanelController<T> : FeaturePanelController
     {

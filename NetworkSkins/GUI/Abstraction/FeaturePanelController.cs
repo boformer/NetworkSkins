@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using NetworkSkins.Skins;
 
-namespace NetworkSkins.Controller
+namespace NetworkSkins.GUI.Abstraction
 {
     public abstract class FeaturePanelController
     {

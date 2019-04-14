@@ -1,4 +1,5 @@
 ﻿using ColossalFramework.UI;
+using NetworkSkins.GUI.Abstraction;
 using UnityEngine;
 
 namespace NetworkSkins.GUI
@@ -11,7 +12,7 @@ namespace NetworkSkins.GUI
 
         public override void Build(PanelType panelType, Layout layout) {
             base.Build(panelType, layout);
-            color = MainPanel.GUIColor;
+            color = NetworkSkinPanel.GUIColor;
             dragBar = AddUIComponent<DragBar>();
             dragBar.Build(PanelType.None, new Layout(new Vector2(size.x, 18.0f), false, LayoutDirection.Horizontal, LayoutStart.TopLeft, 0));
             dragBar.EventDragEnd += OnDragBarDragEnd;

@@ -1,9 +1,10 @@
 ﻿using ColossalFramework.UI;
+using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.Locale;
 using NetworkSkins.TranslationFramework;
 using UnityEngine;
 
-namespace NetworkSkins.GUI
+namespace NetworkSkins.GUI.Colors
 {
     public class ColorPanel : PanelBase
     {
@@ -195,7 +196,7 @@ namespace NetworkSkins.GUI
             NetworkSkinPanelController.Color.SetColor(currentColor);
         }
 
-        private void OnColorUpdated(Color value) {
+        private void OnColorUpdated(UnityEngine.Color value) {
             currentColor = value;
             if (colorPanel != null) colorPanel.color = value;
             if (redTextField != null) {

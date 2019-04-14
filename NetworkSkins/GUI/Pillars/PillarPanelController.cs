@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.Net;
 using NetworkSkins.Skins;
 using NetworkSkins.Skins.Modifiers;
 using UnityEngine;
 
-namespace NetworkSkins.Controller
+namespace NetworkSkins.GUI.Pillars
 {
     public class PillarPanelController : ListPanelController<BuildingInfo>
     {

@@ -21,7 +21,7 @@ namespace NetworkSkins
         
         private HarmonyInstance harmony;
 
-        private MainPanel panel;
+        private NetworkSkinPanel panel;
         private GameObject skinControllerGameObject;
         private GameObject persistenceServiceGameObject;
 
@@ -139,7 +139,7 @@ namespace NetworkSkins
         {
             if (isToolEnabled)
             {
-                panel = UIView.GetAView().AddUIComponent(typeof(MainPanel)) as MainPanel;
+                panel = UIView.GetAView().AddUIComponent(typeof(NetworkSkinPanel)) as NetworkSkinPanel;
             }
             else
             {

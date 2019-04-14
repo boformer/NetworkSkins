@@ -1,9 +1,9 @@
-﻿using NetworkSkins.Net;
-using NetworkSkins.Controller;
-using System.Collections.Generic;
-using static NetworkSkins.Controller.ListPanelController<BuildingInfo>;
+﻿using System.Collections.Generic;
+using NetworkSkins.GUI.Abstraction;
+using NetworkSkins.GUI.UIFastList;
+using NetworkSkins.Net;
 
-namespace NetworkSkins.GUI
+namespace NetworkSkins.GUI.Pillars
 {
     public class PillarList : ListBase<BuildingInfo>
     {
@@ -44,7 +44,7 @@ namespace NetworkSkins.GUI
             nonFavouritesList.Clear();
             int index = 0;
             List<string> favList = Persistence.GetFavourites(UIUtil.PanelToItemType(PanelType));
-            foreach (SimpleItem item in controller.Items) {
+            foreach (ListPanelController<BuildingInfo>.SimpleItem item in controller.Items) {
                 if (item.Id == "#NONE#") {
                     ListItem listItem = CreateListItem(null);
                     if (NetworkSkinPanelController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;

@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.Net;
 using NetworkSkins.Persistence;
 using NetworkSkins.Skins;
 using NetworkSkins.Skins.Modifiers;
 using UnityEngine;
 
-namespace NetworkSkins.Controller
+namespace NetworkSkins.GUI.Colors
 {
     public class ColorPanelController : FeaturePanelController
     {
@@ -13,7 +14,7 @@ namespace NetworkSkins.Controller
 
         public override bool Enabled => base.Enabled && _colorable;
 
-        public Color SelectedColor { get; private set; }
+        public UnityEngine.Color SelectedColor { get; private set; }
 
         public IEnumerable<Color32> Swatches => _swatches;
         private readonly List<Color32> _swatches;
@@ -30,7 +31,7 @@ namespace NetworkSkins.Controller
             _swatches = PersistenceService.Instance.GetSwatches();
         }
 
-        public void SetColor(Color selected)
+        public void SetColor(UnityEngine.Color selected)
         {
             if (SelectedColor == selected) return;
 
@@ -66,7 +67,7 @@ namespace NetworkSkins.Controller
             }
         }
 
-        private void OnColorUsed(Color color)
+        private void OnColorUsed(UnityEngine.Color color)
         {
             var colorIndex = _swatches.IndexOf(color);
             if (colorIndex == 0)
@@ -136,7 +137,7 @@ namespace NetworkSkins.Controller
         #region Active Selection Data
         private const string ColorKey = "Color";
 
-        private Color? LoadSelectedColor()
+        private UnityEngine.Color? LoadSelectedColor()
         {
             return ActiveSelectionData.Instance.GetColorValue(Prefab, ColorKey);
         }

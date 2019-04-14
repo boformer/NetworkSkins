@@ -1,4 +1,6 @@
-﻿namespace NetworkSkins.GUI
+﻿using NetworkSkins.GUI.Abstraction;
+
+namespace NetworkSkins.GUI.Catenaries
 {
     public class CatenaryPanel : ListPanelBase<CatenaryList, PropInfo>
     {

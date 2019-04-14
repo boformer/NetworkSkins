@@ -1,10 +1,10 @@
-﻿
-using System.Collections.Generic;
-using static NetworkSkins.Controller.ListPanelController<PropInfo>;
+﻿using System.Collections.Generic;
+using NetworkSkins.GUI.Abstraction;
+using NetworkSkins.GUI.UIFastList;
 
-namespace NetworkSkins.GUI
+namespace NetworkSkins.GUI.Lights
 {
-    public class LightList : ListBase<PropInfo>
+    public class StreetLightList : ListBase<PropInfo>
     {
         public void RefreshRowsData() {
             SetupRowsData();
@@ -34,7 +34,7 @@ namespace NetworkSkins.GUI
             nonFavouritesList.Clear();
             int index = 0;
             List<string> favList = Persistence.GetFavourites(UIUtil.PanelToItemType(PanelType));
-            foreach (SimpleItem item in NetworkSkinPanelController.StreetLight.Items) {
+            foreach (ListPanelController<PropInfo>.SimpleItem item in NetworkSkinPanelController.StreetLight.Items) {
                 if (item.Id == "#NONE#") {
                     ListItem listItem = CreateListItem(null);
                     if (NetworkSkinPanelController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;

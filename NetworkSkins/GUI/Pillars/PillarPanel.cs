@@ -1,7 +1,8 @@
-﻿using NetworkSkins.Net;
-using System.Linq;
+﻿using System.Linq;
+using NetworkSkins.GUI.Abstraction;
+using NetworkSkins.Net;
 
-namespace NetworkSkins.GUI
+namespace NetworkSkins.GUI.Pillars
 {
     public class PillarPanel : ListPanelBase<PillarList, BuildingInfo>
     {

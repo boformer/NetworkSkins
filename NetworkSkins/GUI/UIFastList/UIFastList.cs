@@ -1,8 +1,8 @@
-﻿using ColossalFramework.UI;
-using System;
+﻿using System;
+using ColossalFramework.UI;
 using UnityEngine;
 
-namespace NetworkSkins.GUI
+namespace NetworkSkins.GUI.UIFastList
 {
     // by SamSamTs
     public interface IUIFastListRow

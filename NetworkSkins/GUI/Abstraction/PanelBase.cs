@@ -3,7 +3,7 @@ using NetworkSkins.Controller;
 using NetworkSkins.Persistence;
 using UnityEngine;
 
-namespace NetworkSkins.GUI
+namespace NetworkSkins.GUI.Abstraction
 {
     public abstract class PanelBase : UIPanel
     {

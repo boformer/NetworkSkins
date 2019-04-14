@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.Net;
 using NetworkSkins.Persistence;
 using NetworkSkins.Skins;
 using NetworkSkins.Skins.Modifiers;
 using UnityEngine;
 
-namespace NetworkSkins.Controller
+namespace NetworkSkins.GUI.Trees
 {
     public class TreePanelController : ListPanelController<TreeInfo>
     {

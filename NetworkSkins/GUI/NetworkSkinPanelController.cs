@@ -1,6 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using NetworkSkins.GUI;
+using NetworkSkins.GUI.Catenaries;
+using NetworkSkins.GUI.Colors;
+using NetworkSkins.GUI.Lights;
+using NetworkSkins.GUI.Pillars;
+using NetworkSkins.GUI.Surfaces;
+using NetworkSkins.GUI.Trees;
 using NetworkSkins.Net;
 using NetworkSkins.Skins;
 using UnityEngine;
