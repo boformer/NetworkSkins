@@ -15,7 +15,7 @@ namespace NetworkSkins.Controller
 
         public Color SelectedColor { get; private set; }
 
-        public IEnumerable<Color32> Swatches => _swatches;
+        public List<Color32> Swatches => _swatches;
         private readonly List<Color32> _swatches;
 
         public event ColorUsedInSegmentEventHandler EventColorUsedInSegment;

@@ -24,6 +24,7 @@ namespace NetworkSkins.Persistence
 
         private const string FILE_NAME = "NetworkSkinsSettings.xml";
         private string FilePath => Path.Combine(DataLocation.localApplicationData, FILE_NAME);
+
         private PersistentData Data {
             get {
                 if (_data == null) {
@@ -32,7 +33,6 @@ namespace NetworkSkins.Persistence
                 return _data;
             }
         }
-
         private PersistentData _data;
 
         public void RemoveFavourite(string itemID, ItemType itemType) {

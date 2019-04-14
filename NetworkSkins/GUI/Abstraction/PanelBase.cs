@@ -24,8 +24,8 @@ namespace NetworkSkins.GUI
         }
 
         public override void OnDestroy() {
-            base.OnDestroy();
             SkinController.EventPrefabChanged -= OnPrefabChanged;
+            base.OnDestroy();
         }
         public virtual void Build(PanelType panelType, Layout layout) {
             PanelType = panelType;

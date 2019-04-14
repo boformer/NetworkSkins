@@ -66,16 +66,8 @@ namespace NetworkSkins.GUI
         }
 
         public override void OnDestroy() {
-            base.OnDestroy();
             SkinController.EventPrefabChanged -= OnPrefabChanged;
-
-            treesButton.eventClicked -= OnTreesButtonClicked;
-            lightsButton.eventClicked -= OnLightsButtonClicked;
-            surfacesButton.eventClicked -= OnSurfacesButtonClicked;
-            pillarsButton.eventClicked -= OnPillarsButtonClicked;
-            catenaryButton.eventClicked -= OnCatenaryButtonClicked;
-            colorButton.eventClicked -= OnColorButtonClicked;
-            extrasButton.eventClicked -= OnExtrasButtonClicked;
+            base.OnDestroy();
         }
 
         public override void Build(PanelType panelType, Layout layout) {

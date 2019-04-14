@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using ColossalFramework.UI;
+﻿using ColossalFramework.UI;
 using NetworkSkins.Locale;
 using NetworkSkins.TranslationFramework;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace NetworkSkins.GUI
@@ -31,6 +30,11 @@ namespace NetworkSkins.GUI
             }
         }
 
+        public override void OnDestroy() {
+            SkinController.Color.EventColorUsedInSegment -= OnColorUsed;
+            base.OnDestroy();
+        }
+
         public override void Build(PanelType panelType, Layout layout) {
             base.Build(panelType, layout);
             SwatchButtonsList = new Queue<SwatchButton>(20);
@@ -38,7 +42,7 @@ namespace NetworkSkins.GUI
             CreateColorPicker();
             CreateRGBPanel();
             CreateSwatchesPanel();
-            SkinController.Color.EventColorUsedInSegment += OnColorUsed; ;
+            SkinController.Color.EventColorUsedInSegment += OnColorUsed;
             currentColor = SkinController.Color.SelectedColor;
         }
 
@@ -117,8 +121,8 @@ namespace NetworkSkins.GUI
             swatchesPanel = AddUIComponent<SwatchesPanel>();
             swatchesPanel.Build(PanelType.None, new Layout(new Vector2(254.0f, 30.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 4));
             swatchesPanel.padding = new RectOffset(11, 0, 5, 0);
-            foreach (Color32 swatch in SkinController.Color.Swatches) {
-                AddSwatch(swatch);
+            for (int i = SkinController.Color.Swatches.Count - 1; i >= 0 ; i--) {
+                AddSwatch(SkinController.Color.Swatches[i]);
             }
         }
 
@@ -127,12 +131,12 @@ namespace NetworkSkins.GUI
             SwatchButtonsList.Enqueue(button);
             if (SwatchButtonsList.Count > 12) {
                 button = SwatchButtonsList.Dequeue();
-                UnityEngine.Object.Destroy(button?.gameObject);
+                Destroy(button?.gameObject);
             }
         }
 
         private SwatchButton MakeSwatchButton(Color32 color) {
-            SwatchButton button = swatchesPanel.AddUIComponent<SwatchButton>();
+            SwatchButton button = swatchesPanel?.AddUIComponent<SwatchButton>();
             button.size = new Vector2(15.5f, 15.0f);
             button.atlas = Resources.Atlas;
             button.normalBgSprite = Resources.Swatch;
@@ -205,7 +209,7 @@ namespace NetworkSkins.GUI
 
         private void OnColorUpdated(Color value) {
             currentColor = value;
-            if(colorPanel != null) colorPanel.color = value;
+            if (colorPanel != null) colorPanel.color = value;
             if (redTextField != null) {
                 redTextField.eventTextChanged -= OnTextChanged;
                 redTextField.text = currentColor.r.ToString();
