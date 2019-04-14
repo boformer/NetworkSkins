@@ -6,7 +6,7 @@ using NetworkSkins.Skins.Modifiers;
 
 namespace NetworkSkins.Controller
 {
-    public class TerrainSurfaceFeatureController : ItemListFeatureController<Surface>
+    public class TerrainSurfacePanelController : ListPanelController<Surface>
     {
         protected override List<Item> BuildItems(ref Item defaultItem)
         {

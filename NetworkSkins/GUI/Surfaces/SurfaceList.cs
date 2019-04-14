@@ -4,7 +4,7 @@ using ColossalFramework.UI;
 using NetworkSkins.Locale;
 using NetworkSkins.Skins.Modifiers;
 using NetworkSkins.TranslationFramework;
-using static NetworkSkins.Controller.ItemListFeatureController<NetworkSkins.Skins.Modifiers.Surface>;
+using static NetworkSkins.Controller.ListPanelController<NetworkSkins.Skins.Modifiers.Surface>;
 
 namespace NetworkSkins.GUI
 {
@@ -27,7 +27,7 @@ namespace NetworkSkins.GUI
         }
 
         protected override bool IsDefault(string itemID) {
-            return SkinController.TerrainSurface.DefaultItem.Id == itemID;
+            return NetworkSkinPanelController.TerrainSurface.DefaultItem.Id == itemID;
         }
 
         protected override void SetupRowsData() {
@@ -36,12 +36,12 @@ namespace NetworkSkins.GUI
                 fastList.RowsData = new FastList<object>();
             }
             fastList.RowsData.Clear();
-            fastList.RowsData.SetCapacity(SkinController.TerrainSurface.Items.Count);
-            fastList.height = RowHeight * SkinController.TerrainSurface.Items.Count;
-            for (int i = 0; i < SkinController.TerrainSurface.Items.Count; i++) {
-                SimpleItem item = SkinController.TerrainSurface.Items[i] as SimpleItem;
+            fastList.RowsData.SetCapacity(NetworkSkinPanelController.TerrainSurface.Items.Count);
+            fastList.height = RowHeight * NetworkSkinPanelController.TerrainSurface.Items.Count;
+            for (int i = 0; i < NetworkSkinPanelController.TerrainSurface.Items.Count; i++) {
+                SimpleItem item = NetworkSkinPanelController.TerrainSurface.Items[i] as SimpleItem;
                 ListItem listItem = CreateListItem(item.Value);
-                if (SkinController.TerrainSurface.SelectedItem.Id == listItem.ID) selectedIndex = i;
+                if (NetworkSkinPanelController.TerrainSurface.SelectedItem.Id == listItem.ID) selectedIndex = i;
                 fastList.RowsData.Add(listItem);
             }
             fastList.DisplayAt(selectedIndex);

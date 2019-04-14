@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using NetworkSkins.Controller;
 using NetworkSkins.GUI;
 using NetworkSkins.Net;
 using NetworkSkins.Skins;
 using UnityEngine;
 
-namespace NetworkSkins
+namespace NetworkSkins.Controller
 {
-    public class SkinController : MonoBehaviour {
-        public static SkinController Instance;
+    public class NetworkSkinPanelController : MonoBehaviour {
+        public static NetworkSkinPanelController Instance;
 
         public delegate void ToolStateChangedEventHandler(bool state);
         public event ToolStateChangedEventHandler EventToolStateChanged;
@@ -19,98 +18,90 @@ namespace NetworkSkins
         private bool _ignoreModifierEvents = false;
         public bool TabClicked { get; set; } = false;
 
-        public TerrainSurfaceFeatureController TerrainSurface;
+        public TerrainSurfacePanelController TerrainSurface;
 
-        public ColorFeatureController Color;
+        public ColorPanelController Color;
 
-        public StreetLightFeatureController StreetLight;
+        public StreetLightPanelController StreetLight;
 
         public bool TreesEnabled => LeftTree.Enabled || MiddleTree.Enabled || RighTree.Enabled;
         public LanePosition LanePosition { get; set; } = LanePosition.Left;
-        public TreeFeatureController LeftTree;
-        public TreeFeatureController MiddleTree;
-        public TreeFeatureController RighTree;
+        public TreePanelController LeftTree;
+        public TreePanelController MiddleTree;
+        public TreePanelController RighTree;
         
         public bool PillarsEnabled => ElevatedBridgePillar.Enabled || ElevatedMiddlePillar.Enabled || BridgeBridgePillar.Enabled || BridgeMiddlePillar.Enabled;
         public Pillar PillarElevationCombination { get; set; } = Pillar.Bridge;
-        public PillarFeatureController ElevatedBridgePillar;
-        public PillarFeatureController ElevatedMiddlePillar;
-        public PillarFeatureController BridgeBridgePillar;
-        public PillarFeatureController BridgeMiddlePillar;
+        public PillarPanelController ElevatedBridgePillar;
+        public PillarPanelController ElevatedMiddlePillar;
+        public PillarPanelController BridgeBridgePillar;
+        public PillarPanelController BridgeMiddlePillar;
 
-        public CatenaryFeatureController Catenary;
+        public CatenaryPanelController Catenary;
 
         public NetInfo Prefab { get; private set; }
 
-        private bool isNetToolEnabled;
-
+        #region Lifecycle
         private void Awake() {
             Instance = this;
 
             NetworkSkinManager.instance.EventSegmentPlaced += OnSegmentPlaced;
 
-            TerrainSurface = new TerrainSurfaceFeatureController();
+            TerrainSurface = new TerrainSurfacePanelController();
             TerrainSurface.EventModifiersChanged += OnModifiersChanged;
 
-            Color = new ColorFeatureController();
+            Color = new ColorPanelController();
             Color.EventModifiersChanged += OnModifiersChanged;
 
-            StreetLight = new StreetLightFeatureController();
+            StreetLight = new StreetLightPanelController();
             StreetLight.EventModifiersChanged += OnModifiersChanged;
 
-            LeftTree = new TreeFeatureController(LanePosition.Left);
+            LeftTree = new TreePanelController(LanePosition.Left);
             LeftTree.EventModifiersChanged += OnModifiersChanged;
 
-            MiddleTree = new TreeFeatureController(LanePosition.Middle);
+            MiddleTree = new TreePanelController(LanePosition.Middle);
             MiddleTree.EventModifiersChanged += OnModifiersChanged;
 
-            RighTree = new TreeFeatureController(LanePosition.Right);
+            RighTree = new TreePanelController(LanePosition.Right);
             RighTree.EventModifiersChanged += OnModifiersChanged;
             
             var availablePillars = PillarUtils.GetAvailablePillars();
 
-            ElevatedBridgePillar = new PillarFeatureController(PillarType.Bridge, availablePillars);
+            ElevatedBridgePillar = new PillarPanelController(PillarType.Bridge, availablePillars);
             ElevatedBridgePillar.EventModifiersChanged += OnModifiersChanged;
 
-            ElevatedMiddlePillar = new PillarFeatureController(PillarType.Middle, availablePillars);
+            ElevatedMiddlePillar = new PillarPanelController(PillarType.Middle, availablePillars);
             ElevatedMiddlePillar.EventModifiersChanged += OnModifiersChanged;
 
-            BridgeBridgePillar = new PillarFeatureController(PillarType.Bridge, availablePillars);
+            BridgeBridgePillar = new PillarPanelController(PillarType.Bridge, availablePillars);
             BridgeBridgePillar.EventModifiersChanged += OnModifiersChanged;
 
-            BridgeMiddlePillar = new PillarFeatureController(PillarType.Middle, availablePillars);
+            BridgeMiddlePillar = new PillarPanelController(PillarType.Middle, availablePillars);
             BridgeMiddlePillar.EventModifiersChanged += OnModifiersChanged;
 
-            Catenary = new CatenaryFeatureController();
+            Catenary = new CatenaryPanelController();
             Catenary.EventModifiersChanged += OnModifiersChanged;
         }
 
-        public void SetActivePillarElevation(Pillar pillar) {
-            PillarElevationCombination = pillar;
-            EventPrefabChanged?.Invoke(Prefab);
-        }
-
-        public void SetActiveLane(LanePosition value) {
-            LanePosition = value;
-            EventPrefabChanged?.Invoke(Prefab);
-        }
-
-        private void Update() {
-            if (ToolsModifierControl.toolController.CurrentTool is NetTool netTool) {
-                if (!isNetToolEnabled) {
-                    isNetToolEnabled = true;
+        private void Update()
+        {
+            if (ToolsModifierControl.toolController.CurrentTool is NetTool netTool && netTool.Prefab != null) {
+                if (Prefab == null) {
                     EventToolStateChanged?.Invoke(true);
                 }
-                if (netTool.Prefab != null && Prefab != netTool.Prefab) {
+
+                if (netTool.Prefab != Prefab)
+                {
                     Prefab = netTool.m_prefab;
-                    //UpdateSelectedOptions();
                     OnPrefabChanged(Prefab);
                     EventPrefabChanged?.Invoke(Prefab);
                 }
-            } else {
-                if (isNetToolEnabled) {
+            }
+            else
+            {
+                if (Prefab != null)
+                {
                     Prefab = null;
-                    isNetToolEnabled = false;
                     EventToolStateChanged?.Invoke(false);
                     NetworkSkinManager.instance.ClearActiveModifiers();
                 }
@@ -120,6 +111,51 @@ namespace NetworkSkins
         private void OnDestroy()
         {
             NetworkSkinManager.instance.EventSegmentPlaced -= OnSegmentPlaced;
+        }
+        #endregion
+
+        public void SetActivePillarElevation(Pillar pillar)
+        {
+            PillarElevationCombination = pillar;
+            EventPrefabChanged?.Invoke(Prefab);
+        }
+
+        public void SetActiveLane(LanePosition value)
+        {
+            LanePosition = value;
+            EventPrefabChanged?.Invoke(Prefab);
+        }
+
+        public bool IsSelected(string id, ItemType type)
+        {
+            switch (type)
+            {
+                case ItemType.Trees:
+                {
+                    switch (LanePosition)
+                    {
+                        case LanePosition.Left: return LeftTree.SelectedItem?.Id == id;
+                        case LanePosition.Middle: return MiddleTree.SelectedItem?.Id == id;
+                        case LanePosition.Right: return RighTree.SelectedItem?.Id == id;
+                        default: return false;
+                    }
+                }
+                case ItemType.Lights: return StreetLight.SelectedItem?.Id == id;
+                case ItemType.Surfaces: return TerrainSurface.SelectedItem?.Id == id;
+                case ItemType.Pillars:
+                {
+                    switch (PillarElevationCombination)
+                    {
+                        case Pillar.Elevated: return ElevatedBridgePillar.SelectedItem?.Id == id;
+                        case Pillar.ElevatedMiddle: return ElevatedMiddlePillar.SelectedItem?.Id == id;
+                        case Pillar.Bridge: return BridgeBridgePillar.SelectedItem?.Id == id;
+                        case Pillar.BridgeMiddle: return BridgeMiddlePillar.SelectedItem?.Id == id;
+                        default: return false;
+                    }
+                }
+                case ItemType.Catenary: return Catenary.SelectedItem?.Id == id;
+                default: return false;
+            }
         }
 
         private void OnPrefabChanged(NetInfo prefab)
@@ -151,44 +187,18 @@ namespace NetworkSkins
             UpdateActiveModifiers();
         }
 
+        private void OnSegmentPlaced(NetworkSkin skin)
+        {
+            Color.OnSegmentPlaced(skin);
+        }
+
         private void OnModifiersChanged()
         {
             if (_ignoreModifierEvents) return;
 
             UpdateActiveModifiers();
         }
-
-        private void OnSegmentPlaced(NetworkSkin skin)
-        {
-            Color.OnSegmentPlaced(skin);
-        }
-
-        internal bool IsSelected(string id, ItemType type) {
-            switch (type) {
-                case ItemType.Trees: {
-                    switch (LanePosition) {
-                        case LanePosition.Left: return LeftTree.SelectedItem?.Id == id;
-                        case LanePosition.Middle: return MiddleTree.SelectedItem?.Id == id;
-                        case LanePosition.Right: return RighTree.SelectedItem?.Id == id;
-                        default: return false;
-                    }
-                }
-                case ItemType.Lights: return StreetLight.SelectedItem?.Id == id;
-                case ItemType.Surfaces: return TerrainSurface.SelectedItem?.Id == id;
-                case ItemType.Pillars: {
-                    switch (PillarElevationCombination) {
-                        case Pillar.Elevated: return ElevatedBridgePillar.SelectedItem?.Id == id;
-                        case Pillar.ElevatedMiddle: return ElevatedMiddlePillar.SelectedItem?.Id == id;
-                        case Pillar.Bridge: return BridgeBridgePillar.SelectedItem?.Id == id;
-                        case Pillar.BridgeMiddle: return BridgeMiddlePillar.SelectedItem?.Id == id;
-                        default: return false;
-                    }
-                }
-                case ItemType.Catenary: return Catenary.SelectedItem?.Id == id;
-                default: return false;
-            }
-        }
-
+        
         private void UpdateActiveModifiers()
         {
             var modifiers = new Dictionary<NetInfo, List<NetworkSkinModifier>>();

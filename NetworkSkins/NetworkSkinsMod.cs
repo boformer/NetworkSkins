@@ -1,6 +1,7 @@
 ﻿using ColossalFramework.UI;
 using Harmony;
 using ICities;
+using NetworkSkins.Controller;
 using NetworkSkins.GUI;
 using NetworkSkins.Locale;
 using NetworkSkins.Persistence;
@@ -100,19 +101,19 @@ namespace NetworkSkins
         private void Install()
         {
             persistenceServiceGameObject = new GameObject(nameof(PersistenceService));
-            skinControllerGameObject = new GameObject(nameof(SkinController));
+            skinControllerGameObject = new GameObject(nameof(NetworkSkinPanelController));
             persistenceServiceGameObject.transform.parent = NetworkSkinManager.instance.gameObject.transform;
             skinControllerGameObject.transform.parent = NetworkSkinManager.instance.gameObject.transform;
             PersistenceService.Instance = persistenceServiceGameObject.AddComponent<PersistenceService>();
-            SkinController.Instance = skinControllerGameObject.AddComponent<SkinController>();
-            SkinController.Instance.EventToolStateChanged += OnNetToolStateChanged;
+            NetworkSkinPanelController.Instance = skinControllerGameObject.AddComponent<NetworkSkinPanelController>();
+            NetworkSkinPanelController.Instance.EventToolStateChanged += OnNetToolStateChanged;
         }
 
         private void Uninstall()
         {
-            if (SkinController.Instance != null)
+            if (NetworkSkinPanelController.Instance != null)
             {
-                SkinController.Instance.EventToolStateChanged -= OnNetToolStateChanged;
+                NetworkSkinPanelController.Instance.EventToolStateChanged -= OnNetToolStateChanged;
                 if (skinControllerGameObject != null)
                 {
                     Destroy(skinControllerGameObject);

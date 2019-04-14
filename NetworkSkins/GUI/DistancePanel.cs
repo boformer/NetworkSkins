@@ -68,22 +68,22 @@ namespace NetworkSkins.GUI
             float defaultDistance = 0.0f;
             switch (PanelType) {
                 case PanelType.Trees: {
-                    switch (SkinController.LanePosition) {
+                    switch (NetworkSkinPanelController.LanePosition) {
                         case LanePosition.Left:
-                            defaultDistance = SkinController.LeftTree.DefaultRepeatDistance;
+                            defaultDistance = NetworkSkinPanelController.LeftTree.DefaultRepeatDistance;
                             break;
                         case LanePosition.Middle:
-                            defaultDistance = SkinController.MiddleTree.DefaultRepeatDistance;
+                            defaultDistance = NetworkSkinPanelController.MiddleTree.DefaultRepeatDistance;
                             break;
                         case LanePosition.Right:
-                            defaultDistance = SkinController.RighTree.DefaultRepeatDistance;
+                            defaultDistance = NetworkSkinPanelController.RighTree.DefaultRepeatDistance;
                             break;
                         default: break;
                     }
                 }
                 break;
                 case PanelType.Lights:
-                    defaultDistance = SkinController.StreetLight.DefaultRepeatDistance;
+                    defaultDistance = NetworkSkinPanelController.StreetLight.DefaultRepeatDistance;
                     break;
                 default: break;
             }
@@ -93,22 +93,22 @@ namespace NetworkSkins.GUI
         private void OnMouseUp(UIComponent component, UIMouseEventParameter eventParam) {
             switch (PanelType) {
                 case PanelType.Trees: {
-                    switch (SkinController.LanePosition) {
+                    switch (NetworkSkinPanelController.LanePosition) {
                         case LanePosition.Left:
-                            SkinController.LeftTree.SetRepeatDistance(slider.value);
+                            NetworkSkinPanelController.LeftTree.SetRepeatDistance(slider.value);
                             break;
                         case LanePosition.Middle:
-                            SkinController.MiddleTree.SetRepeatDistance(slider.value);
+                            NetworkSkinPanelController.MiddleTree.SetRepeatDistance(slider.value);
                             break;
                         case LanePosition.Right:
-                            SkinController.RighTree.SetRepeatDistance(slider.value);
+                            NetworkSkinPanelController.RighTree.SetRepeatDistance(slider.value);
                             break;
                         default: break;
                     }
                 }
                 break;
                 case PanelType.Lights:
-                    SkinController.StreetLight.SetRepeatDistance(slider.value);
+                    NetworkSkinPanelController.StreetLight.SetRepeatDistance(slider.value);
                     break;
                 default: break;
             }
@@ -118,25 +118,25 @@ namespace NetworkSkins.GUI
             float defaultDistance = 0.0f;
             switch (PanelType) {
                 case PanelType.Trees: {
-                    switch (SkinController.LanePosition) {
+                    switch (NetworkSkinPanelController.LanePosition) {
                         case LanePosition.Left:
-                            slider.value = SkinController.LeftTree.SelectedRepeatDistance;
-                            defaultDistance = SkinController.LeftTree.DefaultRepeatDistance;
+                            slider.value = NetworkSkinPanelController.LeftTree.SelectedRepeatDistance;
+                            defaultDistance = NetworkSkinPanelController.LeftTree.DefaultRepeatDistance;
                             break;
                         case LanePosition.Middle:
-                            slider.value = SkinController.MiddleTree.SelectedRepeatDistance;
-                            defaultDistance = SkinController.MiddleTree.DefaultRepeatDistance;
+                            slider.value = NetworkSkinPanelController.MiddleTree.SelectedRepeatDistance;
+                            defaultDistance = NetworkSkinPanelController.MiddleTree.DefaultRepeatDistance;
                             break;
                         case LanePosition.Right:
-                            slider.value = SkinController.RighTree.SelectedRepeatDistance;
-                            defaultDistance = SkinController.RighTree.DefaultRepeatDistance;
+                            slider.value = NetworkSkinPanelController.RighTree.SelectedRepeatDistance;
+                            defaultDistance = NetworkSkinPanelController.RighTree.DefaultRepeatDistance;
                             break;
                         default: break;
                     }
                 } break;
                 case PanelType.Lights:
-                    slider.value = SkinController.StreetLight.SelectedRepeatDistance;
-                    defaultDistance = SkinController.StreetLight.DefaultRepeatDistance;
+                    slider.value = NetworkSkinPanelController.StreetLight.SelectedRepeatDistance;
+                    defaultDistance = NetworkSkinPanelController.StreetLight.DefaultRepeatDistance;
                     break;
                 default: break;
             }

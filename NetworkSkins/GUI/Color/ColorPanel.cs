@@ -29,7 +29,7 @@ namespace NetworkSkins.GUI
         }
 
         public override void OnDestroy() {
-            SkinController.Color.EventColorUsedInSegment -= OnColorUsed;
+            NetworkSkinPanelController.Color.EventColorUsedInSegment -= OnColorUsed;
             base.OnDestroy();
         }
 
@@ -39,7 +39,7 @@ namespace NetworkSkins.GUI
             CreateColorPicker();
             CreateRGBPanel();
             RefreshSwatchesPanel();
-            SkinController.Color.EventColorUsedInSegment += OnColorUsed;
+            NetworkSkinPanelController.Color.EventColorUsedInSegment += OnColorUsed;
             RefreshColors();
         }
 
@@ -48,7 +48,7 @@ namespace NetworkSkins.GUI
             field = GameObject.Instantiate<UIColorField>(field);
             UIColorPicker picker = GameObject.Instantiate<UIColorPicker>(field.colorPicker);
             picker.eventColorUpdated += OnColorUpdated;
-            picker.color = SkinController.Color.SelectedColor;
+            picker.color = NetworkSkinPanelController.Color.SelectedColor;
             picker.component.color = GUIColor;
             UIPanel pickerPanel = picker.component as UIPanel;
             pickerPanel.backgroundSprite = "";
@@ -65,7 +65,7 @@ namespace NetworkSkins.GUI
             colorPanel = rgbPanel.AddUIComponent<UIPanel>();
             colorPanel.backgroundSprite = "WhiteRect";
             colorPanel.size = new Vector2(25.0f, 25.0f);
-            colorPanel.color = SkinController.Color.SelectedColor;
+            colorPanel.color = NetworkSkinPanelController.Color.SelectedColor;
 
             Color32 color32 = colorPicker.color;
             redLabel = CreateLabel(Translation.Instance.GetTranslation(TranslationID.LABEL_RED));
@@ -119,7 +119,7 @@ namespace NetworkSkins.GUI
             swatchesPanel = AddUIComponent<SwatchesPanel>();
             swatchesPanel.Build(PanelType.None, new Layout(new Vector2(254.0f, 30.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 4));
             swatchesPanel.padding = new RectOffset(11, 0, 5, 0);
-            foreach (var swatch in SkinController.Color.Swatches) {
+            foreach (var swatch in NetworkSkinPanelController.Color.Swatches) {
                 AddSwatch(swatch);
             }
         }
@@ -192,7 +192,7 @@ namespace NetworkSkins.GUI
         }
 
         private void ColorChanged() {
-            SkinController.Color.SetColor(currentColor);
+            NetworkSkinPanelController.Color.SetColor(currentColor);
         }
 
         private void OnColorUpdated(Color value) {
@@ -222,7 +222,7 @@ namespace NetworkSkins.GUI
 
         private void RefreshColors() {
             colorPicker.eventColorUpdated -= OnColorUpdated;
-            currentColor = colorPicker.color = SkinController.Color.SelectedColor;
+            currentColor = colorPicker.color = NetworkSkinPanelController.Color.SelectedColor;
             colorPicker.eventColorUpdated += OnColorUpdated;
         }
 

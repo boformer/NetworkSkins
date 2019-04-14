@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using static NetworkSkins.Controller.ItemListFeatureController<PropInfo>;
+using static NetworkSkins.Controller.ListPanelController<PropInfo>;
 
 
 namespace NetworkSkins.GUI
@@ -18,7 +18,7 @@ namespace NetworkSkins.GUI
         }
 
         protected override bool IsDefault(string itemID) {
-            return SkinController.Catenary.DefaultItem.Id == itemID;
+            return NetworkSkinPanelController.Catenary.DefaultItem.Id == itemID;
         }
 
         protected override void SetupRowsData() {
@@ -27,16 +27,16 @@ namespace NetworkSkins.GUI
                 fastList.RowsData = new FastList<object>();
             }
             fastList.RowsData.Clear();
-            itemCount = SkinController.Catenary.Items.Count;
+            itemCount = NetworkSkinPanelController.Catenary.Items.Count;
             fastList.RowsData.SetCapacity(itemCount);
             favouritesList.Clear();
             nonFavouritesList.Clear();
             int index = 0;
             List<string> favList = Persistence.GetFavourites(UIUtil.PanelToItemType(PanelType));
-            foreach (SimpleItem item in SkinController.Catenary.Items) {
+            foreach (SimpleItem item in NetworkSkinPanelController.Catenary.Items) {
                 if (item.Id == "#NONE#") {
                     ListItem listItem = CreateListItem(null);
-                    if (SkinController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
+                    if (NetworkSkinPanelController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
                     fastList.RowsData.Add(listItem);
                     index++;
                     continue;
@@ -48,14 +48,14 @@ namespace NetworkSkins.GUI
             for (int i = 0; i < favouritesList.Count; i++) {
                 PropInfo prefab = favouritesList[i] as PropInfo;
                 ListItem listItem = CreateListItem(prefab);
-                if (SkinController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
+                if (NetworkSkinPanelController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
                 fastList.RowsData.Add(listItem);
                 index++;
             }
             for (int i = 0; i < nonFavouritesList.Count; i++) {
                 PropInfo prefab = nonFavouritesList[i] as PropInfo;
                 ListItem listItem = CreateListItem(prefab);
-                if (SkinController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
+                if (NetworkSkinPanelController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
                 fastList.RowsData.Add(listItem);
                 index++;
             }

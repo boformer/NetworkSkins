@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace NetworkSkins.Controller
 {
-    public class CatenaryFeatureController : ItemListFeatureController<PropInfo>
+    public class CatenaryPanelController : ListPanelController<PropInfo>
     {
         protected override List<Item> BuildItems(ref Item defaultItem)
         {

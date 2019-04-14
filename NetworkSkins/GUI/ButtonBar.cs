@@ -1,5 +1,4 @@
-﻿using System;
-using ColossalFramework.UI;
+﻿using ColossalFramework.UI;
 using NetworkSkins.Locale;
 using NetworkSkins.TranslationFramework;
 using UnityEngine;
@@ -62,11 +61,11 @@ namespace NetworkSkins.GUI
 
         public override void Awake() {
             base.Awake();
-            SkinController.EventPrefabChanged += OnPrefabChanged;
+            NetworkSkinPanelController.EventPrefabChanged += OnPrefabChanged;
         }
 
         public override void OnDestroy() {
-            SkinController.EventPrefabChanged -= OnPrefabChanged;
+            NetworkSkinPanelController.EventPrefabChanged -= OnPrefabChanged;
             base.OnDestroy();
         }
 
@@ -79,12 +78,12 @@ namespace NetworkSkins.GUI
         }
 
         protected override void RefreshUI(NetInfo netInfo) {
-            treesButton.isVisible = SkinController.TreesEnabled;
-            lightsButton.isVisible = SkinController.StreetLight.Enabled;
-            surfacesButton.isVisible = SkinController.TerrainSurface.Enabled;
-            pillarsButton.isVisible = SkinController.PillarsEnabled;
-            catenaryButton.isVisible = SkinController.Catenary.Enabled;
-            colorButton.isVisible = SkinController.Color.Enabled;
+            treesButton.isVisible = NetworkSkinPanelController.TreesEnabled;
+            lightsButton.isVisible = NetworkSkinPanelController.StreetLight.Enabled;
+            surfacesButton.isVisible = NetworkSkinPanelController.TerrainSurface.Enabled;
+            pillarsButton.isVisible = NetworkSkinPanelController.PillarsEnabled;
+            catenaryButton.isVisible = NetworkSkinPanelController.Catenary.Enabled;
+            colorButton.isVisible = NetworkSkinPanelController.Color.Enabled;
         }
 
         private void OnPrefabChanged(NetInfo netInfo) {

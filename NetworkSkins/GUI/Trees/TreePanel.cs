@@ -16,9 +16,9 @@ namespace NetworkSkins.GUI
 
         protected override void RefreshUI(NetInfo netInfo) {
             laneTabStrip.isVisible = true;
-            SetTabEnabled(LanePosition.Right, SkinController.RighTree.Enabled);
-            SetTabEnabled(LanePosition.Middle, SkinController.MiddleTree.Enabled);
-            SetTabEnabled(LanePosition.Left, SkinController.LeftTree.Enabled);
+            SetTabEnabled(LanePosition.Right, NetworkSkinPanelController.RighTree.Enabled);
+            SetTabEnabled(LanePosition.Middle, NetworkSkinPanelController.MiddleTree.Enabled);
+            SetTabEnabled(LanePosition.Left, NetworkSkinPanelController.LeftTree.Enabled);
             int tabCount = laneTabs.Count(tab => tab.isVisible);
             if (tabCount != 0) {
                 for (int i = 0; i < LanePositionExtensions.LanePositionCount; i++) {
@@ -28,8 +28,8 @@ namespace NetworkSkins.GUI
             if (tabCount == 1) {
                 laneTabStrip.isVisible = false;
                 laneTabStrip.selectedIndex = 1;
-            } else if (!SkinController.TabClicked) laneTabStrip.selectedIndex = 0;
-            SkinController.TabClicked = false;
+            } else if (!NetworkSkinPanelController.TabClicked) laneTabStrip.selectedIndex = 0;
+            NetworkSkinPanelController.TabClicked = false;
         }
 
         private void SetTabEnabled(LanePosition lanePos, bool enabled) {
@@ -55,10 +55,10 @@ namespace NetworkSkins.GUI
 
         protected override void OnSelectedChanged(string itemID, bool selected) {
             if (!selected) return;
-            switch (SkinController.LanePosition) {
-                case LanePosition.Left: SkinController.LeftTree.SetSelectedItem(itemID); break;
-                case LanePosition.Middle: SkinController.MiddleTree.SetSelectedItem(itemID); break;
-                case LanePosition.Right: SkinController.RighTree.SetSelectedItem(itemID); break;
+            switch (NetworkSkinPanelController.LanePosition) {
+                case LanePosition.Left: NetworkSkinPanelController.LeftTree.SetSelectedItem(itemID); break;
+                case LanePosition.Middle: NetworkSkinPanelController.MiddleTree.SetSelectedItem(itemID); break;
+                case LanePosition.Right: NetworkSkinPanelController.RighTree.SetSelectedItem(itemID); break;
                 default: break;
             }
         }

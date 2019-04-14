@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace NetworkSkins.Controller
 {
-    public abstract class ItemListFeatureController<T> : FeatureController
+    public abstract class ListPanelController<T> : FeaturePanelController
     {
         public override bool Enabled => base.Enabled && Items.Count > 1;
 

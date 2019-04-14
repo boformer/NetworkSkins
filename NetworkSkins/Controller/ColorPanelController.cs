@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace NetworkSkins.Controller
 {
-    public class ColorFeatureController : FeatureController
+    public class ColorPanelController : FeaturePanelController
     {
         public const int MaxSwatchesCount = 12;
 
@@ -25,7 +25,7 @@ namespace NetworkSkins.Controller
 
         private bool _default = true;
         
-        public ColorFeatureController()
+        public ColorPanelController()
         {
             _swatches = PersistenceService.Instance.GetSwatches();
         }

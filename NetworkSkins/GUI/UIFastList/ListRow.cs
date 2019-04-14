@@ -112,7 +112,7 @@ namespace NetworkSkins.GUI
         }
 
         private void DisplayItem(bool isRowOdd) {
-            color = SkinController.IsSelected(itemData.ID, itemData.Type) ? selectedColor : isRowOdd ? oddColor : evenColor;
+            color = NetworkSkinPanelController.IsSelected(itemData.ID, itemData.Type) ? selectedColor : isRowOdd ? oddColor : evenColor;
             thumbnailSprite.texture = itemData.Thumbnail;
             nameLabel.text = itemData.DisplayName;
             favouriteCheckbox.isChecked = itemData.IsFavourite;
@@ -134,13 +134,13 @@ namespace NetworkSkins.GUI
 
         private void OnMouseLeaveEvent(UIComponent component, UIMouseEventParameter eventParam) {
             if (itemData != null) {
-                color = SkinController.IsSelected(itemData.ID, itemData.Type) ? selectedColor : isRowOdd ? oddColor : evenColor;
+                color = NetworkSkinPanelController.IsSelected(itemData.ID, itemData.Type) ? selectedColor : isRowOdd ? oddColor : evenColor;
             }
         }
 
         private void OnMouseEnterEvent(UIComponent component, UIMouseEventParameter eventParam) {
             if (itemData != null) {
-                if (!SkinController.IsSelected(itemData.ID, itemData.Type)) color = new Color32((byte)((int)oddColor.r + 25), (byte)(oddColor.g + 25), (byte)(oddColor.b + 25), 255);
+                if (!NetworkSkinPanelController.IsSelected(itemData.ID, itemData.Type)) color = new Color32((byte)((int)oddColor.r + 25), (byte)(oddColor.g + 25), (byte)(oddColor.b + 25), 255);
             }
         }
 
@@ -152,7 +152,7 @@ namespace NetworkSkins.GUI
 
         protected override void RefreshUI(NetInfo netInfo) {
             if (itemData != null) {
-                color = SkinController.IsSelected(itemData.ID, itemData.Type) ? selectedColor : isRowOdd ? oddColor : evenColor;
+                color = NetworkSkinPanelController.IsSelected(itemData.ID, itemData.Type) ? selectedColor : isRowOdd ? oddColor : evenColor;
             }
         }
     }

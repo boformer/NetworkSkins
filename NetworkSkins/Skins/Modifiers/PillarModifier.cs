@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using ColossalFramework.IO;
+﻿using ColossalFramework.IO;
 using NetworkSkins.Net;
 using NetworkSkins.Skins.Serialization;
 

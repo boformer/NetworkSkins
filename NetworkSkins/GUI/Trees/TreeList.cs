@@ -1,7 +1,7 @@
 ﻿using NetworkSkins.Controller;
 using NetworkSkins.Net;
 using System.Collections.Generic;
-using static NetworkSkins.Controller.ItemListFeatureController<TreeInfo>;
+using static NetworkSkins.Controller.ListPanelController<TreeInfo>;
 
 namespace NetworkSkins.GUI
 {
@@ -16,10 +16,10 @@ namespace NetworkSkins.GUI
         }
 
         protected override bool IsDefault(string itemID) {
-            switch (SkinController.LanePosition) {
-                case LanePosition.Left: return SkinController.LeftTree.DefaultItem.Id == itemID;
-                case LanePosition.Middle: return SkinController.MiddleTree.DefaultItem.Id == itemID;
-                case LanePosition.Right: return SkinController.RighTree.DefaultItem.Id == itemID;
+            switch (NetworkSkinPanelController.LanePosition) {
+                case LanePosition.Left: return NetworkSkinPanelController.LeftTree.DefaultItem.Id == itemID;
+                case LanePosition.Middle: return NetworkSkinPanelController.MiddleTree.DefaultItem.Id == itemID;
+                case LanePosition.Right: return NetworkSkinPanelController.RighTree.DefaultItem.Id == itemID;
                 default: return false;
             }
         }
@@ -30,11 +30,11 @@ namespace NetworkSkins.GUI
                 fastList.RowsData = new FastList<object>();
             }
             fastList.RowsData.Clear();
-            TreeFeatureController controller = null;
-            switch (SkinController.LanePosition) {
-                case LanePosition.Left: controller = SkinController.LeftTree; break;
-                case LanePosition.Middle: controller = SkinController.MiddleTree; break;
-                case LanePosition.Right: controller = SkinController.RighTree; break;
+            TreePanelController controller = null;
+            switch (NetworkSkinPanelController.LanePosition) {
+                case LanePosition.Left: controller = NetworkSkinPanelController.LeftTree; break;
+                case LanePosition.Middle: controller = NetworkSkinPanelController.MiddleTree; break;
+                case LanePosition.Right: controller = NetworkSkinPanelController.RighTree; break;
             }
             itemCount = controller.Items.Count;
             fastList.RowsData.SetCapacity(itemCount);
@@ -45,7 +45,7 @@ namespace NetworkSkins.GUI
             foreach (SimpleItem item in controller.Items) {
                 if (item.Id == "#NONE#") {
                     ListItem listItem = CreateListItem(null);
-                    if (SkinController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
+                    if (NetworkSkinPanelController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
                     fastList.RowsData.Add(listItem);
                     index++;
                     continue;
@@ -57,14 +57,14 @@ namespace NetworkSkins.GUI
             for (int i = 0; i < favouritesList.Count; i++) {
                 TreeInfo prefab = favouritesList[i] as TreeInfo;
                 ListItem listItem = CreateListItem(prefab);
-                if (SkinController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
+                if (NetworkSkinPanelController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
                 fastList.RowsData.Add(listItem);
                 index++;
             }
             for (int i = 0; i < nonFavouritesList.Count; i++) {
                 TreeInfo prefab = nonFavouritesList[i] as TreeInfo;
                 ListItem listItem = CreateListItem(prefab);
-                if (SkinController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
+                if (NetworkSkinPanelController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
                 fastList.RowsData.Add(listItem);
                 index++;
             }

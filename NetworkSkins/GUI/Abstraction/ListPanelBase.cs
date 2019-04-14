@@ -1,5 +1,4 @@
-﻿using System;
-using ColossalFramework.UI;
+﻿using ColossalFramework.UI;
 using NetworkSkins.Locale;
 using NetworkSkins.Net;
 using NetworkSkins.TranslationFramework;
@@ -56,13 +55,13 @@ namespace NetworkSkins.GUI
         }
 
         private void OnPillarTabstripSelectedIndexChanged(UIComponent component, int value) {
-            SkinController.TabClicked = true;
-            SkinController.SetActivePillarElevation((Pillar)value);
+            NetworkSkinPanelController.TabClicked = true;
+            NetworkSkinPanelController.SetActivePillarElevation((Pillar)value);
         }
 
         private void OnLaneTabstripSelectedIndexChanged(UIComponent component, int value) {
-            SkinController.TabClicked = true;
-            SkinController.SetActiveLane((LanePosition)value);
+            NetworkSkinPanelController.TabClicked = true;
+            NetworkSkinPanelController.SetActiveLane((LanePosition)value);
         }
 
         private void SetupLaneTabs() {

@@ -6,13 +6,13 @@ using UnityEngine;
 
 namespace NetworkSkins.Controller
 {
-    public class PillarFeatureController : ItemListFeatureController<BuildingInfo>
+    public class PillarPanelController : ListPanelController<BuildingInfo>
     {
         public readonly PillarType Type;
 
         private readonly List<Item> _items;
 
-        public PillarFeatureController(PillarType type, List<BuildingInfo> availablePillars)
+        public PillarPanelController(PillarType type, List<BuildingInfo> availablePillars)
         {
             Type = type;
 
