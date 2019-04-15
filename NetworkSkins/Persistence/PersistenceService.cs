@@ -13,9 +13,7 @@ namespace NetworkSkins.Persistence
         public static PersistenceService Instance { get; set; }
 
         public bool SaveActiveSelectionGlobally {
-            get {
-                return Data.SaveActiveSelectionGlobally;
-            }
+            get => Data.SaveActiveSelectionGlobally;
             set {
                 Data.SaveActiveSelectionGlobally = value;
                 SaveData();

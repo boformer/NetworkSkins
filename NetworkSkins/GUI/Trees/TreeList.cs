@@ -25,7 +25,7 @@ namespace NetworkSkins.GUI.Trees
         }
 
         protected override void SetupRowsData() {
-            int itemCount, selectedIndex = 0;
+            int selectedIndex = 0;
             if (fastList.RowsData == null) {
                 fastList.RowsData = new FastList<object>();
             }
@@ -36,7 +36,7 @@ namespace NetworkSkins.GUI.Trees
                 case LanePosition.Middle: controller = NetworkSkinPanelController.MiddleTree; break;
                 case LanePosition.Right: controller = NetworkSkinPanelController.RighTree; break;
             }
-            itemCount = controller.Items.Count;
+            var itemCount = controller.Items.Count;
             fastList.RowsData.SetCapacity(itemCount);
             favouritesList.Clear();
             nonFavouritesList.Clear();

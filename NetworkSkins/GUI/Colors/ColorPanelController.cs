@@ -14,7 +14,7 @@ namespace NetworkSkins.GUI.Colors
 
         public override bool Enabled => base.Enabled && _colorable;
 
-        public UnityEngine.Color SelectedColor { get; private set; }
+        public Color SelectedColor { get; private set; }
 
         public IEnumerable<Color32> Swatches => _swatches;
         private readonly List<Color32> _swatches;
@@ -31,7 +31,7 @@ namespace NetworkSkins.GUI.Colors
             _swatches = PersistenceService.Instance.GetSwatches();
         }
 
-        public void SetColor(UnityEngine.Color selected)
+        public void SetColor(Color selected)
         {
             if (SelectedColor == selected) return;
 
@@ -67,7 +67,7 @@ namespace NetworkSkins.GUI.Colors
             }
         }
 
-        private void OnColorUsed(UnityEngine.Color color)
+        private void OnColorUsed(Color color)
         {
             var colorIndex = _swatches.IndexOf(color);
             if (colorIndex == 0)
@@ -137,7 +137,7 @@ namespace NetworkSkins.GUI.Colors
         #region Active Selection Data
         private const string ColorKey = "Color";
 
-        private UnityEngine.Color? LoadSelectedColor()
+        private Color? LoadSelectedColor()
         {
             return ActiveSelectionData.Instance.GetColorValue(Prefab, ColorKey);
         }

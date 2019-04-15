@@ -3,6 +3,7 @@ using ColossalFramework.UI;
 using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.GUI.UIFastList;
 using NetworkSkins.Locale;
+using NetworkSkins.Net;
 using NetworkSkins.Skins.Modifiers;
 using NetworkSkins.TranslationFramework;
 using UnityEngine;
@@ -52,11 +53,10 @@ namespace NetworkSkins.GUI.Surfaces
         protected ListItem CreateListItem(Surface surfaceType) {
             TerrainManager terrainManager = TerrainManager.instance;
             Texture2D thumbnail;
-            string id, displayName, prefix, name = string.Empty;
-            bool isFavourite, isDefault;
-            isFavourite = IsFavourite(surfaceType.ToString());
-            isDefault = IsDefault(surfaceType.ToString());
-            prefix = isDefault
+            string name;
+            var isFavourite = IsFavourite(surfaceType.ToString());
+            var isDefault = IsDefault(surfaceType.ToString());
+            var prefix = isDefault
                 ? string.Concat("(", Translation.Instance.GetTranslation(TranslationID.LABEL_DEFAULT), ") ")
                 : string.Empty;
             switch (surfaceType) {
@@ -77,8 +77,8 @@ namespace NetworkSkins.GUI.Surfaces
                     thumbnail = UIView.GetAView()?.defaultAtlas?.GetSpriteTexture("Niet");
                     break;
             }
-            id = surfaceType == Surface.None ? "#NONE#" : Enum.GetName(typeof(Surface), surfaceType);
-            displayName = string.Concat(prefix, name);
+            var id = surfaceType == Surface.None ? "#NONE#" : Enum.GetName(typeof(Surface), surfaceType);
+            var displayName = string.Concat(prefix, name);
             return new ListItem(id, displayName, thumbnail, isFavourite, ItemType.Surfaces);
         }
     }

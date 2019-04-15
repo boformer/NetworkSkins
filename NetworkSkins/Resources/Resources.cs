@@ -53,7 +53,7 @@ namespace NetworkSkins
 
         private UITextureAtlas UITextureAtlas { get; set; }
 
-        private string[] spriteNames = new string[] {
+        private static readonly string[] spriteNames = new string[] {
             "DragHandle",
             "DragHandle",
             "Star",
@@ -120,7 +120,7 @@ namespace NetworkSkins
             Rect[] regions = new Rect[spriteNames.Length];
             regions = texture2D.PackTextures(textures, 2, maxSize);
 
-            Material material = UnityEngine.Object.Instantiate<Material>(UIView.GetAView().defaultAtlas.material);
+            Material material = Object.Instantiate<Material>(UIView.GetAView().defaultAtlas.material);
             material.mainTexture = texture2D;
             textureAtlas.material = material;
             textureAtlas.name = "NetworkSkinsAtlas";

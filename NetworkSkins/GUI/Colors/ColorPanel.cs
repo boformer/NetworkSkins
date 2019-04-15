@@ -46,8 +46,8 @@ namespace NetworkSkins.GUI.Colors
 
         private void CreateColorPicker() {
             UIColorField field = UITemplateManager.Get<UIPanel>("LineTemplate").Find<UIColorField>("LineColor");
-            field = GameObject.Instantiate<UIColorField>(field);
-            UIColorPicker picker = GameObject.Instantiate<UIColorPicker>(field.colorPicker);
+            field = Instantiate<UIColorField>(field);
+            UIColorPicker picker = Instantiate<UIColorPicker>(field.colorPicker);
             picker.eventColorUpdated += OnColorUpdated;
             picker.color = NetworkSkinPanelController.Color.SelectedColor;
             picker.component.color = GUIColor;
@@ -155,7 +155,7 @@ namespace NetworkSkins.GUI.Colors
         }
 
         private string GetClampedString(string value) {
-            return GetClampedFloat(value).ToString();
+            return GetClampedFloat(value).ToString("F2");
         }
 
         private float GetClampedFloat(string value) {
@@ -196,7 +196,7 @@ namespace NetworkSkins.GUI.Colors
             NetworkSkinPanelController.Color.SetColor(currentColor);
         }
 
-        private void OnColorUpdated(UnityEngine.Color value) {
+        private void OnColorUpdated(Color value) {
             currentColor = value;
             if (colorPanel != null) colorPanel.color = value;
             if (redTextField != null) {

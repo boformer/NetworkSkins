@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using NetworkSkins.GUI;
 using NetworkSkins.GUI.Catenaries;
 using NetworkSkins.GUI.Colors;
 using NetworkSkins.GUI.Lights;
@@ -11,7 +10,7 @@ using NetworkSkins.Net;
 using NetworkSkins.Skins;
 using UnityEngine;
 
-namespace NetworkSkins.Controller
+namespace NetworkSkins.GUI
 {
     public class NetworkSkinPanelController : MonoBehaviour {
         public static NetworkSkinPanelController Instance;

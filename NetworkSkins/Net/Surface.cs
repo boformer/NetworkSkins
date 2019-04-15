@@ -1,4 +1,4 @@
-﻿namespace NetworkSkins.Skins.Modifiers
+﻿namespace NetworkSkins.Net
 {
     public enum Surface
     {

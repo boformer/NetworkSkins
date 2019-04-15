@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using NetworkSkins.Controller;
 using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.GUI.UIFastList;
 
@@ -23,12 +22,12 @@ namespace NetworkSkins.GUI.Catenaries
         }
 
         protected override void SetupRowsData() {
-            int itemCount, selectedIndex = 0;
+            int selectedIndex = 0;
             if (fastList.RowsData == null) {
                 fastList.RowsData = new FastList<object>();
             }
             fastList.RowsData.Clear();
-            itemCount = NetworkSkinPanelController.Catenary.Items.Count;
+            int itemCount = NetworkSkinPanelController.Catenary.Items.Count;
             fastList.RowsData.SetCapacity(itemCount);
             favouritesList.Clear();
             nonFavouritesList.Clear();

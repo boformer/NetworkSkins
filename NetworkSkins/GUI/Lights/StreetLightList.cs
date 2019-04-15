@@ -23,12 +23,12 @@ namespace NetworkSkins.GUI.Lights
         }
 
         protected override void SetupRowsData() {
-            int itemCount, selectedIndex = 0;
+            int selectedIndex = 0;
             if (fastList.RowsData == null) {
                 fastList.RowsData = new FastList<object>();
             }
             fastList.RowsData.Clear();
-            itemCount = NetworkSkinPanelController.StreetLight.Items.Count;
+            var itemCount = NetworkSkinPanelController.StreetLight.Items.Count;
             fastList.RowsData.SetCapacity(itemCount);
             favouritesList.Clear();
             nonFavouritesList.Clear();

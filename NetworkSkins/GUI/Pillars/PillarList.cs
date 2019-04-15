@@ -26,7 +26,7 @@ namespace NetworkSkins.GUI.Pillars
         }
 
         protected override void SetupRowsData() {
-            int itemCount = 0, selectedIndex = 0;
+            int selectedIndex = 0;
             if (fastList.RowsData == null) {
                 fastList.RowsData = new FastList<object>();
             }
@@ -38,7 +38,7 @@ namespace NetworkSkins.GUI.Pillars
                 case Pillar.Bridge: controller = NetworkSkinPanelController.BridgeBridgePillar; break;
                 case Pillar.BridgeMiddle: controller = NetworkSkinPanelController.BridgeMiddlePillar; break;
             }
-            itemCount = controller.Items.Count;
+            int itemCount = controller.Items.Count;
             fastList.RowsData.SetCapacity(itemCount);
             favouritesList.Clear();
             nonFavouritesList.Clear();

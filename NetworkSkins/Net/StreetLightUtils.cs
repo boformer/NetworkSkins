@@ -14,7 +14,7 @@ namespace NetworkSkins.Net
             for (uint prefabIndex = 0; prefabIndex < prefabCount; prefabIndex++)
             {
                 var prefab = PrefabCollection<PropInfo>.GetLoaded(prefabIndex);
-                if (StreetLightUtils.IsStreetLightProp(prefab))
+                if (IsStreetLightProp(prefab))
                 {
                     streetLights.Add(prefab);
                 }

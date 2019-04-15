@@ -2,6 +2,7 @@
 using ColossalFramework.UI;
 using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.Locale;
+using NetworkSkins.Net;
 using NetworkSkins.Skins.Modifiers;
 using NetworkSkins.TranslationFramework;
 using UnityEngine;
@@ -28,7 +29,7 @@ namespace NetworkSkins.GUI.UIFastList
         private Color32 evenColor = new Color32(67, 76, 80, 255); 
         private Color32 oddColor = new Color32(57, 67, 70, 255);
         private Color32 hoverColor = new Color32(131, 141, 145, 255);
-        private Color32 selectedColor = PanelBase.FocusedColor;
+        private Color32 selectedColor = FocusedColor;
         private bool isRowOdd;
 
         public override void Build(PanelType panelType, Layout layout) {
@@ -141,7 +142,7 @@ namespace NetworkSkins.GUI.UIFastList
 
         private void OnMouseEnterEvent(UIComponent component, UIMouseEventParameter eventParam) {
             if (itemData != null) {
-                if (!NetworkSkinPanelController.IsSelected(itemData.ID, itemData.Type)) color = new Color32((byte)((int)oddColor.r + 25), (byte)(oddColor.g + 25), (byte)(oddColor.b + 25), 255);
+                if (!NetworkSkinPanelController.IsSelected(itemData.ID, itemData.Type)) color = new Color32((byte)(oddColor.r + 25), (byte)(oddColor.g + 25), (byte)(oddColor.b + 25), 255);
             }
         }
 
