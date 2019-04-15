@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using NetworkSkins.GUI.Abstraction;
-using NetworkSkins.GUI.UIFastList;
+﻿using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.Net;
 
 namespace NetworkSkins.GUI.Trees
@@ -22,54 +20,6 @@ namespace NetworkSkins.GUI.Trees
                 case LanePosition.Right: return NetworkSkinPanelController.RighTree.DefaultItem.Id == itemID;
                 default: return false;
             }
-        }
-
-        protected override void SetupRowsData() {
-            int selectedIndex = 0;
-            if (fastList.RowsData == null) {
-                fastList.RowsData = new FastList<object>();
-            }
-            fastList.RowsData.Clear();
-            TreePanelController controller = null;
-            switch (NetworkSkinPanelController.LanePosition) {
-                case LanePosition.Left: controller = NetworkSkinPanelController.LeftTree; break;
-                case LanePosition.Middle: controller = NetworkSkinPanelController.MiddleTree; break;
-                case LanePosition.Right: controller = NetworkSkinPanelController.RighTree; break;
-            }
-            var itemCount = controller.Items.Count;
-            fastList.RowsData.SetCapacity(itemCount);
-            favouritesList.Clear();
-            nonFavouritesList.Clear();
-            int index = 0;
-            List<string> favList = Persistence.GetFavourites(UIUtil.PanelToItemType(PanelType));
-            foreach (ListPanelController<TreeInfo>.SimpleItem item in controller.Items) {
-                if (item.Id == "#NONE#") {
-                    ListItem listItem = CreateListItem(null);
-                    if (NetworkSkinPanelController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
-                    fastList.RowsData.Add(listItem);
-                    index++;
-                    continue;
-                }
-                if (favList.Contains(item.Id)) {
-                    favouritesList.Add(item.Value);
-                } else nonFavouritesList.Add(item.Value);
-            }
-            for (int i = 0; i < favouritesList.Count; i++) {
-                TreeInfo prefab = favouritesList[i] as TreeInfo;
-                ListItem listItem = CreateListItem(prefab);
-                if (NetworkSkinPanelController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
-                fastList.RowsData.Add(listItem);
-                index++;
-            }
-            for (int i = 0; i < nonFavouritesList.Count; i++) {
-                TreeInfo prefab = nonFavouritesList[i] as TreeInfo;
-                ListItem listItem = CreateListItem(prefab);
-                if (NetworkSkinPanelController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
-                fastList.RowsData.Add(listItem);
-                index++;
-            }
-            fastList.DisplayAt(selectedIndex);
-            fastList.SelectedIndex = selectedIndex;
         }
     }
 }

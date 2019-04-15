@@ -14,22 +14,13 @@ namespace NetworkSkins.GUI.Lights
         }
 
         protected override void RefreshUI(NetInfo netInfo) {
-            list.RefreshRowsData();
-        }
 
-        protected override void OnSearchLostFocus() {
-        }
-
-        protected override void OnSearchTextChanged(string text) {
         }
 
         protected override void OnPanelBuilt() {
             laneTabStrip.isVisible = false;
             pillarTabStrip.isVisible = false;
             Refresh();
-        }
-
-        protected override void OnFavouriteChanged(string itemID, bool favourite) {
         }
 
         protected override void OnSelectedChanged(string itemID, bool selected) {

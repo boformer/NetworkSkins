@@ -30,5 +30,7 @@
     <Translation ID="TOOLTIP_EXTRAS" String="Extras" />
     <Translation ID="TOOLTIP_ADDFAVOURITE" String="Add to favorites" />
     <Translation ID="TOOLTIP_REMOVEFAVOURITE" String="Remove from favorites" />
+    <Translation ID="TOOLTIP_RESETCURRENT" String="Reset all settings for currently selected network" />
+    <Translation ID="BUTTON_RESET" String="Reset" />
   </Translations>
 </Language>

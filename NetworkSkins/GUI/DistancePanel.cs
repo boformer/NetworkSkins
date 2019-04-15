@@ -138,6 +138,7 @@ namespace NetworkSkins.GUI
                 case PanelType.Lights:
                     slider.value = NetworkSkinPanelController.StreetLight.SelectedRepeatDistance;
                     defaultDistance = NetworkSkinPanelController.StreetLight.DefaultRepeatDistance;
+                    isVisible = NetworkSkinPanelController.StreetLight.CanEditRepeatDistance;
                     break;
                 default: break;
             }

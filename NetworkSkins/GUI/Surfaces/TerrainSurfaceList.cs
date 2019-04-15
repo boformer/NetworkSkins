@@ -4,7 +4,6 @@ using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.GUI.UIFastList;
 using NetworkSkins.Locale;
 using NetworkSkins.Net;
-using NetworkSkins.Skins.Modifiers;
 using NetworkSkins.TranslationFramework;
 using UnityEngine;
 

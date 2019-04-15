@@ -75,7 +75,7 @@ namespace NetworkSkins.GUI
             CreateButtons();
             UIPanel space = AddUIComponent<UIPanel>();
             space.size = new Vector2(width, 0.1f);
-            RefreshUI(null);
+            Refresh();
         }
 
         protected override void RefreshUI(NetInfo netInfo) {

@@ -1,15 +1,11 @@
-﻿using System.Collections.Generic;
-using NetworkSkins.GUI.Abstraction;
-using NetworkSkins.GUI.UIFastList;
+﻿using NetworkSkins.GUI.Abstraction;
+using UnityEngine;
 
 namespace NetworkSkins.GUI.Catenaries
 {
     public class CatenaryList : ListBase<PropInfo>
     {
-        public void RefreshRowsData() {
-            SetupRowsData();
-        }
-
+        protected override Vector2 ListSize => NetworkSkinPanelController.Catenary.Items.Count < 10 ? new Vector2(base.ListSize.x - 12.0f, RowHeight * NetworkSkinPanelController.Catenary.Items.Count) : base.ListSize;
         protected override void RefreshUI(NetInfo netInfo) {
             SetupRowsData();
         }
@@ -19,48 +15,6 @@ namespace NetworkSkins.GUI.Catenaries
 
         protected override bool IsDefault(string itemID) {
             return NetworkSkinPanelController.Catenary.DefaultItem.Id == itemID;
-        }
-
-        protected override void SetupRowsData() {
-            int selectedIndex = 0;
-            if (fastList.RowsData == null) {
-                fastList.RowsData = new FastList<object>();
-            }
-            fastList.RowsData.Clear();
-            int itemCount = NetworkSkinPanelController.Catenary.Items.Count;
-            fastList.RowsData.SetCapacity(itemCount);
-            favouritesList.Clear();
-            nonFavouritesList.Clear();
-            int index = 0;
-            List<string> favList = Persistence.GetFavourites(UIUtil.PanelToItemType(PanelType));
-            foreach (ListPanelController<PropInfo>.SimpleItem item in NetworkSkinPanelController.Catenary.Items) {
-                if (item.Id == "#NONE#") {
-                    ListItem listItem = CreateListItem(null);
-                    if (NetworkSkinPanelController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
-                    fastList.RowsData.Add(listItem);
-                    index++;
-                    continue;
-                }
-                if (favList.Contains(item.Id)) {
-                    favouritesList.Add(item.Value);
-                } else nonFavouritesList.Add(item.Value);
-            }
-            for (int i = 0; i < favouritesList.Count; i++) {
-                PropInfo prefab = favouritesList[i] as PropInfo;
-                ListItem listItem = CreateListItem(prefab);
-                if (NetworkSkinPanelController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
-                fastList.RowsData.Add(listItem);
-                index++;
-            }
-            for (int i = 0; i < nonFavouritesList.Count; i++) {
-                PropInfo prefab = nonFavouritesList[i] as PropInfo;
-                ListItem listItem = CreateListItem(prefab);
-                if (NetworkSkinPanelController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
-                fastList.RowsData.Add(listItem);
-                index++;
-            }
-            fastList.DisplayAt(selectedIndex);
-            fastList.SelectedIndex = selectedIndex;
         }
     }
 }

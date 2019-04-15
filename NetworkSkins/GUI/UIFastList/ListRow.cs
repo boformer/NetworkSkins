@@ -3,7 +3,6 @@ using ColossalFramework.UI;
 using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.Locale;
 using NetworkSkins.Net;
-using NetworkSkins.Skins.Modifiers;
 using NetworkSkins.TranslationFramework;
 using UnityEngine;
 
@@ -124,6 +123,7 @@ namespace NetworkSkins.GUI.UIFastList
                     favouriteCheckbox.isVisible = false;
                 }
             }
+            if (itemData.ID == "#DEFAULT#" || itemData.ID == "#NONE#") favouriteCheckbox.isVisible = false;
             UpdateCheckboxTooltip();
         }
 

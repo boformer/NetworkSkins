@@ -23,7 +23,6 @@ namespace NetworkSkins.GUI.Abstraction
             CreateLaneTabstrip();
             SetupLaneTabs();
             CreateList();
-            CreateSearchBox();
             UIUtil.CreateSpace(width - (Spacing * 2), 0.1f, this);
             OnPanelBuilt();
         }
@@ -32,11 +31,10 @@ namespace NetworkSkins.GUI.Abstraction
 
         protected abstract void OnPanelBuilt();
 
-        protected abstract void OnSearchTextChanged(string text);
-
-        protected abstract void OnSearchLostFocus();
-
-        protected abstract void OnFavouriteChanged(string itemID, bool favourite);
+        protected void OnFavouriteChanged(string itemID, bool favourite) {
+            if (favourite) Persistence.AddFavourite(itemID, UIUtil.PanelToItemType(PanelType));
+            else Persistence.RemoveFavourite(itemID, UIUtil.PanelToItemType(PanelType));
+        }
 
         protected abstract void OnSelectedChanged(string itemID, bool selected);
 
@@ -94,10 +92,6 @@ namespace NetworkSkins.GUI.Abstraction
                 pillarTabs[i].color = pillarTabs[i].focusedColor = new Color32(210, 210, 210, 255);
                 pillarTabs[i].size = new Vector2(pillarTabStrip.width / (int)Pillar.Count, pillarTabStrip.height);
             }
-        }
-
-        private void CreateSearchBox() {
-            
         }
     }
 }

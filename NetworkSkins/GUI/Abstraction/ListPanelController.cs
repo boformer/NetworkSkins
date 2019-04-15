@@ -99,7 +99,7 @@ namespace NetworkSkins.GUI.Abstraction
 
         public class DefaultVariantItem : Item
         {
-            public DefaultVariantItem() : base("#DEFAULT") {}
+            public DefaultVariantItem() : base("#DEFAULT#") {}
         }
         #endregion
     }

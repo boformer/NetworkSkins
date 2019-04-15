@@ -25,18 +25,6 @@ namespace NetworkSkins.GUI.Surfaces
             Refresh();
         }
 
-        protected override void OnSearchTextChanged(string text) {
-
-        }
-
-        protected override void OnSearchLostFocus() {
-
-        }
-
-        protected override void OnFavouriteChanged(string itemID, bool favourite) {
-
-        }
-
         protected override void OnSelectedChanged(string itemID, bool selected) {
             if (!selected) return;
             NetworkSkinPanelController.TerrainSurface.SetSelectedItem(itemID);

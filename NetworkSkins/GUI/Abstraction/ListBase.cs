@@ -13,8 +13,6 @@ namespace NetworkSkins.GUI.Abstraction
         protected UIFastList.UIFastList fastList;
         protected abstract Vector2 ListSize { get; }
         protected abstract float RowHeight { get; }
-        protected static List<PrefabInfo> favouritesList = new List<PrefabInfo>();
-        protected static List<PrefabInfo> nonFavouritesList = new List<PrefabInfo>();
         
         protected abstract bool IsFavourite(string itemID);
         protected abstract bool IsDefault(string itemID);

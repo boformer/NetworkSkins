@@ -31,5 +31,7 @@
         public const string TOOLTIP_EXTRAS = "TOOLTIP_EXTRAS";
         public const string TOOLTIP_ADDFAVOURITE = "TOOLTIP_ADDFAVOURITE";
         public const string TOOLTIP_REMOVEFAVOURITE = "TOOLTIP_REMOVEFAVOURITE";
+        public const string TOOLTIP_RESETCURRENT = "TOOLTIP_RESETCURRENT";
+        public const string BUTTON_RESET = "BUTTON_RESET";
     }
 }

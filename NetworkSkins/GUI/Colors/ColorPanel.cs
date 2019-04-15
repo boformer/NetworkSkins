@@ -18,6 +18,7 @@ namespace NetworkSkins.GUI.Colors
         private UITextField redTextField;
         private UITextField greenTextField;
         private UITextField blueTextField;
+        private ButtonPanel button;
         private Color32 currentColor;
         private bool updateNeeded;
 
@@ -40,7 +41,23 @@ namespace NetworkSkins.GUI.Colors
             CreateColorPicker();
             CreateRGBPanel();
             RefreshSwatchesPanel();
+            CreateResetButton();
+            UIUtil.CreateSpace(254.0f, 5.0f, this);
             NetworkSkinPanelController.Color.EventColorUsedInSegment += OnColorUsed;
+            RefreshColors();
+        }
+
+        private void CreateResetButton() {
+            button = AddUIComponent<ButtonPanel>();
+            button.Build(PanelType.None, new Layout(new Vector2(254.0f, 40.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 10));
+            button.padding = new RectOffset(10, 0, 5, 0);
+            button.SetAnchor(UIAnchorStyle.Left | UIAnchorStyle.CenterVertical);
+            button.SetText(Translation.Instance.GetTranslation(TranslationID.BUTTON_RESET));
+            button.EventButtonClicked += OnResetClicked;
+        }
+
+        private void OnResetClicked() {
+            NetworkSkinPanelController.Color.OnColorReset();
             RefreshColors();
         }
 
@@ -118,7 +135,8 @@ namespace NetworkSkins.GUI.Colors
         private void RefreshSwatchesPanel() {
             if (swatchesPanel != null) Destroy(swatchesPanel.gameObject);
             swatchesPanel = AddUIComponent<SwatchesPanel>();
-            swatchesPanel.Build(PanelType.None, new Layout(new Vector2(254.0f, 30.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 4));
+            swatchesPanel.zOrder = 2;
+            swatchesPanel.Build(PanelType.None, new Layout(new Vector2(254.0f, 25.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 4));
             swatchesPanel.padding = new RectOffset(11, 0, 5, 0);
             foreach (var swatch in NetworkSkinPanelController.Color.Swatches) {
                 AddSwatch(swatch);
@@ -155,14 +173,14 @@ namespace NetworkSkins.GUI.Colors
         }
 
         private string GetClampedString(string value) {
-            return GetClampedFloat(value).ToString("F2");
+            return value == "" ? value : GetClampedFloat(value).ToString("F0");
         }
 
         private float GetClampedFloat(string value) {
             if (!float.TryParse(value, out float number)) {
                 return 0.0f;
             }
-            return Mathf.Clamp(number, 0, 256);
+            return Mathf.Clamp(number, 0, 255);
         }
 
         private void OnKeyPress(UIComponent component, UIKeyEventParameter parameter) {
@@ -223,21 +241,18 @@ namespace NetworkSkins.GUI.Colors
 
         private void RefreshColors() {
             colorPicker.eventColorUpdated -= OnColorUpdated;
-            currentColor = colorPicker.color = NetworkSkinPanelController.Color.SelectedColor;
+            currentColor = colorPicker.color = colorPanel.color = NetworkSkinPanelController.Color.SelectedColor;
             colorPicker.eventColorUpdated += OnColorUpdated;
         }
 
         public class RGBPanel : PanelBase
         {
-            protected override void RefreshUI(NetInfo netInfo) {
-            }
+
         }
 
         public class SwatchesPanel : PanelBase
         {
-            protected override void RefreshUI(NetInfo netInfo) {
 
-            }
         }
     }
 }

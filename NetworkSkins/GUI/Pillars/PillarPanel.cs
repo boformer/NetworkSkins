@@ -29,19 +29,9 @@ namespace NetworkSkins.GUI.Pillars
             pillarTabs[(int)pillar].isVisible = enabled;
         }
 
-        protected override void OnSearchLostFocus() {
-        }
-
-        protected override void OnSearchTextChanged(string text) {
-        }
-
         protected override void OnPanelBuilt() {
             laneTabStrip.isVisible = false;
             Refresh();
-        }
-
-        protected override void OnFavouriteChanged(string itemID, bool favourite) {
-
         }
 
         protected override void OnSelectedChanged(string itemID, bool selected) {

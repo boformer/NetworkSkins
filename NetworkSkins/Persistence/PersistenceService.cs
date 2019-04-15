@@ -34,6 +34,7 @@ namespace NetworkSkins.Persistence
         private PersistentData _data;
 
         public void RemoveFavourite(string itemID, ItemType itemType) {
+            if (itemType == ItemType.None) return;
             if (Data.Favourites[(int)itemType].Contains(itemID)) {
                 Data.Favourites[(int)itemType].Remove(itemID);
                 SaveData();
@@ -50,6 +51,7 @@ namespace NetworkSkins.Persistence
         }
 
         public void AddFavourite(string itemID, ItemType itemType) {
+            if (itemType == ItemType.None) return;
             if (!Data.Favourites[(int)itemType].Contains(itemID)) {
                 Data.Favourites[(int)itemType].Add(itemID);
                 SaveData();

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NetworkSkins.GUI.Catenaries;
 using NetworkSkins.GUI.Colors;
@@ -31,6 +32,7 @@ namespace NetworkSkins.GUI
 
         public bool TreesEnabled => LeftTree.Enabled || MiddleTree.Enabled || RighTree.Enabled;
         public LanePosition LanePosition { get; set; } = LanePosition.Left;
+
         public TreePanelController LeftTree;
         public TreePanelController MiddleTree;
         public TreePanelController RighTree;
@@ -118,6 +120,10 @@ namespace NetworkSkins.GUI
             NetworkSkinManager.instance.EventSegmentPlaced -= OnSegmentPlaced;
         }
         #endregion
+
+        public void OnReset() {
+
+        }
 
         public void SetActivePillarElevation(Pillar pillar)
         {

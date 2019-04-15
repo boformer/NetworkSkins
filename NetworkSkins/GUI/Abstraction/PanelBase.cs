@@ -33,9 +33,11 @@ namespace NetworkSkins.GUI.Abstraction
             Layout.Apply(this);
         }
 
-        protected abstract void RefreshUI(NetInfo netInfo);
+        protected virtual void RefreshUI(NetInfo netInfo) {
 
-        protected virtual void Refresh() {
+        }
+
+        protected void Refresh() {
             RefreshUI(NetworkSkinPanelController.Prefab);
         }
 

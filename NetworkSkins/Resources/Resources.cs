@@ -53,7 +53,7 @@ namespace NetworkSkins
 
         private UITextureAtlas UITextureAtlas { get; set; }
 
-        private static readonly string[] spriteNames = new string[] {
+        private string[] spriteNames = new string[] {
             "DragHandle",
             "DragHandle",
             "Star",
@@ -97,7 +97,7 @@ namespace NetworkSkins
             "SettingsHovered",
             "SettingsFocused",
             "Swatch"
-    };
+        };
 
         public Resources() {
             CreateAtlas();
