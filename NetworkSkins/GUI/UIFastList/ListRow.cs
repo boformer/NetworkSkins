@@ -1,11 +1,13 @@
-﻿using ColossalFramework.UI;
+﻿using System;
+using ColossalFramework.UI;
+using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.Locale;
-using NetworkSkins.TranslationFramework;
-using System;
+using NetworkSkins.Net;
 using NetworkSkins.Skins.Modifiers;
+using NetworkSkins.TranslationFramework;
 using UnityEngine;
 
-namespace NetworkSkins.GUI
+namespace NetworkSkins.GUI.UIFastList
 {
     public class ListRow : PanelBase, IUIFastListRow
     {
@@ -27,7 +29,7 @@ namespace NetworkSkins.GUI
         private Color32 evenColor = new Color32(67, 76, 80, 255); 
         private Color32 oddColor = new Color32(57, 67, 70, 255);
         private Color32 hoverColor = new Color32(131, 141, 145, 255);
-        private Color32 selectedColor = PanelBase.FocusedColor;
+        private Color32 selectedColor = FocusedColor;
         private bool isRowOdd;
 
         public override void Build(PanelType panelType, Layout layout) {
@@ -40,14 +42,6 @@ namespace NetworkSkins.GUI
             UIUtil.CreateSpace(5.0f, 30.0f, this);
             eventMouseEnter += OnMouseEnterEvent;
             eventMouseLeave += OnMouseLeaveEvent;
-        }
-
-        public void UpdateColor(string itemID) {
-            if (itemData != null && itemData.ID == itemID) {
-                color = selectedColor;
-            } else {
-                color = isRowOdd ? oddColor : evenColor;
-            }
         }
 
         private void CreateThumbnail() {
@@ -120,7 +114,7 @@ namespace NetworkSkins.GUI
         }
 
         private void DisplayItem(bool isRowOdd) {
-            color = SkinController.IsSelected(itemData.ID, itemData.Type) ? selectedColor : isRowOdd ? oddColor : evenColor;
+            color = NetworkSkinPanelController.IsSelected(itemData.ID, itemData.Type) ? selectedColor : isRowOdd ? oddColor : evenColor;
             thumbnailSprite.texture = itemData.Thumbnail;
             nameLabel.text = itemData.DisplayName;
             favouriteCheckbox.isChecked = itemData.IsFavourite;
@@ -142,13 +136,13 @@ namespace NetworkSkins.GUI
 
         private void OnMouseLeaveEvent(UIComponent component, UIMouseEventParameter eventParam) {
             if (itemData != null) {
-                color = SkinController.IsSelected(itemData.ID, itemData.Type) ? selectedColor : isRowOdd ? oddColor : evenColor;
+                color = NetworkSkinPanelController.IsSelected(itemData.ID, itemData.Type) ? selectedColor : isRowOdd ? oddColor : evenColor;
             }
         }
 
         private void OnMouseEnterEvent(UIComponent component, UIMouseEventParameter eventParam) {
             if (itemData != null) {
-                if (!SkinController.IsSelected(itemData.ID, itemData.Type)) color = new Color32((byte)((int)oddColor.r + 25), (byte)(oddColor.g + (byte)25), (byte)(oddColor.b + (byte)25), 255);
+                if (!NetworkSkinPanelController.IsSelected(itemData.ID, itemData.Type)) color = new Color32((byte)(oddColor.r + 25), (byte)(oddColor.g + 25), (byte)(oddColor.b + 25), 255);
             }
         }
 
@@ -159,6 +153,9 @@ namespace NetworkSkins.GUI
         }
 
         protected override void RefreshUI(NetInfo netInfo) {
+            if (itemData != null) {
+                color = NetworkSkinPanelController.IsSelected(itemData.ID, itemData.Type) ? selectedColor : isRowOdd ? oddColor : evenColor;
+            }
         }
     }
 }

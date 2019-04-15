@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.Net;
+using NetworkSkins.Persistence;
 using NetworkSkins.Skins;
 using NetworkSkins.Skins.Modifiers;
 using UnityEngine;
 
-namespace NetworkSkins.Controller
+namespace NetworkSkins.GUI.Lights
 {
-    public class StreetLightFeatureController : ItemListFeatureController<PropInfo>
+    public class StreetLightPanelController : ListPanelController<PropInfo>
     {
         public float DefaultRepeatDistance { get; private set; }
 

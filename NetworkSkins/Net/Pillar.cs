@@ -6,6 +6,6 @@
         ElevatedMiddle,
         Bridge,
         BridgeMiddle,
-        Count
+        Count = 4 // TODO I don't like this!
     }
 }

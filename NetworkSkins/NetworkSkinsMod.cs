@@ -20,7 +20,7 @@ namespace NetworkSkins
         
         private HarmonyInstance harmony;
 
-        private MainPanel panel;
+        private NetworkSkinPanel panel;
         private GameObject skinControllerGameObject;
         private GameObject persistenceServiceGameObject;
 
@@ -100,19 +100,19 @@ namespace NetworkSkins
         private void Install()
         {
             persistenceServiceGameObject = new GameObject(nameof(PersistenceService));
-            skinControllerGameObject = new GameObject(nameof(SkinController));
+            skinControllerGameObject = new GameObject(nameof(NetworkSkinPanelController));
             persistenceServiceGameObject.transform.parent = NetworkSkinManager.instance.gameObject.transform;
             skinControllerGameObject.transform.parent = NetworkSkinManager.instance.gameObject.transform;
             PersistenceService.Instance = persistenceServiceGameObject.AddComponent<PersistenceService>();
-            SkinController.Instance = skinControllerGameObject.AddComponent<SkinController>();
-            SkinController.Instance.EventToolStateChanged += OnNetToolStateChanged;
+            NetworkSkinPanelController.Instance = skinControllerGameObject.AddComponent<NetworkSkinPanelController>();
+            NetworkSkinPanelController.Instance.EventToolStateChanged += OnNetToolStateChanged;
         }
 
         private void Uninstall()
         {
-            if (SkinController.Instance != null)
+            if (NetworkSkinPanelController.Instance != null)
             {
-                SkinController.Instance.EventToolStateChanged -= OnNetToolStateChanged;
+                NetworkSkinPanelController.Instance.EventToolStateChanged -= OnNetToolStateChanged;
                 if (skinControllerGameObject != null)
                 {
                     Destroy(skinControllerGameObject);
@@ -138,7 +138,7 @@ namespace NetworkSkins
         {
             if (isToolEnabled)
             {
-                panel = UIView.GetAView().AddUIComponent(typeof(MainPanel)) as MainPanel;
+                panel = UIView.GetAView().AddUIComponent(typeof(NetworkSkinPanel)) as NetworkSkinPanel;
             }
             else
             {

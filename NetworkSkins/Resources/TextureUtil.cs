@@ -17,7 +17,7 @@ namespace NetworkSkins
             RenderTexture active = RenderTexture.active;
             RenderTexture.active = rt;
             Texture2D texture2D = new Texture2D(rt.width, rt.height);
-            texture2D.ReadPixels(new Rect(0f, 0f, (float)rt.width, (float)rt.height), 0, 0);
+            texture2D.ReadPixels(new Rect(0f, 0f, rt.width, rt.height), 0, 0);
             texture2D.Apply();
             RenderTexture.active = active;
             return texture2D;

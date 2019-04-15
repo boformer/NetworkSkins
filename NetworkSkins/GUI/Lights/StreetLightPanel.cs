@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using NetworkSkins.GUI.Abstraction;
+using UnityEngine;
 
-namespace NetworkSkins.GUI
+namespace NetworkSkins.GUI.Lights
 {
-    public class LightPanel : ListPanelBase<LightList, PropInfo>
+    public class StreetLightPanel : ListPanelBase<StreetLightList, PropInfo>
     {
         private DistancePanel distancePanel;
 
@@ -33,8 +34,7 @@ namespace NetworkSkins.GUI
 
         protected override void OnSelectedChanged(string itemID, bool selected) {
             if (!selected) return;
-            SkinController.StreetLight.SetSelectedItem(itemID);
-            list.Select(itemID);
+            NetworkSkinPanelController.StreetLight.SetSelectedItem(itemID);
         }
     }
 }

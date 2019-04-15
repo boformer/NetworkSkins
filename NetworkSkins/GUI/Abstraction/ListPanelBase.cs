@@ -1,11 +1,10 @@
-﻿using System;
-using ColossalFramework.UI;
+﻿using ColossalFramework.UI;
 using NetworkSkins.Locale;
 using NetworkSkins.Net;
 using NetworkSkins.TranslationFramework;
 using UnityEngine;
 
-namespace NetworkSkins.GUI
+namespace NetworkSkins.GUI.Abstraction
 {
     public abstract class ListPanelBase : PanelBase
     {
@@ -17,7 +16,7 @@ namespace NetworkSkins.GUI
 
         public override void Build(PanelType panelType, Layout layout) {
             base.Build(panelType, layout);
-            color = MainPanel.GUIColor;
+            color = GUIColor;
 
             CreatePillarTabstrip();
             SetupPillarTabs();
@@ -56,12 +55,13 @@ namespace NetworkSkins.GUI
         }
 
         private void OnPillarTabstripSelectedIndexChanged(UIComponent component, int value) {
-            SkinController.PillarElevationCombination = (Pillar)value;
-            RefreshUI(SkinController.Prefab);
+            NetworkSkinPanelController.TabClicked = true;
+            NetworkSkinPanelController.SetActivePillarElevation((Pillar)value);
         }
 
         private void OnLaneTabstripSelectedIndexChanged(UIComponent component, int value) {
-            SkinController.SetActiveLane((LanePosition)value);
+            NetworkSkinPanelController.TabClicked = true;
+            NetworkSkinPanelController.SetActiveLane((LanePosition)value);
         }
 
         private void SetupLaneTabs() {

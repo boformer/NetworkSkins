@@ -8,7 +8,7 @@ namespace NetworkSkins.Skins.Serialization
     public class NetworkSkinLoadErrors
     {
         public Exception Exception { get; private set; }
-        public List<string> PrefabErrors { get; private set; } = new List<string>();
+        public List<string> PrefabErrors { get; } = new List<string>();
 
         public void MajorException(Exception exception)
         {

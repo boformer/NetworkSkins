@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using JetBrains.Annotations;
 using NetworkSkins.Skins;
 
-namespace NetworkSkins.Controller
+namespace NetworkSkins.GUI.Abstraction
 {
-    public abstract class FeatureController
+    public abstract class FeaturePanelController
     {
         public NetInfo Prefab { get; private set; }
 

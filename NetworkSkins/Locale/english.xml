@@ -19,9 +19,11 @@
     <Translation ID="LABEL_RED" String="R" />
     <Translation ID="LABEL_GREEN" String="G" />
     <Translation ID="LABEL_BLUE" String="B" />
+    <Translation ID="LABEL_GLOBAL_SELECTION_DATA" String="Save active selections globally" />
+    <Translation ID="TOOLTIP_GLOBAL_SELECTION_DATA" String="Enable this option to make the mod remember your last used skin options for each network globally, rather than per-save" />
     <Translation ID="TOOLTIP_TREES" String="Trees" />
     <Translation ID="TOOLTIP_LIGHTS" String="Lights" />
-    <Translation ID="TOOLTIP_SIDEWALKS" String="Sidewalks" />
+    <Translation ID="TOOLTIP_SURFACE" String="Surface" />
     <Translation ID="TOOLTIP_PILLARS" String="Pillars" />
     <Translation ID="TOOLTIP_CATENARY" String="Catenaries" />
     <Translation ID="TOOLTIP_COLOR" String="Color" />

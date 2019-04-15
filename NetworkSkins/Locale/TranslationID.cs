@@ -20,9 +20,11 @@
         public const string LABEL_RED = "LABEL_RED";
         public const string LABEL_GREEN = "LABEL_GREEN";
         public const string LABEL_BLUE = "LABEL_BLUE";
+        public const string LABEL_GLOBAL_SELECTION_DATA = "LABEL_GLOBAL_SELECTION_DATA";
+        public const string TOOLTIP_GLOBAL_SELECTION_DATA = "TOOLTIP_GLOBAL_SELECTION_DATA";
         public const string TOOLTIP_TREES = "TOOLTIP_TREES";
         public const string TOOLTIP_LIGHTS = "TOOLTIP_LIGHTS";
-        public const string TOOLTIP_SIDEWALKS = "TOOLTIP_SIDEWALKS";
+        public const string TOOLTIP_SURFACE = "TOOLTIP_SURFACE";
         public const string TOOLTIP_PILLARS = "TOOLTIP_PILLARS";
         public const string TOOLTIP_CATENARY = "TOOLTIP_CATENARY";
         public const string TOOLTIP_COLOR = "TOOLTIP_COLOR";

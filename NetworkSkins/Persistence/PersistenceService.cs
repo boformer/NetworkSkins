@@ -8,11 +8,21 @@ using UnityEngine;
 
 namespace NetworkSkins.Persistence
 {
-    public class PersistenceService : MonoBehaviour {
+    public class PersistenceService : MonoBehaviour
+    {
         public static PersistenceService Instance { get; set; }
-        private const string FILE_NAME = "NetworkSkinsSettings.xml";
 
+        public bool SaveActiveSelectionGlobally {
+            get => Data.SaveActiveSelectionGlobally;
+            set {
+                Data.SaveActiveSelectionGlobally = value;
+                SaveData();
+            }
+        }
+
+        private const string FILE_NAME = "NetworkSkinsSettings.xml";
         private string FilePath => Path.Combine(DataLocation.localApplicationData, FILE_NAME);
+
         private PersistentData Data {
             get {
                 if (_data == null) {
@@ -21,7 +31,6 @@ namespace NetworkSkins.Persistence
                 return _data;
             }
         }
-
         private PersistentData _data;
 
         public void RemoveFavourite(string itemID, ItemType itemType) {
@@ -35,8 +44,7 @@ namespace NetworkSkins.Persistence
             return new List<Color32>(Data.Swatches);
         }
 
-        public void UpdateSwatches(List<Color32> swatches)
-        {
+        public void UpdateSwatches(List<Color32> swatches) {
             Data.Swatches = new List<Color32>(swatches);
             SaveData();
         }
@@ -91,6 +99,20 @@ namespace NetworkSkins.Persistence
 
         private void Awake() {
             Instance = this;
+        }
+
+        public class SelectionData
+        {
+            public ActiveSelectionData.ValueKey Key;
+            public string Value;
+
+            public SelectionData(KeyValuePair<ActiveSelectionData.ValueKey, string> kvp) {
+                Key = kvp.Key;
+                Value = kvp.Value;
+            }
+
+            public static implicit operator KeyValuePair<ActiveSelectionData.ValueKey, string>(SelectionData data) => new KeyValuePair<ActiveSelectionData.ValueKey, string>(data.Key, data.Value);
+            public static implicit operator SelectionData(KeyValuePair<ActiveSelectionData.ValueKey, string> kvp) => new SelectionData(kvp);
         }
     }
 }

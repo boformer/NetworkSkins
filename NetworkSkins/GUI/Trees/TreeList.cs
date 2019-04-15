@@ -1,15 +1,12 @@
-﻿using NetworkSkins.Controller;
-using System.Collections.Generic;
-using static NetworkSkins.Controller.ItemListFeatureController<TreeInfo>;
+﻿using System.Collections.Generic;
+using NetworkSkins.GUI.Abstraction;
+using NetworkSkins.GUI.UIFastList;
+using NetworkSkins.Net;
 
-namespace NetworkSkins.GUI
+namespace NetworkSkins.GUI.Trees
 {
     public class TreeList : ListBase<TreeInfo>
     {
-        public void RefreshRowsData() {
-            SetupRowsData();
-        }
-
         protected override void RefreshUI(NetInfo netInfo) {
             SetupRowsData();
         }
@@ -19,26 +16,36 @@ namespace NetworkSkins.GUI
         }
 
         protected override bool IsDefault(string itemID) {
-            return itemID == SkinController.DefaultTree().name;
+            switch (NetworkSkinPanelController.LanePosition) {
+                case LanePosition.Left: return NetworkSkinPanelController.LeftTree.DefaultItem.Id == itemID;
+                case LanePosition.Middle: return NetworkSkinPanelController.MiddleTree.DefaultItem.Id == itemID;
+                case LanePosition.Right: return NetworkSkinPanelController.RighTree.DefaultItem.Id == itemID;
+                default: return false;
+            }
         }
 
         protected override void SetupRowsData() {
-            int itemCount, selectedIndex = 0;
+            int selectedIndex = 0;
             if (fastList.RowsData == null) {
                 fastList.RowsData = new FastList<object>();
             }
             fastList.RowsData.Clear();
-            TreeFeatureController controller = SkinController.LanePosition == Net.LanePosition.Middle ? SkinController.MiddleTree : SkinController.LeftTree;
-            itemCount = controller.Items.Count;
+            TreePanelController controller = null;
+            switch (NetworkSkinPanelController.LanePosition) {
+                case LanePosition.Left: controller = NetworkSkinPanelController.LeftTree; break;
+                case LanePosition.Middle: controller = NetworkSkinPanelController.MiddleTree; break;
+                case LanePosition.Right: controller = NetworkSkinPanelController.RighTree; break;
+            }
+            var itemCount = controller.Items.Count;
             fastList.RowsData.SetCapacity(itemCount);
             favouritesList.Clear();
             nonFavouritesList.Clear();
             int index = 0;
             List<string> favList = Persistence.GetFavourites(UIUtil.PanelToItemType(PanelType));
-            foreach (SimpleItem item in controller.Items) {
+            foreach (ListPanelController<TreeInfo>.SimpleItem item in controller.Items) {
                 if (item.Id == "#NONE#") {
                     ListItem listItem = CreateListItem(null);
-                    if (SkinController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
+                    if (NetworkSkinPanelController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
                     fastList.RowsData.Add(listItem);
                     index++;
                     continue;
@@ -50,18 +57,19 @@ namespace NetworkSkins.GUI
             for (int i = 0; i < favouritesList.Count; i++) {
                 TreeInfo prefab = favouritesList[i] as TreeInfo;
                 ListItem listItem = CreateListItem(prefab);
-                if (SkinController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
+                if (NetworkSkinPanelController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
                 fastList.RowsData.Add(listItem);
                 index++;
             }
             for (int i = 0; i < nonFavouritesList.Count; i++) {
                 TreeInfo prefab = nonFavouritesList[i] as TreeInfo;
                 ListItem listItem = CreateListItem(prefab);
-                if (SkinController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
+                if (NetworkSkinPanelController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
                 fastList.RowsData.Add(listItem);
                 index++;
             }
             fastList.DisplayAt(selectedIndex);
+            fastList.SelectedIndex = selectedIndex;
         }
     }
 }

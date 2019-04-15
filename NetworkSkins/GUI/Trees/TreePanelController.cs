@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.Net;
+using NetworkSkins.Persistence;
 using NetworkSkins.Skins;
 using NetworkSkins.Skins.Modifiers;
 using UnityEngine;
 
-namespace NetworkSkins.Controller
+namespace NetworkSkins.GUI.Trees
 {
-    public class TreeFeatureController : ItemListFeatureController<TreeInfo>
+    public class TreePanelController : ListPanelController<TreeInfo>
     {
         public readonly LanePosition Position;
 
@@ -15,7 +16,7 @@ namespace NetworkSkins.Controller
 
         public float SelectedRepeatDistance { get; private set; }
         
-        public TreeFeatureController(LanePosition position)
+        public TreePanelController(LanePosition position)
         {
             Position = position;
         }

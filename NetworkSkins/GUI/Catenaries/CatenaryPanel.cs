@@ -1,8 +1,6 @@
-﻿using ColossalFramework.UI;
-using NetworkSkins.Net;
-using UnityEngine;
+﻿using NetworkSkins.GUI.Abstraction;
 
-namespace NetworkSkins.GUI
+namespace NetworkSkins.GUI.Catenaries
 {
     public class CatenaryPanel : ListPanelBase<CatenaryList, PropInfo>
     {
@@ -29,8 +27,7 @@ namespace NetworkSkins.GUI
 
         protected override void OnSelectedChanged(string itemID, bool selected) {
             if (!selected) return;
-            SkinController.Catenary.SetSelectedItem(itemID);
-            list.Select(itemID);
+            NetworkSkinPanelController.Catenary.SetSelectedItem(itemID);
         }
     }
 }

@@ -1,5 +1,5 @@
-﻿using System;
-using ColossalFramework.UI;
+﻿using ColossalFramework.UI;
+using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.Locale;
 using NetworkSkins.TranslationFramework;
 using UnityEngine;
@@ -62,20 +62,12 @@ namespace NetworkSkins.GUI
 
         public override void Awake() {
             base.Awake();
-            SkinController.EventPrefabChanged += OnPrefabChanged;
+            NetworkSkinPanelController.EventPrefabChanged += OnPrefabChanged;
         }
 
         public override void OnDestroy() {
+            NetworkSkinPanelController.EventPrefabChanged -= OnPrefabChanged;
             base.OnDestroy();
-            SkinController.EventPrefabChanged -= OnPrefabChanged;
-
-            treesButton.eventClicked -= OnTreesButtonClicked;
-            lightsButton.eventClicked -= OnLightsButtonClicked;
-            surfacesButton.eventClicked -= OnSurfacesButtonClicked;
-            pillarsButton.eventClicked -= OnPillarsButtonClicked;
-            catenaryButton.eventClicked -= OnCatenaryButtonClicked;
-            colorButton.eventClicked -= OnColorButtonClicked;
-            extrasButton.eventClicked -= OnExtrasButtonClicked;
         }
 
         public override void Build(PanelType panelType, Layout layout) {
@@ -87,12 +79,12 @@ namespace NetworkSkins.GUI
         }
 
         protected override void RefreshUI(NetInfo netInfo) {
-            treesButton.isVisible = SkinController.TreesEnabled;
-            lightsButton.isVisible = SkinController.StreetLight.Enabled;
-            surfacesButton.isVisible = SkinController.TerrainSurface.Enabled;
-            pillarsButton.isVisible = SkinController.PillarsEnabled;
-            catenaryButton.isVisible = SkinController.Catenary.Enabled;
-            colorButton.isVisible = SkinController.Color.Enabled;
+            treesButton.isVisible = NetworkSkinPanelController.TreesEnabled;
+            lightsButton.isVisible = NetworkSkinPanelController.StreetLight.Enabled;
+            surfacesButton.isVisible = NetworkSkinPanelController.TerrainSurface.Enabled;
+            pillarsButton.isVisible = NetworkSkinPanelController.PillarsEnabled;
+            catenaryButton.isVisible = NetworkSkinPanelController.Catenary.Enabled;
+            colorButton.isVisible = NetworkSkinPanelController.Color.Enabled;
         }
 
         private void OnPrefabChanged(NetInfo netInfo) {
@@ -110,7 +102,7 @@ namespace NetworkSkins.GUI
             lightsButton.eventClicked += OnLightsButtonClicked;
             lightsButton.eventVisibilityChanged += OnLightsButtonVisibilityChanged;
 
-            surfacesButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Surface, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_SIDEWALKS));
+            surfacesButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Surface, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_SURFACE));
             surfacesButton.eventClicked += OnSurfacesButtonClicked;
             surfacesButton.eventVisibilityChanged += OnSurfacesButtonVisibilityChanged;
 

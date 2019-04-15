@@ -1,9 +1,9 @@
 ﻿using ICities;
 using NetworkSkins.Skins;
 
-namespace NetworkSkins
+namespace NetworkSkins.Persistence
 {
-    public class NetworkSkinsSerializableData : SerializableDataExtensionBase
+    public class NetworkSkinManagerData : SerializableDataExtensionBase
     {
         public override void OnSaveData()
         {

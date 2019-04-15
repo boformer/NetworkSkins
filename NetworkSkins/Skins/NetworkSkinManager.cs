@@ -31,10 +31,7 @@ namespace NetworkSkins.Skins
             }
         }
 
-        public static NetworkSkinManager Ensure()
-        {
-            return NetworkSkinManager.instance;
-        }
+        public static NetworkSkinManager Ensure() => instance;
 
         public static void Uninstall()
         {

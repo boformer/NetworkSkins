@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using NetworkSkins.Persistence;
 
-namespace NetworkSkins.Controller
+namespace NetworkSkins.GUI.Abstraction
 {
-    public abstract class ItemListFeatureController<T> : FeatureController
+    public abstract class ListPanelController<T> : FeaturePanelController
     {
         public override bool Enabled => base.Enabled && Items.Count > 1;
 

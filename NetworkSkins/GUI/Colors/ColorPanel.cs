@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using ColossalFramework.UI;
+﻿using ColossalFramework.UI;
+using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.Locale;
 using NetworkSkins.TranslationFramework;
 using UnityEngine;
 
-namespace NetworkSkins.GUI
+namespace NetworkSkins.GUI.Colors
 {
     public class ColorPanel : PanelBase
     {
@@ -20,7 +19,6 @@ namespace NetworkSkins.GUI
         private UITextField greenTextField;
         private UITextField blueTextField;
         private Color32 currentColor;
-        private Queue<SwatchButton> SwatchButtonsList;
         private bool updateNeeded;
 
         public override void Update() {
@@ -31,23 +29,27 @@ namespace NetworkSkins.GUI
             }
         }
 
+        public override void OnDestroy() {
+            NetworkSkinPanelController.Color.EventColorUsedInSegment -= OnColorUsed;
+            base.OnDestroy();
+        }
+
         public override void Build(PanelType panelType, Layout layout) {
             base.Build(panelType, layout);
-            SwatchButtonsList = new Queue<SwatchButton>(20);
             color = GUIColor;
             CreateColorPicker();
             CreateRGBPanel();
-            CreateSwatchesPanel();
-            SkinController.Color.EventSwatchesChanged += OnColorUsed; ;
-            currentColor = SkinController.Color.SelectedColor;
+            RefreshSwatchesPanel();
+            NetworkSkinPanelController.Color.EventColorUsedInSegment += OnColorUsed;
+            RefreshColors();
         }
 
         private void CreateColorPicker() {
             UIColorField field = UITemplateManager.Get<UIPanel>("LineTemplate").Find<UIColorField>("LineColor");
-            field = GameObject.Instantiate<UIColorField>(field);
-            UIColorPicker picker = GameObject.Instantiate<UIColorPicker>(field.colorPicker);
+            field = Instantiate<UIColorField>(field);
+            UIColorPicker picker = Instantiate<UIColorPicker>(field.colorPicker);
             picker.eventColorUpdated += OnColorUpdated;
-            picker.color = SkinController.Color.SelectedColor;
+            picker.color = NetworkSkinPanelController.Color.SelectedColor;
             picker.component.color = GUIColor;
             UIPanel pickerPanel = picker.component as UIPanel;
             pickerPanel.backgroundSprite = "";
@@ -64,7 +66,7 @@ namespace NetworkSkins.GUI
             colorPanel = rgbPanel.AddUIComponent<UIPanel>();
             colorPanel.backgroundSprite = "WhiteRect";
             colorPanel.size = new Vector2(25.0f, 25.0f);
-            colorPanel.color = SkinController.Color.SelectedColor;
+            colorPanel.color = NetworkSkinPanelController.Color.SelectedColor;
 
             Color32 color32 = colorPicker.color;
             redLabel = CreateLabel(Translation.Instance.GetTranslation(TranslationID.LABEL_RED));
@@ -113,25 +115,17 @@ namespace NetworkSkins.GUI
             return textField;
         }
 
-        private void CreateSwatchesPanel() {
+        private void RefreshSwatchesPanel() {
+            if (swatchesPanel != null) Destroy(swatchesPanel.gameObject);
             swatchesPanel = AddUIComponent<SwatchesPanel>();
             swatchesPanel.Build(PanelType.None, new Layout(new Vector2(254.0f, 30.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 4));
             swatchesPanel.padding = new RectOffset(11, 0, 5, 0);
-            foreach (Color32 swatch in SkinController.Color.Swatches) {
+            foreach (var swatch in NetworkSkinPanelController.Color.Swatches) {
                 AddSwatch(swatch);
             }
-            UIUtil.CreateSpace(0f, 30.0f, swatchesPanel);
         }
 
         private void AddSwatch(Color32 color) {
-            SwatchButtonsList.Enqueue(MakeSwatchButton(color));
-            if (SwatchButtonsList.Count > 12) {
-                SwatchButton button = SwatchButtonsList.Dequeue();
-                UnityEngine.Object.Destroy(button?.gameObject);
-            }
-        }
-
-        private SwatchButton MakeSwatchButton(Color32 color) {
             SwatchButton button = swatchesPanel.AddUIComponent<SwatchButton>();
             button.size = new Vector2(15.5f, 15.0f);
             button.atlas = Resources.Atlas;
@@ -142,7 +136,6 @@ namespace NetworkSkins.GUI
             button.color = color;
             button.swatch = color;
             button.EventSwatchClicked += OnSwatchClicked;
-            return button;
         }
 
         private void OnLostFocus(UIComponent component, UIFocusEventParameter eventParam) {
@@ -162,7 +155,7 @@ namespace NetworkSkins.GUI
         }
 
         private string GetClampedString(string value) {
-            return GetClampedFloat(value).ToString();
+            return GetClampedFloat(value).ToString("F2");
         }
 
         private float GetClampedFloat(string value) {
@@ -191,21 +184,21 @@ namespace NetworkSkins.GUI
             }
         }
 
-        internal void OnSwatchClicked(Color32 color, UIMouseEventParameter eventParam, UIComponent component) {
+        private void OnSwatchClicked(Color32 color, UIMouseEventParameter eventParam, UIComponent component) {
             colorPicker.color = color;
         }
 
-        private void OnColorUsed(Color32 color) {
-            AddSwatch(color);
+        private void OnColorUsed() {
+            RefreshSwatchesPanel();
         }
 
         private void ColorChanged() {
-            SkinController.Color.SetColor(currentColor);
+            NetworkSkinPanelController.Color.SetColor(currentColor);
         }
 
         private void OnColorUpdated(Color value) {
             currentColor = value;
-            if(colorPanel != null) colorPanel.color = value;
+            if (colorPanel != null) colorPanel.color = value;
             if (redTextField != null) {
                 redTextField.eventTextChanged -= OnTextChanged;
                 redTextField.text = currentColor.r.ToString();
@@ -225,7 +218,13 @@ namespace NetworkSkins.GUI
         }
 
         protected override void RefreshUI(NetInfo netInfo) {
+            RefreshColors();
+        }
 
+        private void RefreshColors() {
+            colorPicker.eventColorUpdated -= OnColorUpdated;
+            currentColor = colorPicker.color = NetworkSkinPanelController.Color.SelectedColor;
+            colorPicker.eventColorUpdated += OnColorUpdated;
         }
 
         public class RGBPanel : PanelBase

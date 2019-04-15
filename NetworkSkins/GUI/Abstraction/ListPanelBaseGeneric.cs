@@ -1,7 +1,7 @@
 ﻿using ColossalFramework.UI;
 using UnityEngine;
 
-namespace NetworkSkins.GUI
+namespace NetworkSkins.GUI.Abstraction
 {
     public abstract class ListPanelBase<TListBase, VPrefabInfo> : ListPanelBase
         where TListBase : ListBase<VPrefabInfo> 

@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.Net;
 using NetworkSkins.Persistence;
 using NetworkSkins.Skins;
 using NetworkSkins.Skins.Modifiers;
 using UnityEngine;
 
-namespace NetworkSkins.Controller
+namespace NetworkSkins.GUI.Colors
 {
-    public class ColorFeatureController : FeatureController
+    public class ColorPanelController : FeaturePanelController
     {
         public const int MaxSwatchesCount = 12;
 
@@ -19,14 +19,14 @@ namespace NetworkSkins.Controller
         public IEnumerable<Color32> Swatches => _swatches;
         private readonly List<Color32> _swatches;
 
-        public event SwatchesChangedEventHandler EventSwatchesChanged;
-        public delegate void SwatchesChangedEventHandler(Color32 color);
+        public event ColorUsedInSegmentEventHandler EventColorUsedInSegment;
+        public delegate void ColorUsedInSegmentEventHandler();
 
         private bool _colorable = false;
 
         private bool _default = true;
         
-        public ColorFeatureController()
+        public ColorPanelController()
         {
             _swatches = PersistenceService.Instance.GetSwatches();
         }
@@ -90,7 +90,7 @@ namespace NetworkSkins.Controller
                 }
             }
 
-            EventSwatchesChanged?.Invoke(color);
+            EventColorUsedInSegment?.Invoke();
 
             PersistenceService.Instance.UpdateSwatches(_swatches);
         }

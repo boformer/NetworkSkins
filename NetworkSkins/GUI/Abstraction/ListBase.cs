@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using NetworkSkins.GUI.UIFastList;
 using UnityEngine;
 
-namespace NetworkSkins.GUI
+namespace NetworkSkins.GUI.Abstraction
 {
     public abstract class ListBase : PanelBase
     {
@@ -9,7 +10,7 @@ namespace NetworkSkins.GUI
         public event FavouriteChangedEventHandler EventFavouriteChanged;
         public delegate void SelectedChangedEventHandler(string itemID, bool selected);
         public event SelectedChangedEventHandler EventSelectedChanged;
-        protected UIFastList fastList;
+        protected UIFastList.UIFastList fastList;
         protected abstract Vector2 ListSize { get; }
         protected abstract float RowHeight { get; }
         protected static List<PrefabInfo> favouritesList = new List<PrefabInfo>();
@@ -31,11 +32,6 @@ namespace NetworkSkins.GUI
             Refresh();
         }
 
-        public void Select(string itemID) {
-            foreach (ListRow item in fastList.Rows) {
-                item.UpdateColor(itemID);
-            }
-        }
         /// <summary>
         /// Use this method to set up the UIFastList RowsData.
         /// </summary>
@@ -53,7 +49,7 @@ namespace NetworkSkins.GUI
         }
 
         private void CreateFastList(Vector2 size, float rowHeight) {
-            fastList = UIFastList.Create<ListRow>(this);
+            fastList = UIFastList.UIFastList.Create<ListRow>(this);
             fastList.BackgroundSprite = "UnlockingPanel";
             fastList.size = size;
             fastList.RowHeight = rowHeight;

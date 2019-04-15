@@ -1,7 +1,7 @@
 ﻿using ColossalFramework.UI;
 using UnityEngine;
 
-namespace NetworkSkins.GUI
+namespace NetworkSkins.GUI.Colors
 {
     public class SwatchButton : UIButton
     {
@@ -9,7 +9,7 @@ namespace NetworkSkins.GUI
         public delegate void SwatchClickedEventHandler(Color32 color, UIMouseEventParameter eventParam, UIComponent component);
         public event SwatchClickedEventHandler EventSwatchClicked;
 
-        public override void Awake() {
+        public override void Start() {
             eventClicked += OnSwatchClicked;
         }
         private void OnSwatchClicked(UIComponent component, UIMouseEventParameter eventParam) {

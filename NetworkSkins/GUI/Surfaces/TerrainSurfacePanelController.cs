@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.Net;
 using NetworkSkins.Skins;
 using NetworkSkins.Skins.Modifiers;
 
-namespace NetworkSkins.Controller
+namespace NetworkSkins.GUI.Surfaces
 {
-    public class TerrainSurfaceFeatureController : ItemListFeatureController<Surface>
+    public class TerrainSurfacePanelController : ListPanelController<Surface>
     {
         protected override List<Item> BuildItems(ref Item defaultItem)
         {

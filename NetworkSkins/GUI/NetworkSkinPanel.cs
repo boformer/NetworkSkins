@@ -1,20 +1,25 @@
-﻿using System;
-using ColossalFramework.UI;
+﻿using ColossalFramework.UI;
+using NetworkSkins.GUI.Abstraction;
+using NetworkSkins.GUI.Catenaries;
+using NetworkSkins.GUI.Colors;
+using NetworkSkins.GUI.Lights;
+using NetworkSkins.GUI.Pillars;
+using NetworkSkins.GUI.Surfaces;
+using NetworkSkins.GUI.Trees;
 using UnityEngine;
 
 namespace NetworkSkins.GUI
 {
-    public class MainPanel : PanelBase
+    public class NetworkSkinPanel : PanelBase
     {
-        public static NetInfo Prefab { get; set; }
-
         private ToolBar toolBar;
         private TreePanel treesPanel;
-        private LightPanel lightsPanel;
-        private SurfacePanel surfacePanel;
+        private StreetLightPanel lightsPanel;
+        private TerrainSurfacePanel _terrainSurfacePanel;
         private PillarPanel pillarPanel;
         private CatenaryPanel catenaryPanel;
         private ColorPanel colorPanel;
+        private SettingsPanel settingsPanel;
 
         public override void OnDestroy() {
             UnregisterEvents();
@@ -24,7 +29,7 @@ namespace NetworkSkins.GUI
         public override void Start() {
             base.Start();
             Build(PanelType.None, new Layout(new Vector2(0.0f, 234.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 0));
-            color = PanelBase.GUIColor;
+            color = GUIColor;
             relativePosition = Persistence.GetToolbarPosition();
             autoFitChildrenVertically = true;
             CreateToolBar();
@@ -47,13 +52,13 @@ namespace NetworkSkins.GUI
         }
 
         private void CreateLightsPanel() {
-            lightsPanel = AddUIComponent<LightPanel>();
+            lightsPanel = AddUIComponent<StreetLightPanel>();
             lightsPanel.Build(PanelType.Lights, new Layout(new Vector2(400.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
         }
 
         private void CreateSurfacePanel() {
-            surfacePanel = AddUIComponent<SurfacePanel>();
-            surfacePanel.Build(PanelType.Surfaces, new Layout(new Vector2(388.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
+            _terrainSurfacePanel = AddUIComponent<TerrainSurfacePanel>();
+            _terrainSurfacePanel.Build(PanelType.Surfaces, new Layout(new Vector2(388.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
         }
 
         private void CreateCatenaryPanel() {
@@ -70,6 +75,12 @@ namespace NetworkSkins.GUI
             colorPanel = AddUIComponent<ColorPanel>();
             colorPanel.Build(PanelType.Color, new Layout(new Vector2(228.6f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 0, "GenericPanel"));
             colorPanel.autoFitChildrenHorizontally = true;
+        }
+
+        private void CreateSettingsPanel() {
+            settingsPanel = AddUIComponent<SettingsPanel>();
+            settingsPanel.Build(PanelType.Settings, new Layout(new Vector2(228.6f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 0, "GenericPanel"));
+            settingsPanel.autoFitChildrenHorizontally = true;
         }
 
         private void RegisterEvents() {
@@ -104,7 +115,7 @@ namespace NetworkSkins.GUI
             toolBar.ButtonBar.EventPillarsVisibilityChanged += OnPillarsVisibilityChanged;
             toolBar.ButtonBar.EventColorVisibilityChanged += OnColorVisibilityChanged;
             toolBar.ButtonBar.EventCatenaryVisibilityChanged += OnCatenaryVisibilityChanged;
-            toolBar.ButtonBar.EventExtrasVisibilityChanged += OnExtrasVisibilityChanged;
+            toolBar.ButtonBar.EventExtrasVisibilityChanged += OnSettingsVisibilityChanged;
         }
 
         private void UnregisterClickEvents() {
@@ -124,10 +135,14 @@ namespace NetworkSkins.GUI
             toolBar.ButtonBar.EventPillarsVisibilityChanged -= OnPillarsVisibilityChanged;
             toolBar.ButtonBar.EventColorVisibilityChanged -= OnColorVisibilityChanged;
             toolBar.ButtonBar.EventCatenaryVisibilityChanged -= OnCatenaryVisibilityChanged;
-            toolBar.ButtonBar.EventExtrasVisibilityChanged -= OnExtrasVisibilityChanged;
+            toolBar.ButtonBar.EventExtrasVisibilityChanged -= OnSettingsVisibilityChanged;
         }
 
-        private void OnExtrasVisibilityChanged(UIButton button, UIButton[] buttons, bool visible) {
+        private void OnSettingsVisibilityChanged(UIButton button, UIButton[] buttons, bool visible) {
+            if (!visible && settingsPanel != null) {
+                SetButtonUnfocused(button);
+                Destroy(settingsPanel.gameObject);
+            }
         }
 
         private void OnCatenaryVisibilityChanged(UIButton button, UIButton[] buttons, bool visible) {
@@ -152,9 +167,9 @@ namespace NetworkSkins.GUI
         }
 
         private void OnSurfacesVisibilityChanged(UIButton button, UIButton[] buttons, bool visible) {
-            if (!visible && surfacePanel != null) {
+            if (!visible && _terrainSurfacePanel != null) {
                 SetButtonUnfocused(button);
-                Destroy(surfacePanel.gameObject);
+                Destroy(_terrainSurfacePanel.gameObject);
             }
         }
 
@@ -173,6 +188,14 @@ namespace NetworkSkins.GUI
         }
 
         private void OnExtrasClicked(UIButton button, UIButton[] buttons) {
+            if (settingsPanel != null) {
+                SetButtonUnfocused(button);
+                Destroy(settingsPanel.gameObject);
+            } else {
+                RefreshButtons(button, buttons);
+                CloseAll();
+                CreateSettingsPanel();
+            }
         }
 
         private void OnCatenaryClicked(UIButton button, UIButton[] buttons) {
@@ -198,9 +221,9 @@ namespace NetworkSkins.GUI
         }
 
         private void OnSurfacesClicked(UIButton button, UIButton[] buttons) {
-            if (surfacePanel != null) {
+            if (_terrainSurfacePanel != null) {
                 SetButtonUnfocused(button);
-                Destroy(surfacePanel.gameObject);
+                Destroy(_terrainSurfacePanel.gameObject);
             } else {
                 RefreshButtons(button, buttons);
                 CloseAll();
@@ -248,8 +271,8 @@ namespace NetworkSkins.GUI
             if (lightsPanel != null) {
                 Destroy(lightsPanel.gameObject);
             }
-            if (surfacePanel != null) {
-                Destroy(surfacePanel.gameObject);
+            if (_terrainSurfacePanel != null) {
+                Destroy(_terrainSurfacePanel.gameObject);
             }
             if (pillarPanel != null) {
                 Destroy(pillarPanel.gameObject);
@@ -259,6 +282,9 @@ namespace NetworkSkins.GUI
             }
             if (colorPanel != null) {
                 Destroy(colorPanel.gameObject);
+            }
+            if (settingsPanel != null) {
+                Destroy(settingsPanel.gameObject);
             }
         }
 

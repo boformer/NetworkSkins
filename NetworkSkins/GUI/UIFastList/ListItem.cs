@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace NetworkSkins.GUI
+namespace NetworkSkins.GUI.UIFastList
 {
     public class ListItem
     {
