@@ -1,6 +1,7 @@
 ﻿using ColossalFramework.UI;
 using NetworkSkins.GUI.UIFastList;
 using NetworkSkins.Locale;
+using NetworkSkins.Net;
 using NetworkSkins.TranslationFramework;
 using System.Collections.Generic;
 using UnityEngine;
@@ -94,7 +95,7 @@ namespace NetworkSkins.GUI.Abstraction
             string name = id == "#NONE#"
                ? Translation.Instance.GetTranslation(TranslationID.LABEL_NONE)
                : item is ListPanelController<T>.SimpleItem si1
-               ? si1.Value.GetUncheckedLocalizedTitle()
+               ? si1.Value.GetName()
                : string.Empty;
             string displayName = string.Concat(prefix, name);
             

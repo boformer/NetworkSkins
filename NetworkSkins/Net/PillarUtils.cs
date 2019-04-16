@@ -258,5 +258,10 @@ namespace NetworkSkins.Net
                 monorailTrackAi.m_middlePillarInfo = middlePillarInfo;
             }
         }
+
+        public static string GetName(this PrefabInfo prefabInfo) {
+            string name = prefabInfo.GetUncheckedLocalizedTitle();
+            return name.Contains(".") ? name.Substring(name.IndexOf('.') + 1) : name;
+        }
     }
 }

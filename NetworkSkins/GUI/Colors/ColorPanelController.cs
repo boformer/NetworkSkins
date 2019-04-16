@@ -10,7 +10,7 @@ namespace NetworkSkins.GUI.Colors
 {
     public class ColorPanelController : FeaturePanelController
     {
-        public const int MaxSwatchesCount = 12;
+        public const int MaxSwatchesCount = 36;
 
         public override bool Enabled => base.Enabled && _colorable;
 

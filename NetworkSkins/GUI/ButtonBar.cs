@@ -92,7 +92,7 @@ namespace NetworkSkins.GUI
         }
 
         private void CreateButtons() {
-            Vector2 buttonSize = new Vector2(Layout.Size.x - Layout.Spacing * 2, size.x - Layout.Spacing * 2);
+            Vector2 buttonSize = new Vector2(Layout.Size.x - Layout.Spacing * 2, Layout.Size.x - Layout.Spacing * 2);
 
             treesButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Tree, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_TREES));
             treesButton.eventClicked += OnTreesButtonClicked;
@@ -119,7 +119,6 @@ namespace NetworkSkins.GUI
             colorButton.eventVisibilityChanged += OnColorButtonVisibilityChanged;
 
             extrasButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Settings, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_EXTRAS));
-            extrasButton.textPadding = new RectOffset(0, 0, 0, 8);
             extrasButton.eventClicked += OnExtrasButtonClicked;
             extrasButton.eventVisibilityChanged += OnExtraButtonVisibilityChanged;
 

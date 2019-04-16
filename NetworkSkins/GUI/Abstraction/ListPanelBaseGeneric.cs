@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace NetworkSkins.GUI.Abstraction
 {
-    public abstract class ListPanelBase<TListBase, VPrefabInfo> : ListPanelBase
-        where TListBase : ListBase<VPrefabInfo> 
-        where VPrefabInfo : PrefabInfo
+    public abstract class ListPanelBase<TListBase, TPrefabInfo> : ListPanelBase
+        where TListBase : ListBase<TPrefabInfo> 
+        where TPrefabInfo : PrefabInfo
     {
         protected TListBase list;
 

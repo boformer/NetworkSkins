@@ -42,22 +42,8 @@ namespace NetworkSkins.GUI.Colors
             CreateRGBPanel();
             RefreshSwatchesPanel();
             CreateResetButton();
-            UIUtil.CreateSpace(254.0f, 5.0f, this);
+            UIUtil.CreateSpace(255.0f, 11.0f, this);
             NetworkSkinPanelController.Color.EventColorUsedInSegment += OnColorUsed;
-            RefreshColors();
-        }
-
-        private void CreateResetButton() {
-            button = AddUIComponent<ButtonPanel>();
-            button.Build(PanelType.None, new Layout(new Vector2(254.0f, 40.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 10));
-            button.padding = new RectOffset(10, 0, 5, 0);
-            button.SetAnchor(UIAnchorStyle.Left | UIAnchorStyle.CenterVertical);
-            button.SetText(Translation.Instance.GetTranslation(TranslationID.BUTTON_RESET));
-            button.EventButtonClicked += OnResetClicked;
-        }
-
-        private void OnResetClicked() {
-            NetworkSkinPanelController.Color.Reset();
             RefreshColors();
         }
 
@@ -124,7 +110,6 @@ namespace NetworkSkins.GUI.Colors
             textField.disabledTextColor = new Color32(80, 80, 80, 128);
             textField.color = new Color32(255, 255, 255, 255);
             textField.eventGotFocus += OnGotFocus;
-            textField.eventLostFocus += OnLostFocus;
             textField.eventKeyPress += OnKeyPress;
             textField.eventTextChanged += OnTextChanged;
             textField.eventTextSubmitted += OnTextSubmitted;
@@ -136,8 +121,13 @@ namespace NetworkSkins.GUI.Colors
             if (swatchesPanel != null) Destroy(swatchesPanel.gameObject);
             swatchesPanel = AddUIComponent<SwatchesPanel>();
             swatchesPanel.zOrder = 2;
-            swatchesPanel.Build(PanelType.None, new Layout(new Vector2(254.0f, 25.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 4));
-            swatchesPanel.padding = new RectOffset(11, 0, 5, 0);
+            swatchesPanel.Build(PanelType.None, new Layout(new Vector2(0.0f, 25.0f), false, LayoutDirection.Horizontal, LayoutStart.TopLeft, 5));
+            swatchesPanel.autoFitChildrenHorizontally = false;
+            swatchesPanel.autoLayout = true;
+            swatchesPanel.width = 255.0f;
+            swatchesPanel.wrapLayout = true;
+            swatchesPanel.autoFitChildrenVertically = true;
+            swatchesPanel.padding = new RectOffset(10, 0, 5, 0);
             foreach (var swatch in NetworkSkinPanelController.Color.Swatches) {
                 AddSwatch(swatch);
             }
@@ -145,7 +135,7 @@ namespace NetworkSkins.GUI.Colors
 
         private void AddSwatch(Color32 color) {
             SwatchButton button = swatchesPanel.AddUIComponent<SwatchButton>();
-            button.size = new Vector2(15.5f, 15.0f);
+            button.size = new Vector2(15.0f, 15.0f);
             button.atlas = Resources.Atlas;
             button.normalBgSprite = Resources.Swatch;
             button.hoveredColor = new Color32((byte)Mathf.Min((color.r + 32), 255), (byte)Mathf.Min((color.g + 32), 255), (byte)Mathf.Min((color.b + 32), 255), 255);
@@ -156,8 +146,18 @@ namespace NetworkSkins.GUI.Colors
             button.EventSwatchClicked += OnSwatchClicked;
         }
 
-        private void OnLostFocus(UIComponent component, UIFocusEventParameter eventParam) {
-            UITextField textField = component as UITextField;
+        private void CreateResetButton() {
+            button = AddUIComponent<ButtonPanel>();
+            button.Build(PanelType.None, new Layout(new Vector2(255.0f, 40.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 10));
+            button.padding = new RectOffset(10, 0, 10, 0);
+            button.SetAnchor(UIAnchorStyle.Left | UIAnchorStyle.CenterVertical);
+            button.SetText(Translation.Instance.GetTranslation(TranslationID.BUTTON_RESET));
+            button.EventButtonClicked += OnResetClicked;
+        }
+
+        private void OnResetClicked() {
+            NetworkSkinPanelController.Color.Reset();
+            RefreshColors();
         }
 
         private void OnGotFocus(UIComponent component, UIFocusEventParameter eventParam) {
@@ -193,11 +193,11 @@ namespace NetworkSkins.GUI.Colors
         private void OnTextSubmitted(UIComponent component, string value) {
             UITextField textField = component as UITextField;
             Color32 color32 = colorPicker.color;
-            if (component == redTextField) {
+            if (textField == redTextField) {
                 colorPicker.color = new Color32((byte)GetClampedFloat(value), color32.g, color32.b, 255);
-            } else if (component == greenTextField) {
+            } else if (textField == greenTextField) {
                 colorPicker.color = new Color32(color32.r, (byte)GetClampedFloat(value), color32.b, 255);
-            } else if (component == blueTextField) {
+            } else if (textField == blueTextField) {
                 colorPicker.color = new Color32(color32.r, color32.g, (byte)GetClampedFloat(value), 255);
             }
         }
