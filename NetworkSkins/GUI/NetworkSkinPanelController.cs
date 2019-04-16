@@ -122,7 +122,23 @@ namespace NetworkSkins.GUI
         #endregion
 
         public void OnReset() {
+            _ignoreModifierEvents = true;
 
+            TerrainSurface.Reset();
+            Color.Reset();
+            StreetLight.Reset();
+            LeftTree.Reset();
+            MiddleTree.Reset();
+            RighTree.Reset();
+            ElevatedBridgePillar.Reset();
+            ElevatedMiddlePillar.Reset();
+            BridgeBridgePillar.Reset();
+            BridgeMiddlePillar.Reset();
+            Catenary.Reset();
+
+            _ignoreModifierEvents = false;
+
+            UpdateActiveModifiers();
         }
 
         public void SetActivePillarElevation(Pillar pillar)
@@ -196,6 +212,8 @@ namespace NetworkSkins.GUI
             _ignoreModifierEvents = false;
 
             UpdateActiveModifiers();
+
+            EventPrefabChanged?.Invoke(Prefab);
         }
 
         private void OnSegmentPlaced(NetworkSkin skin)

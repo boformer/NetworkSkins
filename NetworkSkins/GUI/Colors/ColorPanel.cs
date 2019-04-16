@@ -57,7 +57,7 @@ namespace NetworkSkins.GUI.Colors
         }
 
         private void OnResetClicked() {
-            NetworkSkinPanelController.Color.OnColorReset();
+            NetworkSkinPanelController.Color.Reset();
             RefreshColors();
         }
 

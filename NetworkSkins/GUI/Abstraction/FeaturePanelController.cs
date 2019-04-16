@@ -35,6 +35,8 @@ namespace NetworkSkins.GUI.Abstraction
             OnChanged();
         }
 
+        public abstract void Reset();
+
         protected abstract void Build();
 
         protected virtual void OnChanged()

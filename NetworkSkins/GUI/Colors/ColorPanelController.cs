@@ -42,10 +42,10 @@ namespace NetworkSkins.GUI.Colors
 
             OnChanged();
         }
-
-        public void OnColorReset()
+        
+        public override void Reset()
         {
-            if (_default) return;
+            if (!Enabled || _default) return;
 
             SelectedColor = Prefab.m_color;
             _default = true;

@@ -25,13 +25,26 @@ namespace NetworkSkins.GUI.Abstraction
 
         public void SetSelectedItem(string itemID)
         {
-            if (SelectedItem.Id == itemID) return;
+            SetSelectedItem(Items.Find(item => item.Id == itemID));
+        }
 
-            SelectedItem = Items.Find(item => item.Id == itemID);
+        public void SetSelectedItem(Item item)
+        {
+            if (SelectedItem == item) return;
+
+            SelectedItem = item;
 
             SaveSelectedItem();
 
             OnChanged();
+        }
+
+        public override void Reset()
+        {
+            if (Enabled)
+            {
+                SetSelectedItem(DefaultItem);
+            }
         }
 
         protected override void Build()
