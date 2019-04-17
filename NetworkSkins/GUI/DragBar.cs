@@ -30,9 +30,5 @@ namespace NetworkSkins.GUI
 
             EventDragEnd?.Invoke();
         }
-
-        protected override void RefreshUI(NetInfo netInfo) {
-
-        }
     }
 }

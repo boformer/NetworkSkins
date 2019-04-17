@@ -36,9 +36,6 @@ namespace NetworkSkins.GUI
             RegisterEvents();
         }
 
-        protected override void RefreshUI(NetInfo netInfo) {
-        }
-
         private void CreateToolBar() {
             toolBar = AddUIComponent<ToolBar>();
             toolBar.Build(PanelType.None, new Layout(new Vector2(40.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 0, "GenericPanel"));

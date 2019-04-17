@@ -9,14 +9,14 @@ namespace NetworkSkins.GUI
 {
     public class DistancePanel : PanelBase
     {
-        private LabelPanel labelPanel;
+        private PanelBase labelPanel;
         private UILabel labelDefault;
         private UILabel labelValue;
         private UISlider slider;
 
         public override void Build(PanelType panelType, Layout layout) {
             base.Build(panelType, layout);
-            labelPanel = AddUIComponent<LabelPanel>();
+            labelPanel = AddUIComponent<PanelBase>();
             labelPanel.Build(PanelType.None, new Layout(new Vector2(0.0f, 18.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 0));
             CreateLabels();
             UIUtil.CreateSpace(390.0f, 1.0f, this);
@@ -149,12 +149,6 @@ namespace NetworkSkins.GUI
             labelValue.text = string.Concat(Mathf.RoundToInt(slider.value));
             labelDefault.tooltip = string.Concat(Translation.Instance.GetTranslation(TranslationID.LABEL_DEFAULT), ": ", Mathf.RoundToInt(defaultDistance));
             labelValue.tooltip = string.Concat(Translation.Instance.GetTranslation(TranslationID.LABEL_DEFAULT), ": ", Mathf.RoundToInt(defaultDistance));
-        }
-
-        public class LabelPanel : PanelBase
-        {
-            protected override void RefreshUI(NetInfo netInfo) {
-            }
         }
     }
 }

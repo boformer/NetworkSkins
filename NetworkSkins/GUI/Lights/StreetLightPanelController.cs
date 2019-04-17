@@ -121,13 +121,13 @@ namespace NetworkSkins.GUI.Lights
                         new StreetLightModifier(item.Value, SelectedRepeatDistance)
                     };
 
-                    modifiers.Add(Prefab, prefabModifiers);
+                    modifiers[Prefab] = prefabModifiers;
 
                     var elevatedPrefab = NetUtils.GetElevatedPrefab(Prefab);
-                    if (elevatedPrefab != null) modifiers.Add(elevatedPrefab, prefabModifiers);
+                    if (elevatedPrefab != null) modifiers[elevatedPrefab] = prefabModifiers;
 
                     var bridgePrefab = NetUtils.GetBridgePrefab(Prefab);
-                    if (bridgePrefab != null) modifiers.Add(bridgePrefab, prefabModifiers);
+                    if (bridgePrefab != null) modifiers[bridgePrefab] = prefabModifiers;
                 }
             }
 

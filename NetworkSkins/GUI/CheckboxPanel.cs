@@ -51,9 +51,5 @@ namespace NetworkSkins.GUI
         private void OnCheckboxStateChanged(UIComponent component, bool value) {
             EventCheckboxStateChanged?.Invoke(value);
         }
-
-        protected override void RefreshUI(NetInfo netInfo) {
-
-        }
     }
 }

@@ -100,10 +100,10 @@ namespace NetworkSkins.GUI.Abstraction
             string displayName = string.Concat(prefix, name);
             
             Texture2D thumbnail = id == "#NONE#"
-                ? UIView.GetAView()?.defaultAtlas?.GetSpriteTexture("Niet")
+                ? Resources.NietIcon
                 : item is ListPanelController<T>.SimpleItem si2
-                ? si2.Value.m_Atlas?.GetSpriteTexture(si2.Value.m_Thumbnail)
-                : UIView.GetAView()?.defaultAtlas?.GetSpriteTexture("BuildingIcon");
+                ? si2.Value.GetThumbnail()
+                : Resources.DefaultIcon;
 
             ItemType type = UIUtil.PanelToItemType(PanelType);
             return new ListItem(id, displayName, thumbnail, isFavourite, type);

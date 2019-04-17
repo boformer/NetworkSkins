@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using NetworkSkins.GUI.UIFastList;
+﻿using NetworkSkins.GUI.UIFastList;
 using UnityEngine;
 
 namespace NetworkSkins.GUI.Abstraction

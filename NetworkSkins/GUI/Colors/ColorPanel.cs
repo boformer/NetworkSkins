@@ -8,13 +8,10 @@ namespace NetworkSkins.GUI.Colors
 {
     public class ColorPanel : PanelBase
     {
-        private RGBPanel rgbPanel;
+        private PanelBase rgbPanel;
         private UIPanel colorPanel;
-        private SwatchesPanel swatchesPanel;
+        private PanelBase swatchesPanel;
         private UIColorPicker colorPicker;
-        private UILabel redLabel;
-        private UILabel greenLabel;
-        private UILabel blueLabel;
         private UITextField redTextField;
         private UITextField greenTextField;
         private UITextField blueTextField;
@@ -62,7 +59,7 @@ namespace NetworkSkins.GUI.Colors
         }
 
         private void CreateRGBPanel() {
-            rgbPanel = AddUIComponent<RGBPanel>();
+            rgbPanel = AddUIComponent<PanelBase>();
             rgbPanel.Build(PanelType.None, new Layout(new Vector2(0.0f, 35.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 5));
             rgbPanel.padding = new RectOffset(10, 0, 5, 0);
 
@@ -72,11 +69,11 @@ namespace NetworkSkins.GUI.Colors
             colorPanel.color = NetworkSkinPanelController.Color.SelectedColor;
 
             Color32 color32 = colorPicker.color;
-            redLabel = CreateLabel(Translation.Instance.GetTranslation(TranslationID.LABEL_RED));
+            CreateLabel(Translation.Instance.GetTranslation(TranslationID.LABEL_RED));
             redTextField = CreateTextfield(color32.r.ToString());
-            greenLabel = CreateLabel(Translation.Instance.GetTranslation(TranslationID.LABEL_GREEN));
+            CreateLabel(Translation.Instance.GetTranslation(TranslationID.LABEL_GREEN));
             greenTextField = CreateTextfield(color32.g.ToString());
-            blueLabel = CreateLabel(Translation.Instance.GetTranslation(TranslationID.LABEL_BLUE));
+            CreateLabel(Translation.Instance.GetTranslation(TranslationID.LABEL_BLUE));
             blueTextField = CreateTextfield(color32.b.ToString());
         }
 
@@ -119,7 +116,7 @@ namespace NetworkSkins.GUI.Colors
 
         private void RefreshSwatchesPanel() {
             if (swatchesPanel != null) Destroy(swatchesPanel.gameObject);
-            swatchesPanel = AddUIComponent<SwatchesPanel>();
+            swatchesPanel = AddUIComponent<PanelBase>();
             swatchesPanel.zOrder = 2;
             swatchesPanel.Build(PanelType.None, new Layout(new Vector2(0.0f, 25.0f), false, LayoutDirection.Horizontal, LayoutStart.TopLeft, 5));
             swatchesPanel.autoFitChildrenHorizontally = false;
@@ -243,16 +240,6 @@ namespace NetworkSkins.GUI.Colors
             colorPicker.eventColorUpdated -= OnColorUpdated;
             currentColor = colorPicker.color = colorPanel.color = NetworkSkinPanelController.Color.SelectedColor;
             colorPicker.eventColorUpdated += OnColorUpdated;
-        }
-
-        public class RGBPanel : PanelBase
-        {
-
-        }
-
-        public class SwatchesPanel : PanelBase
-        {
-
         }
     }
 }

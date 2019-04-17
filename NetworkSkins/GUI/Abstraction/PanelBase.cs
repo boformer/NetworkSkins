@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace NetworkSkins.GUI.Abstraction
 {
-    public abstract class PanelBase : UIPanel
+    public class PanelBase : UIPanel
     {
         public delegate void DragEndEventHandler();
         public Layout Layout { get; set; }

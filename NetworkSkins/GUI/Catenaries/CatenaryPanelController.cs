@@ -137,16 +137,16 @@ namespace NetworkSkins.GUI.Catenaries
                     new CatenaryModifier(item.Value)
                 };
 
-                modifiers.Add(Prefab, prefabModifiers);
+                modifiers[Prefab] = prefabModifiers;
 
                 var slopePrefab = NetUtils.GetSlopePrefab(Prefab);
-                if (slopePrefab != null) modifiers.Add(slopePrefab, prefabModifiers);
+                if (slopePrefab != null) modifiers[slopePrefab] = prefabModifiers;
 
                 var elevatedPrefab = NetUtils.GetElevatedPrefab(Prefab);
-                if (elevatedPrefab != null) modifiers.Add(elevatedPrefab, prefabModifiers);
+                if (elevatedPrefab != null) modifiers[elevatedPrefab] = prefabModifiers;
 
                 var bridgePrefab = NetUtils.GetBridgePrefab(Prefab);
-                if (bridgePrefab != null) modifiers.Add(bridgePrefab, prefabModifiers);
+                if (bridgePrefab != null) modifiers[bridgePrefab] = prefabModifiers;
             }
 
             return modifiers;

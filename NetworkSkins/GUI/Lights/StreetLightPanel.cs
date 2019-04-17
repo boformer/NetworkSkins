@@ -13,10 +13,6 @@ namespace NetworkSkins.GUI.Lights
             distancePanel.Build(panelType, new Layout(new Vector2(390.0f, 100.0f), true, ColossalFramework.UI.LayoutDirection.Vertical, ColossalFramework.UI.LayoutStart.TopLeft, 5));
         }
 
-        protected override void RefreshUI(NetInfo netInfo) {
-
-        }
-
         protected override void OnPanelBuilt() {
             laneTabStrip.isVisible = false;
             pillarTabStrip.isVisible = false;

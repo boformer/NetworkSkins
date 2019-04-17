@@ -14,10 +14,6 @@ namespace NetworkSkins.GUI.Surfaces
         protected override Vector2 ListSize => new Vector2(390.0f, 200.0f);
         protected override float RowHeight => 50.0f;
 
-        public void RefreshRowsData() {
-            SetupRowsData();
-        }
-
         protected override void RefreshUI(NetInfo netInfo) {
             fastList.width = 378.0f;
             SetupRowsData();
@@ -73,7 +69,7 @@ namespace NetworkSkins.GUI.Surfaces
                     break;
                 default:
                     name = Translation.Instance.GetTranslation(TranslationID.LABEL_NONE);
-                    thumbnail = UIView.GetAView()?.defaultAtlas?.GetSpriteTexture("Niet");
+                    thumbnail = Resources.NietIcon;
                     break;
             }
             var id = surfaceType == Surface.None ? "#NONE#" : Enum.GetName(typeof(Surface), surfaceType);
