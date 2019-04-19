@@ -9,6 +9,12 @@ namespace NetworkSkins.GUI.Abstraction
     {
         protected TListBase list;
 
+        public override void OnDestroy() {
+            list.EventFavouriteChanged -= OnFavouriteChanged;
+            list.EventSelectedChanged -= OnSelectedChanged;
+            base.OnDestroy();
+        }
+
         public override void Build(PanelType panelType, Layout layout) {
             base.Build(panelType, layout);
             list.EventFavouriteChanged += OnFavouriteChanged;

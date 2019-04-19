@@ -9,6 +9,7 @@ namespace NetworkSkins.Persistence
     public class PersistentData
     {
         public bool SaveActiveSelectionGlobally { get; set; } = true;
+        public bool LanePositionLocked { get; set; } = false;
         public Vector2 ToolbarPosition { get; set; } = new Vector2(100.0f, 100.0f);
         public List<string>[] Favourites { get; set; } = new List<string>[(int)ItemType.Count];
         public List<Color32> Swatches { get; set; } = new List<Color32>(12);

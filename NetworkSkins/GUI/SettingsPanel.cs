@@ -11,6 +11,11 @@ namespace NetworkSkins.GUI
         private CheckboxPanel activeSelectionCheckbox;
         private ButtonPanel resetButton;
 
+        public override void OnDestroy() {
+            resetButton.EventButtonClicked -= OnResetClicked;
+            activeSelectionCheckbox.EventCheckboxStateChanged -= OnActiveSelectionOptionChanged;
+            base.OnDestroy();
+        }
         public override void Build(PanelType panelType, Layout layout) {
             base.Build(panelType, layout);
             color = GUIColor;

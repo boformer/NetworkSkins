@@ -75,6 +75,16 @@ namespace NetworkSkins.Persistence
             SaveData();
         }
 
+        public bool LanePositionLocked {
+            get {
+                return Data.LanePositionLocked;
+            }
+            set {
+                Data.LanePositionLocked = value;
+                SaveData();
+            }
+        }
+
         public void SaveData() {
             string fileName = FilePath;
             PersistentData data = Data;

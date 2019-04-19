@@ -10,8 +10,8 @@ namespace NetworkSkins.GUI.Catenaries
         }
 
         protected override void OnPanelBuilt() {
-            pillarTabStrip.isVisible = false;
-            laneTabStrip.isVisible = false;
+            pillarTabstrip.isVisible = false;
+            laneTabstripContainer.isVisible = false;
             Refresh();
         }
 

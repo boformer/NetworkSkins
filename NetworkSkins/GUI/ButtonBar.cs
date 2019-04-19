@@ -47,8 +47,8 @@ namespace NetworkSkins.GUI
         public delegate void ColorButtonVisibilityChangedEventHandler(UIButton focusedButton, UIButton[] buttons, bool visible);
         public event ColorButtonVisibilityChangedEventHandler EventColorVisibilityChanged;
 
-        public delegate void ExtrasButtonVisibilityChangedEventHandler(UIButton focusedButton, UIButton[] buttons, bool visible);
-        public event ExtrasButtonVisibilityChangedEventHandler EventExtrasVisibilityChanged;
+        public delegate void SettingsButtonVisibilityChangedEventHandler(UIButton focusedButton, UIButton[] buttons, bool visible);
+        public event SettingsButtonVisibilityChangedEventHandler EventSettingsVisibilityChanged;
         
         private UIButton treesButton;
         private UIButton lightsButton;
@@ -56,17 +56,25 @@ namespace NetworkSkins.GUI
         private UIButton pillarsButton;
         private UIButton catenaryButton;
         private UIButton colorButton;
-        private UIButton extrasButton;
+        private UIButton settingsButton;
 
         private UIButton[] buttons;
 
-        public override void Awake() {
-            base.Awake();
-            NetworkSkinPanelController.EventPrefabChanged += OnPrefabChanged;
-        }
-
         public override void OnDestroy() {
-            NetworkSkinPanelController.EventPrefabChanged -= OnPrefabChanged;
+            treesButton.eventClicked -= OnTreesButtonClicked;
+            lightsButton.eventClicked -= OnLightsButtonClicked;
+            surfacesButton.eventClicked -= OnSurfacesButtonClicked;
+            pillarsButton.eventClicked -= OnPillarsButtonClicked;
+            catenaryButton.eventClicked -= OnCatenaryButtonClicked;
+            colorButton.eventClicked -= OnColorButtonClicked;
+            settingsButton.eventClicked -= OnSettingsButtonClicked; 
+            treesButton.eventVisibilityChanged -= OnTreesButtonVisibilityChanged;
+            lightsButton.eventVisibilityChanged -= OnLightsButtonVisibilityChanged;
+            surfacesButton.eventVisibilityChanged -= OnSurfacesButtonVisibilityChanged;
+            pillarsButton.eventVisibilityChanged -= OnPillarsButtonVisibilityChanged;
+            catenaryButton.eventVisibilityChanged -= OnCatenaryButtonVisibilityChanged;
+            colorButton.eventVisibilityChanged -= OnColorButtonVisibilityChanged;
+            settingsButton.eventVisibilityChanged -= OnSettingsButtonVisibilityChanged;
             base.OnDestroy();
         }
 
@@ -85,10 +93,8 @@ namespace NetworkSkins.GUI
             pillarsButton.isVisible = NetworkSkinPanelController.PillarsEnabled;
             catenaryButton.isVisible = NetworkSkinPanelController.Catenary.Enabled;
             colorButton.isVisible = NetworkSkinPanelController.Color.Enabled;
-        }
-
-        private void OnPrefabChanged(NetInfo netInfo) {
-            RefreshUI(netInfo);
+            colorButton.eventClicked += OnColorButtonClicked;
+            colorButton.eventVisibilityChanged += OnColorButtonVisibilityChanged;
         }
 
         private void CreateButtons() {
@@ -118,9 +124,9 @@ namespace NetworkSkins.GUI
             colorButton.eventClicked += OnColorButtonClicked;
             colorButton.eventVisibilityChanged += OnColorButtonVisibilityChanged;
 
-            extrasButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Settings, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_EXTRAS));
-            extrasButton.eventClicked += OnExtrasButtonClicked;
-            extrasButton.eventVisibilityChanged += OnExtraButtonVisibilityChanged;
+            settingsButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Settings, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_EXTRAS));
+            settingsButton.eventClicked += OnSettingsButtonClicked;
+            settingsButton.eventVisibilityChanged += OnSettingsButtonVisibilityChanged;
 
             CreateButtonArray();
         }
@@ -133,7 +139,7 @@ namespace NetworkSkins.GUI
                 pillarsButton,
                 catenaryButton,
                 colorButton,
-                extrasButton
+                settingsButton
             };
         }
 
@@ -161,8 +167,8 @@ namespace NetworkSkins.GUI
             EventColorVisibilityChanged?.Invoke(component as UIButton, buttons, value);
         }
 
-        private void OnExtraButtonVisibilityChanged(UIComponent component, bool value) {
-            EventExtrasVisibilityChanged?.Invoke(component as UIButton, buttons, value);
+        private void OnSettingsButtonVisibilityChanged(UIComponent component, bool value) {
+            EventSettingsVisibilityChanged?.Invoke(component as UIButton, buttons, value);
         }
 
         private void OnTreesButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
@@ -189,7 +195,7 @@ namespace NetworkSkins.GUI
             EventColorClicked?.Invoke(component as UIButton, buttons);
         }
 
-        private void OnExtrasButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
+        private void OnSettingsButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
             EventExtrasClicked?.Invoke(component as UIButton, buttons);
         }
     }

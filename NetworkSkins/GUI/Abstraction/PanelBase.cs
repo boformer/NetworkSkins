@@ -19,12 +19,12 @@ namespace NetworkSkins.GUI.Abstraction
         public override void Awake() {
             base.Awake();
             if (NetworkSkinPanelController != null) {
-                NetworkSkinPanelController.EventPrefabChanged += OnPrefabChanged;
+                NetworkSkinPanelController.EventGUIDirty += OnPrefabChanged;
             }
         }
 
         public override void OnDestroy() {
-            NetworkSkinPanelController.EventPrefabChanged -= OnPrefabChanged;
+            NetworkSkinPanelController.EventGUIDirty -= OnPrefabChanged;
             base.OnDestroy();
         }
         public virtual void Build(PanelType panelType, Layout layout) {

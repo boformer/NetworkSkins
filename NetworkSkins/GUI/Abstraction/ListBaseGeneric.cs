@@ -19,19 +19,19 @@ namespace NetworkSkins.GUI.Abstraction
             switch (PanelType) {
                 case PanelType.Trees: {
                     switch (NetworkSkinPanelController.LanePosition) {
-                        case Net.LanePosition.Left: return NetworkSkinPanelController.LeftTree as ListPanelController<T>;
-                        case Net.LanePosition.Middle: return NetworkSkinPanelController.MiddleTree as ListPanelController<T>;
-                        case Net.LanePosition.Right: return NetworkSkinPanelController.RighTree as ListPanelController<T>;
+                        case LanePosition.Left: return NetworkSkinPanelController.LeftTree as ListPanelController<T>;
+                        case LanePosition.Middle: return NetworkSkinPanelController.MiddleTree as ListPanelController<T>;
+                        case LanePosition.Right: return NetworkSkinPanelController.RighTree as ListPanelController<T>;
                         default: return null;
                     }
                 }
                 case PanelType.Lights: return NetworkSkinPanelController.StreetLight as ListPanelController<T>;
                 case PanelType.Pillars: {
-                    switch (NetworkSkinPanelController.PillarElevationCombination) {
-                        case Net.Pillar.Elevated: return NetworkSkinPanelController.ElevatedBridgePillar as ListPanelController<T>;
-                        case Net.Pillar.ElevatedMiddle: return NetworkSkinPanelController.ElevatedMiddlePillar as ListPanelController<T>;
-                        case Net.Pillar.Bridge: return NetworkSkinPanelController.BridgeBridgePillar as ListPanelController<T>;
-                        case Net.Pillar.BridgeMiddle: return NetworkSkinPanelController.BridgeMiddlePillar as ListPanelController<T>;
+                    switch (NetworkSkinPanelController.Pillar) {
+                        case Pillar.Elevated: return NetworkSkinPanelController.ElevatedBridgePillar as ListPanelController<T>;
+                        case Pillar.ElevatedMiddle: return NetworkSkinPanelController.ElevatedMiddlePillar as ListPanelController<T>;
+                        case Pillar.Bridge: return NetworkSkinPanelController.BridgeBridgePillar as ListPanelController<T>;
+                        case Pillar.BridgeMiddle: return NetworkSkinPanelController.BridgeMiddlePillar as ListPanelController<T>;
                         default: return null;
                     }
                 }

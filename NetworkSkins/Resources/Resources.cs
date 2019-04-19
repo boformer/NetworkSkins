@@ -43,8 +43,6 @@ namespace NetworkSkins
         public static string Star =             "Star";
         public static string StarOutline =      "StarOutline";
         public static string Locked =           "Locked";
-        public static string LockedPressed =    "LockedPressed";
-        public static string LockedHovered =    "LockedHovered";
         public static string Unlocked =         "Unlocked";
         public static string UnlockedPressed =  "UnlockedPressed";
         public static string UnlockedHovered =  "UnlockedHovered";
@@ -90,8 +88,6 @@ namespace NetworkSkins
             "Star",
             "StarOutline",
             "Locked",
-            "LockedPressed",
-            "LockedHovered",
             "Unlocked",
             "UnlockedPressed",
             "UnlockedHovered",

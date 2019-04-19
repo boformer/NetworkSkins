@@ -14,8 +14,8 @@ namespace NetworkSkins.GUI.Lights
         }
 
         protected override void OnPanelBuilt() {
-            laneTabStrip.isVisible = false;
-            pillarTabStrip.isVisible = false;
+            laneTabstripContainer.isVisible = false;
+            pillarTabstrip.isVisible = false;
             Refresh();
         }
 

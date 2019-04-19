@@ -27,8 +27,9 @@
         public const string TOOLTIP_SURFACE = "TOOLTIP_SURFACE";
         public const string TOOLTIP_PILLARS = "TOOLTIP_PILLARS";
         public const string TOOLTIP_CATENARY = "TOOLTIP_CATENARY";
-        public const string TOOLTIP_COLOR = "TOOLTIP_COLOR";
+        public const string TOOLTIP_COLOR = "TOOLTIP_COLOR"; 
         public const string TOOLTIP_EXTRAS = "TOOLTIP_EXTRAS";
+        public const string TOOLTIP_LOCK = "TOOLTIP_LOCK";
         public const string TOOLTIP_ADDFAVOURITE = "TOOLTIP_ADDFAVOURITE";
         public const string TOOLTIP_REMOVEFAVOURITE = "TOOLTIP_REMOVEFAVOURITE";
         public const string TOOLTIP_RESETCURRENT = "TOOLTIP_RESETCURRENT";

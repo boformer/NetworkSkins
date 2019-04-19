@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.Net;
 using UnityEngine;
@@ -16,21 +17,27 @@ namespace NetworkSkins.GUI.Trees
         }
 
         protected override void RefreshUI(NetInfo netInfo) {
-            laneTabStrip.isVisible = true;
+            base.RefreshUI(netInfo);
+            laneTabstripContainer.isVisible = true;
             SetTabEnabled(LanePosition.Right, NetworkSkinPanelController.RighTree.Enabled);
             SetTabEnabled(LanePosition.Middle, NetworkSkinPanelController.MiddleTree.Enabled);
             SetTabEnabled(LanePosition.Left, NetworkSkinPanelController.LeftTree.Enabled);
             int tabCount = laneTabs.Count(tab => tab.isVisible);
             if (tabCount != 0) {
                 for (int i = 0; i < LanePositionExtensions.LanePositionCount; i++) {
-                    laneTabs[i].width = laneTabStrip.width / tabCount;
+                    laneTabs[i].width = laneTabstrip.width / tabCount;
                 }
             }
             if (tabCount == 1) {
-                laneTabStrip.isVisible = false;
-                laneTabStrip.selectedIndex = 1;
-            } else if (!NetworkSkinPanelController.TabClicked) laneTabStrip.selectedIndex = 0;
-            NetworkSkinPanelController.TabClicked = false;
+                laneTabstripContainer.isVisible = false;
+            }
+            RefreshTabstrip();
+        }
+
+        private void RefreshTabstrip() {
+            _ignoreEvents = true;
+            laneTabstrip.selectedIndex = (int)NetworkSkinPanelController.LanePosition;
+            _ignoreEvents = false;
         }
 
         private void SetTabEnabled(LanePosition lanePos, bool enabled) {
@@ -38,7 +45,7 @@ namespace NetworkSkins.GUI.Trees
         }
 
         protected override void OnPanelBuilt() {
-            pillarTabStrip.isVisible = false;
+            pillarTabstrip.isVisible = false;
             Refresh();
         }
 

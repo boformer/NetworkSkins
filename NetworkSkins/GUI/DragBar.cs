@@ -10,6 +10,10 @@ namespace NetworkSkins.GUI
         private UIPanel panel;
         public event DragEndEventHandler EventDragEnd;
 
+        public override void OnDestroy() {
+            dragHandle.eventMouseUp -= OnDragEnd;
+            base.OnDestroy();
+        }
         public override void Build(PanelType panelType, Layout layout) {
             base.Build(panelType, layout);
             dragHandle = AddUIComponent<UIDragHandle>();
@@ -27,7 +31,6 @@ namespace NetworkSkins.GUI
         }
 
         private void OnDragEnd(UIComponent component, UIMouseEventParameter eventParam) {
-
             EventDragEnd?.Invoke();
         }
     }

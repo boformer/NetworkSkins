@@ -14,7 +14,7 @@ namespace NetworkSkins.GUI.Pillars
         }
 
         protected override bool IsDefault(string itemID) {
-            switch (NetworkSkinPanelController.PillarElevationCombination) {
+            switch (NetworkSkinPanelController.Pillar) {
                 case Pillar.Elevated: return NetworkSkinPanelController.ElevatedBridgePillar.DefaultItem.Id == itemID;
                 case Pillar.ElevatedMiddle: return NetworkSkinPanelController.ElevatedMiddlePillar.DefaultItem.Id == itemID;
                 case Pillar.Bridge: return NetworkSkinPanelController.BridgeBridgePillar.DefaultItem.Id == itemID;

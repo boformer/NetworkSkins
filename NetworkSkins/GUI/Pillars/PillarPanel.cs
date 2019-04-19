@@ -7,22 +7,28 @@ namespace NetworkSkins.GUI.Pillars
     public class PillarPanel : ListPanelBase<PillarList, BuildingInfo>
     {
         protected override void RefreshUI(NetInfo netInfo) {
-            pillarTabStrip.isVisible = true;
+            base.RefreshUI(netInfo);
+            pillarTabstrip.isVisible = true;
             SetTabEnabled(Pillar.Bridge, NetworkSkinPanelController.BridgeBridgePillar.Enabled);
             SetTabEnabled(Pillar.BridgeMiddle, NetworkSkinPanelController.BridgeMiddlePillar.Enabled);
             SetTabEnabled(Pillar.Elevated, NetworkSkinPanelController.ElevatedBridgePillar.Enabled);
             SetTabEnabled(Pillar.ElevatedMiddle, NetworkSkinPanelController.ElevatedMiddlePillar.Enabled);
             int tabCount = pillarTabs.Count(tab => tab.isVisible);
             if (tabCount != 0) {
-                for (int i = (int)Pillar.Count - 1; i >= 0 ; i--) {
-                    pillarTabs[i].width = pillarTabStrip.width / tabCount;
-                    if (!NetworkSkinPanelController.TabClicked) pillarTabStrip.selectedIndex = i;
+                for (int i = 0; i < (int)Pillar.Count; i++) {
+                    pillarTabs[i].width = pillarTabstrip.width / tabCount;
                 }
             }
             if (tabCount == 1) {
-                pillarTabStrip.isVisible = false;
+                pillarTabstrip.isVisible = false;
             }
-            NetworkSkinPanelController.TabClicked = false;
+            RefreshTabstrip();
+        }
+
+        private void RefreshTabstrip() {
+            _ignoreEvents = true;
+            pillarTabstrip.selectedIndex = (int)NetworkSkinPanelController.Pillar;
+            _ignoreEvents = false;
         }
 
         private void SetTabEnabled(Pillar pillar, bool enabled) {
@@ -30,13 +36,13 @@ namespace NetworkSkins.GUI.Pillars
         }
 
         protected override void OnPanelBuilt() {
-            laneTabStrip.isVisible = false;
+            laneTabstripContainer.isVisible = false;
             Refresh();
         }
 
         protected override void OnSelectedChanged(string itemID, bool selected) {
             if (!selected) return;
-            switch (NetworkSkinPanelController.PillarElevationCombination) {
+            switch (NetworkSkinPanelController.Pillar) {
                 case Pillar.Elevated: NetworkSkinPanelController.ElevatedBridgePillar.SetSelectedItem(itemID); break;
                 case Pillar.ElevatedMiddle: NetworkSkinPanelController.ElevatedMiddlePillar.SetSelectedItem(itemID); break;
                 case Pillar.Bridge: NetworkSkinPanelController.BridgeBridgePillar.SetSelectedItem(itemID); break;

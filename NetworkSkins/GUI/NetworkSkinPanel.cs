@@ -15,13 +15,14 @@ namespace NetworkSkins.GUI
         private ToolBar toolBar;
         private TreePanel treesPanel;
         private StreetLightPanel lightsPanel;
-        private TerrainSurfacePanel _terrainSurfacePanel;
+        private TerrainSurfacePanel terrainSurfacePanel;
         private PillarPanel pillarPanel;
         private CatenaryPanel catenaryPanel;
         private ColorPanel colorPanel;
         private SettingsPanel settingsPanel;
 
         public override void OnDestroy() {
+            toolBar.EventDragEnd -= OnToolBarDragEnd;
             UnregisterEvents();
             base.OnDestroy();
         }
@@ -54,8 +55,8 @@ namespace NetworkSkins.GUI
         }
 
         private void CreateSurfacePanel() {
-            _terrainSurfacePanel = AddUIComponent<TerrainSurfacePanel>();
-            _terrainSurfacePanel.Build(PanelType.Surfaces, new Layout(new Vector2(388.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
+            terrainSurfacePanel = AddUIComponent<TerrainSurfacePanel>();
+            terrainSurfacePanel.Build(PanelType.Surfaces, new Layout(new Vector2(388.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
         }
 
         private void CreateCatenaryPanel() {
@@ -113,7 +114,7 @@ namespace NetworkSkins.GUI
             toolBar.ButtonBar.EventPillarsVisibilityChanged += OnPillarsVisibilityChanged;
             toolBar.ButtonBar.EventColorVisibilityChanged += OnColorVisibilityChanged;
             toolBar.ButtonBar.EventCatenaryVisibilityChanged += OnCatenaryVisibilityChanged;
-            toolBar.ButtonBar.EventExtrasVisibilityChanged += OnSettingsVisibilityChanged;
+            toolBar.ButtonBar.EventSettingsVisibilityChanged += OnSettingsVisibilityChanged;
         }
 
         private void UnregisterClickEvents() {
@@ -133,7 +134,7 @@ namespace NetworkSkins.GUI
             toolBar.ButtonBar.EventPillarsVisibilityChanged -= OnPillarsVisibilityChanged;
             toolBar.ButtonBar.EventColorVisibilityChanged -= OnColorVisibilityChanged;
             toolBar.ButtonBar.EventCatenaryVisibilityChanged -= OnCatenaryVisibilityChanged;
-            toolBar.ButtonBar.EventExtrasVisibilityChanged -= OnSettingsVisibilityChanged;
+            toolBar.ButtonBar.EventSettingsVisibilityChanged -= OnSettingsVisibilityChanged;
         }
 
         private void OnSettingsVisibilityChanged(UIButton button, UIButton[] buttons, bool visible) {
@@ -165,9 +166,9 @@ namespace NetworkSkins.GUI
         }
 
         private void OnSurfacesVisibilityChanged(UIButton button, UIButton[] buttons, bool visible) {
-            if (!visible && _terrainSurfacePanel != null) {
+            if (!visible && terrainSurfacePanel != null) {
                 SetButtonUnfocused(button);
-                Destroy(_terrainSurfacePanel.gameObject);
+                Destroy(terrainSurfacePanel.gameObject);
             }
         }
 
@@ -219,9 +220,9 @@ namespace NetworkSkins.GUI
         }
 
         private void OnSurfacesClicked(UIButton button, UIButton[] buttons) {
-            if (_terrainSurfacePanel != null) {
+            if (terrainSurfacePanel != null) {
                 SetButtonUnfocused(button);
-                Destroy(_terrainSurfacePanel.gameObject);
+                Destroy(terrainSurfacePanel.gameObject);
             } else {
                 RefreshButtons(button, buttons);
                 CloseAll();
@@ -269,8 +270,8 @@ namespace NetworkSkins.GUI
             if (lightsPanel != null) {
                 Destroy(lightsPanel.gameObject);
             }
-            if (_terrainSurfacePanel != null) {
-                Destroy(_terrainSurfacePanel.gameObject);
+            if (terrainSurfacePanel != null) {
+                Destroy(terrainSurfacePanel.gameObject);
             }
             if (pillarPanel != null) {
                 Destroy(pillarPanel.gameObject);

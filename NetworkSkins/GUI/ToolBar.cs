@@ -10,6 +10,10 @@ namespace NetworkSkins.GUI
         public ButtonBar ButtonBar { get; private set; }
         public event DragEndEventHandler EventDragEnd;
 
+        public override void OnDestroy() {
+            dragBar.EventDragEnd += OnDragBarDragEnd;
+            base.OnDestroy();
+        }
         public override void Build(PanelType panelType, Layout layout) {
             base.Build(panelType, layout);
             color = GUIColor;

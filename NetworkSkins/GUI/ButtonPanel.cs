@@ -11,6 +11,12 @@ namespace NetworkSkins.GUI
 
         private UIButton button;
 
+        public override void OnDestroy() {
+            EventButtonClicked = null;
+            button.eventClicked -= OnButtonClicked;
+            base.OnDestroy();
+        }
+
         public override void Build(PanelType panelType, Layout layout) {
             base.Build(panelType, layout);
             CreateButton();

@@ -9,6 +9,11 @@ namespace NetworkSkins.GUI.Colors
         public delegate void SwatchClickedEventHandler(Color32 color, UIMouseEventParameter eventParam, UIComponent component);
         public event SwatchClickedEventHandler EventSwatchClicked;
 
+        public override void OnDestroy() {
+            EventSwatchClicked = null;
+            eventClicked -= OnSwatchClicked;
+            base.OnDestroy();
+        }
         public override void Start() {
             eventClicked += OnSwatchClicked;
         }

@@ -18,7 +18,7 @@ namespace NetworkSkins.GUI.Colors
         private ButtonPanel button;
         private Color32 currentColor;
         private bool updateNeeded;
-
+ 
         public override void Update() {
             base.Update();
             if (updateNeeded && Input.GetMouseButtonUp(0)) {
@@ -28,6 +28,19 @@ namespace NetworkSkins.GUI.Colors
         }
 
         public override void OnDestroy() {
+            redTextField.eventGotFocus -= OnGotFocus;
+            redTextField.eventKeyPress -= OnKeyPress;
+            redTextField.eventTextChanged -= OnTextChanged;
+            redTextField.eventTextSubmitted -= OnTextSubmitted;
+            greenTextField.eventGotFocus -= OnGotFocus;
+            greenTextField.eventKeyPress -= OnKeyPress;
+            greenTextField.eventTextChanged -= OnTextChanged;
+            greenTextField.eventTextSubmitted -= OnTextSubmitted;
+            blueTextField.eventGotFocus -= OnGotFocus;
+            blueTextField.eventKeyPress -= OnKeyPress;
+            blueTextField.eventTextChanged -= OnTextChanged;
+            blueTextField.eventTextSubmitted -= OnTextSubmitted;
+            colorPicker.eventColorUpdated -= OnColorUpdated;
             NetworkSkinPanelController.Color.EventColorUsedInSegment -= OnColorUsed;
             base.OnDestroy();
         }

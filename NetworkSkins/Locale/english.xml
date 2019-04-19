@@ -28,6 +28,7 @@
     <Translation ID="TOOLTIP_CATENARY" String="Catenaries" />
     <Translation ID="TOOLTIP_COLOR" String="Color" />
     <Translation ID="TOOLTIP_EXTRAS" String="Extras" />
+    <Translation ID="TOOLTIP_LOCK" String="Activate the lock to modify all lanes simultaneously" />
     <Translation ID="TOOLTIP_ADDFAVOURITE" String="Add to favorites" />
     <Translation ID="TOOLTIP_REMOVEFAVOURITE" String="Remove from favorites" />
     <Translation ID="TOOLTIP_RESETCURRENT" String="Reset all settings for currently selected network" />

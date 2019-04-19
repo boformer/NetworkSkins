@@ -14,6 +14,11 @@ namespace NetworkSkins.GUI
         private UILabel labelValue;
         private UISlider slider;
 
+        public override void OnDestroy() {
+            slider.eventMouseUp -= OnMouseUp;
+            slider.eventValueChanged -= OnValueChanged;
+            base.OnDestroy();
+        }
         public override void Build(PanelType panelType, Layout layout) {
             base.Build(panelType, layout);
             labelPanel = AddUIComponent<PanelBase>();
@@ -97,12 +102,16 @@ namespace NetworkSkins.GUI
                     switch (NetworkSkinPanelController.LanePosition) {
                         case LanePosition.Left:
                             NetworkSkinPanelController.LeftTree.SetRepeatDistance(slider.value);
+                            if(Persistence.LanePositionLocked)
+                                NetworkSkinPanelController.RighTree.SetRepeatDistance(slider.value);
                             break;
                         case LanePosition.Middle:
                             NetworkSkinPanelController.MiddleTree.SetRepeatDistance(slider.value);
                             break;
                         case LanePosition.Right:
                             NetworkSkinPanelController.RighTree.SetRepeatDistance(slider.value);
+                            if (Persistence.LanePositionLocked)
+                                NetworkSkinPanelController.LeftTree.SetRepeatDistance(slider.value);
                             break;
                         default: break;
                     }

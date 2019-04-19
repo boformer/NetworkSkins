@@ -17,8 +17,8 @@ namespace NetworkSkins.GUI.Abstraction
         protected abstract bool IsDefault(string itemID);
 
         public override void OnDestroy() {
-            base.OnDestroy();
             UnbindEvents();
+            base.OnDestroy();
         }
 
         public override void Build(PanelType panelType, Layout layout) {

@@ -12,6 +12,10 @@ namespace NetworkSkins.GUI
         private UICheckBox checkbox;
         private UILabel label;
 
+        public override void OnDestroy() {
+            checkbox.eventCheckChanged -= OnCheckboxStateChanged;
+            base.OnDestroy();
+        }
         public override void Build(PanelType panelType, Layout layout) {
             base.Build(panelType, layout);
             CreateCheckbox();

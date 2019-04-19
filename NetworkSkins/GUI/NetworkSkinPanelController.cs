@@ -18,11 +18,10 @@ namespace NetworkSkins.GUI
 
         public delegate void ToolStateChangedEventHandler(bool state);
         public event ToolStateChangedEventHandler EventToolStateChanged;
-        public delegate void PrefabChangedEventHandler(NetInfo netInfo);
-        public event PrefabChangedEventHandler EventPrefabChanged;
+        public delegate void GUIDirtyEventHandler(NetInfo netInfo);
+        public event GUIDirtyEventHandler EventGUIDirty;
 
         private bool _ignoreModifierEvents = false;
-        public bool TabClicked { get; set; } = false;
 
         public TerrainSurfacePanelController TerrainSurface;
 
@@ -32,13 +31,13 @@ namespace NetworkSkins.GUI
 
         public bool TreesEnabled => LeftTree.Enabled || MiddleTree.Enabled || RighTree.Enabled;
         public LanePosition LanePosition { get; set; } = LanePosition.Left;
+        public Pillar Pillar { get; set; } = Pillar.Bridge;
 
         public TreePanelController LeftTree;
         public TreePanelController MiddleTree;
         public TreePanelController RighTree;
         
         public bool PillarsEnabled => ElevatedBridgePillar.Enabled || ElevatedMiddlePillar.Enabled || BridgeBridgePillar.Enabled || BridgeMiddlePillar.Enabled;
-        public Pillar PillarElevationCombination { get; set; } = Pillar.Bridge;
         public PillarPanelController ElevatedBridgePillar;
         public PillarPanelController ElevatedMiddlePillar;
         public PillarPanelController BridgeBridgePillar;
@@ -101,7 +100,6 @@ namespace NetworkSkins.GUI
                 {
                     Prefab = netTool.m_prefab;
                     OnPrefabChanged(Prefab);
-                    EventPrefabChanged?.Invoke(Prefab);
                 }
             }
             else
@@ -141,16 +139,16 @@ namespace NetworkSkins.GUI
             UpdateActiveModifiers();
         }
 
-        public void SetActivePillarElevation(Pillar pillar)
+        public void SetPillarAndRefreshUI(Pillar pillar)
         {
-            PillarElevationCombination = pillar;
-            EventPrefabChanged?.Invoke(Prefab);
+            Pillar = pillar;
+            EventGUIDirty?.Invoke(Prefab);
         }
 
-        public void SetActiveLane(LanePosition value)
+        public void SetLaneAndRefreshUI(LanePosition value)
         {
             LanePosition = value;
-            EventPrefabChanged?.Invoke(Prefab);
+            EventGUIDirty?.Invoke(Prefab);
         }
 
         public bool IsSelected(string id, ItemType type)
@@ -171,7 +169,7 @@ namespace NetworkSkins.GUI
                 case ItemType.Surfaces: return TerrainSurface.SelectedItem?.Id == id;
                 case ItemType.Pillars:
                 {
-                    switch (PillarElevationCombination)
+                    switch (Pillar)
                     {
                         case Pillar.Elevated: return ElevatedBridgePillar.SelectedItem?.Id == id;
                         case Pillar.ElevatedMiddle: return ElevatedMiddlePillar.SelectedItem?.Id == id;
@@ -213,7 +211,62 @@ namespace NetworkSkins.GUI
 
             UpdateActiveModifiers();
 
-            EventPrefabChanged?.Invoke(Prefab);
+            UpdateSelectedLane();
+            UpdateSelectedPillar();
+
+            EventGUIDirty?.Invoke(Prefab);
+        }
+
+        private void UpdateSelectedLane() {
+            switch (LanePosition) {
+                case LanePosition.Left: {
+                    if (!LeftTree.Enabled) {
+                        LanePosition = MiddleTree.Enabled ? LanePosition.Middle : LanePosition.Right;
+                    }
+                    break;
+                }
+                case LanePosition.Middle: {
+                    if (!MiddleTree.Enabled) {
+                        LanePosition = LeftTree.Enabled ? LanePosition.Left : LanePosition.Right;
+                    }
+                    break;
+                }
+                case LanePosition.Right: {
+                    if (!RighTree.Enabled) {
+                        LanePosition = MiddleTree.Enabled ? LanePosition.Middle : LanePosition.Left;
+                    }
+                    break;
+                }
+            }
+        }
+
+        private void UpdateSelectedPillar() {
+            switch (Pillar) {
+                case Pillar.Elevated: {
+                    if (!ElevatedBridgePillar.Enabled) {
+                        Pillar = ElevatedMiddlePillar.Enabled ? Pillar.ElevatedMiddle : BridgeBridgePillar.Enabled ? Pillar.Bridge : Pillar.BridgeMiddle;
+                    }
+                    break;
+                }
+                case Pillar.ElevatedMiddle: {
+                    if (!ElevatedMiddlePillar.Enabled) {
+                        Pillar = ElevatedBridgePillar.Enabled ? Pillar.Elevated : BridgeBridgePillar.Enabled ? Pillar.Bridge : Pillar.BridgeMiddle;
+                    }
+                    break;
+                }
+                case Pillar.Bridge: {
+                    if (!BridgeBridgePillar.Enabled) {
+                        Pillar = ElevatedMiddlePillar.Enabled ? Pillar.ElevatedMiddle : ElevatedBridgePillar.Enabled ? Pillar.Elevated : Pillar.BridgeMiddle;
+                    }
+                    break;
+                }
+                case Pillar.BridgeMiddle: {
+                    if (!BridgeMiddlePillar.Enabled) {
+                        Pillar = ElevatedMiddlePillar.Enabled ? Pillar.ElevatedMiddle : BridgeBridgePillar.Enabled ? Pillar.Bridge : Pillar.Elevated;
+                    }
+                    break;
+                }
+            }
         }
 
         private void OnSegmentPlaced(NetworkSkin skin)
