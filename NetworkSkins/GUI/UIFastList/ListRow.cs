@@ -26,6 +26,8 @@ namespace NetworkSkins.GUI.UIFastList
         private UILabel nameLabel;
         private UIPanel checkboxPanel;
         private UICheckBox favouriteCheckbox;
+        private UISprite checkedSprite;
+        private UISprite uncheckedSprite;
         private ListItem itemData;
         private Color32 thumbnailBackgroundColor = new Color32(131, 141, 145, 255);
         private Color32 evenColor = new Color32(67, 76, 80, 255); 
@@ -111,12 +113,12 @@ namespace NetworkSkins.GUI.UIFastList
             favouriteCheckbox = checkboxPanel.AddUIComponent<UICheckBox>();
             favouriteCheckbox.size = new Vector2(22f, 22f);
             favouriteCheckbox.relativePosition = new Vector3(9.0f, 4.0f);
-            UISprite uncheckedSprite = favouriteCheckbox.AddUIComponent<UISprite>();
+            uncheckedSprite = favouriteCheckbox.AddUIComponent<UISprite>();
             uncheckedSprite.atlas = Resources.Atlas;
             uncheckedSprite.spriteName = Resources.StarOutline;
             uncheckedSprite.size = favouriteCheckbox.size;
             uncheckedSprite.relativePosition = Vector3.zero;
-            UISprite checkedSprite = uncheckedSprite.AddUIComponent<UISprite>();
+            checkedSprite = uncheckedSprite.AddUIComponent<UISprite>();
             checkedSprite.atlas = Resources.Atlas;
             checkedSprite.spriteName = Resources.Star;
             checkedSprite.size = favouriteCheckbox.size;
@@ -132,10 +134,8 @@ namespace NetworkSkins.GUI.UIFastList
                 itemData.IsBlacklisted = blackListed;
                 if (blackListed) {
                     favouriteCheckbox.isChecked = true;
-                    favouriteCheckbox.checkedBoxObject.color = Color.black;
-                    UISprite sprite = favouriteCheckbox.checkedBoxObject as UISprite;
-                    sprite.atlas = Resources.DefaultAtlas;
-                    sprite.spriteName = "InfoIconBaseDisabled";
+                    checkedSprite.spriteName = Resources.Blacklisted;
+                    uncheckedSprite.spriteName = "";
                     if (itemData.IsFavourite) {
                         itemData.IsFavourite = false;
                         EventFavouriteChanged?.Invoke(itemData.ID, false);
@@ -144,7 +144,7 @@ namespace NetworkSkins.GUI.UIFastList
                     if (!itemData.IsFavourite) {
                         favouriteCheckbox.isChecked = false;
                     }
-                    favouriteCheckbox.checkedBoxObject.color = Color.white;
+                    uncheckedSprite.spriteName = Resources.StarOutline;
                 }
                 EventBlacklistedChanged?.Invoke(itemData.ID, blackListed);
             } else if (eventParam.buttons == UIMouseButton.Left) {
@@ -152,10 +152,8 @@ namespace NetworkSkins.GUI.UIFastList
                 itemData.IsFavourite = favourite;
                 if (favourite) {
                     favouriteCheckbox.isChecked = true;
-                    favouriteCheckbox.checkedBoxObject.color = Color.white;
-                    UISprite sprite = favouriteCheckbox.checkedBoxObject as UISprite;
-                    sprite.atlas = Resources.Atlas;
-                    sprite.spriteName = Resources.Star;
+                    checkedSprite.spriteName = Resources.Star;
+                    uncheckedSprite.spriteName = Resources.StarOutline;
                     if (itemData.IsBlacklisted) {
                         itemData.IsBlacklisted = false;
                         EventBlacklistedChanged?.Invoke(itemData.ID, false);
@@ -164,10 +162,10 @@ namespace NetworkSkins.GUI.UIFastList
                     if (!itemData.IsBlacklisted) {
                         favouriteCheckbox.isChecked = false;
                     }
-                    favouriteCheckbox.checkedBoxObject.color = Color.black;
                 }
                 EventFavouriteChanged?.Invoke(itemData.ID, favourite);
             }
+            UpdateCheckboxTooltip();
         }
 
         private void DisplayItem(bool isRowOdd) {
@@ -175,10 +173,8 @@ namespace NetworkSkins.GUI.UIFastList
             thumbnailSprite.texture = itemData.Thumbnail;
             nameLabel.text = itemData.DisplayName;
             favouriteCheckbox.isChecked = itemData.IsFavourite || IsBlacklisted();
-            UISprite sprite = favouriteCheckbox.checkedBoxObject as UISprite;
-            sprite.color = IsBlacklisted() ? Color.black : Color.white;
-            sprite.atlas = IsBlacklisted() ? Resources.DefaultAtlas : Resources.Atlas;
-            sprite.spriteName = IsBlacklisted() ? "InfoIconBaseDisabled" : Resources.Star;
+            checkedSprite.spriteName = IsBlacklisted() ? Resources.Blacklisted : Resources.Star;
+            uncheckedSprite.spriteName = IsBlacklisted() ? "" :  Resources.StarOutline;
             favouriteCheckbox.isVisible = true;
             for (int i = 0; i < enumNames.Length; i++) {
                 if (itemData.ID == enumNames[i]) {
@@ -196,7 +192,9 @@ namespace NetworkSkins.GUI.UIFastList
         private void UpdateCheckboxTooltip() {
             favouriteCheckbox.tooltip = itemData.IsFavourite
                             ? Translation.Instance.GetTranslation(TranslationID.TOOLTIP_REMOVEFAVOURITE)
-                            : Translation.Instance.GetTranslation(TranslationID.TOOLTIP_ADDFAVOURITE);
+                            : itemData.IsBlacklisted
+                            ? Translation.Instance.GetTranslation(TranslationID.TOOLTIP_REMOVEBLACKLIST)
+                            : Translation.Instance.GetTranslation(TranslationID.TOOLTIP_ADDFAVOURITE_ADDBLACKLIST);
             favouriteCheckbox.RefreshTooltip();
         }
 

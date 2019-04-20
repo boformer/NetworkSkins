@@ -78,7 +78,7 @@ namespace NetworkSkins.GUI.Colors
 
             colorPanel = rgbPanel.AddUIComponent<UIPanel>();
             colorPanel.backgroundSprite = "WhiteRect";
-            colorPanel.size = new Vector2(25.0f, 25.0f);
+            colorPanel.size = new Vector2(28.0f, 25.0f);
             colorPanel.color = NetworkSkinPanelController.Color.SelectedColor;
 
             Color32 color32 = colorPicker.color;
@@ -131,7 +131,7 @@ namespace NetworkSkins.GUI.Colors
             if (swatchesPanel != null) Destroy(swatchesPanel.gameObject);
             swatchesPanel = AddUIComponent<PanelBase>();
             swatchesPanel.zOrder = 2;
-            swatchesPanel.Build(PanelType.None, new Layout(new Vector2(0.0f, 25.0f), false, LayoutDirection.Horizontal, LayoutStart.TopLeft, 5));
+            swatchesPanel.Build(PanelType.None, new Layout(new Vector2(0.0f, 28.0f), false, LayoutDirection.Horizontal, LayoutStart.TopLeft, 5));
             swatchesPanel.autoFitChildrenHorizontally = false;
             swatchesPanel.autoLayout = true;
             swatchesPanel.width = 255.0f;
@@ -145,7 +145,7 @@ namespace NetworkSkins.GUI.Colors
 
         private void AddSwatch(Color32 color) {
             SwatchButton button = swatchesPanel.AddUIComponent<SwatchButton>();
-            button.size = new Vector2(15.0f, 15.0f);
+            button.size = new Vector2(19.0f, 19.0f);
             button.atlas = Resources.Atlas;
             button.normalBgSprite = Resources.Swatch;
             button.hoveredColor = new Color32((byte)Mathf.Min((color.r + 32), 255), (byte)Mathf.Min((color.g + 32), 255), (byte)Mathf.Min((color.b + 32), 255), 255);

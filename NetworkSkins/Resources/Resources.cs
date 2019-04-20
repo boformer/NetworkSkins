@@ -49,6 +49,7 @@ namespace NetworkSkins
             }
         }
 
+        public static string Blacklisted = "Blacklisted";
         public static string DragHandle =       "DragHandle";
         public static string Star =             "Star";
         public static string StarOutline =      "StarOutline";
@@ -93,6 +94,7 @@ namespace NetworkSkins
         private UITextureAtlas UITextureAtlas { get; set; }
 
         private readonly string[] _spriteNames = new string[] {
+            "Blacklisted",
             "DragHandle",
             "DragHandle",
             "Star",

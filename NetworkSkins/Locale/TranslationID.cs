@@ -34,8 +34,9 @@
         public const string TOOLTIP_COLOR = "TOOLTIP_COLOR"; 
         public const string TOOLTIP_SETTINGS = "TOOLTIP_SETTINGS";
         public const string TOOLTIP_LOCK = "TOOLTIP_LOCK";
-        public const string TOOLTIP_ADDFAVOURITE = "TOOLTIP_ADDFAVOURITE";
+        public const string TOOLTIP_ADDFAVOURITE_ADDBLACKLIST = "TOOLTIP_ADDFAVOURITE_ADDBLACKLIST";
         public const string TOOLTIP_REMOVEFAVOURITE = "TOOLTIP_REMOVEFAVOURITE";
+        public const string TOOLTIP_REMOVEBLACKLIST = "TOOLTIP_REMOVEBLACKLIST";
         public const string TOOLTIP_RESETCURRENT = "TOOLTIP_RESETCURRENT";
         public const string BUTTON_RESET = "BUTTON_RESET";
     }
