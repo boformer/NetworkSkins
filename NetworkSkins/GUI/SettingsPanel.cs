@@ -9,11 +9,15 @@ namespace NetworkSkins.GUI
     public class SettingsPanel : PanelBase
     {
         private CheckboxPanel activeSelectionCheckbox;
+        private CheckboxPanel hideBlacklistedCheckbox;
+        private CheckboxPanel displayAtSelectedCheckbox;
         private ButtonPanel resetButton;
 
         public override void OnDestroy() {
             resetButton.EventButtonClicked -= OnResetClicked;
             activeSelectionCheckbox.EventCheckboxStateChanged -= OnActiveSelectionOptionChanged;
+            hideBlacklistedCheckbox.EventCheckboxStateChanged -= OnHideBlacklistedOptionChanged;
+            displayAtSelectedCheckbox.EventCheckboxStateChanged -= OnDisplayAtSelectedOptionChanged;
             base.OnDestroy();
         }
         public override void Build(PanelType panelType, Layout layout) {
@@ -21,6 +25,8 @@ namespace NetworkSkins.GUI
             color = GUIColor;
             UIUtil.CreateSpace(1.0f, 3.0f, this);
             CreateActiveSelectionCheckbox();
+            CreateHideBlacklistedCheckbox();
+            CreateDisplayAtSelectedCheckbox();
             CreateResetButton();
             UIUtil.CreateSpace(1.0f, 5.0f, this);
         }
@@ -47,8 +53,36 @@ namespace NetworkSkins.GUI
             activeSelectionCheckbox.EventCheckboxStateChanged += OnActiveSelectionOptionChanged;
         }
 
+        private void CreateHideBlacklistedCheckbox() {
+            hideBlacklistedCheckbox = AddUIComponent<CheckboxPanel>();
+            hideBlacklistedCheckbox.Build(PanelType.None, new Layout(new Vector2(0.0f, 28.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 10));
+            hideBlacklistedCheckbox.Initialize(
+                Persistence.HideBlacklisted,
+                Translation.Instance.GetTranslation(TranslationID.LABEL_HIDEBLACKLISTED),
+                Translation.Instance.GetTranslation(TranslationID.TOOLTIP_HIDEBLACKLISTED));
+            hideBlacklistedCheckbox.EventCheckboxStateChanged += OnHideBlacklistedOptionChanged;
+        }
+
+        private void CreateDisplayAtSelectedCheckbox() {
+            displayAtSelectedCheckbox = AddUIComponent<CheckboxPanel>();
+            displayAtSelectedCheckbox.Build(PanelType.None, new Layout(new Vector2(0.0f, 28.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 10));
+            displayAtSelectedCheckbox.Initialize(
+                Persistence.DisplayAtSelected,
+                Translation.Instance.GetTranslation(TranslationID.LABEL_DISPLAYATSELECTED),
+                Translation.Instance.GetTranslation(TranslationID.TOOLTIP_DISPLAYATSELECTED));
+            displayAtSelectedCheckbox.EventCheckboxStateChanged += OnDisplayAtSelectedOptionChanged;
+        }
+
         private void OnActiveSelectionOptionChanged(bool value) {
             Persistence.SaveActiveSelectionGlobally = value;
+        }
+
+        private void OnHideBlacklistedOptionChanged(bool value) {
+            Persistence.HideBlacklisted = value;
+        }
+
+        private void OnDisplayAtSelectedOptionChanged(bool value) {
+            Persistence.HideBlacklisted = value;
         }
     }
 }

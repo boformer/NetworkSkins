@@ -10,10 +10,15 @@ namespace NetworkSkins.GUI.Abstraction
 {
     public abstract class ListBase<T> : ListBase where T : PrefabInfo
     {
-        protected static List<ListPanelController<T>.Item> favouritesList = new List<ListPanelController<T>.Item>();
-        protected static List<ListPanelController<T>.Item> nonFavouritesList = new List<ListPanelController<T>.Item>();
+        protected static List<ListPanelController<T>.Item> FavouritesList = new List<ListPanelController<T>.Item>();
+        protected static List<ListPanelController<T>.Item> Blacklist = new List<ListPanelController<T>.Item>();
+        protected static List<ListPanelController<T>.Item> NormalList = new List<ListPanelController<T>.Item>();
         protected override Vector2 ListSize => new Vector2(390.0f, 500.0f);
         protected override float RowHeight => 50.0f;
+
+        protected override void RefreshUI(NetInfo netInfo) {
+            SetupRowsData();
+        }
 
         private ListPanelController<T> GetController() {
             switch (PanelType) {
@@ -49,10 +54,12 @@ namespace NetworkSkins.GUI.Abstraction
             ListPanelController<T> controller = GetController();
             var itemCount = controller.Items.Count;
             fastList.RowsData.SetCapacity(itemCount);
-            favouritesList.Clear();
-            nonFavouritesList.Clear();
+            FavouritesList.Clear();
+            Blacklist.Clear();
+            NormalList.Clear();
             int index = 0;
             List<string> favList = Persistence.GetFavourites(UIUtil.PanelToItemType(PanelType));
+            List<string> blacklist = Persistence.GetBlacklisted(UIUtil.PanelToItemType(PanelType));
             foreach (ListPanelController<T>.Item item in controller.Items) {
                 if (item.Id == "#NONE#" || item.Id == "#DEFAULT#") {
                     ListItem listItem = CreateListItem(item);
@@ -61,31 +68,42 @@ namespace NetworkSkins.GUI.Abstraction
                     index++;
                     continue;
                 } else if (favList.Contains(item.Id)) {
-                    favouritesList.Add(item);
-                } else nonFavouritesList.Add(item);
+                    FavouritesList.Add(item);
+                } else if (blacklist.Contains(item.Id) && !IsDefault(item.Id)) {
+                    Blacklist.Add(item);
+                } else NormalList.Add(item);
             }
-            for (int i = 0; i < favouritesList.Count; i++) {
-                ListPanelController<T>.Item item = favouritesList[i] as ListPanelController<T>.Item;
+            for (int i = 0; i < FavouritesList.Count; i++) {
+                ListPanelController<T>.Item item = FavouritesList[i] as ListPanelController<T>.Item;
                 ListItem listItem = CreateListItem(item);
                 if (NetworkSkinPanelController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
                 fastList.RowsData.Add(listItem);
                 index++;
             }
-            for (int i = 0; i < nonFavouritesList.Count; i++) {
-                ListPanelController<T>.Item item = nonFavouritesList[i] as ListPanelController<T>.Item;
+            for (int i = 0; i < NormalList.Count; i++) {
+                ListPanelController<T>.Item item = NormalList[i] as ListPanelController<T>.Item;
                 ListItem listItem = CreateListItem(item);
-
                 if (NetworkSkinPanelController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
                 fastList.RowsData.Add(listItem);
                 index++;
             }
-            fastList.DisplayAt(selectedIndex);
+            if (!Persistence.HideBlacklisted) {
+                for (int i = 0; i < Blacklist.Count; i++) {
+                    ListPanelController<T>.Item item = Blacklist[i] as ListPanelController<T>.Item;
+                    ListItem listItem = CreateListItem(item);
+                    if (NetworkSkinPanelController.IsSelected(listItem.ID, listItem.Type)) selectedIndex = index;
+                    fastList.RowsData.Add(listItem);
+                    index++;
+                }
+            }
+            fastList.DisplayAt(Persistence.DisplayAtSelected ? selectedIndex : -1);
             fastList.SelectedIndex = selectedIndex;
         }
 
         protected ListItem CreateListItem(ListPanelController<T>.Item item) {
             string id = item.Id;
             bool isFavourite = IsFavourite(id);
+            bool isBlacklisted = IsBlacklisted(id);
             bool isDefault = IsDefault(id);
 
             string prefix = isDefault
@@ -106,7 +124,7 @@ namespace NetworkSkins.GUI.Abstraction
                 : Resources.DefaultIcon;
 
             ItemType type = UIUtil.PanelToItemType(PanelType);
-            return new ListItem(id, displayName, thumbnail, isFavourite, type);
+            return new ListItem(id, displayName, thumbnail, isFavourite, isBlacklisted, isDefault, type);
         }
     }
 }

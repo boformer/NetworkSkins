@@ -183,6 +183,32 @@ namespace NetworkSkins.GUI
             }
         }
 
+        public bool IsDefault(string id, ItemType type) {
+            switch (type) {
+                case ItemType.Trees: {
+                    switch (LanePosition) {
+                        case LanePosition.Left: return LeftTree.DefaultItem?.Id == id;
+                        case LanePosition.Middle: return MiddleTree.DefaultItem?.Id == id;
+                        case LanePosition.Right: return RighTree.DefaultItem?.Id == id;
+                        default: return false;
+                    }
+                }
+                case ItemType.Lights: return StreetLight.DefaultItem?.Id == id;
+                case ItemType.Surfaces: return TerrainSurface.DefaultItem?.Id == id;
+                case ItemType.Pillars: {
+                    switch (Pillar) {
+                        case Pillar.Elevated: return ElevatedBridgePillar.DefaultItem?.Id == id;
+                        case Pillar.ElevatedMiddle: return ElevatedMiddlePillar.DefaultItem?.Id == id;
+                        case Pillar.Bridge: return BridgeBridgePillar.DefaultItem?.Id == id;
+                        case Pillar.BridgeMiddle: return BridgeMiddlePillar.DefaultItem?.Id == id;
+                        default: return false;
+                    }
+                }
+                case ItemType.Catenary: return Catenary.DefaultItem?.Id == id;
+                default: return false;
+            }
+        }
+
         private void OnPrefabChanged(NetInfo prefab)
         {
             _ignoreModifierEvents = true;

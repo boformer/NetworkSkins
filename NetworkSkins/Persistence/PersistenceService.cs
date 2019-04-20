@@ -19,25 +19,31 @@ namespace NetworkSkins.Persistence
                 SaveData();
             }
         }
+        public bool HideBlacklisted {
+            get => Data.HideBlacklisted;
+            set {
+                Data.HideBlacklisted = value;
+                SaveData();
+            }
+        }
+        public bool DisplayAtSelected {
+            get => Data.DisplayAtSelected;
+            set {
+                Data.DisplayAtSelected = value;
+                SaveData();
+            }
+        }
 
         private const string FILE_NAME = "NetworkSkinsSettings.xml";
         private string FilePath => Path.Combine(DataLocation.localApplicationData, FILE_NAME);
 
+        private PersistentData _data;
         private PersistentData Data {
             get {
                 if (_data == null) {
                     _data = LoadData() ?? new PersistentData();
                 }
                 return _data;
-            }
-        }
-        private PersistentData _data;
-
-        public void RemoveFavourite(string itemID, ItemType itemType) {
-            if (itemType == ItemType.None) return;
-            if (Data.Favourites[(int)itemType].Contains(itemID)) {
-                Data.Favourites[(int)itemType].Remove(itemID);
-                SaveData();
             }
         }
 
@@ -57,6 +63,13 @@ namespace NetworkSkins.Persistence
                 SaveData();
             }
         }
+        public void RemoveFavourite(string itemID, ItemType itemType) {
+            if (itemType == ItemType.None) return;
+            if (Data.Favourites[(int)itemType].Contains(itemID)) {
+                Data.Favourites[(int)itemType].Remove(itemID);
+                SaveData();
+            }
+        }
 
         public List<string> GetFavourites(ItemType itemType) {
             return Data.Favourites[(int)itemType];
@@ -64,6 +77,31 @@ namespace NetworkSkins.Persistence
 
         public bool IsFavourite(string name, ItemType itemType) {
             return Data.Favourites[(int)itemType].Contains(name);
+        }
+
+
+        public void AddToBlacklist(string itemID, ItemType itemType) {
+            if (itemType == ItemType.None) return;
+            if (!Data.Blacklisted[(int)itemType].Contains(itemID)) {
+                Data.Blacklisted[(int)itemType].Add(itemID);
+                SaveData();
+            }
+        }
+
+        public void RemoveFromBlacklist(string itemID, ItemType itemType) {
+            if (itemType == ItemType.None) return;
+            if (Data.Blacklisted[(int)itemType].Contains(itemID)) {
+                Data.Blacklisted[(int)itemType].Remove(itemID);
+                SaveData();
+            }
+        }
+
+        public List<string> GetBlacklisted(ItemType itemType) {
+            return Data.Blacklisted[(int)itemType];
+        }
+
+        public bool IsBlacklisted(string name, ItemType itemType) {
+            return Data.Blacklisted[(int)itemType].Contains(name);
         }
 
         public Vector3 GetToolbarPosition() {

@@ -51,4 +51,6 @@ namespace NetworkSkins.GUI.Pillars
             }
         }
     }
+
+    public class PillarList : ListBase<BuildingInfo> { }
 }

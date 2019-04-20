@@ -24,4 +24,6 @@ namespace NetworkSkins.GUI.Lights
             NetworkSkinPanelController.StreetLight.SetSelectedItem(itemID);
         }
     }
+
+    public class StreetLightList : ListBase<PropInfo> { }
 }

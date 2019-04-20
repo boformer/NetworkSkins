@@ -20,14 +20,18 @@
     <Translation ID="LABEL_GREEN" String="G" />
     <Translation ID="LABEL_BLUE" String="B" />
     <Translation ID="LABEL_GLOBAL_SELECTION_DATA" String="Save active selections globally" />
+    <Translation ID="LABEL_HIDEBLACKLISTED" String="Hide blacklisted items" />
+    <Translation ID="LABEL_DISPLAYATSELECTED" String="Auto-scroll to selected" />
+    <Translation ID="TOOLTIP_HIDEBLACKLISTED" String="Enable this option to prevent blacklisted items from showing up in the lists" />
     <Translation ID="TOOLTIP_GLOBAL_SELECTION_DATA" String="Enable this option to make the mod remember your last used skin options for each network globally, rather than per-save" />
+    <Translation ID="TOOLTIP_DISPLAYATSELECTED" String="Enable this option to have lists automatically scroll you down to show currently selected item when you open a panel" />
     <Translation ID="TOOLTIP_TREES" String="Trees" />
     <Translation ID="TOOLTIP_LIGHTS" String="Lights" />
     <Translation ID="TOOLTIP_SURFACE" String="Surface" />
     <Translation ID="TOOLTIP_PILLARS" String="Pillars" />
     <Translation ID="TOOLTIP_CATENARY" String="Catenaries" />
     <Translation ID="TOOLTIP_COLOR" String="Color" />
-    <Translation ID="TOOLTIP_EXTRAS" String="Extras" />
+    <Translation ID="TOOLTIP_SETTINGS" String="Settings" />
     <Translation ID="TOOLTIP_LOCK" String="Activate the lock to modify all lanes simultaneously" />
     <Translation ID="TOOLTIP_ADDFAVOURITE" String="Add to favorites" />
     <Translation ID="TOOLTIP_REMOVEFAVOURITE" String="Remove from favorites" />

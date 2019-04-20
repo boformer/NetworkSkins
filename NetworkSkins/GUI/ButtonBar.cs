@@ -93,8 +93,6 @@ namespace NetworkSkins.GUI
             pillarsButton.isVisible = NetworkSkinPanelController.PillarsEnabled;
             catenaryButton.isVisible = NetworkSkinPanelController.Catenary.Enabled;
             colorButton.isVisible = NetworkSkinPanelController.Color.Enabled;
-            colorButton.eventClicked += OnColorButtonClicked;
-            colorButton.eventVisibilityChanged += OnColorButtonVisibilityChanged;
         }
 
         private void CreateButtons() {
@@ -124,7 +122,7 @@ namespace NetworkSkins.GUI
             colorButton.eventClicked += OnColorButtonClicked;
             colorButton.eventVisibilityChanged += OnColorButtonVisibilityChanged;
 
-            settingsButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Settings, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_EXTRAS));
+            settingsButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Settings, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_SETTINGS));
             settingsButton.eventClicked += OnSettingsButtonClicked;
             settingsButton.eventVisibilityChanged += OnSettingsButtonVisibilityChanged;
 
@@ -173,30 +171,37 @@ namespace NetworkSkins.GUI
 
         private void OnTreesButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
             EventTreesClicked?.Invoke(component as UIButton, buttons);
+            treesButton.RefreshTooltip();
         }
 
         private void OnLightsButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
             EventLightsClicked?.Invoke(component as UIButton, buttons);
+            lightsButton.RefreshTooltip();
         }
 
         private void OnSurfacesButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
             EventSurfacesClicked?.Invoke(component as UIButton, buttons);
+            surfacesButton.RefreshTooltip();
         }
 
         private void OnPillarsButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
             EventPillarsClicked?.Invoke(component as UIButton, buttons);
+            pillarsButton.RefreshTooltip();
         }
 
         private void OnCatenaryButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
             EventCatenaryClicked?.Invoke(component as UIButton, buttons);
+            catenaryButton.RefreshTooltip();
         }
 
         private void OnColorButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
             EventColorClicked?.Invoke(component as UIButton, buttons);
+            colorButton.RefreshTooltip();
         }
 
         private void OnSettingsButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
             EventExtrasClicked?.Invoke(component as UIButton, buttons);
+            settingsButton.RefreshTooltip();
         }
     }
 }

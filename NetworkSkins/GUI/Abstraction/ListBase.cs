@@ -5,16 +5,23 @@ namespace NetworkSkins.GUI.Abstraction
 {
     public abstract class ListBase : PanelBase
     {
-        public delegate void FavouriteChangedEventHandler(string itemID, bool favourite);
-        public event FavouriteChangedEventHandler EventFavouriteChanged;
         public delegate void SelectedChangedEventHandler(string itemID, bool selected);
         public event SelectedChangedEventHandler EventSelectedChanged;
         protected UIFastList.UIFastList fastList;
         protected abstract Vector2 ListSize { get; }
         protected abstract float RowHeight { get; }
-        
-        protected abstract bool IsFavourite(string itemID);
-        protected abstract bool IsDefault(string itemID);
+
+        protected bool IsDefault(string itemID) {
+            return NetworkSkinPanelController.IsDefault(itemID, UIUtil.PanelToItemType(PanelType));
+        }
+
+        protected bool IsFavourite(string itemID) {
+            return Persistence.IsFavourite(itemID, UIUtil.PanelToItemType(PanelType));
+        }
+
+        protected bool IsBlacklisted(string itemID) {
+            return Persistence.IsBlacklisted(itemID, UIUtil.PanelToItemType(PanelType)) && !IsDefault(itemID);
+        }
 
         public override void OnDestroy() {
             UnbindEvents();
@@ -42,7 +49,12 @@ namespace NetworkSkins.GUI.Abstraction
             if (favourite) {
                 Persistence.AddFavourite(itemID, UIUtil.PanelToItemType(PanelType));
             } else Persistence.RemoveFavourite(itemID, UIUtil.PanelToItemType(PanelType));
-            EventFavouriteChanged?.Invoke(itemID, favourite);
+        }
+
+        private void OnBlacklistedChanged(string itemID, bool favourite) {
+            if (favourite) {
+                Persistence.AddToBlacklist(itemID, UIUtil.PanelToItemType(PanelType));
+            } else Persistence.RemoveFromBlacklist(itemID, UIUtil.PanelToItemType(PanelType));
         }
 
         private void CreateFastList(Vector2 size, float rowHeight) {
@@ -59,6 +71,7 @@ namespace NetworkSkins.GUI.Abstraction
                 if (fastList.Rows[rowIndex] is ListRow row) {
                     row.EventSelectedChanged += OnSelectedChanged;
                     row.EventFavouriteChanged += OnFavouriteChanged;
+                    row.EventBlacklistedChanged += OnBlacklistedChanged;
                 }
             }
         }
@@ -68,6 +81,7 @@ namespace NetworkSkins.GUI.Abstraction
                 if (fastList.Rows[rowIndex] is ListRow row) {
                     row.EventSelectedChanged -= OnSelectedChanged;
                     row.EventFavouriteChanged -= OnFavouriteChanged;
+                    row.EventBlacklistedChanged -= OnBlacklistedChanged;
                 }
             }
         }

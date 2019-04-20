@@ -77,7 +77,6 @@
     <Compile Include="GUI\ButtonBar.cs" />
     <Compile Include="GUI\Abstraction\ListBaseGeneric.cs" />
     <Compile Include="GUI\Abstraction\ListPanelBase.cs" />
-    <Compile Include="GUI\Catenaries\CatenaryList.cs" />
     <Compile Include="GUI\Catenaries\CatenaryPanel.cs" />
     <Compile Include="GUI\Colors\ColorPanel.cs" />
     <Compile Include="GUI\PanelType.cs" />
@@ -88,14 +87,12 @@
     <Compile Include="Net\TreeUtils.cs" />
     <Compile Include="Persistence\PersistenceService.cs" />
     <Compile Include="Persistence\PersistentData.cs" />
-    <Compile Include="GUI\Pillars\PillarList.cs" />
     <Compile Include="GUI\Pillars\PillarPanel.cs" />
     <Compile Include="Locale\TranslationID.cs" />
     <Compile Include="Net\SurfaceUtil.cs" />
     <Compile Include="Resources\Resources.cs" />
     <Compile Include="Resources\TextureUtil.cs" />
     <Compile Include="TranslationFramework\Language.cs" />
-    <Compile Include="GUI\Lights\StreetLightList.cs" />
     <Compile Include="GUI\Lights\StreetLightPanel.cs" />
     <Compile Include="GUI\Abstraction\ListBase.cs" />
     <Compile Include="GUI\UIFastList\ListItem.cs" />
@@ -112,7 +109,6 @@
     <Compile Include="TranslationFramework\TranslatableAttribute.cs" />
     <Compile Include="TranslationFramework\Translation.cs" />
     <Compile Include="TranslationFramework\TranslationUtil.cs" />
-    <Compile Include="GUI\Trees\TreeList.cs" />
     <Compile Include="GUI\Trees\TreePanel.cs" />
     <Compile Include="GUI\UIFastList\UIFastList.cs" />
     <Compile Include="GUI\NetworkSkinPanelController.cs" />

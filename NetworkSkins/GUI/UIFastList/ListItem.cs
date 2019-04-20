@@ -11,13 +11,17 @@ namespace NetworkSkins.GUI.UIFastList
         public readonly string DisplayName;
         public readonly Texture2D Thumbnail;
         public bool IsFavourite;
+        public bool IsBlacklisted;
+        public bool IsDefault;
         public ItemType Type;
 
-        public ListItem(string id, string displayName, Texture2D thumbnail, bool isFavourite, ItemType type) {
+        public ListItem(string id, string displayName, Texture2D thumbnail, bool isFavourite, bool isBlacklisted, bool isDefault, ItemType type) {
             ID = id;
             DisplayName = displayName;
             Thumbnail = thumbnail;
             IsFavourite = isFavourite;
+            IsBlacklisted = isBlacklisted;
+            IsDefault = isDefault;
             Type = type;
         }
     }

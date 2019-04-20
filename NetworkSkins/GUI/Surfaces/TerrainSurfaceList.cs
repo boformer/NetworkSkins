@@ -19,14 +19,6 @@ namespace NetworkSkins.GUI.Surfaces
             SetupRowsData();
         }
 
-        protected override bool IsFavourite(string itemID) {
-            return Persistence.IsFavourite(itemID, ItemType.Surfaces);
-        }
-
-        protected override bool IsDefault(string itemID) {
-            return NetworkSkinPanelController.TerrainSurface.DefaultItem.Id == itemID;
-        }
-
         protected override void SetupRowsData() {
             int selectedIndex = -1;
             if (fastList.RowsData == null) {
@@ -74,7 +66,7 @@ namespace NetworkSkins.GUI.Surfaces
             }
             var id = surfaceType == Surface.None ? "#NONE#" : Enum.GetName(typeof(Surface), surfaceType);
             var displayName = string.Concat(prefix, name);
-            return new ListItem(id, displayName, thumbnail, isFavourite, ItemType.Surfaces);
+            return new ListItem(id, displayName, thumbnail, isFavourite, false, isDefault, ItemType.Surfaces);
         }
     }
 }

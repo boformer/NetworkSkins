@@ -59,4 +59,6 @@ namespace NetworkSkins.GUI.Trees
             }
         }
     }
+
+    public class TreeList : ListBase<TreeInfo> { }
 }

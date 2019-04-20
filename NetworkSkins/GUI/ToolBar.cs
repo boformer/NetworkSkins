@@ -11,7 +11,7 @@ namespace NetworkSkins.GUI
         public event DragEndEventHandler EventDragEnd;
 
         public override void OnDestroy() {
-            dragBar.EventDragEnd += OnDragBarDragEnd;
+            dragBar.EventDragEnd -= OnDragBarDragEnd;
             base.OnDestroy();
         }
         public override void Build(PanelType panelType, Layout layout) {

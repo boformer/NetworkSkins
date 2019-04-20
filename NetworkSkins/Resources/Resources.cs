@@ -13,9 +13,19 @@ namespace NetworkSkins
         public static Texture2D NietIcon {
             get {
                 if (_niet == null) {
-                    _niet = UIView.GetAView().defaultAtlas.GetSpriteTexture("Niet");
+                    _niet = DefaultAtlas.GetSpriteTexture("Niet");
                 }
                 return _niet;
+            }
+        }
+
+        private static UITextureAtlas _defaultAtlas;
+        public static UITextureAtlas DefaultAtlas {
+            get {
+                if (_defaultAtlas == null) {
+                    _defaultAtlas = UIView.GetAView().defaultAtlas;
+                }
+                return _defaultAtlas;
             }
         }
 
@@ -82,7 +92,7 @@ namespace NetworkSkins
 
         private UITextureAtlas UITextureAtlas { get; set; }
 
-        private string[] spriteNames = new string[] {
+        private readonly string[] _spriteNames = new string[] {
             "DragHandle",
             "DragHandle",
             "Star",
@@ -137,24 +147,23 @@ namespace NetworkSkins
         private void CreateAtlas() {
             UITextureAtlas textureAtlas = ScriptableObject.CreateInstance<UITextureAtlas>();
 
-            Texture2D[] textures = new Texture2D[spriteNames.Length];
+            Texture2D[] textures = new Texture2D[_spriteNames.Length];
             Texture2D texture2D = new Texture2D(1, 1, TextureFormat.ARGB32, false);
 
-            for (int i = 0; i < spriteNames.Length; i++)
-                textures[i] = GetTextureFromAssemblyManifest(spriteNames[i] + ".png");
+            for (int i = 0; i < _spriteNames.Length; i++)
+                textures[i] = GetTextureFromAssemblyManifest(_spriteNames[i] + ".png");
 
             int maxSize = 1024;
-            Rect[] regions = new Rect[spriteNames.Length];
-            regions = texture2D.PackTextures(textures, 2, maxSize);
+            Rect[] regions = texture2D.PackTextures(textures, 2, maxSize);
 
             Material material = Object.Instantiate<Material>(UIView.GetAView().defaultAtlas.material);
             material.mainTexture = texture2D;
             textureAtlas.material = material;
             textureAtlas.name = "NetworkSkinsAtlas";
 
-            for (int i = 0; i < spriteNames.Length; i++) {
+            for (int i = 0; i < _spriteNames.Length; i++) {
                 UITextureAtlas.SpriteInfo item = new UITextureAtlas.SpriteInfo {
-                    name = spriteNames[i],
+                    name = _spriteNames[i],
                     texture = textures[i],
                     region = regions[i],
                 };

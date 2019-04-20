@@ -8,14 +8,12 @@ namespace NetworkSkins.GUI.Surfaces
     {
         private TerrainSurfaceList list;
         public override void OnDestroy() {
-            list.EventFavouriteChanged -= OnFavouriteChanged;
             list.EventSelectedChanged -= OnSelectedChanged;
             base.OnDestroy();
         }
         protected override void CreateList() {
             list = AddUIComponent<TerrainSurfaceList>();
             list.Build(PanelType, new Layout(new Vector2(378.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 0));
-            list.EventFavouriteChanged += OnFavouriteChanged;
             list.EventSelectedChanged += OnSelectedChanged;
         }
 

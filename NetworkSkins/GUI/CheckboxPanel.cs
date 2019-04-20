@@ -39,14 +39,14 @@ namespace NetworkSkins.GUI
 
         private void CreateCheckbox() {
             checkbox = AddUIComponent<UICheckBox>();
-            checkbox.size = new Vector2(12.0f, 12.0f);
+            checkbox.size = new Vector2(15.0f, 15.0f);
             var sprite = checkbox.AddUIComponent<UISprite>();
-            sprite.spriteName = "AchievementCheckedFalse";
+            sprite.spriteName = "check-unchecked";
             sprite.size = checkbox.size;
             sprite.transform.parent = checkbox.transform;
             sprite.transform.localPosition = Vector3.zero;
             checkbox.checkedBoxObject = sprite.AddUIComponent<UISprite>();
-            ((UISprite)checkbox.checkedBoxObject).spriteName = "AchievementCheckedTrue";
+            ((UISprite)checkbox.checkedBoxObject).spriteName = "check-checked";
             checkbox.checkedBoxObject.size = checkbox.size;
             checkbox.checkedBoxObject.relativePosition = Vector3.zero;
             checkbox.eventCheckChanged += OnCheckboxStateChanged;
