@@ -59,6 +59,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GUI\Colors\SavedSwatchPanel.cs" />
     <Compile Include="GUI\Misc\ButtonPanel.cs" />
     <Compile Include="GUI\Misc\CheckboxPanel.cs" />
     <Compile Include="GUI\Misc\DistancePanel.cs" />

@@ -47,6 +47,14 @@ namespace NetworkSkins.Persistence
             }
         }
 
+        public List<SavedSwatch> GetSavedSwatches() {
+            return new List<SavedSwatch>(Data.SavedSwatches);
+        }
+        public void UpdateSavedSwatches(List<SavedSwatch> savedSwatches) {
+            Data.SavedSwatches = new List<SavedSwatch>(savedSwatches);
+            SaveData();
+        }
+
         public List<Color32> GetSwatches() {
             return new List<Color32>(Data.Swatches);
         }
@@ -151,18 +159,10 @@ namespace NetworkSkins.Persistence
             Instance = this;
         }
 
-        public class SelectionData
+        public class SavedSwatch
         {
-            public ActiveSelectionData.ValueKey Key;
-            public string Value;
-
-            public SelectionData(KeyValuePair<ActiveSelectionData.ValueKey, string> kvp) {
-                Key = kvp.Key;
-                Value = kvp.Value;
-            }
-
-            public static implicit operator KeyValuePair<ActiveSelectionData.ValueKey, string>(SelectionData data) => new KeyValuePair<ActiveSelectionData.ValueKey, string>(data.Key, data.Value);
-            public static implicit operator SelectionData(KeyValuePair<ActiveSelectionData.ValueKey, string> kvp) => new SelectionData(kvp);
+            public Color32 Color;
+            public string Name;
         }
     }
 }

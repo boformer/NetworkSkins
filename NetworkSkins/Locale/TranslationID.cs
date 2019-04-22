@@ -23,6 +23,7 @@
         public const string LABEL_GLOBAL_SELECTION_DATA = "LABEL_GLOBAL_SELECTION_DATA";
         public const string LABEL_HIDEBLACKLISTED = "LABEL_HIDEBLACKLISTED";
         public const string LABEL_DISPLAYATSELECTED = "LABEL_DISPLAYATSELECTED";
+        public const string LABEL_NEW_SWATCH = "LABEL_NEW_SWATCH"; 
         public const string TOOLTIP_GLOBAL_SELECTION_DATA = "TOOLTIP_GLOBAL_SELECTION_DATA";
         public const string TOOLTIP_HIDEBLACKLISTED = "TOOLTIP_HIDEBLACKLISTED";
         public const string TOOLTIP_DISPLAYATSELECTED = "TOOLTIP_DISPLAYATSELECTED";
@@ -40,5 +41,7 @@
         public const string TOOLTIP_REMOVEBLACKLIST = "TOOLTIP_REMOVEBLACKLIST";
         public const string TOOLTIP_RESETCURRENT = "TOOLTIP_RESETCURRENT"; 
         public const string BUTTON_RESET = "BUTTON_RESET";
+        public const string BUTTON_SAVE = "BUTTON_SAVE";
+        public const string TOOLTIP_BUTTON_DELETE = "TOOLTIP_BUTTON_DELETE";
     }
 }

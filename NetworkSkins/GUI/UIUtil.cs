@@ -53,10 +53,12 @@ namespace NetworkSkins.GUI
             button.normalBgSprite = backgroundSprite;
             button.hoveredBgSprite = string.Concat(backgroundSprite, "Hovered");
             button.pressedBgSprite = string.Concat(backgroundSprite, "Pressed");
+            button.disabledBgSprite = string.Concat(backgroundSprite, "Disabled");
             button.focusedBgSprite = string.Concat(backgroundSprite, isFocusable ? "Focused" : "");
             button.normalFgSprite = foregroundSprite;
             button.hoveredFgSprite = string.Concat(foregroundSprite, "Hovered");
             button.pressedFgSprite = string.Concat(foregroundSprite, "Pressed");
+            button.disabledFgSprite = string.Concat(foregroundSprite, "Disabled");
             button.focusedFgSprite = string.Concat(foregroundSprite, isFocusable ? "Focused" : "");
             if (atlas != null) button.atlas = atlas;
 

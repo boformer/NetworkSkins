@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using UnityEngine;
+using static NetworkSkins.Persistence.PersistenceService;
 
 namespace NetworkSkins.Persistence
 {
@@ -15,7 +16,8 @@ namespace NetworkSkins.Persistence
         public Vector2 ToolbarPosition { get; set; } = new Vector2(100.0f, 100.0f);
         public List<string>[] Favourites { get; set; } = new List<string>[(int)ItemType.Count];
         public List<string>[] Blacklisted { get; set; } = new List<string>[(int)ItemType.Count];
-        public List<Color32> Swatches { get; set; } = new List<Color32>(30);
+        public List<Color32> Swatches { get; set; } = new List<Color32>(10);
+        public List<SavedSwatch> SavedSwatches { get; set; } = new List<SavedSwatch>();
         public List<KeyValuePair<ActiveSelectionData.ValueKey, string>> GlobalActiveSelectionData { get; set; } = new List<KeyValuePair<ActiveSelectionData.ValueKey, string>>();
 
         public PersistentData() {

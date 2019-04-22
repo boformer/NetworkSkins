@@ -1,8 +1,10 @@
-﻿using ColossalFramework.UI;
+﻿using System.Collections.Generic;
+using ColossalFramework.UI;
 using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.Locale;
 using NetworkSkins.TranslationFramework;
 using UnityEngine;
+using static NetworkSkins.Persistence.PersistenceService;
 
 namespace NetworkSkins.GUI.Colors
 {
@@ -15,9 +17,14 @@ namespace NetworkSkins.GUI.Colors
         private UITextField redTextField;
         private UITextField greenTextField;
         private UITextField blueTextField;
-        private ButtonPanel button;
+        private PanelBase buttonsPanel;
+        private ButtonPanel resetButton;
+        private ButtonPanel saveButton;
+        private PanelBase savedSwatchesPanel;
         private Color32 currentColor;
         private bool updateNeeded;
+        private List<SavedSwatch> savedSwatches;
+        private const int MAX_SAVED_SWATCHES = 10;
  
         public override void Update() {
             base.Update();
@@ -48,10 +55,12 @@ namespace NetworkSkins.GUI.Colors
         public override void Build(PanelType panelType, Layout layout) {
             base.Build(panelType, layout);
             color = GUIColor;
+            savedSwatches = Persistence.GetSavedSwatches();
             CreateColorPicker();
             CreateRGBPanel();
+            CreateButtonsPanel();
             RefreshSwatchesPanel();
-            CreateResetButton();
+            RefreshSavedSwatchesPanel();
             UIUtil.CreateSpace(255.0f, 11.0f, this);
             NetworkSkinPanelController.Color.EventColorUsedInSegment += OnColorUsed;
             RefreshColors();
@@ -130,39 +139,95 @@ namespace NetworkSkins.GUI.Colors
         private void RefreshSwatchesPanel() {
             if (swatchesPanel != null) Destroy(swatchesPanel.gameObject);
             swatchesPanel = AddUIComponent<PanelBase>();
-            swatchesPanel.zOrder = 2;
+            swatchesPanel.zOrder = 0;
             swatchesPanel.Build(PanelType.None, new Layout(new Vector2(0.0f, 28.0f), false, LayoutDirection.Horizontal, LayoutStart.TopLeft, 5));
             swatchesPanel.autoFitChildrenHorizontally = false;
             swatchesPanel.autoLayout = true;
-            swatchesPanel.width = 255.0f;
+            swatchesPanel.width = 256.0f;
             swatchesPanel.wrapLayout = true;
             swatchesPanel.autoFitChildrenVertically = true;
-            swatchesPanel.padding = new RectOffset(10, 0, 5, 0);
+            swatchesPanel.padding = new RectOffset(10, 0, 10, 0);
             foreach (var swatch in NetworkSkinPanelController.Color.Swatches) {
                 AddSwatch(swatch);
             }
         }
 
+        private void RefreshSavedSwatchesPanel() {
+            if (savedSwatchesPanel != null) Destroy(savedSwatchesPanel.gameObject);
+            savedSwatchesPanel = AddUIComponent<PanelBase>();
+            savedSwatchesPanel.Build(PanelType.None, new Layout(new Vector2(256.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 0));
+            savedSwatchesPanel.padding = new RectOffset(5, 0, 5, 0);
+            foreach (var savedSwatch in savedSwatches) {
+                AddSavedSwatch(savedSwatch);
+            }
+        }
+
+        private void AddSavedSwatch(SavedSwatch savedSwatch) {
+            SavedSwatchPanel savedSwatchPanel = savedSwatchesPanel.AddUIComponent<SavedSwatchPanel>();
+            savedSwatchPanel.Build(PanelType.None, new Layout(new Vector2(256.0f, 24.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 0), savedSwatch);
+            savedSwatchPanel.autoLayoutPadding = new RectOffset(5, 0, 5, 0);
+            savedSwatchPanel.EventSwatchClicked += OnSavedSwatchClicked;
+            savedSwatchPanel.EventRemoveSwatch += OnSavedSwatchRemoved;
+            savedSwatchPanel.EventSwatchRenamed += OnSavedSwatchRenamed;
+            if (savedSwatches.Count == MAX_SAVED_SWATCHES) saveButton.Disable();
+        }
+
+        private void OnSavedSwatchRenamed(SavedSwatch savedSwatch) {
+            //
+        }
+
+        private void OnSavedSwatchRemoved(SavedSwatchPanel savedSwatchPanel) {
+            if (savedSwatchPanel != null) {
+                savedSwatches.Remove(savedSwatchPanel.savedSwatch);
+                Persistence.UpdateSavedSwatches(savedSwatches);
+                Destroy(savedSwatchPanel.gameObject);
+            }
+
+            if (savedSwatches.Count < MAX_SAVED_SWATCHES) saveButton.Enable();
+        }
+
+        private void OnSavedSwatchClicked(Color32 color) {
+            colorPicker.color = color;
+        }
+
         private void AddSwatch(Color32 color) {
             SwatchButton button = swatchesPanel.AddUIComponent<SwatchButton>();
-            button.size = new Vector2(19.0f, 19.0f);
-            button.atlas = Resources.Atlas;
-            button.normalBgSprite = Resources.Swatch;
-            button.hoveredColor = new Color32((byte)Mathf.Min((color.r + 32), 255), (byte)Mathf.Min((color.g + 32), 255), (byte)Mathf.Min((color.b + 32), 255), 255);
-            button.pressedColor = new Color32((byte)Mathf.Min((color.r + 64), 255), (byte)Mathf.Min((color.g + 64), 255), (byte)Mathf.Min((color.b + 64), 255), 255);
-            button.focusedColor = color;
-            button.color = color;
-            button.swatch = color;
+            button.Build(color);
             button.EventSwatchClicked += OnSwatchClicked;
+        }
+        private void CreateButtonsPanel() {
+            buttonsPanel = AddUIComponent<PanelBase>();
+            buttonsPanel.Build(PanelType.None, new Layout(new Vector2(0.0f, 34.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 10));
+            buttonsPanel.padding = new RectOffset(10, 0, 5, 0);
+            CreateResetButton();
+            CreateSaveButton();
         }
 
         private void CreateResetButton() {
-            button = AddUIComponent<ButtonPanel>();
-            button.Build(PanelType.None, new Layout(new Vector2(255.0f, 40.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 10));
-            button.padding = new RectOffset(10, 0, 10, 0);
-            button.SetAnchor(UIAnchorStyle.Left | UIAnchorStyle.CenterVertical);
-            button.SetText(Translation.Instance.GetTranslation(TranslationID.BUTTON_RESET));
-            button.EventButtonClicked += OnResetClicked;
+            resetButton = buttonsPanel.AddUIComponent<ButtonPanel>();
+            resetButton.Build(PanelType.None, new Layout(new Vector2(0.0f, 40.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 0));
+            resetButton.SetAnchor(UIAnchorStyle.Left | UIAnchorStyle.CenterVertical);
+            resetButton.SetText(Translation.Instance.GetTranslation(TranslationID.BUTTON_RESET));
+            resetButton.EventButtonClicked += OnResetClicked;
+        }
+
+        private void CreateSaveButton() {
+            saveButton = buttonsPanel.AddUIComponent<ButtonPanel>();
+            saveButton.Build(PanelType.None, new Layout(new Vector2(0.0f, 40.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 0));
+            saveButton.SetAnchor(UIAnchorStyle.Left | UIAnchorStyle.CenterVertical);
+            saveButton.SetText(Translation.Instance.GetTranslation(TranslationID.BUTTON_SAVE));
+            saveButton.EventButtonClicked += OnSaveClicked;
+            if (savedSwatches.Count == MAX_SAVED_SWATCHES) saveButton.Disable();
+        }
+
+        private void OnSaveClicked() {
+            if (savedSwatches.Find(s => s.Color.r == currentColor.r && s.Color.g == currentColor.g && s.Color.b == currentColor.b) == null) {
+                SavedSwatch newSwatch = new SavedSwatch() { Name = Translation.Instance.GetTranslation(TranslationID.LABEL_NEW_SWATCH), Color = currentColor };
+                AddSavedSwatch(newSwatch);
+                savedSwatches.Add(newSwatch);
+                Persistence.UpdateSavedSwatches(savedSwatches);
+                if (savedSwatches.Count == MAX_SAVED_SWATCHES) saveButton.Disable();
+            }
         }
 
         private void OnResetClicked() {
