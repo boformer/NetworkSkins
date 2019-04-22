@@ -9,6 +9,7 @@ using NetworkSkins.GUI.Surfaces;
 using NetworkSkins.GUI.Trees;
 using NetworkSkins.Net;
 using NetworkSkins.Skins;
+using NetworkSkins.Tool;
 using UnityEngine;
 
 namespace NetworkSkins.GUI
@@ -20,8 +21,6 @@ namespace NetworkSkins.GUI
         public event ToolStateChangedEventHandler EventToolStateChanged;
         public delegate void GUIDirtyEventHandler(NetInfo netInfo);
         public event GUIDirtyEventHandler EventGUIDirty;
-
-        private bool _ignoreModifierEvents = false;
 
         public TerrainSurfacePanelController TerrainSurface;
 
@@ -46,6 +45,10 @@ namespace NetworkSkins.GUI
         public CatenaryPanelController Catenary;
 
         public NetInfo Prefab { get; private set; }
+
+        public PipetteTool Tool { get; private set; }
+
+        private bool _ignoreModifierEvents = false;
 
         #region Lifecycle
         public void Awake() {
@@ -87,6 +90,12 @@ namespace NetworkSkins.GUI
 
             Catenary = new CatenaryPanelController();
             Catenary.EventModifiersChanged += OnModifiersChanged;
+
+            Tool = ToolsModifierControl.toolController.gameObject.AddComponent<PipetteTool>();
+            Tool.EventNetInfoPipetted += OnNetInfoPipetted;
+        }
+
+        private void OnNetInfoPipetted(NetInfo info) {
         }
 
         public void Update()
@@ -116,6 +125,8 @@ namespace NetworkSkins.GUI
         public void OnDestroy()
         {
             NetworkSkinManager.instance.EventSegmentPlaced -= OnSegmentPlaced;
+            Tool.EventNetInfoPipetted -= OnNetInfoPipetted;
+            PipetteTool.Destroy();
         }
         #endregion
 

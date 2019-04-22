@@ -81,10 +81,11 @@ namespace NetworkSkins
         public static string SurfacePressed =   "SurfacePressed";
         public static string SurfaceHovered =   "SurfaceHovered";
         public static string SurfaceFocused =   "SurfaceFocused";
-        public static string Eyedropper =       "Eyedropper";
-        public static string EyedropperPressed ="EyedropperPressed";
-        public static string EyedropperHovered ="EyedropperHovered";
-        public static string EyedropperFocused ="EyedropperFocused";
+        public static string Pipette = "Pipette";
+        public static string PipettePressed = "PipettePressed";
+        public static string PipetteHovered = "PipetteHovered";
+        public static string PipetteFocused = "PipetteFocused";
+        public static string PipetteCursor  = "PipetteCursor";
         public static string Settings =         "Settings";
         public static string SettingsPressed =  "SettingsPressed";
         public static string SettingsHovered =  "SettingsHovered";
@@ -127,10 +128,11 @@ namespace NetworkSkins
             "SurfacePressed",
             "SurfaceHovered",
             "SurfaceFocused",
-            "Eyedropper",
-            "EyedropperPressed",
-            "EyedropperHovered",
-            "EyedropperFocused",
+            "Pipette",
+            "PipettePressed",
+            "PipetteHovered",
+            "PipetteFocused",
+            "PipetteCursor",
             "Settings",
             "SettingsPressed",
             "SettingsHovered",
@@ -184,6 +186,7 @@ namespace NetworkSkins
                 manifestResourceStream.Read(array, 0, array.Length);
                 texture2D.LoadImage(array);
             }
+            texture2D.wrapMode = TextureWrapMode.Clamp;
             texture2D.Apply();
             return texture2D;
         }

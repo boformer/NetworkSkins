@@ -1,4 +1,5 @@
-﻿using ColossalFramework.UI;
+﻿using System;
+using ColossalFramework.UI;
 using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.GUI.Catenaries;
 using NetworkSkins.GUI.Colors;
@@ -6,6 +7,7 @@ using NetworkSkins.GUI.Lights;
 using NetworkSkins.GUI.Pillars;
 using NetworkSkins.GUI.Surfaces;
 using NetworkSkins.GUI.Trees;
+using NetworkSkins.Tool;
 using UnityEngine;
 
 namespace NetworkSkins.GUI
@@ -105,6 +107,7 @@ namespace NetworkSkins.GUI
             toolBar.ButtonBar.EventColorClicked += OnColorClicked;
             toolBar.ButtonBar.EventCatenaryClicked += OnCatenaryClicked;
             toolBar.ButtonBar.EventExtrasClicked += OnExtrasClicked;
+            toolBar.ButtonBar.EventPipetteClicked += OnPipetteClicked;
         }
 
         private void RegisterVisibilityEvents() {
@@ -261,6 +264,10 @@ namespace NetworkSkins.GUI
                 CloseAll();
                 CreateTreesPanel();
             }
+        }
+
+        private void OnPipetteClicked(UIButton focusedButton, UIButton[] buttons) {
+            ToolsModifierControl.SetTool<PipetteTool>();
         }
 
         private void CloseAll() {

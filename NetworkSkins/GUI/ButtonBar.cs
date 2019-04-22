@@ -29,6 +29,9 @@ namespace NetworkSkins.GUI
         public delegate void ExtrasButtonClickedEventHandler(UIButton focusedButton, UIButton[] buttons);
         public event ExtrasButtonClickedEventHandler EventExtrasClicked;
 
+        public delegate void PipetteButtonClickedEventHandler(UIButton focusedButton, UIButton[] buttons);
+        public event PipetteButtonClickedEventHandler EventPipetteClicked;
+
         public delegate void TreesButtonVisibilityChangedEventHandler(UIButton focusedButton, UIButton[] buttons, bool visible);
         public event TreesButtonVisibilityChangedEventHandler EventTreesVisibilityChanged;
 
@@ -57,6 +60,7 @@ namespace NetworkSkins.GUI
         private UIButton catenaryButton;
         private UIButton colorButton;
         private UIButton settingsButton;
+        private UIButton pipetteButton;
 
         private UIButton[] buttons;
 
@@ -122,6 +126,9 @@ namespace NetworkSkins.GUI
             colorButton.eventClicked += OnColorButtonClicked;
             colorButton.eventVisibilityChanged += OnColorButtonVisibilityChanged;
 
+            pipetteButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Pipette, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_PIPETTE));
+            pipetteButton.eventClicked += OnPipetteButtonClicked;
+
             settingsButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Settings, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_SETTINGS));
             settingsButton.eventClicked += OnSettingsButtonClicked;
             settingsButton.eventVisibilityChanged += OnSettingsButtonVisibilityChanged;
@@ -137,7 +144,8 @@ namespace NetworkSkins.GUI
                 pillarsButton,
                 catenaryButton,
                 colorButton,
-                settingsButton
+                settingsButton,
+                pipetteButton
             };
         }
 
@@ -202,6 +210,10 @@ namespace NetworkSkins.GUI
         private void OnSettingsButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
             EventExtrasClicked?.Invoke(component as UIButton, buttons);
             settingsButton.RefreshTooltip();
+        }
+        private void OnPipetteButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
+            EventPipetteClicked?.Invoke(component as UIButton, buttons);
+            UIView.Find("DefaultTooltip")?.Hide();
         }
     }
 }

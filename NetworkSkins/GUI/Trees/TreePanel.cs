@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.Net;
 using UnityEngine;
@@ -52,9 +51,18 @@ namespace NetworkSkins.GUI.Trees
         protected override void OnSelectedChanged(string itemID, bool selected) {
             if (!selected) return;
             switch (NetworkSkinPanelController.LanePosition) {
-                case LanePosition.Left: NetworkSkinPanelController.LeftTree.SetSelectedItem(itemID); break;
+                case LanePosition.Left:
+                    NetworkSkinPanelController.LeftTree.SetSelectedItem(itemID);
+                    if (Persistence.LanePositionLocked)
+                        NetworkSkinPanelController.RighTree.SetSelectedItem(itemID);
+                    break;
                 case LanePosition.Middle: NetworkSkinPanelController.MiddleTree.SetSelectedItem(itemID); break;
-                case LanePosition.Right: NetworkSkinPanelController.RighTree.SetSelectedItem(itemID); break;
+
+                case LanePosition.Right:
+                    NetworkSkinPanelController.RighTree.SetSelectedItem(itemID);
+                    if (Persistence.LanePositionLocked)
+                        NetworkSkinPanelController.LeftTree.SetSelectedItem(itemID);
+                    break;
                 default: break;
             }
         }
