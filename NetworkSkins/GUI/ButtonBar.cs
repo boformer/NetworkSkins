@@ -102,36 +102,41 @@ namespace NetworkSkins.GUI
         private void CreateButtons() {
             Vector2 buttonSize = new Vector2(Layout.Size.x - Layout.Spacing * 2, Layout.Size.x - Layout.Spacing * 2);
 
-            treesButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Tree, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_TREES));
-            treesButton.eventClicked += OnTreesButtonClicked;
-            treesButton.eventVisibilityChanged += OnTreesButtonVisibilityChanged;
-
-            lightsButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Light, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_LIGHTS));
-            lightsButton.eventClicked += OnLightsButtonClicked;
-            lightsButton.eventVisibilityChanged += OnLightsButtonVisibilityChanged;
-
             surfacesButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Surface, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_SURFACE));
             surfacesButton.eventClicked += OnSurfacesButtonClicked;
             surfacesButton.eventVisibilityChanged += OnSurfacesButtonVisibilityChanged;
-
-            pillarsButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Pillar, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_PILLARS));
-            pillarsButton.eventClicked += OnPillarsButtonClicked;
-            pillarsButton.eventVisibilityChanged += OnPillarsButtonVisibilityChanged;
-
-            catenaryButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Catenary, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_CATENARY));
-            catenaryButton.eventClicked += OnCatenaryButtonClicked;
-            catenaryButton.eventVisibilityChanged += OnCatenaryButtonVisibilityChanged;
 
             colorButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Color, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_COLOR));
             colorButton.eventClicked += OnColorButtonClicked;
             colorButton.eventVisibilityChanged += OnColorButtonVisibilityChanged;
 
-            pipetteButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Pipette, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_PIPETTE));
-            pipetteButton.eventClicked += OnPipetteButtonClicked;
+            lightsButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Light, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_LIGHTS));
+            lightsButton.eventClicked += OnLightsButtonClicked;
+            lightsButton.eventVisibilityChanged += OnLightsButtonVisibilityChanged;
+
+            catenaryButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Catenary, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_CATENARY));
+            catenaryButton.eventClicked += OnCatenaryButtonClicked;
+            catenaryButton.eventVisibilityChanged += OnCatenaryButtonVisibilityChanged;
+
+            treesButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Tree, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_TREES));
+            treesButton.eventClicked += OnTreesButtonClicked;
+            treesButton.eventVisibilityChanged += OnTreesButtonVisibilityChanged;
+
+            pillarsButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Pillar, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_PILLARS));
+            pillarsButton.eventClicked += OnPillarsButtonClicked;
+            pillarsButton.eventVisibilityChanged += OnPillarsButtonVisibilityChanged;
 
             settingsButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Settings, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_SETTINGS));
             settingsButton.eventClicked += OnSettingsButtonClicked;
             settingsButton.eventVisibilityChanged += OnSettingsButtonVisibilityChanged;
+
+            UIPanel panel = AddUIComponent<UIPanel>();
+            panel.size = new Vector2(30.0f, 4.0f);
+            panel.backgroundSprite = "WhiteRect";
+            panel.color = new Color32(53, 54, 54, 255);
+
+            pipetteButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Pipette, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_PIPETTE));
+            pipetteButton.eventClicked += OnPipetteButtonClicked;
 
             CreateButtonArray();
         }

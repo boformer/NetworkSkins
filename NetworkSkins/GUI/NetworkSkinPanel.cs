@@ -22,7 +22,8 @@ namespace NetworkSkins.GUI
         private CatenaryPanel catenaryPanel;
         private ColorPanel colorPanel;
         private SettingsPanel settingsPanel;
-
+        private UIPanel space;
+        private PanelBase currentPanel;
         public override void OnDestroy() {
             toolBar.EventDragEnd -= OnToolBarDragEnd;
             UnregisterEvents();
@@ -39,36 +40,61 @@ namespace NetworkSkins.GUI
             RegisterEvents();
         }
 
+        public override void Update() {
+            base.Update();
+            float midScreen = Screen.width / 2.0f;
+            space.zOrder = 1;
+            if (autoLayoutStart == LayoutStart.TopLeft) {
+                toolBar.zOrder = 0;
+                if (currentPanel != null) currentPanel.zOrder = 2;
+                if (relativePosition.x > midScreen) {
+                    autoLayoutStart = LayoutStart.TopRight;
+                }
+            }
+            if (autoLayoutStart == LayoutStart.TopRight) {
+                toolBar.zOrder = 2;
+                if (currentPanel != null) currentPanel.zOrder = 0;
+                if (relativePosition.x + width < midScreen) {
+                    autoLayoutStart = LayoutStart.TopLeft;
+                }
+            }
+        }
+
         private void CreateToolBar() {
             toolBar = AddUIComponent<ToolBar>();
             toolBar.Build(PanelType.None, new Layout(new Vector2(40.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 0, "GenericPanel"));
-            UIPanel panel = AddUIComponent<UIPanel>();
-            panel.size = new Vector2(5.0f, toolBar.height);
+            space = AddUIComponent<UIPanel>();
+            space.size = new Vector2(5.0f, toolBar.height);
         }
 
         private void CreateTreesPanel() {
             treesPanel = AddUIComponent<TreePanel>();
             treesPanel.Build(PanelType.Trees, new Layout(new Vector2(400.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
+            currentPanel = treesPanel;
         }
 
         private void CreateLightsPanel() {
             lightsPanel = AddUIComponent<StreetLightPanel>();
             lightsPanel.Build(PanelType.Lights, new Layout(new Vector2(400.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
+            currentPanel = lightsPanel;
         }
 
         private void CreateSurfacePanel() {
             terrainSurfacePanel = AddUIComponent<TerrainSurfacePanel>();
             terrainSurfacePanel.Build(PanelType.Surfaces, new Layout(new Vector2(388.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
+            currentPanel = terrainSurfacePanel;
         }
 
         private void CreateCatenaryPanel() {
             catenaryPanel = AddUIComponent<CatenaryPanel>();
             catenaryPanel.Build(PanelType.Catenary, new Layout(new Vector2(400.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
+            currentPanel = catenaryPanel;
         }
 
         private void CreatePillarsPanel() {
             pillarPanel = AddUIComponent<PillarPanel>();
             pillarPanel.Build(PanelType.Pillars, new Layout(new Vector2(400.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
+            currentPanel = pillarPanel;
         }
 
         private void CreateColorsPanel() {
@@ -76,12 +102,14 @@ namespace NetworkSkins.GUI
             colorPanel.Build(PanelType.Color, new Layout(new Vector2(255f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 0, "GenericPanel"));
             colorPanel.padding = new RectOffset(1, 0, 0, 0);
             colorPanel.autoFitChildrenHorizontally = true;
+            currentPanel = colorPanel;
         }
 
         private void CreateSettingsPanel() {
             settingsPanel = AddUIComponent<SettingsPanel>();
             settingsPanel.Build(PanelType.Settings, new Layout(new Vector2(228.6f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 0, "GenericPanel"));
             settingsPanel.autoFitChildrenHorizontally = true;
+            currentPanel = settingsPanel;
         }
 
         private void RegisterEvents() {
