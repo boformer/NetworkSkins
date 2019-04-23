@@ -153,12 +153,14 @@ namespace NetworkSkins.GUI
         public void SetPillarAndRefreshUI(Pillar pillar)
         {
             Pillar = pillar;
+            ValidatePillar();
             EventGUIDirty?.Invoke(Prefab);
         }
 
         public void SetLaneAndRefreshUI(LanePosition value)
         {
             LanePosition = value;
+            ValidateLane();
             EventGUIDirty?.Invoke(Prefab);
         }
 
@@ -248,13 +250,13 @@ namespace NetworkSkins.GUI
 
             UpdateActiveModifiers();
 
-            UpdateSelectedLane();
-            UpdateSelectedPillar();
+            ValidateLane();
+            ValidatePillar();
 
             EventGUIDirty?.Invoke(Prefab);
         }
 
-        private void UpdateSelectedLane() {
+        private void ValidateLane() {
             switch (LanePosition) {
                 case LanePosition.Left: {
                     if (!LeftTree.Enabled) {
@@ -277,7 +279,7 @@ namespace NetworkSkins.GUI
             }
         }
 
-        private void UpdateSelectedPillar() {
+        private void ValidatePillar() {
             switch (Pillar) {
                 case Pillar.Elevated: {
                     if (!ElevatedBridgePillar.Enabled) {

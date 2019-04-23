@@ -16,7 +16,6 @@ namespace NetworkSkins.GUI.Trees
         }
 
         protected override void RefreshUI(NetInfo netInfo) {
-            base.RefreshUI(netInfo);
             laneTabstripContainer.isVisible = true;
             SetTabEnabled(LanePosition.Right, NetworkSkinPanelController.RighTree.Enabled);
             SetTabEnabled(LanePosition.Middle, NetworkSkinPanelController.MiddleTree.Enabled);
