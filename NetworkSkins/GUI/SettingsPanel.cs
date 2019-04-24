@@ -29,6 +29,7 @@ namespace NetworkSkins.GUI
             CreateDisplayAtSelectedCheckbox();
             CreateResetButton();
             UIUtil.CreateSpace(1.0f, 5.0f, this);
+            autoFitChildrenHorizontally = true;
         }
         private void CreateResetButton() {
             resetButton = AddUIComponent<ButtonPanel>();

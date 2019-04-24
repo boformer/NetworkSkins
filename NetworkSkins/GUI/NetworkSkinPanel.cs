@@ -32,30 +32,46 @@ namespace NetworkSkins.GUI
 
         public override void Start() {
             base.Start();
-            Build(PanelType.None, new Layout(new Vector2(0.0f, 234.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 0));
+            Build(PanelType.None, new Layout(new Vector2(0.0f, 234.0f), true, LayoutDirection.Horizontal, LayoutStart.BottomRight, 0));
             color = GUIColor;
-            relativePosition = Persistence.GetToolbarPosition();
             autoFitChildrenVertically = true;
             CreateToolBar();
+            RefreshZOrder();
+            relativePosition = Persistence.GetToolbarPosition();
             RegisterEvents();
         }
 
         public override void Update() {
             base.Update();
-            float midScreen = Screen.width / 2.0f;
-            space.zOrder = 1;
-            if (autoLayoutStart == LayoutStart.TopLeft) {
-                toolBar.zOrder = 0;
-                if (currentPanel != null) currentPanel.zOrder = 2;
-                if (relativePosition.x > midScreen) {
-                    autoLayoutStart = LayoutStart.TopRight;
-                }
+            if ((autoLayoutStart == LayoutStart.TopLeft  || autoLayoutStart == LayoutStart.BottomLeft) && relativePosition.x > Screen.width / 2.0f) {
+                autoLayoutStart = autoLayoutStart == LayoutStart.TopLeft ? LayoutStart.TopRight : LayoutStart.BottomRight;
+                RefreshZOrder();
+            } else if ((autoLayoutStart == LayoutStart.TopRight || autoLayoutStart == LayoutStart.BottomRight) && relativePosition.x + width < Screen.width / 2.0f) {
+                autoLayoutStart = autoLayoutStart == LayoutStart.TopRight ? LayoutStart.TopLeft : LayoutStart.BottomLeft;
+                RefreshZOrder();
             }
-            if (autoLayoutStart == LayoutStart.TopRight) {
-                toolBar.zOrder = 2;
-                if (currentPanel != null) currentPanel.zOrder = 0;
-                if (relativePosition.x + width < midScreen) {
-                    autoLayoutStart = LayoutStart.TopLeft;
+            if ((autoLayoutStart == LayoutStart.TopLeft || autoLayoutStart == LayoutStart.TopRight) && relativePosition.y > Screen.height / 2.0f) {
+                autoLayoutStart = autoLayoutStart == LayoutStart.TopLeft ? LayoutStart.BottomLeft : LayoutStart.BottomRight;
+                RefreshZOrder();
+            } else if ((autoLayoutStart == LayoutStart.BottomLeft || autoLayoutStart == LayoutStart.BottomRight) && relativePosition.y + height < Screen.height / 2.0f) {
+                autoLayoutStart = autoLayoutStart == LayoutStart.BottomLeft ? LayoutStart.TopLeft : LayoutStart.TopRight;
+                RefreshZOrder();
+            }
+        }
+
+        private void RefreshZOrder() {
+            if (autoLayoutStart == LayoutStart.TopLeft || autoLayoutStart == LayoutStart.BottomLeft) {
+                toolBar.zOrder = 0;
+                space.zOrder = 1;
+                if (currentPanel != null) currentPanel.zOrder = 2;
+            } else if (autoLayoutStart == LayoutStart.TopRight || autoLayoutStart == LayoutStart.BottomRight) {
+                if (currentPanel != null) {
+                    currentPanel.zOrder = 0;
+                    space.zOrder = 1;
+                    toolBar.zOrder = 2;
+                } else {
+                    space.zOrder = 0;
+                    toolBar.zOrder = 1;
                 }
             }
         }
@@ -100,15 +116,12 @@ namespace NetworkSkins.GUI
         private void CreateColorsPanel() {
             colorPanel = AddUIComponent<ColorPanel>();
             colorPanel.Build(PanelType.Color, new Layout(new Vector2(255f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 0, "GenericPanel"));
-            colorPanel.padding = new RectOffset(1, 0, 0, 0);
-            colorPanel.autoFitChildrenHorizontally = true;
             currentPanel = colorPanel;
         }
 
         private void CreateSettingsPanel() {
             settingsPanel = AddUIComponent<SettingsPanel>();
             settingsPanel.Build(PanelType.Settings, new Layout(new Vector2(228.6f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 0, "GenericPanel"));
-            settingsPanel.autoFitChildrenHorizontally = true;
             currentPanel = settingsPanel;
         }
 
@@ -173,6 +186,7 @@ namespace NetworkSkins.GUI
                 SetButtonUnfocused(button);
                 Destroy(settingsPanel.gameObject);
             }
+            RefreshZOrder();
         }
 
         private void OnCatenaryVisibilityChanged(UIButton button, UIButton[] buttons, bool visible) {
@@ -180,6 +194,7 @@ namespace NetworkSkins.GUI
                 SetButtonUnfocused(button);
                 Destroy(catenaryPanel.gameObject);
             }
+            RefreshZOrder();
         }
 
         private void OnColorVisibilityChanged(UIButton button, UIButton[] buttons, bool visible) {
@@ -187,6 +202,7 @@ namespace NetworkSkins.GUI
                 SetButtonUnfocused(button);
                 Destroy(colorPanel.gameObject);
             }
+            RefreshZOrder();
         }
 
         private void OnPillarsVisibilityChanged(UIButton button, UIButton[] buttons, bool visible) {
@@ -194,6 +210,7 @@ namespace NetworkSkins.GUI
                 SetButtonUnfocused(button);
                 Destroy(pillarPanel.gameObject);
             }
+            RefreshZOrder();
         }
 
         private void OnSurfacesVisibilityChanged(UIButton button, UIButton[] buttons, bool visible) {
@@ -201,6 +218,7 @@ namespace NetworkSkins.GUI
                 SetButtonUnfocused(button);
                 Destroy(terrainSurfacePanel.gameObject);
             }
+            RefreshZOrder();
         }
 
         private void OnLightsVisibilityChanged(UIButton button, UIButton[] buttons, bool visible) {
@@ -208,6 +226,7 @@ namespace NetworkSkins.GUI
                 SetButtonUnfocused(button);
                 Destroy(lightsPanel.gameObject);
             }
+            RefreshZOrder();
         }
 
         private void OnTreesVisibilityChanged(UIButton button, UIButton[] buttons, bool visible) {
@@ -215,6 +234,7 @@ namespace NetworkSkins.GUI
                 SetButtonUnfocused(button);
                 Destroy(treesPanel.gameObject);
             }
+            RefreshZOrder();
         }
 
         private void OnExtrasClicked(UIButton button, UIButton[] buttons) {
@@ -226,6 +246,7 @@ namespace NetworkSkins.GUI
                 CloseAll();
                 CreateSettingsPanel();
             }
+            RefreshZOrder();
         }
 
         private void OnCatenaryClicked(UIButton button, UIButton[] buttons) {
@@ -237,6 +258,7 @@ namespace NetworkSkins.GUI
                 CloseAll();
                 CreateCatenaryPanel();
             }
+            RefreshZOrder();
         }
 
         private void OnColorClicked(UIButton button, UIButton[] buttons) {
@@ -248,6 +270,7 @@ namespace NetworkSkins.GUI
                 CloseAll();
                 CreateColorsPanel();
             }
+            RefreshZOrder();
         }
 
         private void OnSurfacesClicked(UIButton button, UIButton[] buttons) {
@@ -259,6 +282,7 @@ namespace NetworkSkins.GUI
                 CloseAll();
                 CreateSurfacePanel();
             }
+            RefreshZOrder();
         }
 
         private void OnPillarsClicked(UIButton button, UIButton[] buttons) {
@@ -270,6 +294,7 @@ namespace NetworkSkins.GUI
                 CloseAll();
                 CreatePillarsPanel();
             }
+            RefreshZOrder();
         }
 
         private void OnLightsClicked(UIButton button, UIButton[] buttons) {
@@ -281,6 +306,7 @@ namespace NetworkSkins.GUI
                 CloseAll();
                 CreateLightsPanel();
             }
+            RefreshZOrder();
         }
 
         private void OnTreesClicked(UIButton button, UIButton[] buttons) {
@@ -292,6 +318,7 @@ namespace NetworkSkins.GUI
                 CloseAll();
                 CreateTreesPanel();
             }
+            RefreshZOrder();
         }
 
         private void OnPipetteClicked(UIButton focusedButton, UIButton[] buttons) {

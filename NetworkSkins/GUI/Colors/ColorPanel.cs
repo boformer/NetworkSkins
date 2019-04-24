@@ -65,7 +65,6 @@ namespace NetworkSkins.GUI.Colors
 
         public override void Build(PanelType panelType, Layout layout) {
             base.Build(panelType, layout);
-            color = GUIColor;
             savedSwatches = Persistence.GetSavedSwatches();
             CreateColorPicker();
             CreateRGBPanel();
@@ -75,6 +74,9 @@ namespace NetworkSkins.GUI.Colors
             UIUtil.CreateSpace(255.0f, 11.0f, this);
             NetworkSkinPanelController.Color.EventColorUsedInSegment += OnColorUsed;
             RefreshColors();
+            color = GUIColor;
+            padding = new RectOffset(1, 0, 0, 0);
+            autoFitChildrenHorizontally = true;
         }
 
         private void CreateColorPicker() {
