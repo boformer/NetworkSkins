@@ -39,9 +39,12 @@
         public const string TOOLTIP_ADDFAVOURITE_ADDBLACKLIST = "TOOLTIP_ADDFAVOURITE_ADDBLACKLIST";
         public const string TOOLTIP_REMOVEFAVOURITE = "TOOLTIP_REMOVEFAVOURITE";
         public const string TOOLTIP_REMOVEBLACKLIST = "TOOLTIP_REMOVEBLACKLIST";
-        public const string TOOLTIP_RESETCURRENT = "TOOLTIP_RESETCURRENT"; 
+        public const string TOOLTIP_RESETCURRENT = "TOOLTIP_RESETCURRENT";
+        public const string TOOLTIP_BUTTON_DELETE = "TOOLTIP_BUTTON_DELETE";
+        public const string TOOLTIP_BUTTON_SAVE_MAXREACHED = "TOOLTIP_BUTTON_SAVE_MAXREACHED";
+        public const string TOOLTIP_BUTTON_SAVE_COLOREXISTS = "TOOLTIP_BUTTON_SAVE_COLOREXISTS";
+        public const string TOOLTIP_BUTTON_SAVE = "TOOLTIP_BUTTON_SAVE";
         public const string BUTTON_RESET = "BUTTON_RESET";
         public const string BUTTON_SAVE = "BUTTON_SAVE";
-        public const string TOOLTIP_BUTTON_DELETE = "TOOLTIP_BUTTON_DELETE";
     }
 }

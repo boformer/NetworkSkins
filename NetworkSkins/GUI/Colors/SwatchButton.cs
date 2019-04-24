@@ -6,11 +6,11 @@ namespace NetworkSkins.GUI.Colors
 {
     public class SwatchButton : UIButton
     {
-        public Color32 swatch;
-        public delegate void SwatchClickedEventHandler(Color32 color, UIMouseEventParameter eventParam, UIComponent component);
+        public Color swatch;
+        public delegate void SwatchClickedEventHandler(Color color, UIMouseEventParameter eventParam, UIComponent component);
         public event SwatchClickedEventHandler EventSwatchClicked;
 
-        public void Build(Color32 color) {
+        public void Build(Color color) {
             size = new Vector2(19.0f, 19.0f);
             atlas = Resources.Atlas;
             normalBgSprite = Resources.Swatch;

@@ -17,6 +17,14 @@ namespace NetworkSkins.GUI.Colors
         private SwatchButton swatchButton;
         private UITextField textField;
         private UIButton deleteButton;
+        private Color32 selectedTextColor = new Color32(88, 181, 205, 255);
+
+        public override void Update() {
+            base.Update();
+            if (swatchButton.swatch == NetworkSkinPanelController.Color.SelectedColor) {
+                textField.textColor = selectedTextColor;
+            } else textField.textColor = Color.white;
+        }
 
         public override void OnDestroy() {
             swatchButton.EventSwatchClicked -= OnSwatchClicked;
@@ -81,7 +89,7 @@ namespace NetworkSkins.GUI.Colors
             EventSwatchRenamed?.Invoke(savedSwatch);
         }
 
-        private void OnSwatchClicked(Color32 color, UIMouseEventParameter eventParam, UIComponent component) {
+        private void OnSwatchClicked(Color color, UIMouseEventParameter eventParam, UIComponent component) {
             EventSwatchClicked?.Invoke(color);
         }
     }

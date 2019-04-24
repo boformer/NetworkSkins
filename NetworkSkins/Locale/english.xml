@@ -35,10 +35,13 @@
     <Translation ID="TOOLTIP_SETTINGS" String="Settings" />
     <Translation ID="TOOLTIP_PIPETTE" String="Pipette" />
     <Translation ID="TOOLTIP_LOCK" String="Activate the lock to modify all lanes simultaneously" />
-    <Translation ID="TOOLTIP_ADDFAVOURITE_ADDBLACKLIST" String="Left-click to add to favourites, right-click to add to blacklist" />
-    <Translation ID="TOOLTIP_REMOVEFAVOURITE" String="Left-click to remove from favourites, right-click to add to blacklist" />
-    <Translation ID="TOOLTIP_REMOVEBLACKLIST" String="Left-click to add to favourites, right-click to remove from blacklist" />
+    <Translation ID="TOOLTIP_ADDFAVOURITE_ADDBLACKLIST" String="Left-click to add to favorites, right-click to add to blacklist" />
+    <Translation ID="TOOLTIP_REMOVEFAVOURITE" String="Left-click to remove from favorites, right-click to add to blacklist" />
+    <Translation ID="TOOLTIP_REMOVEBLACKLIST" String="Left-click to add to favorites, right-click to remove from blacklist" />
     <Translation ID="TOOLTIP_RESETCURRENT" String="Reset all settings for currently selected network" />
+    <Translation ID="TOOLTIP_BUTTON_SAVE_MAXREACHED" String="You've reached the maximum amount of saved colors" />
+    <Translation ID="TOOLTIP_BUTTON_SAVE_COLOREXISTS" String="The currently selected color is already saved" />
+    <Translation ID="TOOLTIP_BUTTON_SAVE" String="Save current color as favorite" />
     <Translation ID="BUTTON_RESET" String="Reset" />
     <Translation ID="BUTTON_SAVE" String="Save" />
     <Translation ID="TOOLTIP_BUTTON_DELETE" String="Delete" />

@@ -161,7 +161,7 @@ namespace NetworkSkins.Persistence
 
         public class SavedSwatch
         {
-            public Color32 Color;
+            public Color Color;
             public string Name;
         }
     }

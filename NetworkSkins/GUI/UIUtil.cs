@@ -50,6 +50,7 @@ namespace NetworkSkins.GUI
             button.text = text;
             button.tooltip = tooltip;
             button.textPadding = new RectOffset(0, 0, 3, 0);
+            button.disabledTextColor = new Color32(128, 128, 128, 255);
             button.normalBgSprite = backgroundSprite;
             button.hoveredBgSprite = string.Concat(backgroundSprite, "Hovered");
             button.pressedBgSprite = string.Concat(backgroundSprite, "Pressed");

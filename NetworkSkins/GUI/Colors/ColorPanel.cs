@@ -32,6 +32,17 @@ namespace NetworkSkins.GUI.Colors
                 ColorChanged();
                 updateNeeded = false;
             }
+            if (savedSwatches.Count == MAX_SAVED_SWATCHES || savedSwatches.Find(s => s.Color == NetworkSkinPanelController.Color.SelectedColor) != null) {
+                saveButton.Disable();
+                if (savedSwatches.Count == MAX_SAVED_SWATCHES) {
+                    saveButton.tooltip = Translation.Instance.GetTranslation(TranslationID.TOOLTIP_BUTTON_SAVE_MAXREACHED);
+                } else if (savedSwatches.Find(s => s.Color == NetworkSkinPanelController.Color.SelectedColor) != null) {
+                    saveButton.tooltip = Translation.Instance.GetTranslation(TranslationID.TOOLTIP_BUTTON_SAVE_COLOREXISTS);
+                }
+            } else if (savedSwatches.Count < MAX_SAVED_SWATCHES) {
+                saveButton.Enable();
+                saveButton.tooltip = Translation.Instance.GetTranslation(TranslationID.TOOLTIP_BUTTON_SAVE);
+            }
         }
 
         public override void OnDestroy() {
@@ -169,7 +180,6 @@ namespace NetworkSkins.GUI.Colors
             savedSwatchPanel.EventSwatchClicked += OnSavedSwatchClicked;
             savedSwatchPanel.EventRemoveSwatch += OnSavedSwatchRemoved;
             savedSwatchPanel.EventSwatchRenamed += OnSavedSwatchRenamed;
-            if (savedSwatches.Count == MAX_SAVED_SWATCHES) saveButton.Disable();
         }
 
         private void OnSavedSwatchRenamed(SavedSwatch savedSwatch) {
@@ -182,8 +192,6 @@ namespace NetworkSkins.GUI.Colors
                 Persistence.UpdateSavedSwatches(savedSwatches);
                 Destroy(savedSwatchPanel.gameObject);
             }
-
-            if (savedSwatches.Count < MAX_SAVED_SWATCHES) saveButton.Enable();
         }
 
         private void OnSavedSwatchClicked(Color32 color) {
@@ -226,7 +234,6 @@ namespace NetworkSkins.GUI.Colors
                 AddSavedSwatch(newSwatch);
                 savedSwatches.Add(newSwatch);
                 Persistence.UpdateSavedSwatches(savedSwatches);
-                if (savedSwatches.Count == MAX_SAVED_SWATCHES) saveButton.Disable();
             }
         }
 
@@ -277,7 +284,7 @@ namespace NetworkSkins.GUI.Colors
             }
         }
 
-        private void OnSwatchClicked(Color32 color, UIMouseEventParameter eventParam, UIComponent component) {
+        private void OnSwatchClicked(Color color, UIMouseEventParameter eventParam, UIComponent component) {
             colorPicker.color = color;
         }
 
