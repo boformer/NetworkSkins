@@ -301,6 +301,11 @@ namespace NetworkSkins.GUI.Colors
         private void OnColorUpdated(Color value) {
             currentColor = value;
             if (colorPanel != null) colorPanel.color = value;
+            UpdateTextfields();
+            updateNeeded = true;
+        }
+
+        private void UpdateTextfields() {
             if (redTextField != null) {
                 redTextField.eventTextChanged -= OnTextChanged;
                 redTextField.text = currentColor.r.ToString();
@@ -316,7 +321,6 @@ namespace NetworkSkins.GUI.Colors
                 blueTextField.text = currentColor.b.ToString();
                 blueTextField.eventTextChanged += OnTextChanged;
             }
-            updateNeeded = true;
         }
 
         protected override void RefreshUI(NetInfo netInfo) {
@@ -327,6 +331,7 @@ namespace NetworkSkins.GUI.Colors
             colorPicker.eventColorUpdated -= OnColorUpdated;
             currentColor = colorPicker.color = colorPanel.color = NetworkSkinPanelController.Color.SelectedColor;
             colorPicker.eventColorUpdated += OnColorUpdated;
+            UpdateTextfields();
         }
     }
 }

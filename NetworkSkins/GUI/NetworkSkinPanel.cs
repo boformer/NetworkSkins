@@ -36,6 +36,7 @@ namespace NetworkSkins.GUI
             color = GUIColor;
             autoFitChildrenVertically = true;
             CreateToolBar();
+            relativePosition = Persistence.GetToolbarPosition();
             RefreshZOrder();
             relativePosition = Persistence.GetToolbarPosition();
             RegisterEvents();

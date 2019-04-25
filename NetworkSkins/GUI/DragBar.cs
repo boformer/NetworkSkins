@@ -28,6 +28,7 @@ namespace NetworkSkins.GUI
             panel.atlas = Resources.Atlas;
             panel.backgroundSprite = Resources.DragHandle;
             panel.isInteractive = false;
+            panel.color = new Color32(54, 54, 54, 255);
         }
 
         private void OnDragEnd(UIComponent component, UIMouseEventParameter eventParam) {
