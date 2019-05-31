@@ -97,6 +97,35 @@ namespace NetworkSkins.GUI.Colors
 
         protected override void Build()
         {
+            RefreshColorable();
+
+            var savedColor = LoadSelectedColor();
+            SelectedColor = savedColor ?? Prefab.m_color;
+            _default = !savedColor.HasValue;
+        }
+
+        protected override void BuildWithModifiers(List<NetworkSkinModifier> modifiers)
+        {
+            RefreshColorable();
+
+            SelectedColor = Prefab.m_color;
+            _default = true;
+
+            foreach (var modifier in modifiers)
+            {
+                if (modifier is ColorModifier colorModifier)
+                {
+                    SelectedColor = colorModifier.Color;
+                    _default = false;
+                    break;
+                }   
+            }
+
+            SaveSelectedColor();
+        }
+
+        private void RefreshColorable()
+        {
             var subPrefabs = NetUtils.GetPrefabVariations(Prefab);
 
             _colorable = false;
@@ -104,10 +133,6 @@ namespace NetworkSkins.GUI.Colors
             {
                 _colorable = _colorable || NetTextureUtils.HasRoadTexture(subPrefab);
             }
-
-            var savedColor = LoadSelectedColor();
-            SelectedColor = savedColor ?? Prefab.m_color;
-            _default = !savedColor.HasValue;
         }
 
         protected override Dictionary<NetInfo, List<NetworkSkinModifier>> BuildModifiers()

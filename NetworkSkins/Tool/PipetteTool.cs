@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using NetworkSkins.GUI;
+using NetworkSkins.Skins;
 using UnityEngine;
 
 namespace NetworkSkins.Tool
@@ -142,17 +144,23 @@ namespace NetworkSkins.Tool
             if (MouseLeftDown) {
                 if (HoverInstance.NetSegment != 0) {
                     NetInfo info = NetManager.instance.m_segments.m_buffer[HoverInstance.NetSegment].Info;
+
+                    var modifiers = NetworkSkinManager.instance.GetModifiersForSegment(HoverInstance.NetSegment);
                     info = NetUtils.FindDefaultElevation(info);
-                    ShowInPanel(info);
+                    ShowInPanel(info, modifiers);
                     EventNetInfoPipetted?.Invoke(info);
                 }
             }
         }
 
-        private void ShowInPanel(NetInfo info) {
+        private void ShowInPanel(NetInfo info, List<NetworkSkinModifier> modifiers) {
             UIButton networkButton = FindComponentCached<UIButton>(info.name);
             if(networkButton != null) {
                 TSCloseButton.SimulateClick();
+
+                // apply the skin data in the tool window
+                NetworkSkinPanelController.Instance.OnPrefabWithModifiersSelected(info, modifiers);
+
                 UITabstrip subMenuTabstrip = null;
                 UIScrollablePanel scrollablePanel = null;
                 UIComponent current = networkButton, parent = networkButton.parent;

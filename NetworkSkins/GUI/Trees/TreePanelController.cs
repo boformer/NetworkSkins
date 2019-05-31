@@ -73,6 +73,19 @@ namespace NetworkSkins.GUI.Trees
             return items;
         }
 
+        protected override Item GetSelectedItemFromModifiers(List<NetworkSkinModifier> modifiers)
+        {
+            foreach (var modifier in modifiers)
+            {
+                if (modifier is TreeModifier treeModifier)
+                {
+                    return FindItemByName(treeModifier.Tree?.name ?? "#NONE#");
+                }
+            }
+
+            return null;
+        }
+
         protected override Dictionary<NetInfo, List<NetworkSkinModifier>> BuildModifiers()
         {
             var modifiers = new Dictionary<NetInfo, List<NetworkSkinModifier>>();

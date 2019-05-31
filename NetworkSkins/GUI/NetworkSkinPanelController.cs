@@ -222,6 +222,40 @@ namespace NetworkSkins.GUI
             }
         }
 
+        public void OnPrefabWithModifiersSelected(NetInfo prefab, List<NetworkSkinModifier> modifiers)
+        {
+            _ignoreModifierEvents = true;
+
+            TerrainSurface.OnPrefabWithModifiersSelected(prefab, modifiers);
+
+            Color.OnPrefabWithModifiersSelected(prefab, modifiers);
+
+            StreetLight.OnPrefabWithModifiersSelected(prefab, modifiers);
+
+            LeftTree.OnPrefabWithModifiersSelected(prefab, modifiers);
+            MiddleTree.OnPrefabWithModifiersSelected(prefab, modifiers);
+            RighTree.OnPrefabWithModifiersSelected(prefab, modifiers);
+
+            var elevatedPrefab = NetUtils.GetElevatedPrefab(prefab);
+            ElevatedBridgePillar.OnPrefabWithModifiersSelected(elevatedPrefab, modifiers);
+            ElevatedMiddlePillar.OnPrefabWithModifiersSelected(elevatedPrefab, modifiers);
+
+            var bridgePrefab = NetUtils.GetBridgePrefab(prefab);
+            BridgeBridgePillar.OnPrefabWithModifiersSelected(bridgePrefab, modifiers);
+            BridgeMiddlePillar.OnPrefabWithModifiersSelected(bridgePrefab, modifiers);
+
+            Catenary.OnPrefabWithModifiersSelected(bridgePrefab, modifiers);
+
+            _ignoreModifierEvents = false;
+
+            UpdateActiveModifiers();
+
+            ValidateLane();
+            ValidatePillar();
+
+            EventGUIDirty?.Invoke(Prefab);
+        }
+
         private void OnPrefabChanged(NetInfo prefab)
         {
             _ignoreModifierEvents = true;

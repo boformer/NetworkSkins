@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using ColossalFramework.IO;
 using ColossalFramework.UI;
@@ -354,6 +355,12 @@ namespace NetworkSkins.Skins
             }
         }
         #endregion
+
+        public List<NetworkSkinModifier> GetModifiersForSegment(ushort segmentId)
+        {
+            var segmentSkin = SegmentSkins[segmentId];
+            return segmentSkin != null ? new List<NetworkSkinModifier>(segmentSkin.Modifiers) : new List<NetworkSkinModifier>();
+        }
 
         private void ClearSkinData()
         {

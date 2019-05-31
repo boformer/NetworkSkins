@@ -51,6 +51,19 @@ namespace NetworkSkins.GUI.Pillars
             return _items;
         }
 
+        protected override Item GetSelectedItemFromModifiers(List<NetworkSkinModifier> modifiers)
+        {
+            foreach (var modifier in modifiers)
+            {
+                if (modifier is PillarModifier pillarModifier)
+                {
+                    return FindItemByName(pillarModifier.Pillar?.name ?? "#NONE#");
+                }
+            }
+
+            return null;
+        }
+
         protected override Dictionary<NetInfo, List<NetworkSkinModifier>> BuildModifiers()
         {
             var modifiers = new Dictionary<NetInfo, List<NetworkSkinModifier>>();

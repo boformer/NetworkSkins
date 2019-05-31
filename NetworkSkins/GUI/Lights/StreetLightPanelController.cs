@@ -35,6 +35,24 @@ namespace NetworkSkins.GUI.Lights
             SelectedRepeatDistance = LoadSelectedRepeatDistance() ?? DefaultRepeatDistance;
         }
 
+        protected override void BuildWithModifiers(List<NetworkSkinModifier> modifiers)
+        {
+            base.BuildWithModifiers(modifiers);
+        }
+
+        protected override Item GetSelectedItemFromModifiers(List<NetworkSkinModifier> modifiers)
+        {
+            foreach (var modifier in modifiers)
+            {
+                if (modifier is StreetLightModifier streetLightModifier)
+                {
+                    return FindItemByName(streetLightModifier.StreetLight?.name ?? "#NONE#");
+                }
+            }
+
+            return null;
+        }
+
         protected override void OnChanged()
         {
             CanEditRepeatDistance = SelectedItem != DefaultItem || !(SelectedItem is DefaultVariantItem);

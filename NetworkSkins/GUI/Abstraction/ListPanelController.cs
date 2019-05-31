@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using NetworkSkins.Persistence;
+using NetworkSkins.Skins;
 
 namespace NetworkSkins.GUI.Abstraction
 {
@@ -55,7 +56,44 @@ namespace NetworkSkins.GUI.Abstraction
             SelectedItem = LoadSelectedItem() ?? defaultItem;
         }
 
+        protected override void BuildWithModifiers(List<NetworkSkinModifier> modifiers)
+        {
+            Item defaultItem = null;
+            Items = BuildItems(ref defaultItem);
+            DefaultItem = defaultItem;
+            SelectedItem = GetSelectedItemFromModifiers(modifiers) ?? defaultItem;
+            SaveSelectedItem();
+        }
+
         protected abstract List<Item> BuildItems(ref Item defaultItem);
+
+        protected abstract Item GetSelectedItemFromModifiers(List<NetworkSkinModifier> modifiers);
+
+        protected Item FindItemByName(string name)
+        {
+            foreach (var item in Items)
+            {
+                if (item.Id == name)
+                {
+                    return item;
+                }
+            }
+
+            return null;
+        }
+
+        protected Item FindItemByValue(T value)
+        {
+            foreach (var item in Items)
+            {
+                if (item is SimpleItem simpleItem && Equals(simpleItem.Value, value))
+                {
+                    return item;
+                }
+            }
+
+            return null;
+        }
 
         #region Active Selection Data
         protected abstract string SelectedItemKey { get; }

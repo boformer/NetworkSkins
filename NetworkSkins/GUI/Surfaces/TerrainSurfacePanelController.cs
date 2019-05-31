@@ -34,6 +34,19 @@ namespace NetworkSkins.GUI.Surfaces
             return items;
         }
 
+        protected override Item GetSelectedItemFromModifiers(List<NetworkSkinModifier> modifiers)
+        {
+            foreach (var modifier in modifiers)
+            {
+                if (modifier is TerrainSurfaceModifier terrainSurfaceModifier)
+                {
+                    return FindItemByValue(terrainSurfaceModifier.GroundType);
+                }
+            }
+
+            return null;
+        }
+
         protected override Dictionary<NetInfo, List<NetworkSkinModifier>> BuildModifiers()
         {
             var modifiers = new Dictionary<NetInfo, List<NetworkSkinModifier>>();
