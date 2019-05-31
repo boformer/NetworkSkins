@@ -41,6 +41,18 @@ namespace NetworkSkins.GUI.Trees
             }
         }
 
+        protected override void BuildWithModifiers(List<NetworkSkinModifier> modifiers)
+        {
+            base.BuildWithModifiers(modifiers);
+
+            if (Prefab != null)
+            {
+                DefaultRepeatDistance = TreeUtils.GetDefaultRepeatDistance(Prefab, Position);
+                SelectedRepeatDistance = GetSelectedRepeatDistanceFromModifiers(modifiers) ?? DefaultRepeatDistance;
+            }
+            SaveSelectedRepeatDistance();
+        }
+
         protected override List<Item> BuildItems(ref Item defaultItem)
         {
             if (Prefab == null)
@@ -77,9 +89,22 @@ namespace NetworkSkins.GUI.Trees
         {
             foreach (var modifier in modifiers)
             {
-                if (modifier is TreeModifier treeModifier)
+                if (modifier is TreeModifier treeModifier && treeModifier.Position == Position)
                 {
                     return FindItemByName(treeModifier.Tree?.name ?? "#NONE#");
+                }
+            }
+
+            return null;
+        }
+
+        private float? GetSelectedRepeatDistanceFromModifiers(List<NetworkSkinModifier> modifiers)
+        {
+            foreach (var modifier in modifiers)
+            {
+                if (modifier is TreeModifier treeModifier && treeModifier.Position == Position)
+                {
+                    return treeModifier.RepeatDistance;
                 }
             }
 

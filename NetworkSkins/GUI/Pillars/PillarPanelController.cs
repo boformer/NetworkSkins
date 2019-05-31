@@ -55,7 +55,7 @@ namespace NetworkSkins.GUI.Pillars
         {
             foreach (var modifier in modifiers)
             {
-                if (modifier is PillarModifier pillarModifier)
+                if (modifier is PillarModifier pillarModifier && pillarModifier.Type == Type)
                 {
                     return FindItemByName(pillarModifier.Pillar?.name ?? "#NONE#");
                 }
