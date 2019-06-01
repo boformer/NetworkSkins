@@ -4,6 +4,9 @@ using System.Collections.ObjectModel;
 using System.IO;
 using ColossalFramework.IO;
 using ColossalFramework.UI;
+using NetworkSkins.Net;
+using NetworkSkins.Persistence;
+using NetworkSkins.Skins.Modifiers;
 using NetworkSkins.Skins.Serialization;
 using UnityEngine;
 
@@ -12,6 +15,7 @@ namespace NetworkSkins.Skins
     public class NetworkSkinManager : MonoBehaviour
     {
         public const string DataKey = "NetworkSkins_APPLIED_SKINS";
+        public const string LegacyDataKey = "NetworkSkins_SEGMENTS";
 
         private static NetworkSkinManager _instance;
         public static NetworkSkinManager instance
@@ -83,7 +87,12 @@ namespace NetworkSkins.Skins
         {
             ClearSkinData();
 
-            LoadSkinData();
+            var dataFound = LoadSkinData();
+
+            if (dataFound)
+            {
+                LoadLegacySkinData();
+            }
         }
 
         public void OnLevelLoaded()
@@ -327,7 +336,7 @@ namespace NetworkSkins.Skins
             SimulationManager.instance.m_SerializableDataWrapper.EraseData(DataKey);
         }
 
-        private void LoadSkinData()
+        private bool LoadSkinData()
         {
             Debug.Log("NS: Loading skin data!");
 
@@ -337,7 +346,7 @@ namespace NetworkSkins.Skins
                 if (data == null)
                 {
                     Debug.Log("NS: No data found!");
-                    return;
+                    return false;
                 }
 
                 NetworkSkinDataContainer dataContainer;
@@ -347,6 +356,103 @@ namespace NetworkSkins.Skins
                 }
 
                 _loadErrors = dataContainer.Errors;
+            }
+            catch (Exception e)
+            {
+                _loadErrors = new NetworkSkinLoadErrors();
+                _loadErrors.MajorException(e);
+            }
+
+            return true;
+        }
+
+        private void LoadLegacySkinData()
+        {
+            Debug.Log("NS: Loading legacy skin data!");
+
+            try
+            {
+                var data = SimulationManager.instance.m_SerializableDataWrapper.LoadData(LegacyDataKey);
+                if (data == null)
+                {
+                    Debug.Log("NS: No legacy data found!");
+                    return;
+                }
+
+                LegacySegmentData[] legacyData;
+                using (var stream = new MemoryStream(data))
+                {
+                    legacyData = DataSerializer.DeserializeArray<LegacySegmentData>(stream, DataSerializer.Mode.Memory);
+                }
+
+                var netManager = new GameNetManager();
+
+                var length = Math.Min(legacyData.Length, SegmentSkins.Length);
+                for (ushort segment = 0; segment < length; segment++)
+                {
+                    var segmentData = legacyData[segment];
+                    if (segmentData != null && netManager.IsSegmentCreated(segment))
+                    {
+                        segmentData.FindPrefabs();
+
+                        var prefab = netManager.GetSegmentInfo(segment);
+
+                        var modifiers = new List<NetworkSkinModifier>();
+
+                        var customRepeatDistances =
+                            (segmentData.Features & LegacySegmentData.FeatureFlags.RepeatDistances) != 0;
+
+                        if ((segmentData.Features & LegacySegmentData.FeatureFlags.StreetLight) != 0)
+                        {
+                            var repeatDistance = customRepeatDistances
+                                ? segmentData.RepeatDistances.w
+                                : StreetLightUtils.GetDefaultRepeatDistance(prefab);
+
+                            modifiers.Add(new StreetLightModifier(segmentData.StreetLightPrefab, repeatDistance));
+                        }
+
+                        if ((segmentData.Features & LegacySegmentData.FeatureFlags.TreeLeft) != 0)
+                        {
+                            var repeatDistance = customRepeatDistances
+                                ? segmentData.RepeatDistances.x
+                                : TreeUtils.GetDefaultRepeatDistance(prefab, LanePosition.Left);
+
+                            modifiers.Add(new TreeModifier(LanePosition.Left, segmentData.TreeLeftPrefab, repeatDistance));
+                        }
+
+                        if ((segmentData.Features & LegacySegmentData.FeatureFlags.TreeMiddle) != 0)
+                        {
+                            var repeatDistance = customRepeatDistances
+                                ? segmentData.RepeatDistances.y
+                                : TreeUtils.GetDefaultRepeatDistance(prefab, LanePosition.Middle);
+
+                            modifiers.Add(new TreeModifier(LanePosition.Middle, segmentData.TreeMiddlePrefab, repeatDistance));
+                        }
+
+                        if ((segmentData.Features & LegacySegmentData.FeatureFlags.TreeRight) != 0)
+                        {
+                            var repeatDistance = customRepeatDistances
+                                ? segmentData.RepeatDistances.z
+                                : TreeUtils.GetDefaultRepeatDistance(prefab, LanePosition.Right);
+
+                            modifiers.Add(new TreeModifier(LanePosition.Right, segmentData.TreeRightPrefab, repeatDistance));
+                        }
+
+                        if (modifiers.Count > 0)
+                        {
+                            var skin = NetworkSkin.GetMatchingSkinFromList(AppliedSkins, prefab, modifiers);
+                            if(skin == null)
+                            {
+                                skin = new NetworkSkin(prefab, modifiers);
+                            }
+
+                            UsageAdded(skin);
+                        }
+                    }
+                }
+
+                SimulationManager.instance.m_SerializableDataWrapper.EraseData(LegacyDataKey);
+                Debug.Log("NS: Legacy data imported and erased");
             }
             catch (Exception e)
             {
