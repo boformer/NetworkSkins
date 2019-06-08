@@ -83,9 +83,7 @@ namespace NetworkSkins.Tool
 
         protected override void OnDisable() {
             base.OnDisable();
-            MouseLeftDown = false;
-            MouseRightDown = false;
-            MouseRayValid = false;
+            Active = MouseLeftDown = MouseRightDown = MouseRayValid = false;
         }
 
         public override void SimulationStep() {
@@ -197,7 +195,7 @@ namespace NetworkSkins.Tool
 
         private T FindComponentCached<T>(string name) where T : UIComponent {
             if (!_componentCache.TryGetValue(name, out UIComponent component) || component == null) {
-                component = UIView.Find(name);
+                component = UIView.Find<UIButton>(name);
                 _componentCache[name] = component;
             }
             return component as T;
