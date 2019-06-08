@@ -8,6 +8,7 @@ using System.Reflection;
 using NetworkSkins.GUI;
 using NetworkSkins.Skins;
 using UnityEngine;
+using ColossalFramework.Threading;
 
 namespace NetworkSkins.Tool
 {
@@ -26,6 +27,7 @@ namespace NetworkSkins.Tool
         private RaycastOutput RayOutput;
         private bool MouseRayValid { get; set; }
         private CursorInfo CursorInfo { get; set; }
+        private bool Active { get; set; }
 
         private Dictionary<string, UIComponent> _componentCache = new Dictionary<string, UIComponent>();
         
@@ -93,7 +95,7 @@ namespace NetworkSkins.Tool
                 m_rayRight = MouseRayRight
             };
 
-            if (ToolBase.RayCast(input, out RayOutput)) {
+            if (MouseRayValid && ToolBase.RayCast(input, out RayOutput)) {
                 InstanceID instanceID = InstanceID.Empty;
                 InstanceID instanceID2 = InstanceID.Empty;
                 if (RayOutput.m_netSegment != 0 && !(NetManager.instance.NetAdjust is null)) {
@@ -142,20 +144,20 @@ namespace NetworkSkins.Tool
 
         private void ApplyTool() {
             if (MouseLeftDown) {
-                if (HoverInstance.NetSegment != 0) {
+                if (!Active && HoverInstance.NetSegment != 0) {
+                    Active = true;
                     NetInfo info = NetManager.instance.m_segments.m_buffer[HoverInstance.NetSegment].Info;
 
                     var modifiers = NetworkSkinManager.instance.GetModifiersForSegment(HoverInstance.NetSegment);
                     info = NetUtils.FindDefaultElevation(info);
-                    ShowInPanel(info, modifiers);
-                    EventNetInfoPipetted?.Invoke(info);
+                    ThreadHelper.dispatcher.Dispatch(() => ShowInPanel(info, modifiers));
                 }
             }
         }
 
         private void ShowInPanel(NetInfo info, List<NetworkSkinModifier> modifiers) {
             UIButton networkButton = FindComponentCached<UIButton>(info.name);
-            if(networkButton != null) {
+            if (networkButton != null) {
                 TSCloseButton.SimulateClick();
 
                 // apply the skin data in the tool window
@@ -190,10 +192,11 @@ namespace NetworkSkins.Tool
                 networkButton.SimulateClick();
                 scrollablePanel.ScrollIntoView(networkButton);
             }
+            SimulationManager.instance.AddAction(() => EventNetInfoPipetted?.Invoke(info));
         }
 
         private T FindComponentCached<T>(string name) where T : UIComponent {
-            if (!_componentCache.TryGetValue(name, out UIComponent component)) {
+            if (!_componentCache.TryGetValue(name, out UIComponent component) || component == null) {
                 component = UIView.Find(name);
                 _componentCache[name] = component;
             }
@@ -209,7 +212,7 @@ namespace NetworkSkins.Tool
                 }
             } else if (e.type == EventType.MouseUp) {
                 if (e.button == 0) {
-                    MouseLeftDown = false;
+                    Active = MouseLeftDown = false;
                 } else if (e.button == 1) {
                     MouseRightDown = false;
                 }
