@@ -15,7 +15,7 @@ namespace NetworkSkins
     {
         private const string HarmonyId = "boformer.NetworkSkins";
 
-        public string Name => "Network Skins";
+        public string Name => "Network Skins 2 Beta";
         public string Description => Translation.Instance.GetTranslation(TranslationID.MOD_DESCRIPTION);
         
         private HarmonyInstance harmony;

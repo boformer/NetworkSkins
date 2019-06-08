@@ -89,9 +89,10 @@ namespace NetworkSkins.Skins
 
             var dataFound = LoadSkinData();
 
-            if (dataFound)
+            if (!dataFound)
             {
-                LoadLegacySkinData();
+                // TODO enable when error is fixed
+                //LoadLegacySkinData();
             }
         }
 
