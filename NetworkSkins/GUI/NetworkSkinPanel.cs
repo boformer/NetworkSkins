@@ -36,25 +36,44 @@ namespace NetworkSkins.GUI
             color = GUIColor;
             autoFitChildrenVertically = true;
             CreateToolBar();
-            relativePosition = Persistence.GetToolbarPosition();
+
+            relativePosition = Persistence.GetToolbarPosition() ?? CalculateDefaultToolbarPosition();
+            EnsureToolbarOnScreen();
+
             RefreshZOrder();
-            relativePosition = Persistence.GetToolbarPosition();
             RegisterEvents();
+        }
+
+        private static Vector2 CalculateDefaultToolbarPosition()
+        {
+            Vector2 screenRes = UIView.GetAView().GetScreenResolution();
+            return screenRes - new Vector2(10.0f, 130.0f);
+        }
+
+        private void EnsureToolbarOnScreen()
+        {
+            Vector2 screenRes = UIView.GetAView().GetScreenResolution();
+            if(relativePosition.x < 0f || relativePosition.x > screenRes.x || relativePosition.y < 0f || relativePosition.y > screenRes.y)
+            {
+                relativePosition = CalculateDefaultToolbarPosition();
+            }
         }
 
         public override void Update() {
             base.Update();
-            if ((autoLayoutStart == LayoutStart.TopLeft  || autoLayoutStart == LayoutStart.BottomLeft) && relativePosition.x > Screen.width / 2.0f) {
+            Vector2 screenRes = UIView.GetAView().GetScreenResolution();
+
+            if ((autoLayoutStart == LayoutStart.TopLeft  || autoLayoutStart == LayoutStart.BottomLeft) && relativePosition.x > screenRes.x / 2.0f) {
                 autoLayoutStart = autoLayoutStart == LayoutStart.TopLeft ? LayoutStart.TopRight : LayoutStart.BottomRight;
                 RefreshZOrder();
-            } else if ((autoLayoutStart == LayoutStart.TopRight || autoLayoutStart == LayoutStart.BottomRight) && relativePosition.x + width < Screen.width / 2.0f) {
+            } else if ((autoLayoutStart == LayoutStart.TopRight || autoLayoutStart == LayoutStart.BottomRight) && relativePosition.x + width < screenRes.x / 2.0f) {
                 autoLayoutStart = autoLayoutStart == LayoutStart.TopRight ? LayoutStart.TopLeft : LayoutStart.BottomLeft;
                 RefreshZOrder();
             }
-            if ((autoLayoutStart == LayoutStart.TopLeft || autoLayoutStart == LayoutStart.TopRight) && relativePosition.y > Screen.height / 2.0f) {
+            if ((autoLayoutStart == LayoutStart.TopLeft || autoLayoutStart == LayoutStart.TopRight) && relativePosition.y > screenRes.y / 2.0f) {
                 autoLayoutStart = autoLayoutStart == LayoutStart.TopLeft ? LayoutStart.BottomLeft : LayoutStart.BottomRight;
                 RefreshZOrder();
-            } else if ((autoLayoutStart == LayoutStart.BottomLeft || autoLayoutStart == LayoutStart.BottomRight) && relativePosition.y + height < Screen.height / 2.0f) {
+            } else if ((autoLayoutStart == LayoutStart.BottomLeft || autoLayoutStart == LayoutStart.BottomRight) && relativePosition.y + height < screenRes.y / 2.0f) {
                 autoLayoutStart = autoLayoutStart == LayoutStart.BottomLeft ? LayoutStart.TopLeft : LayoutStart.TopRight;
                 RefreshZOrder();
             }

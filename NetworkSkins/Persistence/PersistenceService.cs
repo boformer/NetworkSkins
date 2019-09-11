@@ -112,11 +112,11 @@ namespace NetworkSkins.Persistence
             return Data.Blacklisted[(int)itemType].Contains(name);
         }
 
-        public Vector3 GetToolbarPosition() {
+        public Vector2? GetToolbarPosition() {
             return Data.ToolbarPosition;
         }
 
-        public void SetToolbarPosition(Vector3 position) {
+        public void SetToolbarPosition(Vector3? position) {
             Data.ToolbarPosition = position;
             SaveData();
         }
