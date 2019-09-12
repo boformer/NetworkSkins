@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using ColossalFramework.IO;
 using ColossalFramework.UI;
+using NetworkSkins.Legacy;
 using NetworkSkins.Net;
 using NetworkSkins.Persistence;
 using NetworkSkins.Skins.Modifiers;
@@ -58,6 +59,8 @@ namespace NetworkSkins.Skins
         // Skins that are currently selected in the UI and will be applied to new segments and nodes
         private readonly Dictionary<NetInfo, NetworkSkin> _activeSkins = new Dictionary<NetInfo, NetworkSkin>();
 
+        private LegacyLightPropEnabler _lightPropEnabler = new LegacyLightPropEnabler();
+
         private NetworkSkinLoadErrors _loadErrors;
 
         public delegate void SegmentPlacedEventHandler(NetworkSkin skin);
@@ -85,6 +88,8 @@ namespace NetworkSkins.Skins
         #region Level Events
         public void OnPreUpdateData(SimulationManager.UpdateMode mode)
         {
+            _lightPropEnabler.OnPreUpdateData();
+
             ClearSkinData();
 
             var dataFound = LoadSkinData();
@@ -97,6 +102,7 @@ namespace NetworkSkins.Skins
 
         public void OnLevelLoaded()
         {
+            _lightPropEnabler.OnLevelLoaded();
             _loadErrors?.MaybeShowErrors();
         }
 
