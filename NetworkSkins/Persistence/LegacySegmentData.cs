@@ -193,5 +193,17 @@ namespace NetworkSkins.Persistence
         {
             prefab = prefabName != null ? PrefabCollection<T>.FindLoaded(prefabName) : null;
         }
+
+        public static Type ResolveSerializedType(string type)
+        {
+            if (type.StartsWith("NetworkSkins.Data.SegmentData, NetworkSkins"))
+            {
+                return typeof(LegacySegmentData);
+            }
+            else
+            {
+                return Type.GetType(type);
+            }
+        }
     }
 }

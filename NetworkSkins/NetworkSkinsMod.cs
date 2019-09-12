@@ -6,6 +6,8 @@ using NetworkSkins.Locale;
 using NetworkSkins.Persistence;
 using NetworkSkins.Skins;
 using NetworkSkins.TranslationFramework;
+using System;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using static UnityEngine.Object;
 
@@ -149,5 +151,12 @@ namespace NetworkSkins
             }
         }
         #endregion
+
+        public static Type ResolveSerializedType(string type)
+        {
+            var assemblyName = typeof(NetworkSkinsMod).Assembly.GetName();
+            var fixedType = Regex.Replace(type, $@"{assemblyName.Name}, Version=\d+.\d+.\d+.\d+", $"{assemblyName.Name}, Version={assemblyName.Version}");
+            return Type.GetType(fixedType);
+        }
     }
 }

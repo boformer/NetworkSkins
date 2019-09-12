@@ -91,8 +91,7 @@ namespace NetworkSkins.Skins
 
             if (!dataFound)
             {
-                // TODO enable when error is fixed
-                //LoadLegacySkinData();
+                LoadLegacySkinData();
             }
         }
 
@@ -353,7 +352,7 @@ namespace NetworkSkins.Skins
                 NetworkSkinDataContainer dataContainer;
                 using (var stream = new MemoryStream(data))
                 {
-                    dataContainer = DataSerializer.Deserialize<NetworkSkinDataContainer>(stream, DataSerializer.Mode.Memory);
+                    dataContainer = DataSerializer.Deserialize<NetworkSkinDataContainer>(stream, DataSerializer.Mode.Memory, NetworkSkinsMod.ResolveSerializedType);
                 }
 
                 _loadErrors = dataContainer.Errors;
@@ -383,7 +382,7 @@ namespace NetworkSkins.Skins
                 LegacySegmentData[] legacyData;
                 using (var stream = new MemoryStream(data))
                 {
-                    legacyData = DataSerializer.DeserializeArray<LegacySegmentData>(stream, DataSerializer.Mode.Memory);
+                    legacyData = DataSerializer.DeserializeArray<LegacySegmentData>(stream, DataSerializer.Mode.Memory, LegacySegmentData.ResolveSerializedType);
                 }
 
                 var netManager = new GameNetManager();
@@ -447,10 +446,14 @@ namespace NetworkSkins.Skins
                                 skin = new NetworkSkin(prefab, modifiers);
                             }
 
+                            SegmentSkins[segment] = skin;
+
                             UsageAdded(skin);
                         }
                     }
                 }
+
+                
 
                 SimulationManager.instance.m_SerializableDataWrapper.EraseData(LegacyDataKey);
                 Debug.Log("NS: Legacy data imported and erased");
