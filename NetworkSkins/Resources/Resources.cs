@@ -23,7 +23,7 @@ namespace NetworkSkins
         public static UITextureAtlas DefaultAtlas {
             get {
                 if (_defaultAtlas == null) {
-                    _defaultAtlas = UIView.GetAView().defaultAtlas;
+                    _defaultAtlas = NetworkSkinsMod.defaultAtlas;
                 }
                 return _defaultAtlas;
             }

@@ -29,6 +29,7 @@ namespace NetworkSkins.GUI
             label.verticalAlignment = UIVerticalAlignment.Middle;
             label.textColor = UIUtil.TextColor;
             label.font = UIUtil.Font;
+            label.atlas = NetworkSkinsMod.defaultAtlas;
         }
 
         public void Initialize(bool state, string text, string tooltip) {
@@ -42,13 +43,16 @@ namespace NetworkSkins.GUI
             checkbox.size = new Vector2(15.0f, 15.0f);
             var sprite = checkbox.AddUIComponent<UISprite>();
             sprite.spriteName = "check-unchecked";
+            sprite.atlas = NetworkSkinsMod.defaultAtlas;
             sprite.size = checkbox.size;
             sprite.transform.parent = checkbox.transform;
             sprite.transform.localPosition = Vector3.zero;
-            checkbox.checkedBoxObject = sprite.AddUIComponent<UISprite>();
-            ((UISprite)checkbox.checkedBoxObject).spriteName = "check-checked";
-            checkbox.checkedBoxObject.size = checkbox.size;
-            checkbox.checkedBoxObject.relativePosition = Vector3.zero;
+            var checkedBoxObj = sprite.AddUIComponent<UISprite>();
+            checkedBoxObj.spriteName = "check-checked";
+            checkedBoxObj.atlas = NetworkSkinsMod.defaultAtlas;
+            checkedBoxObj.size = checkbox.size;
+            checkedBoxObj.relativePosition = Vector3.zero;
+            checkbox.checkedBoxObject = checkedBoxObj;
             checkbox.eventCheckChanged += OnCheckboxStateChanged;
         }
 

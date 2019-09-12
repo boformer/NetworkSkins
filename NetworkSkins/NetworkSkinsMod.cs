@@ -26,8 +26,11 @@ namespace NetworkSkins
         private GameObject skinControllerGameObject;
         private GameObject persistenceServiceGameObject;
 
+
         #region Lifecycle
-        private static bool InGame => LoadingManager.exists && LoadingManager.instance.m_loadingComplete;
+        public static bool InGame => (ToolManager.instance.m_properties.m_mode == ItemClass.Availability.Game);
+
+        public static UITextureAtlas defaultAtlas;
 
         public void OnEnabled()
         {
@@ -35,7 +38,7 @@ namespace NetworkSkins
 
             InstallHarmony();
 
-            if (InGame)
+            if (LoadingManager.exists && LoadingManager.instance.m_loadingComplete)
             {
                 Install();
             }
@@ -100,6 +103,8 @@ namespace NetworkSkins
         #region NetToolMonitor/GUI
         private void Install()
         {
+            // try to get InGame atlas
+            defaultAtlas = InGame ? UIView.GetAView().defaultAtlas : UIView.library?.Get<OptionsMainPanel>("OptionsPanel")?.GetComponent<UIPanel>()?.atlas;
             persistenceServiceGameObject = new GameObject(nameof(PersistenceService));
             skinControllerGameObject = new GameObject(nameof(NetworkSkinPanelController));
             persistenceServiceGameObject.transform.parent = NetworkSkinManager.instance.gameObject.transform;
@@ -133,6 +138,8 @@ namespace NetworkSkins
                 Destroy(panel.gameObject);
                 panel = null;
             }
+
+            defaultAtlas = null;
         }
 
         private void OnNetToolStateChanged(bool isToolEnabled)

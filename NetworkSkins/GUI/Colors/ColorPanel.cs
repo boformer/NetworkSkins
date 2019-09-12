@@ -13,7 +13,7 @@ namespace NetworkSkins.GUI.Colors
         private PanelBase rgbPanel;
         private UIPanel colorPanel;
         private PanelBase swatchesPanel;
-        private UIColorPicker colorPicker;
+        private UIColorPicker colorPicker; // nullable
         private UITextField redTextField;
         private UITextField greenTextField;
         private UITextField blueTextField;
@@ -58,7 +58,7 @@ namespace NetworkSkins.GUI.Colors
             blueTextField.eventKeyPress -= OnKeyPress;
             blueTextField.eventTextChanged -= OnTextChanged;
             blueTextField.eventTextSubmitted -= OnTextSubmitted;
-            colorPicker.eventColorUpdated -= OnColorUpdated;
+            if(colorPicker != null) colorPicker.eventColorUpdated -= OnColorUpdated;
             NetworkSkinPanelController.Color.EventColorUsedInSegment -= OnColorUsed;
             base.OnDestroy();
         }
@@ -66,7 +66,9 @@ namespace NetworkSkins.GUI.Colors
         public override void Build(PanelType panelType, Layout layout) {
             base.Build(panelType, layout);
             savedSwatches = Persistence.GetSavedSwatches();
-            CreateColorPicker();
+            if(NetworkSkinsMod.InGame) {
+                CreateColorPicker();
+            }
             CreateRGBPanel();
             CreateButtonsPanel();
             RefreshSwatchesPanel();
@@ -102,8 +104,9 @@ namespace NetworkSkins.GUI.Colors
             colorPanel.backgroundSprite = "WhiteRect";
             colorPanel.size = new Vector2(28.0f, 25.0f);
             colorPanel.color = NetworkSkinPanelController.Color.SelectedColor;
+            colorPanel.atlas = NetworkSkinsMod.defaultAtlas;
 
-            Color32 color32 = colorPicker.color;
+            Color32 color32 = colorPanel.color;
             CreateLabel(Translation.Instance.GetTranslation(TranslationID.LABEL_RED));
             redTextField = CreateTextfield(color32.r.ToString());
             CreateLabel(Translation.Instance.GetTranslation(TranslationID.LABEL_GREEN));
@@ -123,6 +126,7 @@ namespace NetworkSkins.GUI.Colors
             label.verticalAlignment = UIVerticalAlignment.Middle;
             label.textAlignment = UIHorizontalAlignment.Right;
             label.padding = new RectOffset(0, 0, 5, 0);
+            label.atlas = NetworkSkinsMod.defaultAtlas;
             return label;
         }
 
@@ -146,6 +150,7 @@ namespace NetworkSkins.GUI.Colors
             textField.eventTextChanged += OnTextChanged;
             textField.eventTextSubmitted += OnTextSubmitted;
             textField.text = text;
+            textField.atlas = NetworkSkinsMod.defaultAtlas;
             return textField;
         }
 
@@ -197,7 +202,7 @@ namespace NetworkSkins.GUI.Colors
         }
 
         private void OnSavedSwatchClicked(Color32 color) {
-            colorPicker.color = color;
+            UpdateColor(color);
         }
 
         private void AddSwatch(Color32 color) {
@@ -276,18 +281,20 @@ namespace NetworkSkins.GUI.Colors
 
         private void OnTextSubmitted(UIComponent component, string value) {
             UITextField textField = component as UITextField;
-            Color32 color32 = colorPicker.color;
+            Color32 color32 = currentColor;
             if (textField == redTextField) {
-                colorPicker.color = new Color32((byte)GetClampedFloat(value), color32.g, color32.b, 255);
+                color32 = new Color32((byte)GetClampedFloat(value), color32.g, color32.b, 255);
             } else if (textField == greenTextField) {
-                colorPicker.color = new Color32(color32.r, (byte)GetClampedFloat(value), color32.b, 255);
+                color32 = new Color32(color32.r, (byte)GetClampedFloat(value), color32.b, 255);
             } else if (textField == blueTextField) {
-                colorPicker.color = new Color32(color32.r, color32.g, (byte)GetClampedFloat(value), 255);
+                color32 = new Color32(color32.r, color32.g, (byte)GetClampedFloat(value), 255);
             }
+
+            UpdateColor(color32);
         }
 
         private void OnSwatchClicked(Color color, UIMouseEventParameter eventParam, UIComponent component) {
-            colorPicker.color = color;
+            UpdateColor(color);
         }
 
         private void OnColorUsed() {
@@ -296,6 +303,14 @@ namespace NetworkSkins.GUI.Colors
 
         private void ColorChanged() {
             NetworkSkinPanelController.Color.SetColor(currentColor);
+        }
+
+        private void UpdateColor(Color value) {
+            if(colorPicker != null) {
+                colorPicker.color = value;
+            } else {
+                OnColorUpdated(value);
+            }
         }
 
         private void OnColorUpdated(Color value) {
@@ -328,9 +343,12 @@ namespace NetworkSkins.GUI.Colors
         }
 
         private void RefreshColors() {
-            colorPicker.eventColorUpdated -= OnColorUpdated;
-            currentColor = colorPicker.color = colorPanel.color = NetworkSkinPanelController.Color.SelectedColor;
-            colorPicker.eventColorUpdated += OnColorUpdated;
+            currentColor = colorPanel.color = NetworkSkinPanelController.Color.SelectedColor;
+            if (colorPicker != null) {
+                colorPicker.eventColorUpdated -= OnColorUpdated;
+                colorPicker.color = NetworkSkinPanelController.Color.SelectedColor;
+                colorPicker.eventColorUpdated += OnColorUpdated;
+            }
             UpdateTextfields();
         }
     }

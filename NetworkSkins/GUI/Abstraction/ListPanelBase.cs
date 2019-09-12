@@ -60,6 +60,7 @@ namespace NetworkSkins.GUI.Abstraction
             laneTabstrip.builtinKeyNavigation = true;
             laneTabstrip.size = new Vector2(width - (Spacing * 2.0f) - 35.0f, 30.0f);
             laneTabstrip.eventSelectedIndexChanged += OnLaneTabstripSelectedIndexChanged;
+            laneTabstrip.atlas = NetworkSkinsMod.defaultAtlas;
         }
 
         private void CreatePillarTabstrip() {
@@ -67,6 +68,7 @@ namespace NetworkSkins.GUI.Abstraction
             pillarTabstrip.builtinKeyNavigation = true;
             pillarTabstrip.size = new Vector2(width - (Spacing * 2.0f), 30.0f);
             pillarTabstrip.eventSelectedIndexChanged += OnPillarTabstripSelectedIndexChanged;
+            pillarTabstrip.atlas = NetworkSkinsMod.defaultAtlas;
         }
 
         private void CreateLockButton() {

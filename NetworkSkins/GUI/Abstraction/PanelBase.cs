@@ -18,6 +18,7 @@ namespace NetworkSkins.GUI.Abstraction
 
         public override void Awake() {
             base.Awake();
+            atlas = NetworkSkinsMod.defaultAtlas;
             if (NetworkSkinPanelController != null) {
                 NetworkSkinPanelController.EventGUIDirty += OnPrefabChanged;
             }

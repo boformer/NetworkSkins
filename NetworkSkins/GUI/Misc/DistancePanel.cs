@@ -40,6 +40,7 @@ namespace NetworkSkins.GUI
             labelDefault.text = Translation.Instance.GetTranslation(TranslationID.LABEL_DISTANCE);
             labelDefault.textColor = UIUtil.TextColor;
             labelDefault.font = UIUtil.Font;
+            labelDefault.atlas = NetworkSkinsMod.defaultAtlas;
 
             labelValue = labelPanel.AddUIComponent<UILabel>();
             labelValue.autoSize = false;
@@ -49,6 +50,7 @@ namespace NetworkSkins.GUI
             labelValue.verticalAlignment = UIVerticalAlignment.Middle;
             labelValue.textColor = UIUtil.TextColor;
             labelValue.font = UIUtil.Font;
+            labelValue.atlas = NetworkSkinsMod.defaultAtlas;
         }
 
         private void CreateSlider() {
@@ -62,10 +64,12 @@ namespace NetworkSkins.GUI
             slider.stepSize = 1.0f;
             slider.eventMouseUp += OnMouseUp;
             slider.eventValueChanged += OnValueChanged;
+            slider.atlas = NetworkSkinsMod.defaultAtlas;
 
             UISprite thumb = slider.AddUIComponent<UISprite>();
             thumb.size = new Vector2(8.0f, 12.0f);
             thumb.spriteName = "WhiteRect";
+            thumb.atlas = NetworkSkinsMod.defaultAtlas;
 
             slider.thumbObject = thumb;
         }

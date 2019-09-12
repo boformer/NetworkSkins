@@ -61,6 +61,7 @@ namespace NetworkSkins.GUI
             button.pressedFgSprite = string.Concat(foregroundSprite, "Pressed");
             button.disabledFgSprite = string.Concat(foregroundSprite, "Disabled");
             button.focusedFgSprite = string.Concat(foregroundSprite, isFocusable ? "Focused" : "");
+            button.atlas = NetworkSkinsMod.defaultAtlas;
             if (atlas != null) button.atlas = atlas;
 
             return button;

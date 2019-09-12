@@ -488,6 +488,7 @@ namespace NetworkSkins.GUI.UIFastList
             m_panel.color = m_color;
             m_panel.clipChildren = true;
             m_panel.relativePosition = Vector2.zero;
+            m_panel.atlas = NetworkSkinsMod.defaultAtlas;
 
             // Scrollbar
             m_scrollbar = AddUIComponent<UIScrollbar>();
@@ -506,6 +507,7 @@ namespace NetworkSkins.GUI.UIFastList
             tracSprite.size = tracSprite.parent.size;
             tracSprite.fillDirection = UIFillDirection.Vertical;
             tracSprite.spriteName = "LevelBarBackground";
+            tracSprite.atlas = NetworkSkinsMod.defaultAtlas;
 
             m_scrollbar.trackObject = tracSprite;
 
@@ -515,6 +517,7 @@ namespace NetworkSkins.GUI.UIFastList
             thumbSprite.autoSize = true;
             thumbSprite.width = 12f;
             thumbSprite.spriteName = "LevelBarForeground";
+            thumbSprite.atlas = NetworkSkinsMod.defaultAtlas;
 
             m_scrollbar.thumbObject = thumbSprite;
 
