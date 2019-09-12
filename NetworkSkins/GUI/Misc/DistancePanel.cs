@@ -152,6 +152,7 @@ namespace NetworkSkins.GUI
                 default: break;
             }
             UpdateText(defaultDistance);
+            OnMouseUp(null, null);
         }
 
         private void UpdateText(float defaultDistance) {

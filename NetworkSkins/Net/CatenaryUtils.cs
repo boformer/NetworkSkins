@@ -41,13 +41,13 @@ namespace NetworkSkins.Net
         public static bool IsDoubleRailCatenaryProp(PropInfo prop)
         {
             if (prop == null) return false;
-            return Array.IndexOf(DoubleCatenaryNames, prop.name) != -1;
+            return Array.IndexOf(DoubleCatenaryNames, prop.name) != -1 || prop.m_material.name.Contains("r69rwp-cat2n");
         }
 
         public static bool IsSingleRailCatenaryProp(PropInfo prop)
         {
             if (prop == null) return false;
-            return Array.IndexOf(SingleCatenaryNames, prop.name) != -1;
+            return Array.IndexOf(SingleCatenaryNames, prop.name) != -1 || prop.m_material.name.Contains("r69rwp-cat1n");
         }
 
         public static void CorrectCatenaryPropAngle(NetLaneProps.Prop laneProp)

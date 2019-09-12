@@ -23,7 +23,7 @@ namespace NetworkSkins.GUI
             UIUtil.CreateSpace(0.0f, 10.0f, this);
         }
         private void CreateButton() {
-            button = UIUtil.CreateButton(new Vector2(117.0f, 30.0f), parentComponent: this);
+            button = UIUtil.CreateButton(new Vector2(112.5f, 30.0f), parentComponent: this);
             button.eventClicked += OnButtonClicked;
         }
 

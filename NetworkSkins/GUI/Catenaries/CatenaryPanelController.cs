@@ -61,6 +61,19 @@ namespace NetworkSkins.GUI.Catenaries
             return items;
         }
 
+        protected override Item GetSelectedItemFromModifiers(List<NetworkSkinModifier> modifiers)
+        {
+            foreach (var modifier in modifiers)
+            {
+                if (modifier is CatenaryModifier catenaryModifier)
+                {
+                    return FindItemByName(catenaryModifier.Catenary?.name ?? "#NONE#");
+                }
+            }
+
+            return null;
+        }
+
         private Dictionary<NetInfo, PropInfo> GetDefaultCatenaries()
         {
             var defaultCatenaries = new Dictionary<NetInfo, PropInfo>();

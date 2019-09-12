@@ -79,6 +79,7 @@ namespace NetworkSkins.GUI.Abstraction
             Persistence.LanePositionLocked = !Persistence.LanePositionLocked;
             if (Persistence.LanePositionLocked) LockLaneTabs();
             else UnlockLaneTabs();
+            NetworkSkinPanelController.SetLaneAndRefreshUI(NetworkSkinPanelController.LanePosition);
         }
 
         private void UnlockLaneTabs() {

@@ -33,7 +33,7 @@ namespace NetworkSkins.Persistence
 
             Data dataContainer;
             using (var stream = new MemoryStream(data)) {
-                dataContainer = DataSerializer.Deserialize<Data>(stream, DataSerializer.Mode.Memory);
+                dataContainer = DataSerializer.Deserialize<Data>(stream, DataSerializer.Mode.Memory, NetworkSkinsMod.ResolveSerializedType);
             }
 
             foreach (var pair in dataContainer.Values) {

@@ -35,9 +35,23 @@ namespace NetworkSkins.GUI.Abstraction
             OnChanged();
         }
 
+        public void OnPrefabWithModifiersSelected(NetInfo prefab, List<NetworkSkinModifier> modifiers)
+        {
+            Prefab = prefab;
+
+            if (Prefab != null)
+            {
+                BuildWithModifiers(modifiers);
+            }
+
+            OnChanged();
+        }
+
         public abstract void Reset();
 
         protected abstract void Build();
+
+        protected abstract void BuildWithModifiers(List<NetworkSkinModifier> modifiers);
 
         protected virtual void OnChanged()
         {

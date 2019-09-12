@@ -56,7 +56,7 @@ namespace NetworkSkins.Patches.NetTool
 
             var codes = new List<CodeInstruction>(originalInstructions);
 
-            // Replace all GetColor calls with GetSegmentColor/GetNodeColor
+            // Replace all GetNodeBuilding calls with GetActiveNodeBuilding
             for (var index = 0; index < codes.Count; index++)
             {
                 if (codes[index].opcode == OpCodes.Callvirt)

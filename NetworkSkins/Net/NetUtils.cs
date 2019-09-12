@@ -141,5 +141,29 @@ namespace NetworkSkins.Net
 
             return null;
         }
+
+        public static NetInfo FindDefaultElevation(NetInfo info) {
+            for (uint i = 0; i < PrefabCollection<NetInfo>.LoadedCount(); i++) {
+                NetInfo prefab = PrefabCollection<NetInfo>.GetLoaded(i);
+                if ((AssetEditorRoadUtils.TryGetBridge(prefab) != null && AssetEditorRoadUtils.TryGetBridge(prefab).name == info.name) ||
+                   (AssetEditorRoadUtils.TryGetElevated(prefab) != null && AssetEditorRoadUtils.TryGetElevated(prefab).name == info.name) ||
+                   (AssetEditorRoadUtils.TryGetSlope(prefab) != null && AssetEditorRoadUtils.TryGetSlope(prefab).name == info.name) ||
+                   (AssetEditorRoadUtils.TryGetTunnel(prefab) != null && AssetEditorRoadUtils.TryGetTunnel(prefab).name == info.name)) {
+                    return prefab;
+                }
+            }
+            return info;
+        }
+
+        public static bool IsValidNet(NetInfo info) {
+            if (info == null) return false;
+            NetAI ai = info.m_netAI;
+            return ai is RoadBaseAI ||
+                   ai is TrainTrackBaseAI ||
+                   ai is PedestrianBridgeAI ||
+                   ai is PedestrianPathAI ||
+                   ai is PedestrianTunnelAI ||
+                   ai is PedestrianWayAI;
+        }
     }
 }

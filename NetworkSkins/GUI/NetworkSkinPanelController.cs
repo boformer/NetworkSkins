@@ -9,6 +9,7 @@ using NetworkSkins.GUI.Surfaces;
 using NetworkSkins.GUI.Trees;
 using NetworkSkins.Net;
 using NetworkSkins.Skins;
+using NetworkSkins.Tool;
 using UnityEngine;
 
 namespace NetworkSkins.GUI
@@ -20,8 +21,6 @@ namespace NetworkSkins.GUI
         public event ToolStateChangedEventHandler EventToolStateChanged;
         public delegate void GUIDirtyEventHandler(NetInfo netInfo);
         public event GUIDirtyEventHandler EventGUIDirty;
-
-        private bool _ignoreModifierEvents = false;
 
         public TerrainSurfacePanelController TerrainSurface;
 
@@ -46,6 +45,10 @@ namespace NetworkSkins.GUI
         public CatenaryPanelController Catenary;
 
         public NetInfo Prefab { get; private set; }
+
+        public PipetteTool Tool { get; private set; }
+
+        private bool _ignoreModifierEvents = false;
 
         #region Lifecycle
         public void Awake() {
@@ -87,6 +90,12 @@ namespace NetworkSkins.GUI
 
             Catenary = new CatenaryPanelController();
             Catenary.EventModifiersChanged += OnModifiersChanged;
+
+            Tool = ToolsModifierControl.toolController.gameObject.AddComponent<PipetteTool>();
+            Tool.EventNetInfoPipetted += OnNetInfoPipetted;
+        }
+
+        private void OnNetInfoPipetted(NetInfo info) {
         }
 
         public void Update()
@@ -116,6 +125,8 @@ namespace NetworkSkins.GUI
         public void OnDestroy()
         {
             NetworkSkinManager.instance.EventSegmentPlaced -= OnSegmentPlaced;
+            Tool.EventNetInfoPipetted -= OnNetInfoPipetted;
+            PipetteTool.Destroy();
         }
         #endregion
 
@@ -142,12 +153,14 @@ namespace NetworkSkins.GUI
         public void SetPillarAndRefreshUI(Pillar pillar)
         {
             Pillar = pillar;
+            ValidatePillar();
             EventGUIDirty?.Invoke(Prefab);
         }
 
         public void SetLaneAndRefreshUI(LanePosition value)
         {
             LanePosition = value;
+            ValidateLane();
             EventGUIDirty?.Invoke(Prefab);
         }
 
@@ -209,6 +222,40 @@ namespace NetworkSkins.GUI
             }
         }
 
+        public void OnPrefabWithModifiersSelected(NetInfo prefab, List<NetworkSkinModifier> modifiers)
+        {
+            _ignoreModifierEvents = true;
+
+            TerrainSurface.OnPrefabWithModifiersSelected(prefab, modifiers);
+
+            Color.OnPrefabWithModifiersSelected(prefab, modifiers);
+
+            StreetLight.OnPrefabWithModifiersSelected(prefab, modifiers);
+
+            LeftTree.OnPrefabWithModifiersSelected(prefab, modifiers);
+            MiddleTree.OnPrefabWithModifiersSelected(prefab, modifiers);
+            RighTree.OnPrefabWithModifiersSelected(prefab, modifiers);
+
+            var elevatedPrefab = NetUtils.GetElevatedPrefab(prefab);
+            ElevatedBridgePillar.OnPrefabWithModifiersSelected(elevatedPrefab, modifiers);
+            ElevatedMiddlePillar.OnPrefabWithModifiersSelected(elevatedPrefab, modifiers);
+
+            var bridgePrefab = NetUtils.GetBridgePrefab(prefab);
+            BridgeBridgePillar.OnPrefabWithModifiersSelected(bridgePrefab, modifiers);
+            BridgeMiddlePillar.OnPrefabWithModifiersSelected(bridgePrefab, modifiers);
+
+            Catenary.OnPrefabWithModifiersSelected(bridgePrefab, modifiers);
+
+            _ignoreModifierEvents = false;
+
+            UpdateActiveModifiers();
+
+            ValidateLane();
+            ValidatePillar();
+
+            EventGUIDirty?.Invoke(Prefab);
+        }
+
         private void OnPrefabChanged(NetInfo prefab)
         {
             _ignoreModifierEvents = true;
@@ -237,13 +284,13 @@ namespace NetworkSkins.GUI
 
             UpdateActiveModifiers();
 
-            UpdateSelectedLane();
-            UpdateSelectedPillar();
+            ValidateLane();
+            ValidatePillar();
 
             EventGUIDirty?.Invoke(Prefab);
         }
 
-        private void UpdateSelectedLane() {
+        private void ValidateLane() {
             switch (LanePosition) {
                 case LanePosition.Left: {
                     if (!LeftTree.Enabled) {
@@ -266,7 +313,7 @@ namespace NetworkSkins.GUI
             }
         }
 
-        private void UpdateSelectedPillar() {
+        private void ValidatePillar() {
             switch (Pillar) {
                 case Pillar.Elevated: {
                     if (!ElevatedBridgePillar.Enabled) {

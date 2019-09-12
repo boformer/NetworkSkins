@@ -22,6 +22,7 @@
     <Translation ID="LABEL_GLOBAL_SELECTION_DATA" String="Save active selections globally" />
     <Translation ID="LABEL_HIDEBLACKLISTED" String="Hide blacklisted items" />
     <Translation ID="LABEL_DISPLAYATSELECTED" String="Auto-scroll to selected" />
+    <Translation ID="LABEL_NEW_SWATCH" String="New color" />
     <Translation ID="TOOLTIP_HIDEBLACKLISTED" String="Enable this option to hide blacklisted items from the lists" />
     <Translation ID="TOOLTIP_GLOBAL_SELECTION_DATA" String="Enable this option to make the mod remember your last used skin options for each network globally, rather than per-save" />
     <Translation ID="TOOLTIP_DISPLAYATSELECTED" String="Enable this option to automatically scroll to currently selected item when you open a panel" />
@@ -32,11 +33,17 @@
     <Translation ID="TOOLTIP_CATENARY" String="Catenaries" />
     <Translation ID="TOOLTIP_COLOR" String="Color" />
     <Translation ID="TOOLTIP_SETTINGS" String="Settings" />
+    <Translation ID="TOOLTIP_PIPETTE" String="Pipette" />
     <Translation ID="TOOLTIP_LOCK" String="Activate the lock to modify all lanes simultaneously" />
-    <Translation ID="TOOLTIP_ADDFAVOURITE_ADDBLACKLIST" String="Left-click to add to favourites, right-click to add to blacklist" />
-    <Translation ID="TOOLTIP_REMOVEFAVOURITE" String="Left-click to remove from favourites, right-click to add to blacklist" />
-    <Translation ID="TOOLTIP_REMOVEBLACKLIST" String="Left-click to add to favourites, right-click to remove from blacklist" />
+    <Translation ID="TOOLTIP_ADDFAVOURITE_ADDBLACKLIST" String="Left-click to add to favorites, right-click to add to blacklist" />
+    <Translation ID="TOOLTIP_REMOVEFAVOURITE" String="Left-click to remove from favorites, right-click to add to blacklist" />
+    <Translation ID="TOOLTIP_REMOVEBLACKLIST" String="Left-click to add to favorites, right-click to remove from blacklist" />
     <Translation ID="TOOLTIP_RESETCURRENT" String="Reset all settings for currently selected network" />
+    <Translation ID="TOOLTIP_BUTTON_SAVE_MAXREACHED" String="You've reached the maximum amount of saved colors" />
+    <Translation ID="TOOLTIP_BUTTON_SAVE_COLOREXISTS" String="The currently selected color is already saved" />
+    <Translation ID="TOOLTIP_BUTTON_SAVE" String="Save current color as favorite" />
     <Translation ID="BUTTON_RESET" String="Reset" />
+    <Translation ID="BUTTON_SAVE" String="Save" />
+    <Translation ID="TOOLTIP_BUTTON_DELETE" String="Delete" />
   </Translations>
 </Language>
