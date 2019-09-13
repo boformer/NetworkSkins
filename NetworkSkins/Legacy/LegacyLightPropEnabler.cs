@@ -95,8 +95,10 @@ namespace NetworkSkins.Legacy
 
                         if (propDefPrefab == null)
                         {
+                            /*
                             lightPropsDefParseErrors.Add(asset.package.packageName + " - Prop with name " + propDef.Name +
                                                          " not loaded.");
+                            */
                             continue;
                         }
 
