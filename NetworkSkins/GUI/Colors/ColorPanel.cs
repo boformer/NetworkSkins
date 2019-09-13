@@ -33,14 +33,14 @@ namespace NetworkSkins.GUI.Colors
                 updateNeeded = false;
             }
             if (savedSwatches.Count == MAX_SAVED_SWATCHES || savedSwatches.Find(s => s.Color == NetworkSkinPanelController.Color.SelectedColor) != null) {
-                saveButton.Disable();
+                if (saveButton.isEnabled) saveButton.Disable();
                 if (savedSwatches.Count == MAX_SAVED_SWATCHES) {
                     saveButton.tooltip = Translation.Instance.GetTranslation(TranslationID.TOOLTIP_BUTTON_SAVE_MAXREACHED);
                 } else if (savedSwatches.Find(s => s.Color == NetworkSkinPanelController.Color.SelectedColor) != null) {
                     saveButton.tooltip = Translation.Instance.GetTranslation(TranslationID.TOOLTIP_BUTTON_SAVE_COLOREXISTS);
                 }
             } else if (savedSwatches.Count < MAX_SAVED_SWATCHES) {
-                saveButton.Enable();
+                if (!saveButton.isEnabled) saveButton.Enable();
                 saveButton.tooltip = Translation.Instance.GetTranslation(TranslationID.TOOLTIP_BUTTON_SAVE);
             }
         }

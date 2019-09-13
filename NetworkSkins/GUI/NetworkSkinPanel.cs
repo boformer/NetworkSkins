@@ -34,7 +34,6 @@ namespace NetworkSkins.GUI
             base.Start();
             Build(PanelType.None, new Layout(new Vector2(0.0f, 234.0f), true, LayoutDirection.Horizontal, LayoutStart.BottomRight, 0));
             color = GUIColor;
-            autoFitChildrenVertically = true;
             CreateToolBar();
 
             relativePosition = Persistence.GetToolbarPosition() ?? CalculateDefaultToolbarPosition();
