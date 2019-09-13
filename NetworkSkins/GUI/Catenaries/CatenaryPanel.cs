@@ -16,8 +16,7 @@ namespace NetworkSkins.GUI.Catenaries
             Refresh();
         }
 
-        protected override void OnSelectedChanged(string itemID, bool selected) {
-            if (!selected) return;
+        protected override void OnItemClick(string itemID) {
             NetworkSkinPanelController.Catenary.SetSelectedItem(itemID);
         }
     }

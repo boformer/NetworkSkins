@@ -1,12 +1,14 @@
-﻿using NetworkSkins.GUI.UIFastList;
+﻿using ColossalFramework.UI;
+using NetworkSkins.GUI.UIFastList;
 using UnityEngine;
 
 namespace NetworkSkins.GUI.Abstraction
 {
     public abstract class ListBase : PanelBase
     {
-        public delegate void SelectedChangedEventHandler(string itemID, bool selected);
-        public event SelectedChangedEventHandler EventSelectedChanged;
+        public delegate void ItemClickEventHandler(string itemID);
+        public event ItemClickEventHandler EventItemClick;
+
         protected UIFastList.UIFastList fastList;
         protected abstract Vector2 ListSize { get; }
         protected abstract float RowHeight { get; }
@@ -22,6 +24,8 @@ namespace NetworkSkins.GUI.Abstraction
         protected bool IsBlacklisted(string itemID) {
             return Persistence.IsBlacklisted(itemID, UIUtil.PanelToItemType(PanelType)) && !IsDefault(itemID);
         }
+
+
 
         public override void OnDestroy() {
             UnbindEvents();
@@ -41,8 +45,13 @@ namespace NetworkSkins.GUI.Abstraction
         /// </summary>
         protected abstract void SetupRowsData();
 
-        private void OnSelectedChanged(string itemID, bool selected) {
-            EventSelectedChanged?.Invoke(itemID, selected);
+        private void OnItemClick(UIComponent component, int itemIndex)
+        {
+            ListItem item = fastList.RowsData[itemIndex] as ListItem;
+            if (item != null)
+            {
+                EventItemClick?.Invoke(item.ID);
+            }
         }
 
         private void OnFavouriteChanged(string itemID, bool favourite) {
@@ -64,12 +73,13 @@ namespace NetworkSkins.GUI.Abstraction
             fastList.RowHeight = rowHeight;
             fastList.CanSelect = true;
             fastList.AutoHideScrollbar = true;
+            fastList.EventItemClick += OnItemClick;
         }
 
         private void BindEvents() {
             for (int rowIndex = 0; rowIndex < fastList.Rows.m_size; rowIndex++) {
                 if (fastList.Rows[rowIndex] is ListRow row) {
-                    row.EventSelectedChanged += OnSelectedChanged;
+                    //row.EventSelectedChanged += OnSelectedChanged;
                     row.EventFavouriteChanged += OnFavouriteChanged;
                     row.EventBlacklistedChanged += OnBlacklistedChanged;
                 }
@@ -79,7 +89,7 @@ namespace NetworkSkins.GUI.Abstraction
         private void UnbindEvents() {
             for (int rowIndex = 0; rowIndex < fastList.Rows.m_size; rowIndex++) {
                 if (fastList.Rows[rowIndex] is ListRow row) {
-                    row.EventSelectedChanged -= OnSelectedChanged;
+                    //row.EventSelectedChanged -= OnSelectedChanged;
                     row.EventFavouriteChanged -= OnFavouriteChanged;
                     row.EventBlacklistedChanged -= OnBlacklistedChanged;
                 }

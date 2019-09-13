@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.Net;
+using UnityEngine;
 
 namespace NetworkSkins.GUI.Pillars
 {
@@ -40,8 +41,8 @@ namespace NetworkSkins.GUI.Pillars
             Refresh();
         }
 
-        protected override void OnSelectedChanged(string itemID, bool selected) {
-            if (!selected) return;
+        protected override void OnItemClick(string itemID)
+        {
             switch (NetworkSkinPanelController.Pillar) {
                 case Pillar.Elevated: NetworkSkinPanelController.ElevatedBridgePillar.SetSelectedItem(itemID); break;
                 case Pillar.ElevatedMiddle: NetworkSkinPanelController.ElevatedMiddlePillar.SetSelectedItem(itemID); break;

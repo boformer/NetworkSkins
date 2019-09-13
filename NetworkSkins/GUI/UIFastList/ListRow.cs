@@ -10,8 +10,8 @@ namespace NetworkSkins.GUI.UIFastList
 {
     public class ListRow : PanelBase, IUIFastListRow
     {
-        public delegate void SelectedChangedEventHandler(string itemID, bool selected);
-        public event SelectedChangedEventHandler EventSelectedChanged;
+        //public delegate void SelectedChangedEventHandler(string itemID, bool selected);
+        //public event SelectedChangedEventHandler EventSelectedChanged;
 
         public delegate void FavouriteChangedEventHandler(string itemID, bool favourite);
         public event FavouriteChangedEventHandler EventFavouriteChanged;
@@ -47,19 +47,19 @@ namespace NetworkSkins.GUI.UIFastList
             eventMouseEnter -= OnMouseEnterEvent;
             eventMouseLeave -= OnMouseLeaveEvent;
             EventFavouriteChanged = null;
-            EventSelectedChanged = null;
+            //EventSelectedChanged = null;
             EventBlacklistedChanged = null;
             base.OnDestroy();
         }
 
         public void Select(bool isRowOdd) {
             color = selectedColor;
-            EventSelectedChanged?.Invoke(itemData.ID, true);
+            //EventSelectedChanged?.Invoke(itemData.ID, true);
         }
 
         public void Deselect(bool isRowOdd) {
             color = isRowOdd ? oddColor : evenColor;
-            EventSelectedChanged?.Invoke(itemData.ID, false);
+            //EventSelectedChanged?.Invoke(itemData.ID, false);
         }
 
         public void Display(object data, bool isRowOdd) {

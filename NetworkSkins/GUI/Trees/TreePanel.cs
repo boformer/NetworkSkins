@@ -47,8 +47,7 @@ namespace NetworkSkins.GUI.Trees
             Refresh();
         }
 
-        protected override void OnSelectedChanged(string itemID, bool selected) {
-            if (!selected) return;
+        protected override void OnItemClick(string itemID) {
             switch (NetworkSkinPanelController.LanePosition) {
                 case LanePosition.Left:
                     NetworkSkinPanelController.LeftTree.SetSelectedItem(itemID);

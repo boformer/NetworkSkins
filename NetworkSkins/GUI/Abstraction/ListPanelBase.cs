@@ -37,8 +37,7 @@ namespace NetworkSkins.GUI.Abstraction
 
         protected abstract void OnPanelBuilt();
 
-        protected abstract void OnSelectedChanged(string itemID, bool selected);
-
+        
         protected void OnFavouriteChanged(string itemID, bool favourite) {
             if (favourite) Persistence.AddFavourite(itemID, UIUtil.PanelToItemType(PanelType));
             else Persistence.RemoveFavourite(itemID, UIUtil.PanelToItemType(PanelType));

@@ -248,9 +248,6 @@ namespace NetworkSkins.GUI.UIFastList
                     m_selectedRowId = newRowId;
                     m_rows[m_selectedRowId].Select((m_selectedDataId % 2) == 1);
                 }
-
-                if (EventSelectedIndexChanged != null && m_selectedDataId != oldId)
-                    EventSelectedIndexChanged(this, m_selectedDataId);
             }
         }
 
@@ -275,9 +272,9 @@ namespace NetworkSkins.GUI.UIFastList
 
         #region Events
         /// <summary>
-        /// Called when the currently selected row changed
+        /// Called when a row is clicked
         /// </summary>
-        public event PropertyChangedEventHandler<int> EventSelectedIndexChanged;
+        public event PropertyChangedEventHandler<int> EventItemClick;
         #endregion
 
         #region Public methods
@@ -401,8 +398,9 @@ namespace NetworkSkins.GUI.UIFastList
             int max = Mathf.Min(m_rowsData.m_size, m_rows.m_size);
             for (int i = 0; i < max; i++) {
                 if (component == (UIComponent)m_rows[i]) {
-                    SelectedIndex = i + Mathf.FloorToInt(m_pos);
-                    return;
+                    int index = i + Mathf.FloorToInt(m_pos);
+                    EventItemClick?.Invoke(component, index);
+                    SelectedIndex = index;
                 }
             }
         }
