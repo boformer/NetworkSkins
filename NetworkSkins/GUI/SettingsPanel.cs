@@ -83,7 +83,7 @@ namespace NetworkSkins.GUI
         }
 
         private void OnDisplayAtSelectedOptionChanged(bool value) {
-            Persistence.HideBlacklisted = value;
+            Persistence.DisplayAtSelected = value;
         }
     }
 }
