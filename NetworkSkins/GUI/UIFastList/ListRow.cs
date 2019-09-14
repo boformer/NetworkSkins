@@ -114,6 +114,7 @@ namespace NetworkSkins.GUI.UIFastList
             lightPanel.size = new Vector2(12.0f, 30.0f);
             lightColorPanel = lightPanel.AddUIComponent<UIPanel>();
             lightColorPanel.size = new Vector2(12.0f, 12.0f);
+            lightColorPanel.atlas = Resources.DefaultAtlas;
             lightColorPanel.backgroundSprite = "PieChartWhiteFg";
             lightColorPanel.relativePosition = new Vector2(0.0f, 9.0f);
         }
