@@ -61,5 +61,15 @@ namespace NetworkSkins.Net
 
             return false;
         }
+
+        public static void CorrectStreetLightPropAngleAndPosition(NetLaneProps.Prop laneProp, float halfWidth, float lanePosition)
+        {
+            // Rotate street lights standing on left side of pedestrian paths
+            float propX = laneProp.m_position.x + lanePosition;
+            if(propX < 0 && halfWidth + propX < 3f)
+            {
+                laneProp.m_angle = 180;
+            }
+        }
     }
 }
