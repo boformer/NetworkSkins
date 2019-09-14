@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Language xmlns:xsd="http://www.w3.org/2009/XMLSchema/XMLSchema.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" UniqueName="pt" ReadableName="Português">
+	<Translations>
+		<Translation ID="MOD_DESCRIPTION" String="Permite mudar a aparência de ruas, trilhos e outros segmentos" />
+		<Translation ID="LABEL_NONE" String="Nenhum" />
+		<Translation ID="LABEL_DEFAULT" String="Padrão" />
+		<Translation ID="LABEL_SEARCH" String="Buscar" />
+		<Translation ID="LABEL_LEFTLANE" String="Faixa Esquerda" />
+		<Translation ID="LABEL_MIDDLELANE" String="Faixa Central" />
+		<Translation ID="LABEL_RIGHTLANE" String="Faixa Direita" />
+		<Translation ID="LABEL_PAVEMENT" String="Pavimento" />
+		<Translation ID="LABEL_GRAVEL" String="Cascalho" />
+		<Translation ID="LABEL_RUINED" String="De Terra" />
+		<Translation ID="LABEL_ELEVATED" String="Elevado" />
+		<Translation ID="LABEL_ELEVATEDMIDDLE" String="Centro Elevado" />
+		<Translation ID="LABEL_BRIDGE" String="Ponte" />
+		<Translation ID="LABEL_BRIDGEMIDDLE" String="Centro Ponte" />
+		<Translation ID="LABEL_DISTANCE" String="Distância" />
+		<Translation ID="LABEL_RED" String="R" />
+		<Translation ID="LABEL_GREEN" String="G" />
+		<Translation ID="LABEL_BLUE" String="B" />
+		<Translation ID="LABEL_GLOBAL_SELECTION_DATA" String="Salvar seleção como global" />
+		<Translation ID="LABEL_HIDEBLACKLISTED" String="Esconder itens banidos" />
+		<Translation ID="LABEL_DISPLAYATSELECTED" String="Rolar para a seleção" />
+		<Translation ID="LABEL_NEW_SWATCH" String="Nova cor" />
+		<Translation ID="TOOLTIP_HIDEBLACKLISTED" String="Ative esta opção para esconder os itens banidos." />
+		<Translation ID="TOOLTIP_GLOBAL_SELECTION_DATA" String="Ative essa opção para usar suas configurações por tipo de segmento em todos os savegames, ao invés de por savegame." />
+		<Translation ID="TOOLTIP_DISPLAYATSELECTED" String="Ative essa opção para rolar as opções para o valor atualmente aplicado quando mudar a seleção" />
+		<Translation ID="TOOLTIP_TREES" String="Árvores" />
+		<Translation ID="TOOLTIP_LIGHTS" String="Luzes" />
+		<Translation ID="TOOLTIP_SURFACE" String="Superfície" />
+		<Translation ID="TOOLTIP_PILLARS" String="Pilares" />
+		<Translation ID="TOOLTIP_CATENARY" String="Catenária" />
+		<Translation ID="TOOLTIP_COLOR" String="Cor" />
+		<Translation ID="TOOLTIP_SETTINGS" String="Opções" />
+		<Translation ID="TOOLTIP_PIPETTE" String="Conta-gotas&#xA;Clique no segmento para copiar a estilização e depois selecione o segmento para aplicação" />
+		<Translation ID="TOOLTIP_LOCK" String="Ative a trava para mudar todas as faixas de uma vez" />
+		<Translation ID="TOOLTIP_ADDFAVOURITE_ADDBLACKLIST" String="Botão esquerdo adiciona aos favoritos, botão direito adiciona ao banidos" />
+		<Translation ID="TOOLTIP_REMOVEFAVOURITE" String="Botão esquerdo remove dos favoritos, botão direito adiciona aos banidos" />
+		<Translation ID="TOOLTIP_REMOVEBLACKLIST" String="Botão esquerdo adiciona aos favoritos, botão direito remove dos banidos" />
+		<Translation ID="TOOLTIP_RESETCURRENT" String="Redefine as configurações para o segmento selecionado" />
+		<Translation ID="TOOLTIP_BUTTON_SAVE_MAXREACHED" String="Você atingiu o número máximo de cores salvas" />
+		<Translation ID="TOOLTIP_BUTTON_SAVE_COLOREXISTS" String="A cor selecionada já está salva" />
+		<Translation ID="TOOLTIP_BUTTON_SAVE" String="Salvar a cor como favorita" />
+		<Translation ID="BUTTON_RESET" String="Redefinir" />
+		<Translation ID="BUTTON_SAVE" String="Salvar" />
+		<Translation ID="TOOLTIP_BUTTON_DELETE" String="Apaga" />
+	</Translations>
+</Language>
