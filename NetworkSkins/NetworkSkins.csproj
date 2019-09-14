@@ -179,6 +179,9 @@
     <Content Include="Patches\NetSegment\NetSegmentCalculateGroupDataPatch.txt" />
     <Content Include="Patches\NetSegment\NetSegmentPopulateGroupDataPatch.txt" />
     <Content Include="Patches\NetSegment\NetSegmentRenderInstancePatch.txt" />
+    <EmbeddedResource Include="Resources\Undo.png" />
+    <EmbeddedResource Include="Resources\UndoHovered.png" />
+    <EmbeddedResource Include="Resources\UndoPressed.png" />
     <EmbeddedResource Include="Resources\PipetteCursor.png" />
     <EmbeddedResource Include="Resources\Blacklisted.png" />
     <EmbeddedResource Include="Resources\Locked.png" />
@@ -192,7 +195,6 @@
     <EmbeddedResource Include="Resources\ColorHovered.png" />
     <EmbeddedResource Include="Resources\ColorPressed.png" />
     <EmbeddedResource Include="Resources\Pipette.png" />
-    <EmbeddedResource Include="Resources\PipetteFocused.png" />
     <EmbeddedResource Include="Resources\PipetteHovered.png" />
     <EmbeddedResource Include="Resources\PipettePressed.png" />
     <EmbeddedResource Include="Resources\Light.png" />

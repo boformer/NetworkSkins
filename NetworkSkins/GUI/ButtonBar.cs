@@ -32,6 +32,9 @@ namespace NetworkSkins.GUI
         public delegate void PipetteButtonClickedEventHandler(UIButton focusedButton, UIButton[] buttons);
         public event PipetteButtonClickedEventHandler EventPipetteClicked;
 
+        public delegate void ResetButtonClickedEventHandler(UIButton focusedButton, UIButton[] buttons);
+        public event ResetButtonClickedEventHandler EventResetClicked;
+
         public delegate void TreesButtonVisibilityChangedEventHandler(UIButton focusedButton, UIButton[] buttons, bool visible);
         public event TreesButtonVisibilityChangedEventHandler EventTreesVisibilityChanged;
 
@@ -61,6 +64,7 @@ namespace NetworkSkins.GUI
         private UIButton colorButton;
         private UIButton settingsButton;
         private UIButton pipetteButton;
+        private UIButton resetButton;
 
         private UIButton[] buttons;
 
@@ -71,7 +75,8 @@ namespace NetworkSkins.GUI
             pillarsButton.eventClicked -= OnPillarsButtonClicked;
             catenaryButton.eventClicked -= OnCatenaryButtonClicked;
             colorButton.eventClicked -= OnColorButtonClicked;
-            settingsButton.eventClicked -= OnSettingsButtonClicked; 
+            settingsButton.eventClicked -= OnSettingsButtonClicked;
+            resetButton.eventClicked -= OnResetButtonClicked;
             treesButton.eventVisibilityChanged -= OnTreesButtonVisibilityChanged;
             lightsButton.eventVisibilityChanged -= OnLightsButtonVisibilityChanged;
             surfacesButton.eventVisibilityChanged -= OnSurfacesButtonVisibilityChanged;
@@ -126,14 +131,17 @@ namespace NetworkSkins.GUI
             pillarsButton.eventClicked += OnPillarsButtonClicked;
             pillarsButton.eventVisibilityChanged += OnPillarsButtonVisibilityChanged;
 
-            settingsButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Settings, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_SETTINGS));
-            settingsButton.eventClicked += OnSettingsButtonClicked;
-            settingsButton.eventVisibilityChanged += OnSettingsButtonVisibilityChanged;
+            resetButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Undo, atlas: Resources.Atlas, isFocusable: false, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_RESETCURRENT));
+            resetButton.eventClicked += OnResetButtonClicked;
 
             UIPanel panel = AddUIComponent<UIPanel>();
             panel.size = new Vector2(30.0f, 4.0f);
             panel.backgroundSprite = "WhiteRect";
             panel.color = new Color32(53, 54, 54, 255);
+
+            settingsButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Settings, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_SETTINGS));
+            settingsButton.eventClicked += OnSettingsButtonClicked;
+            settingsButton.eventVisibilityChanged += OnSettingsButtonVisibilityChanged;
 
             pipetteButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Pipette, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_PIPETTE));
             pipetteButton.eventClicked += OnPipetteButtonClicked;
@@ -150,7 +158,8 @@ namespace NetworkSkins.GUI
                 catenaryButton,
                 colorButton,
                 settingsButton,
-                pipetteButton
+                pipetteButton,
+                resetButton
             };
         }
 
@@ -216,9 +225,14 @@ namespace NetworkSkins.GUI
             EventExtrasClicked?.Invoke(component as UIButton, buttons);
             settingsButton.RefreshTooltip();
         }
+
         private void OnPipetteButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
             EventPipetteClicked?.Invoke(component as UIButton, buttons);
             UIView.Find("DefaultTooltip")?.Hide();
+        }
+        private void OnResetButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
+            EventResetClicked?.Invoke(component as UIButton, buttons);
+            resetButton.RefreshTooltip();
         }
     }
 }

@@ -14,8 +14,9 @@ namespace NetworkSkins.GUI.UIFastList
         public bool IsBlacklisted;
         public bool IsDefault;
         public ItemType Type;
+        public Color LightColor;
 
-        public ListItem(string id, string displayName, Texture2D thumbnail, bool isFavourite, bool isBlacklisted, bool isDefault, ItemType type) {
+        public ListItem(string id, string displayName, Texture2D thumbnail, bool isFavourite, bool isBlacklisted, bool isDefault, ItemType type, Color color) {
             ID = id;
             DisplayName = displayName;
             Thumbnail = thumbnail;
@@ -23,6 +24,7 @@ namespace NetworkSkins.GUI.UIFastList
             IsBlacklisted = isBlacklisted;
             IsDefault = isDefault;
             Type = type;
+            LightColor = color;
         }
     }
 }

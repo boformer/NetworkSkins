@@ -12,7 +12,7 @@ namespace NetworkSkins.Persistence
     {
         public bool SaveActiveSelectionGlobally { get; set; } = true;
         public bool HideBlacklisted { get; set; } = false;
-        public bool DisplayAtSelected { get; set; } = false;
+        public bool DisplayAtSelected { get; set; } = true;
         public bool LanePositionLocked { get; set; } = false;
         public Vector2? ToolbarPosition { get; set; } = null;
         public List<string>[] Favourites { get; set; } = new List<string>[(int)ItemType.Count];

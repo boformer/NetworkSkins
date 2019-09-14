@@ -168,6 +168,7 @@ namespace NetworkSkins.GUI
             toolBar.ButtonBar.EventCatenaryClicked += OnCatenaryClicked;
             toolBar.ButtonBar.EventExtrasClicked += OnExtrasClicked;
             toolBar.ButtonBar.EventPipetteClicked += OnPipetteClicked;
+            toolBar.ButtonBar.EventResetClicked += OnResetClicked;
         }
 
         private void RegisterVisibilityEvents() {
@@ -188,6 +189,8 @@ namespace NetworkSkins.GUI
             toolBar.ButtonBar.EventColorClicked -= OnColorClicked;
             toolBar.ButtonBar.EventCatenaryClicked -= OnCatenaryClicked;
             toolBar.ButtonBar.EventExtrasClicked -= OnExtrasClicked;
+            toolBar.ButtonBar.EventPipetteClicked -= OnPipetteClicked;
+            toolBar.ButtonBar.EventResetClicked -= OnResetClicked;
         }
 
         private void UnregisterVisibilityEvents() {
@@ -340,8 +343,12 @@ namespace NetworkSkins.GUI
             RefreshZOrder();
         }
 
-        private void OnPipetteClicked(UIButton focusedButton, UIButton[] buttons) {
+        private void OnPipetteClicked(UIButton button, UIButton[] buttons) {
             ToolsModifierControl.SetTool<PipetteTool>();
+        }
+
+        private void OnResetClicked(UIButton button, UIButton[] buttons) {
+            NetworkSkinPanelController.OnReset();
         }
 
         private void CloseAll() {

@@ -91,6 +91,9 @@ namespace NetworkSkins
         public static string SettingsHovered =  "SettingsHovered";
         public static string SettingsFocused =  "SettingsFocused";
         public static string Swatch = "Swatch";
+        public static string Undo = "Undo";
+        public static string UndoPressed = "UndoPressed";
+        public static string UndoHovered = "UndoHovered";
 
         private UITextureAtlas UITextureAtlas { get; set; }
 
@@ -131,13 +134,15 @@ namespace NetworkSkins
             "Pipette",
             "PipettePressed",
             "PipetteHovered",
-            "PipetteFocused",
             "PipetteCursor",
             "Settings",
             "SettingsPressed",
             "SettingsHovered",
             "SettingsFocused",
-            "Swatch"
+            "Swatch",
+            "Undo",
+            "UndoPressed",
+            "UndoHovered"
         };
 
         public Resources() {

@@ -25,6 +25,7 @@ namespace NetworkSkins.GUI.UIFastList
         private UITextureSprite thumbnailSprite;
         private UILabel nameLabel;
         private UIPanel checkboxPanel;
+        private UIPanel lightColorPanel;
         private UICheckBox favouriteCheckbox;
         private UISprite checkedSprite;
         private UISprite uncheckedSprite;
@@ -75,7 +76,7 @@ namespace NetworkSkins.GUI.UIFastList
             backgroundSprite = "WhiteRect";
             CreateThumbnail();
             CreateLabel();
-            UIUtil.CreateSpace(5.0f, 30.0f, this);
+            CreateLightColorPanel();
             CreateCheckbox();
             UIUtil.CreateSpace(5.0f, 30.0f, this);
             eventMouseEnter += OnMouseEnterEvent;
@@ -102,18 +103,27 @@ namespace NetworkSkins.GUI.UIFastList
         private void CreateLabel() {
             nameLabel = AddUIComponent<UILabel>();
             nameLabel.autoSize = false;
-            nameLabel.size = new Vector2(253.0f, 30.0f);
+            nameLabel.size = new Vector2(255.0f, 30.0f);
             nameLabel.padding = new RectOffset(0, 0, 8, 0);
             nameLabel.textScale = 0.8f;
             nameLabel.font = UIUtil.Font;
         }
 
+        private void CreateLightColorPanel() {
+            UIPanel lightPanel = AddUIComponent<UIPanel>();
+            lightPanel.size = new Vector2(12.0f, 30.0f);
+            lightColorPanel = lightPanel.AddUIComponent<UIPanel>();
+            lightColorPanel.size = new Vector2(12.0f, 12.0f);
+            lightColorPanel.backgroundSprite = "PieChartWhiteFg";
+            lightColorPanel.relativePosition = new Vector2(0.0f, 9.0f);
+        }
+
         private void CreateCheckbox() {
             checkboxPanel = AddUIComponent<UIPanel>();
-            checkboxPanel.size = new Vector2(32.0f, 30.0f);
+            checkboxPanel.size = new Vector2(22.0f, 30.0f);
             favouriteCheckbox = checkboxPanel.AddUIComponent<UICheckBox>();
             favouriteCheckbox.size = new Vector2(22f, 22f);
-            favouriteCheckbox.relativePosition = new Vector3(9.0f, 4.0f);
+            favouriteCheckbox.relativePosition = new Vector3(0.0f, 4.0f);
             uncheckedSprite = favouriteCheckbox.AddUIComponent<UISprite>();
             uncheckedSprite.atlas = Resources.Atlas;
             uncheckedSprite.spriteName = Resources.StarOutline;
@@ -173,6 +183,7 @@ namespace NetworkSkins.GUI.UIFastList
             color = NetworkSkinPanelController.IsSelected(itemData.ID, itemData.Type) ? selectedColor : isRowOdd ? oddColor : evenColor;
             thumbnailSprite.texture = itemData.Thumbnail;
             nameLabel.text = itemData.DisplayName;
+            lightColorPanel.color = itemData.LightColor;
             favouriteCheckbox.isChecked = itemData.IsFavourite || IsBlacklisted();
             checkedSprite.spriteName = IsBlacklisted() ? Resources.Blacklisted : Resources.Star;
             uncheckedSprite.spriteName = IsBlacklisted() ? "" :  Resources.StarOutline;

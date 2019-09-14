@@ -11,10 +11,8 @@ namespace NetworkSkins.GUI
         private CheckboxPanel activeSelectionCheckbox;
         private CheckboxPanel hideBlacklistedCheckbox;
         private CheckboxPanel displayAtSelectedCheckbox;
-        private ButtonPanel resetButton;
 
         public override void OnDestroy() {
-            resetButton.EventButtonClicked -= OnResetClicked;
             activeSelectionCheckbox.EventCheckboxStateChanged -= OnActiveSelectionOptionChanged;
             hideBlacklistedCheckbox.EventCheckboxStateChanged -= OnHideBlacklistedOptionChanged;
             displayAtSelectedCheckbox.EventCheckboxStateChanged -= OnDisplayAtSelectedOptionChanged;
@@ -27,21 +25,8 @@ namespace NetworkSkins.GUI
             CreateActiveSelectionCheckbox();
             CreateHideBlacklistedCheckbox();
             CreateDisplayAtSelectedCheckbox();
-            CreateResetButton();
-            UIUtil.CreateSpace(1.0f, 5.0f, this);
+            UIUtil.CreateSpace(1.0f, 10.0f, this);
             autoFitChildrenHorizontally = true;
-        }
-        private void CreateResetButton() {
-            resetButton = AddUIComponent<ButtonPanel>();
-            resetButton.Build(PanelType.None, new Layout(new Vector2(width, 40.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 10));
-            resetButton.padding = new RectOffset(10, 0, 5, 0);
-            resetButton.SetAnchor(UIAnchorStyle.Left | UIAnchorStyle.CenterVertical);
-            resetButton.SetText(Translation.Instance.GetTranslation(TranslationID.BUTTON_RESET), Translation.Instance.GetTranslation(TranslationID.TOOLTIP_RESETCURRENT));
-            resetButton.EventButtonClicked += OnResetClicked;
-        }
-
-        private void OnResetClicked() {
-            NetworkSkinPanelController.OnReset();
         }
 
         private void CreateActiveSelectionCheckbox() {

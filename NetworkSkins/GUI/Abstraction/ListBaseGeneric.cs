@@ -124,7 +124,14 @@ namespace NetworkSkins.GUI.Abstraction
                 : Resources.DefaultIcon;
 
             ItemType type = UIUtil.PanelToItemType(PanelType);
-            return new ListItem(id, displayName, thumbnail, isFavourite, isBlacklisted, isDefault, type);
+
+            Color color = id == "#NONE#"
+                ? default
+                : item is ListPanelController<T>.SimpleItem si3
+                ? si3.Value.GetLightColor()
+                : default;
+
+            return new ListItem(id, displayName, thumbnail, isFavourite, isBlacklisted, isDefault, type, color);
         }
     }
 }

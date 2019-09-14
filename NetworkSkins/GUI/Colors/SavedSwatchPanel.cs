@@ -22,8 +22,8 @@ namespace NetworkSkins.GUI.Colors
         public override void Update() {
             base.Update();
             if (swatchButton.swatch == NetworkSkinPanelController.Color.SelectedColor) {
-                textField.textColor = selectedTextColor;
-            } else textField.textColor = Color.white;
+                textField.textColor = textField.hasFocus ? new Color32(255, 255, 255, 255) : selectedTextColor;
+            } else textField.textColor = new Color32(255, 255, 255, 255);
         }
 
         public override void OnDestroy() {
@@ -45,13 +45,14 @@ namespace NetworkSkins.GUI.Colors
             swatchButton.Build(savedSwatch.Color);
             textField = AddUIComponent<UITextField>();
             textField.normalBgSprite = "";
-            textField.hoveredBgSprite = "TextFieldPanelHovered";
-            textField.focusedBgSprite = "TextFieldPanel";
+            textField.hoveredBgSprite = "ButtonSmallHovered";
+            textField.focusedBgSprite = "ButtonSmallHovered";
             textField.size = new Vector2(187.0f, 19.0f);
             textField.font = UIUtil.Font;
-            textField.textScale = 0.8f;
+            textField.textScale = 1f;
+            textField.verticalAlignment = UIVerticalAlignment.Middle;
             textField.horizontalAlignment = UIHorizontalAlignment.Left;
-            textField.padding = new RectOffset(5, 0, 4, 1);
+            textField.padding = new RectOffset(5, 0, 3, 3);
             textField.builtinKeyNavigation = true;
             textField.isInteractive = true;
             textField.readOnly = false;

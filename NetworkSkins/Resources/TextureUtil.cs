@@ -1,5 +1,7 @@
 ﻿using ColossalFramework.UI;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 namespace NetworkSkins
@@ -59,6 +61,17 @@ namespace NetworkSkins
 
         public static Texture2D GetSpriteTexture(this UITextureAtlas atlas, string spriteName) {
             return atlas?.sprites?.Find(sprite => sprite?.name == spriteName)?.texture;
+        }
+
+        public static Color GetLightColor(this PrefabInfo prefab) {
+            if (prefab is PropInfo prop) {
+                for (int i = 0; i < prop.m_effects.Length; i++) {
+                    if (prop.m_effects[i].m_effect is LightEffect lightEffect) {
+                        return (Color)typeof(LightEffect).GetField("m_lightColor", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(lightEffect);
+                    }
+                }
+            }
+            return default;
         }
     }
 }

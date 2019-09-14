@@ -66,7 +66,7 @@ namespace NetworkSkins.GUI.Surfaces
             }
             var id = surfaceType == Surface.None ? "#NONE#" : Enum.GetName(typeof(Surface), surfaceType);
             var displayName = string.Concat(prefix, name);
-            return new ListItem(id, displayName, thumbnail, isFavourite, false, isDefault, ItemType.Surfaces);
+            return new ListItem(id, displayName, thumbnail, isFavourite, false, isDefault, ItemType.Surfaces, default(Color));
         }
     }
 }

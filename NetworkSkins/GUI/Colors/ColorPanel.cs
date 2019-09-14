@@ -281,16 +281,16 @@ namespace NetworkSkins.GUI.Colors
 
         private void OnTextSubmitted(UIComponent component, string value) {
             UITextField textField = component as UITextField;
-            Color32 color32 = currentColor;
+            Color32 color = currentColor;
             if (textField == redTextField) {
-                color32 = new Color32((byte)GetClampedFloat(value), color32.g, color32.b, 255);
+                color = new Color32((byte)GetClampedFloat(value), color.g, color.b, 255);
             } else if (textField == greenTextField) {
-                color32 = new Color32(color32.r, (byte)GetClampedFloat(value), color32.b, 255);
+                color = new Color32(color.r, (byte)GetClampedFloat(value), color.b, 255);
             } else if (textField == blueTextField) {
-                color32 = new Color32(color32.r, color32.g, (byte)GetClampedFloat(value), 255);
+                color = new Color32(color.r, color.g, (byte)GetClampedFloat(value), 255);
             }
 
-            UpdateColor(color32);
+            UpdateColor(color);
         }
 
         private void OnSwatchClicked(Color color, UIMouseEventParameter eventParam, UIComponent component) {
@@ -307,10 +307,11 @@ namespace NetworkSkins.GUI.Colors
 
         private void UpdateColor(Color value) {
             if(colorPicker != null) {
+                colorPicker.eventColorUpdated -= OnColorUpdated;
                 colorPicker.color = value;
-            } else {
-                OnColorUpdated(value);
+                colorPicker.eventColorUpdated += OnColorUpdated;
             }
+            OnColorUpdated(value);
         }
 
         private void OnColorUpdated(Color value) {

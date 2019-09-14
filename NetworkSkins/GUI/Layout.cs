@@ -12,15 +12,6 @@ namespace NetworkSkins.GUI
         public int Spacing { get; set; }
         public string BackgroundSprite { get; set; }
 
-        /// <summary>
-        /// Create a new layout data structure.
-        /// </summary>
-        /// <param name="size">When using Auto-Layout, specify the x dimension when layout direction is vertical, and the y dimension when layout direction is horizontal. Set the other to 0.0f</param>
-        /// <param name="autoLayout"></param>
-        /// <param name="autoLayoutDirection"></param>
-        /// <param name="autoLayoutStart"></param>
-        /// <param name="spacing"> This is used as spacing between the child components of the panel</param>
-        /// <param name="backgroundSprite">Optionally, specify a background sprite to use</param>
         public Layout(Vector2 size, bool autoLayout, LayoutDirection autoLayoutDirection, LayoutStart autoLayoutStart, int spacing, string backgroundSprite = "") {
             Size = size;
             AutoLayout = autoLayout;
