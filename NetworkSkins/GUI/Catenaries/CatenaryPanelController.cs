@@ -78,27 +78,27 @@ namespace NetworkSkins.GUI.Catenaries
         {
             var defaultCatenaries = new Dictionary<NetInfo, PropInfo>();
 
-            var groundCatenary = CatenaryUtils.GetDefaultCatenary(Prefab);
+            var groundCatenary = CatenaryUtils.GetDefaultNormalCatenary(Prefab);
             if (groundCatenary != null) defaultCatenaries[Prefab] = groundCatenary;
 
             var slopePrefab = NetUtils.GetSlopePrefab(Prefab);
             if (slopePrefab != null)
             {
-                var slopeCatenary = CatenaryUtils.GetDefaultCatenary(slopePrefab);
+                var slopeCatenary = CatenaryUtils.GetDefaultNormalCatenary(slopePrefab);
                 if (slopeCatenary != null) defaultCatenaries[slopePrefab] = slopeCatenary;
             }
 
             var elevatedPrefab = NetUtils.GetElevatedPrefab(Prefab);
             if (elevatedPrefab != null)
             {
-                var elevatedCatenary = CatenaryUtils.GetDefaultCatenary(elevatedPrefab);
+                var elevatedCatenary = CatenaryUtils.GetDefaultNormalCatenary(elevatedPrefab);
                 if (elevatedCatenary != null) defaultCatenaries[elevatedPrefab] = elevatedCatenary;
             }
 
             var bridgePrefab = NetUtils.GetBridgePrefab(Prefab);
             if (bridgePrefab != null)
             {
-                var bridgeCatenary = CatenaryUtils.GetDefaultCatenary(bridgePrefab);
+                var bridgeCatenary = CatenaryUtils.GetDefaultNormalCatenary(bridgePrefab);
                 if (bridgeCatenary != null) defaultCatenaries[bridgePrefab] = bridgeCatenary;
             }
 
@@ -107,7 +107,7 @@ namespace NetworkSkins.GUI.Catenaries
 
         private static bool IsSingleTrack(ICollection<PropInfo> defaultCatenaries)
         {
-            return defaultCatenaries.Any(CatenaryUtils.IsSingleRailCatenaryProp);
+            return defaultCatenaries.Any(CatenaryUtils.IsSingleRailNormalCatenaryProp);
         }
 
         private List<PropInfo> GetAvailableCatenaries(bool singleTrack)
@@ -120,14 +120,14 @@ namespace NetworkSkins.GUI.Catenaries
                 var prefab = PrefabCollection<PropInfo>.GetLoaded(prefabIndex);
                 if (singleTrack)
                 {
-                    if (CatenaryUtils.IsSingleRailCatenaryProp(prefab))
+                    if (CatenaryUtils.IsSingleRailNormalCatenaryProp(prefab) && CatenaryUtils.IsCatenaryPropVisibeInUI(prefab))
                     {
                         catenaries.Add(prefab);
                     }
                 }
                 else
                 {
-                    if (CatenaryUtils.IsDoubleRailCatenaryProp(prefab))
+                    if (CatenaryUtils.IsDoubleRailNormalCatenaryProp(prefab) && CatenaryUtils.IsCatenaryPropVisibeInUI(prefab))
                     {
                         catenaries.Add(prefab);
                     }

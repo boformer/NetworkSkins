@@ -138,6 +138,53 @@ namespace NetworkSkins.Skins
             updater(prop);
         }
 
+        // Copies and updates a lane prop without affecting the original lane props of the network
+        // Lane prop is inserted right after the copied one.
+        public void CopyAndUpdateLaneProp(int laneIndex, int propIndex, Action<NetLaneProps.Prop> updater)
+        {
+            if (m_lanes.Length <= laneIndex)
+            {
+                Debug.LogError($"Invalid lane index {laneIndex} for prefab {Prefab}!");
+                return;
+            }
+
+            var lane = m_lanes[laneIndex];
+            if (lane == null || lane.m_laneProps == null || lane.m_laneProps.m_props == null)
+            {
+                Debug.LogError($"Lane {laneIndex} is null or doesn't have any props!");
+                return;
+            }
+
+            if (lane.m_laneProps.m_props.Length <= propIndex)
+            {
+                Debug.LogError($"Invalid prop index {propIndex} for prefab {Prefab}, lane {laneIndex}!");
+                return;
+            }
+
+            // duplicate the lane so we do not affect the original prefab
+            if (!(lane is NetworkSkinLane))
+            {
+                lane = new NetworkSkinLane(lane);
+                m_lanes[laneIndex] = lane;
+            }
+
+            var originalProp = lane.m_laneProps.m_props[propIndex];
+            if (originalProp == null)
+            {
+                Debug.LogError($"Prop {propIndex} is null for prefab {Prefab}, lane {laneIndex}!");
+                return;
+            }
+
+            var prop = new NetLaneProps.Prop();
+            CopyProperties(prop, originalProp);
+
+            updater(prop);
+
+            var props = new List<NetLaneProps.Prop>(lane.m_laneProps.m_props);
+            props.Insert(propIndex + 1, prop);
+            lane.m_laneProps.m_props = props.ToArray();
+        }
+
         public void RemoveLaneProp(int laneIndex, int propIndex)
         {
             if (m_lanes.Length <= laneIndex)

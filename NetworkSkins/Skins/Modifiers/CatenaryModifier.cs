@@ -4,13 +4,40 @@ using NetworkSkins.Skins.Serialization;
 
 namespace NetworkSkins.Skins.Modifiers
 {
+    // segmentOffset 
+    // start: -1
+    // middle: 0
+    // end: 1
+    // Inverted flag set on some props
+
+    // Ronyx tracks:
+    // Catenaries on second lane
+    // endFlagsForbidden: End - for non-end catenaries (1)
+    // startFlagsForbidden: End
+
+    // startFlagsRequired: End (-1)
+    // rotated by 180
+
+
+    // single powerline positions
+
+    // offset -1
+    // position 2 | -0.15 | 0
+
+    // offset 0
+    // position 2 | -0.15 | 0
+
+    // offset 1
+    // position 2 | -0.15 | 0
     public class CatenaryModifier : NetworkSkinModifier
     {
         public readonly PropInfo Catenary;
+        private readonly PropInfo _endCatenary;
 
         public CatenaryModifier(PropInfo catenary) : base(NetworkSkinModifierType.Catenary)
         {
             Catenary = catenary;
+            _endCatenary = CatenaryUtils.GetEndCatenary(catenary);
         }
 
         public override void Apply(NetworkSkin skin)
@@ -30,24 +57,119 @@ namespace NetworkSkins.Skins.Modifiers
         {
             if (skin.m_lanes == null) return;
 
+            // TODO implement tunnel cats
+            //var tunnelCatenary = CatenaryUtils.GetEndCatenary(Catenary); 
+
             for (var l = 0; l < skin.m_lanes.Length; l++)
             {
                 if (skin.m_lanes[l]?.m_laneProps?.m_props == null) continue;
 
                 for (var p = skin.m_lanes[l].m_laneProps.m_props.Length - 1; p >= 0; p--)
                 {
-                    var finalProp = skin.m_lanes[l].m_laneProps.m_props[p]?.m_finalProp;
-                    if (CatenaryUtils.IsCatenaryProp(finalProp))
+                    var laneProp = skin.m_lanes[l].m_laneProps.m_props[p];
+                    if(laneProp != null && (CatenaryUtils.IsNormalCatenaryProp(laneProp.m_finalProp) || CatenaryUtils.IsEndCatenaryProp(laneProp.m_finalProp)))
                     {
-                        skin.UpdateLaneProp(l, p, laneProp =>
+                        if (Catenary == _endCatenary)
                         {
-                            laneProp.m_prop = Catenary;
-                            laneProp.m_finalProp = Catenary;
-                            CatenaryUtils.CorrectCatenaryPropAngle(laneProp);
-                        });
+                            ReplaceWithNormalCatenary(skin, l, p);
+                        }
+                        else
+                        {
+                            // Start node catenary
+                            if (laneProp.m_segmentOffset == -1f)
+                            {
+                                // Start-of-track node
+                                if ((laneProp.m_startFlagsRequired & NetNode.Flags.End) != 0)
+                                {
+                                    ReplaceWithEndCatenary(skin, l, p);
+                                }
+                                // Mid-track node
+                                else if ((laneProp.m_startFlagsForbidden & NetNode.Flags.End) != 0)
+                                {
+                                    ReplaceWithNormalCatenary(skin, l, p);
+                                }
+                                // Vanilla rail: Create separate lane prop for start-of-track
+                                else
+                                {
+                                    skin.CopyAndUpdateLaneProp(l, p, laneProp2 =>
+                                    {
+                                        laneProp2.m_prop = _endCatenary;
+                                        laneProp2.m_finalProp = _endCatenary;
+                                        laneProp2.m_startFlagsRequired |= NetNode.Flags.End;
+                                        CatenaryUtils.CorrectCatenaryPropAngleAndPosition(laneProp2);
+                                    });
+                                    skin.UpdateLaneProp(l, p, laneProp2 =>
+                                    {
+                                        laneProp2.m_prop = Catenary;
+                                        laneProp2.m_finalProp = Catenary;
+                                        laneProp2.m_startFlagsForbidden |= NetNode.Flags.End;
+                                        CatenaryUtils.CorrectCatenaryPropAngleAndPosition(laneProp2);
+                                    });
+                                }
+                            }
+
+                            // End node catenary
+                            else if (laneProp.m_segmentOffset == 1f)
+                            {
+                                // End-of-track node
+                                if ((laneProp.m_endFlagsRequired & NetNode.Flags.End) != 0)
+                                {
+                                    ReplaceWithEndCatenary(skin, l, p);
+                                }
+                                // Mid-track node
+                                else if ((laneProp.m_endFlagsForbidden & NetNode.Flags.End) != 0)
+                                {
+                                    ReplaceWithNormalCatenary(skin, l, p);
+                                }
+                                // Vanilla rail: Create separate lane prop for end-of-track
+                                else
+                                {
+                                    skin.CopyAndUpdateLaneProp(l, p, laneProp2 =>
+                                    {
+                                        laneProp2.m_prop = _endCatenary;
+                                        laneProp2.m_finalProp = _endCatenary;
+                                        laneProp2.m_endFlagsRequired |= NetNode.Flags.End;
+                                        CatenaryUtils.CorrectCatenaryPropAngleAndPosition(laneProp2);
+                                    });
+                                    skin.UpdateLaneProp(l, p, laneProp2 =>
+                                    {
+                                        laneProp2.m_prop = Catenary;
+                                        laneProp2.m_finalProp = Catenary;
+                                        laneProp2.m_endFlagsForbidden |= NetNode.Flags.End;
+                                        CatenaryUtils.CorrectCatenaryPropAngleAndPosition(laneProp2);
+                                    });
+                                }
+                            }
+
+                            // Mid-segment catenary
+                            else
+                            {
+                                ReplaceWithNormalCatenary(skin, l, p);
+                            }
+                        }
                     }
                 }
             }
+        }
+
+        private void ReplaceWithNormalCatenary(NetworkSkin skin, int l, int p)
+        {
+            skin.UpdateLaneProp(l, p, laneProp2 =>
+            {
+                laneProp2.m_prop = Catenary;
+                laneProp2.m_finalProp = Catenary;
+                CatenaryUtils.CorrectCatenaryPropAngleAndPosition(laneProp2);
+            });
+        }
+
+        private void ReplaceWithEndCatenary(NetworkSkin skin, int l, int p)
+        {
+            skin.UpdateLaneProp(l, p, laneProp2 =>
+            {
+                laneProp2.m_prop = _endCatenary;
+                laneProp2.m_finalProp = _endCatenary;
+                CatenaryUtils.CorrectCatenaryPropAngleAndPosition(laneProp2);
+            });
         }
 
         private static void RemoveWireSegments(NetworkSkin skin)
@@ -75,7 +197,7 @@ namespace NetworkSkins.Skins.Modifiers
                 for (var p = skin.m_lanes[l].m_laneProps.m_props.Length - 1; p >= 0; p--)
                 {
                     var finalProp = skin.m_lanes[l].m_laneProps.m_props[p]?.m_finalProp;
-                    if (CatenaryUtils.IsCatenaryProp(finalProp))
+                    if (CatenaryUtils.IsNormalCatenaryProp(finalProp) || CatenaryUtils.IsEndCatenaryProp(finalProp))
                     {
                         skin.RemoveLaneProp(l, p);
                     }
