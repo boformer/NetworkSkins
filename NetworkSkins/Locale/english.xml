@@ -10,7 +10,7 @@
     <Translation ID="LABEL_RIGHTLANE" String="Right Lane" />
     <Translation ID="LABEL_PAVEMENT" String="Pavement" />
     <Translation ID="LABEL_GRAVEL" String="Gravel" />
-    <Translation ID="LABEL_RUINED" String="Ruined" />
+    <Translation ID="LABEL_RUINED" String="Dirt" />
     <Translation ID="LABEL_ELEVATED" String="Elevated" />
     <Translation ID="LABEL_ELEVATEDMIDDLE" String="Elevated Middle" />
     <Translation ID="LABEL_BRIDGE" String="Bridge" />

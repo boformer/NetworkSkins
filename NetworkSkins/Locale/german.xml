@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Language UniqueName="de" ReadableName="Deutsch" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2009/XMLSchema/XMLSchema.xsd">
+  <Translations>
+    <Translation ID="MOD_DESCRIPTION" String="Ändere das Aussehen von Straßen, Eisenbahnschienen und anderen Netzwerken" />
+    <Translation ID="LABEL_NONE" String="Keine" />
+    <Translation ID="LABEL_DEFAULT" String="Standard" />
+    <Translation ID="LABEL_SEARCH" String="Suche" />
+    <Translation ID="LABEL_LEFTLANE" String="Linke Spur" />
+    <Translation ID="LABEL_MIDDLELANE" String="Mittlere Spur" />
+    <Translation ID="LABEL_RIGHTLANE" String="Rechte Spur" />
+    <Translation ID="LABEL_PAVEMENT" String="Asphalt" />
+    <Translation ID="LABEL_GRAVEL" String="Kies" />
+    <Translation ID="LABEL_RUINED" String="Erde" />
+    <Translation ID="LABEL_ELEVATED" String="Erhöht" />
+    <Translation ID="LABEL_ELEVATEDMIDDLE" String="Erhöht Mitte" />
+    <Translation ID="LABEL_BRIDGE" String="Brücke" />
+    <Translation ID="LABEL_BRIDGEMIDDLE" String="Brücke Mitte" />
+    <Translation ID="LABEL_DISTANCE" String="Abstand" />
+    <Translation ID="LABEL_RED" String="R" />
+    <Translation ID="LABEL_GREEN" String="G" />
+    <Translation ID="LABEL_BLUE" String="B" />
+    <Translation ID="LABEL_GLOBAL_SELECTION_DATA" String="Aktive Einstellungen global speichern" />
+    <Translation ID="LABEL_HIDEBLACKLISTED" String="Elemente auf der Blacklist verstecken" />
+    <Translation ID="LABEL_DISPLAYATSELECTED" String="Automatisch zum selektierten Element scrollen" />
+    <Translation ID="LABEL_NEW_SWATCH" String="Neue Farbe" />
+    <Translation ID="TOOLTIP_HIDEBLACKLISTED" String="Wenn du diese Option aktivierst, werden Elemente auf der Blacklist in den Listen versteckt" />
+    <Translation ID="TOOLTIP_GLOBAL_SELECTION_DATA" String="Wenn du diese Option aktivierst, wird der zuletzt genutzte Skin global gespeichert, ansonsten nur im Spielstand der jeweiligen Stadt" />
+    <Translation ID="TOOLTIP_DISPLAYATSELECTED" String="Aktiviere diese Option, um automatisch zum selektierten Element zu scrollen, wenn du eine Auswahlliste öffnest" />
+    <Translation ID="TOOLTIP_TREES" String="Bäume" />
+    <Translation ID="TOOLTIP_LIGHTS" String="Beleuchtung" />
+    <Translation ID="TOOLTIP_SURFACE" String="Belag" />
+    <Translation ID="TOOLTIP_PILLARS" String="Brückenpfeiler" />
+    <Translation ID="TOOLTIP_CATENARY" String="Oberleitung" />
+    <Translation ID="TOOLTIP_COLOR" String="Farbe" />
+    <Translation ID="TOOLTIP_SETTINGS" String="Einstellungen" />
+    <Translation ID="TOOLTIP_PIPETTE" String="Pipette&#10;Klicke auf ein Segment, um dessen Skin zu kopieren und das Netzwerk auszuwählen" />
+    <Translation ID="TOOLTIP_LOCK" String="Aktiviere das Schloss, um alle Spuren gleichzeitig zu bearbeiten" />
+    <Translation ID="TOOLTIP_ADDFAVOURITE_ADDBLACKLIST" String="Linksklick: Zu den Favoriten hinzufügen, Rechtsklick: Zur Blacklist hinufügen" />
+    <Translation ID="TOOLTIP_REMOVEFAVOURITE" String="Linksklick: Von den Favoriten entfernen, Rechtsklick: Zur Blacklist hinufügen" />
+    <Translation ID="TOOLTIP_REMOVEBLACKLIST" String="Linksklick: Zu den Favoriten hinzufügen, Rechtsklick: Von der Blacklist entfernen" />
+    <Translation ID="TOOLTIP_RESETCURRENT" String="Alle Einstellungen für das momentan selektierte Netzwerk zurücksetzen" />
+    <Translation ID="TOOLTIP_BUTTON_SAVE_MAXREACHED" String="Du hast die maximale Zahl an gespeicherten Farben erreicht" />
+    <Translation ID="TOOLTIP_BUTTON_SAVE_COLOREXISTS" String="Die ausgewählte Farbe ist schon gespeichert" />
+    <Translation ID="TOOLTIP_BUTTON_SAVE" String="Ausgewählte Farbe zu den Favoriten hinzufügen" />
+    <Translation ID="BUTTON_RESET" String="Zurücksetzen" />
+    <Translation ID="BUTTON_SAVE" String="Speichern" />
+    <Translation ID="TOOLTIP_BUTTON_DELETE" String="Löschen" />
+  </Translations>
+</Language>
