@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Language UniqueName="nl" ReadableName="Nederlands" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2009/XMLSchema/XMLSchema.xsd">
+  <Translations>
+    <Translation ID="MOD_DESCRIPTION" String="Verander de visuele weergave van wegen, spoorlijnen en andere netwerken" />
+    <Translation ID="LABEL_NONE" String="Geen" />
+    <Translation ID="LABEL_DEFAULT" String="Standaard" />
+    <Translation ID="LABEL_SEARCH" String="Zoeken" />
+    <Translation ID="LABEL_LEFTLANE" String="Linker Rijbaan" />
+    <Translation ID="LABEL_MIDDLELANE" String="Middelste Rijbaan" />
+    <Translation ID="LABEL_RIGHTLANE" String="Rechter Rijbaan" />
+    <Translation ID="LABEL_PAVEMENT" String="Bestrating" />
+    <Translation ID="LABEL_GRAVEL" String="Grind" />
+    <Translation ID="LABEL_RUINED" String="Aarde" />
+    <Translation ID="LABEL_ELEVATED" String="Verhoogd" />
+    <Translation ID="LABEL_ELEVATEDMIDDLE" String="Verhoogd Midden" />
+    <Translation ID="LABEL_BRIDGE" String="Brug" />
+    <Translation ID="LABEL_BRIDGEMIDDLE" String="Brug Midden" />
+    <Translation ID="LABEL_DISTANCE" String="Afstand" />
+    <Translation ID="LABEL_RED" String="R" />
+    <Translation ID="LABEL_GREEN" String="G" />
+    <Translation ID="LABEL_BLUE" String="B" />
+    <Translation ID="LABEL_GLOBAL_SELECTION_DATA" String="Sla actieve selecties overkoepelend op" />
+    <Translation ID="LABEL_HIDEBLACKLISTED" String="Verberg items van de zwarte lijst" />
+    <Translation ID="LABEL_DISPLAYATSELECTED" String="Automatisch scrollen naar de selectie" />
+    <Translation ID="LABEL_NEW_SWATCH" String="Nieuwe kleur" />
+    <Translation ID="TOOLTIP_HIDEBLACKLISTED" String="Schakel deze optie in om items van de zwarte lijst te verbergen in de lijst" />
+    <Translation ID="TOOLTIP_GLOBAL_SELECTION_DATA" String="Schakel deze optie in om de mod overkoepelend in het hele spel te laten onthouden welke instellingen het laatst bij een skin zijn gekozen, in plaats van per opgeslagen stad" />
+    <Translation ID="TOOLTIP_DISPLAYATSELECTED" String="Schakel deze optie in om automatisch naar het huidig geselecteerde item te scrollen wanneer je een paneel opent" />
+    <Translation ID="TOOLTIP_TREES" String="Bomen" />
+    <Translation ID="TOOLTIP_LIGHTS" String="Verlichting" />
+    <Translation ID="TOOLTIP_SURFACE" String="Oppervlakte" />
+    <Translation ID="TOOLTIP_PILLARS" String="Palen" />
+    <Translation ID="TOOLTIP_CATENARY" String="Bovenleiding" />
+    <Translation ID="TOOLTIP_COLOR" String="Kleur" />
+    <Translation ID="TOOLTIP_SETTINGS" String="Instellingen" />
+    <Translation ID="TOOLTIP_PIPETTE" String="Pipet&#10;Klik op een segment om een kopie te maken van de skin en het netwerk te selecteren" />
+    <Translation ID="TOOLTIP_LOCK" String="Activeer de vergrendeling om alle rijbanen tegelijk te bewerken" />
+    <Translation ID="TOOLTIP_ADDFAVOURITE_ADDBLACKLIST" String="Links klikken om aan favorieten toe te voegen, rechts klikken om aan de zwarte lijst toe te voegen" />
+    <Translation ID="TOOLTIP_REMOVEFAVOURITE" String="Links klikken om uit favorieten te verwijderen, rechts klikken om aan de zwarte lijst toe te voegen" />
+    <Translation ID="TOOLTIP_REMOVEBLACKLIST" String="Links klikken om aan favorieten toe te voegen, rechts klikken om van de zwarte lijst te verwijderen" />
+    <Translation ID="TOOLTIP_RESETCURRENT" String="Alle instellingen voor huidig geselecteerd netwerk opnieuw instellen" />
+    <Translation ID="TOOLTIP_BUTTON_SAVE_MAXREACHED" String="Je hebt het maximale aantal opgeslagen kleuren bereikt" />
+    <Translation ID="TOOLTIP_BUTTON_SAVE_COLOREXISTS" String="De huidige geselecteerde kleur is al opgeslagen" />
+    <Translation ID="TOOLTIP_BUTTON_SAVE" String="Sla huidige kleur op als favoriet" />
+    <Translation ID="BUTTON_RESET" String="Opnieuw instellen" />
+    <Translation ID="BUTTON_SAVE" String="Opslaan" />
+    <Translation ID="TOOLTIP_BUTTON_DELETE" String="Verwijderen" />
+  </Translations>
+</Language>
