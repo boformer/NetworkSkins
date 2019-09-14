@@ -73,6 +73,7 @@ namespace NetworkSkins.GUI.UIFastList
 
         public override void Build(PanelType panelType, Layout layout) {
             base.Build(panelType, layout);
+            atlas = Resources.DefaultAtlas;
             backgroundSprite = "WhiteRect";
             CreateThumbnail();
             CreateLabel();
@@ -94,7 +95,7 @@ namespace NetworkSkins.GUI.UIFastList
             thumbnailPanel.size = new Vector2(33.0f, 30.0f);
             thumbnailPanel.backgroundSprite = "WhiteRect";
             thumbnailPanel.color = thumbnailBackgroundColor;
-            thumbnailPanel.atlas = NetworkSkinsMod.defaultAtlas;
+            thumbnailPanel.atlas = Resources.DefaultAtlas;
             thumbnailSprite = thumbnailPanel.AddUIComponent<UITextureSprite>();
             thumbnailSprite.size = new Vector2(31.0f, 28.0f);
             thumbnailSprite.relativePosition = new Vector2(1.0f, 1.0f);

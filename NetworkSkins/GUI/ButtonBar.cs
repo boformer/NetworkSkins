@@ -136,6 +136,7 @@ namespace NetworkSkins.GUI
 
             UIPanel panel = AddUIComponent<UIPanel>();
             panel.size = new Vector2(30.0f, 4.0f);
+            panel.atlas = Resources.DefaultAtlas;
             panel.backgroundSprite = "WhiteRect";
             panel.color = new Color32(53, 54, 54, 255);
 

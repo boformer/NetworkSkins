@@ -19,15 +19,7 @@ namespace NetworkSkins
             }
         }
 
-        private static UITextureAtlas _defaultAtlas;
-        public static UITextureAtlas DefaultAtlas {
-            get {
-                if (_defaultAtlas == null) {
-                    _defaultAtlas = NetworkSkinsMod.defaultAtlas;
-                }
-                return _defaultAtlas;
-            }
-        }
+        public static UITextureAtlas DefaultAtlas => NetworkSkinsMod.defaultAtlas;
 
         private static Texture2D _default;
         public static Texture2D DefaultIcon {
