@@ -148,6 +148,8 @@ namespace NetworkSkins.GUI
             _ignoreModifierEvents = false;
 
             UpdateActiveModifiers();
+
+            EventGUIDirty?.Invoke(Prefab);
         }
 
         public void SetPillarAndRefreshUI(Pillar pillar)
