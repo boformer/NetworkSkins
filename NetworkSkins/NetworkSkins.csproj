@@ -168,6 +168,15 @@
     <Compile Include="Skins\Modifiers\StreetLightModifier.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Locale\polish.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Locale\french.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Locale\spanish.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Locale\german.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

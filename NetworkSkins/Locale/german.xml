@@ -35,8 +35,8 @@
     <Translation ID="TOOLTIP_SETTINGS" String="Einstellungen" />
     <Translation ID="TOOLTIP_PIPETTE" String="Pipette&#10;Klicke auf ein Segment, um dessen Skin zu kopieren und das Netzwerk auszuwählen" />
     <Translation ID="TOOLTIP_LOCK" String="Aktiviere das Schloss, um alle Spuren gleichzeitig zu bearbeiten" />
-    <Translation ID="TOOLTIP_ADDFAVOURITE_ADDBLACKLIST" String="Linksklick: Zu den Favoriten hinzufügen, Rechtsklick: Zur Blacklist hinufügen" />
-    <Translation ID="TOOLTIP_REMOVEFAVOURITE" String="Linksklick: Von den Favoriten entfernen, Rechtsklick: Zur Blacklist hinufügen" />
+    <Translation ID="TOOLTIP_ADDFAVOURITE_ADDBLACKLIST" String="Linksklick: Zu den Favoriten hinzufügen, Rechtsklick: Zur Blacklist hinzufügen" />
+    <Translation ID="TOOLTIP_REMOVEFAVOURITE" String="Linksklick: Von den Favoriten entfernen, Rechtsklick: Zur Blacklist hinzufügen" />
     <Translation ID="TOOLTIP_REMOVEBLACKLIST" String="Linksklick: Zu den Favoriten hinzufügen, Rechtsklick: Von der Blacklist entfernen" />
     <Translation ID="TOOLTIP_RESETCURRENT" String="Alle Einstellungen für das momentan selektierte Netzwerk zurücksetzen" />
     <Translation ID="TOOLTIP_BUTTON_SAVE_MAXREACHED" String="Du hast die maximale Zahl an gespeicherten Farben erreicht" />

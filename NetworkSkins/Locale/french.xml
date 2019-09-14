@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Language UniqueName="fr" ReadableName="Français" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2009/XMLSchema/XMLSchema.xsd">
+  <Translations>
+    <Translation ID="MOD_DESCRIPTION" String="Modifier l'apparence des routes, voies ferrées et autres Networks" />
+    <Translation ID="LABEL_NONE" String="Aucun" />
+    <Translation ID="LABEL_DEFAULT" String="Par défaut" />
+    <Translation ID="LABEL_SEARCH" String="Rechercher" />
+    <Translation ID="LABEL_LEFTLANE" String="Voie de Gauche" />
+    <Translation ID="LABEL_MIDDLELANE" String="Voie du Centre" />
+    <Translation ID="LABEL_RIGHTLANE" String="Voie de Droite" />
+    <Translation ID="LABEL_PAVEMENT" String="Pavé" />
+    <Translation ID="LABEL_GRAVEL" String="Gravier" />
+    <Translation ID="LABEL_RUINED" String="Terre battue" />
+    <Translation ID="LABEL_ELEVATED" String="Élevé" />
+    <Translation ID="LABEL_ELEVATEDMIDDLE" String="Élevé central" />
+    <Translation ID="LABEL_BRIDGE" String="Pont" />
+    <Translation ID="LABEL_BRIDGEMIDDLE" String="Pont central" />
+    <Translation ID="LABEL_DISTANCE" String="Distance" />
+    <Translation ID="LABEL_RED" String="R" />
+    <Translation ID="LABEL_GREEN" String="G" />
+    <Translation ID="LABEL_BLUE" String="B" />
+    <Translation ID="LABEL_GLOBAL_SELECTION_DATA" String="Enregistrer globalement pour toutes les Sauvegardes" />
+    <Translation ID="LABEL_HIDEBLACKLISTED" String="Cacher les items désactivés" />
+    <Translation ID="LABEL_DISPLAYATSELECTED" String="Afficher l'item sélectionné automatiquement" />
+    <Translation ID="LABEL_NEW_SWATCH" String="Nouvelle couleur" />
+    <Translation ID="TOOLTIP_HIDEBLACKLISTED" String="Désactiver les items inutilisés permet de gagner du temps" />
+    <Translation ID="TOOLTIP_GLOBAL_SELECTION_DATA" String="Les paramètres serviront pour toutes les Sauvegardes plutôt que chaque Sauvegarde individuellement" />
+    <Translation ID="TOOLTIP_DISPLAYATSELECTED" String="Lorsqu'un panneau est ouvert, la sélection en cours sera automatiquement atteinte" />
+    <Translation ID="TOOLTIP_TREES" String="Arbres" />
+    <Translation ID="TOOLTIP_LIGHTS" String="Éclairage" />
+    <Translation ID="TOOLTIP_SURFACE" String="Surface" />
+    <Translation ID="TOOLTIP_PILLARS" String="Piliers" />
+    <Translation ID="TOOLTIP_CATENARY" String="Caténaires" />
+    <Translation ID="TOOLTIP_COLOR" String="Couleur" />
+    <Translation ID="TOOLTIP_SETTINGS" String="Paramètres" />
+    <Translation ID="TOOLTIP_PIPETTE" String="Pipette&#10;Cliquez sur un segment pour copier ses paramètres" />
+    <Translation ID="TOOLTIP_LOCK" String="Modifier toutes les Voies simultanément" />
+    <Translation ID="TOOLTIP_ADDFAVOURITE_ADDBLACKLIST" String="Clic GAUCHE pour Ajouter aux Favoris, Clic DROIT pour Désactiver" />
+    <Translation ID="TOOLTIP_REMOVEFAVOURITE" String="Clic GAUCHE pour Retirer des Favoris, Clic DROIT pour Désactiver" />
+    <Translation ID="TOOLTIP_REMOVEBLACKLIST" String="Clic GAUCHE pour Ajouter aux Favoris, Clic DROIT pour Activer" />
+    <Translation ID="TOOLTIP_RESETCURRENT" String="Rétablir les paramètres d'origine pour ce Network" />
+    <Translation ID="TOOLTIP_BUTTON_SAVE_MAXREACHED" String="Le nombre maximal de Favoris est atteint!" />
+    <Translation ID="TOOLTIP_BUTTON_SAVE_COLOREXISTS" String="Cette couleur est déjà en Favoris!" />
+    <Translation ID="TOOLTIP_BUTTON_SAVE" String="Enregistrer la couleur en Favoris" />
+    <Translation ID="BUTTON_RESET" String="Rétablir" />
+    <Translation ID="BUTTON_SAVE" String="Conserver" />
+    <Translation ID="TOOLTIP_BUTTON_DELETE" String="Supprimer" />
+  </Translations>
+</Language>
