@@ -50,29 +50,35 @@ namespace NetworkSkins.Skins
             Prefab = prefab ?? throw new ArgumentNullException(nameof(prefab));
             _modifiers = modifiers;
 
-            m_bridgePillarInfo = PillarUtils.GetDefaultBridgePillar(prefab);
-            m_bridgePillarInfo2 = PillarUtils.GetDefaultBridgePillar2(prefab);
-            m_bridgePillarInfo3 = PillarUtils.GetDefaultBridgePillar3(prefab);
-            m_bridgePillarInfos = PillarUtils.GetDefaultBridgePillars(prefab);
-            m_middlePillarInfo = PillarUtils.GetDefaultMiddlePillar(prefab);
-            
-            if (prefab.m_lanes != null)
+            Recalculate();
+        }
+
+        public void Recalculate()
+        {
+            m_bridgePillarInfo = PillarUtils.GetDefaultBridgePillar(Prefab);
+            m_bridgePillarInfo2 = PillarUtils.GetDefaultBridgePillar2(Prefab);
+            m_bridgePillarInfo3 = PillarUtils.GetDefaultBridgePillar3(Prefab);
+            m_bridgePillarInfos = PillarUtils.GetDefaultBridgePillars(Prefab);
+            m_middlePillarInfo = PillarUtils.GetDefaultMiddlePillar(Prefab);
+
+            DestroySkinnedNetLaneProps();
+            if (Prefab.m_lanes != null)
             {
-                m_lanes = new NetInfo.Lane[prefab.m_lanes.Length];
-                Array.Copy(prefab.m_lanes, m_lanes, m_lanes.Length);
+                m_lanes = new NetInfo.Lane[Prefab.m_lanes.Length];
+                Array.Copy(Prefab.m_lanes, m_lanes, m_lanes.Length);
             }
 
             m_hasWires = true;
-            if (prefab.m_segments != null)
+            if (Prefab.m_segments != null)
             {
-                m_segments = new NetInfo.Segment[prefab.m_segments.Length];
-                Array.Copy(prefab.m_segments, m_segments, m_segments.Length);
+                m_segments = new NetInfo.Segment[Prefab.m_segments.Length];
+                Array.Copy(Prefab.m_segments, m_segments, m_segments.Length);
             }
-            m_createPavement = prefab.m_createPavement;
-            m_createGravel = prefab.m_createGravel;
-            m_createRuining = prefab.m_createRuining;
-            m_clipTerrain = prefab.m_clipTerrain;
-            m_color = prefab.m_color;
+            m_createPavement = Prefab.m_createPavement;
+            m_createGravel = Prefab.m_createGravel;
+            m_createRuining = Prefab.m_createRuining;
+            m_clipTerrain = Prefab.m_clipTerrain;
+            m_color = Prefab.m_color;
 
             UpdateHasWires();
 
@@ -83,6 +89,11 @@ namespace NetworkSkins.Skins
         }
 
         public void Destroy()
+        {
+            DestroySkinnedNetLaneProps();
+        }
+
+        private void DestroySkinnedNetLaneProps()
         {
             if (m_lanes != null)
             {

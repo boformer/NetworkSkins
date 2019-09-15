@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using ColossalFramework.IO;
 using ColossalFramework.UI;
@@ -104,6 +103,25 @@ namespace NetworkSkins.Skins
         {
             _lightPropEnabler.OnLevelLoaded();
             _loadErrors?.MaybeShowErrors();
+        }
+
+        public void OnPostLevelLoaded()
+        {
+            // Fix for various mods which modify lane props in OnLevelLoaded, 
+            // long after we are doing it in OnPreUpdateData
+            // New American Traffic Lights - NYC/NJ Style
+            // New American Traffic Lights - Grey Style
+            // New American Traffic Lights - Vanilla Side
+            // New American Traffic Lights
+            // American Sign Replacer
+            // American Railroad Signal Replacer
+            // American Traffic Lights
+            // American RoadSigns v2.2.0
+            // ...
+            for (int i = 0; i < AppliedSkins.Count; i++)
+            {
+                AppliedSkins[i].Recalculate();
+            }
         }
 
         public void OnSaveData()
