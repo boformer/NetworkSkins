@@ -59,66 +59,70 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GUI\DistancePanel.cs" />
     <Compile Include="ModSingleton.cs" />
     <Compile Include="Skins\Modifiers\ThemeTextureModifier.cs" />
     <Compile Include="Skins\ThemeTextureManager.cs" />
+    <Compile Include="GUI\Colors\SavedSwatchPanel.cs" />
+    <Compile Include="GUI\Misc\ButtonPanel.cs" />
+    <Compile Include="GUI\Misc\CheckboxPanel.cs" />
+    <Compile Include="GUI\Misc\DistancePanel.cs" />
+    <Compile Include="Legacy\LegacyLightPropEnabler.cs" />
+    <Compile Include="Persistence\LegacySegmentData.cs" />
+    <Compile Include="Skins\Serialization\ModifierDataContainer.cs" />
+    <Compile Include="Tool\PipetteTool.cs" />
+    <Compile Include="GUI\SettingsPanel.cs" />
     <Compile Include="Net\Pillar.cs" />
     <Compile Include="Net\Surface.cs" />
     <Compile Include="Persistence\ActiveSelectionData.cs" />
-    <Compile Include="Controller\CatenaryFeatureController.cs" />
-    <Compile Include="Controller\ColorFeatureController.cs" />
-    <Compile Include="Controller\FeatureController.cs" />
-    <Compile Include="Controller\ItemListFeatureController.cs" />
-    <Compile Include="Controller\PillarFeatureController.cs" />
-    <Compile Include="Controller\StreetLightFeatureController.cs" />
-    <Compile Include="Controller\TerrainSurfaceFeatureController.cs" />
-    <Compile Include="Controller\TreeFeatureController.cs" />
+    <Compile Include="GUI\Catenaries\CatenaryPanelController.cs" />
+    <Compile Include="GUI\Colors\ColorPanelController.cs" />
+    <Compile Include="GUI\Abstraction\FeaturePanelController.cs" />
+    <Compile Include="GUI\Abstraction\ListPanelController.cs" />
+    <Compile Include="GUI\Pillars\PillarPanelController.cs" />
+    <Compile Include="GUI\Lights\StreetLightPanelController.cs" />
+    <Compile Include="GUI\Surfaces\TerrainSurfacePanelController.cs" />
+    <Compile Include="GUI\Trees\TreePanelController.cs" />
     <Compile Include="GUI\ButtonBar.cs" />
     <Compile Include="GUI\Abstraction\ListBaseGeneric.cs" />
     <Compile Include="GUI\Abstraction\ListPanelBase.cs" />
-    <Compile Include="GUI\Catenaries\CatenaryList.cs" />
     <Compile Include="GUI\Catenaries\CatenaryPanel.cs" />
-    <Compile Include="GUI\Color\ColorPanel.cs" />
+    <Compile Include="GUI\Colors\ColorPanel.cs" />
     <Compile Include="GUI\PanelType.cs" />
-    <Compile Include="GUI\Color\SwatchButton.cs" />
+    <Compile Include="GUI\Colors\SwatchButton.cs" />
     <Compile Include="GUI\UIUtil.cs" />
     <Compile Include="Net\NetTextureUtils.cs" />
     <Compile Include="Net\PillarType.cs" />
     <Compile Include="Net\TreeUtils.cs" />
     <Compile Include="Persistence\PersistenceService.cs" />
     <Compile Include="Persistence\PersistentData.cs" />
-    <Compile Include="GUI\Pillars\PillarList.cs" />
     <Compile Include="GUI\Pillars\PillarPanel.cs" />
     <Compile Include="Locale\TranslationID.cs" />
     <Compile Include="Net\SurfaceUtil.cs" />
     <Compile Include="Resources\Resources.cs" />
     <Compile Include="Resources\TextureUtil.cs" />
     <Compile Include="TranslationFramework\Language.cs" />
-    <Compile Include="GUI\Lights\LightList.cs" />
-    <Compile Include="GUI\Lights\LightPanel.cs" />
+    <Compile Include="GUI\Lights\StreetLightPanel.cs" />
     <Compile Include="GUI\Abstraction\ListBase.cs" />
     <Compile Include="GUI\UIFastList\ListItem.cs" />
     <Compile Include="GUI\Abstraction\ListPanelBaseGeneric.cs" />
     <Compile Include="GUI\UIFastList\ListRow.cs" />
     <Compile Include="GUI\Abstraction\PanelBase.cs" />
     <Compile Include="GUI\Layout.cs" />
-    <Compile Include="GUI\MainPanel.cs" />
+    <Compile Include="GUI\NetworkSkinPanel.cs" />
     <Compile Include="GUI\DragBar.cs" />
     <Compile Include="GUI\SearchBox.cs" />
-    <Compile Include="GUI\Surfaces\SurfaceList.cs" />
-    <Compile Include="GUI\Surfaces\SurfacePanel.cs" />
+    <Compile Include="GUI\Surfaces\TerrainSurfaceList.cs" />
+    <Compile Include="GUI\Surfaces\TerrainSurfacePanel.cs" />
     <Compile Include="GUI\ToolBar.cs" />
     <Compile Include="TranslationFramework\TranslatableAttribute.cs" />
     <Compile Include="TranslationFramework\Translation.cs" />
     <Compile Include="TranslationFramework\TranslationUtil.cs" />
-    <Compile Include="GUI\Trees\TreeList.cs" />
     <Compile Include="GUI\Trees\TreePanel.cs" />
     <Compile Include="GUI\UIFastList\UIFastList.cs" />
-    <Compile Include="Controller\SkinController.cs" />
+    <Compile Include="GUI\NetworkSkinPanelController.cs" />
     <Compile Include="Net\NetUtils.cs" />
     <Compile Include="Net\LanePosition.cs" />
-    <Compile Include="NetworkSkinsSerializableData.cs" />
+    <Compile Include="Persistence\NetworkSkinManagerData.cs" />
     <Compile Include="Net\CatenaryUtils.cs" />
     <Compile Include="Net\PillarUtils.cs" />
     <Compile Include="Net\StreetLightUtils.cs" />
@@ -159,7 +163,6 @@
     <Compile Include="Skins\Modifiers\TerrainSurfaceModifier.cs" />
     <Compile Include="Skins\NetworkSkinManager.cs" />
     <Compile Include="Skins\NetworkSkin.cs" />
-    <Compile Include="NetworkSkinsLoading.cs" />
     <Compile Include="NetworkSkinsMod.cs" />
     <Compile Include="Patches\NetManager\NetManagerReleaseSegmentImplementationPatch.cs" />
     <Compile Include="Patches\NetManager\NetManagerCreateSegmentPatch.cs" />
@@ -169,6 +172,28 @@
     <Compile Include="Skins\Modifiers\StreetLightModifier.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Locale\chinese.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Locale\portuguese.xml" />
+    <Content Include="Locale\russian.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Locale\polish.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Locale\french.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Locale\dutch.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Locale\spanish.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Locale\german.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Locale\english.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -180,6 +205,12 @@
     <Content Include="Patches\NetSegment\NetSegmentCalculateGroupDataPatch.txt" />
     <Content Include="Patches\NetSegment\NetSegmentPopulateGroupDataPatch.txt" />
     <Content Include="Patches\NetSegment\NetSegmentRenderInstancePatch.txt" />
+    <EmbeddedResource Include="Resources\Undo.png" />
+    <EmbeddedResource Include="Resources\UndoHovered.png" />
+    <EmbeddedResource Include="Resources\UndoPressed.png" />
+    <EmbeddedResource Include="Resources\PipetteCursor.png" />
+    <EmbeddedResource Include="Resources\Blacklisted.png" />
+    <EmbeddedResource Include="Resources\Locked.png" />
     <EmbeddedResource Include="Resources\Swatch.png" />
     <EmbeddedResource Include="Resources\Catenary.png" />
     <EmbeddedResource Include="Resources\CatenaryFocused.png" />
@@ -189,17 +220,13 @@
     <EmbeddedResource Include="Resources\ColorFocused.png" />
     <EmbeddedResource Include="Resources\ColorHovered.png" />
     <EmbeddedResource Include="Resources\ColorPressed.png" />
-    <EmbeddedResource Include="Resources\Eyedropper.png" />
-    <EmbeddedResource Include="Resources\EyedropperFocused.png" />
-    <EmbeddedResource Include="Resources\EyedropperHovered.png" />
-    <EmbeddedResource Include="Resources\EyedropperPressed.png" />
+    <EmbeddedResource Include="Resources\Pipette.png" />
+    <EmbeddedResource Include="Resources\PipetteHovered.png" />
+    <EmbeddedResource Include="Resources\PipettePressed.png" />
     <EmbeddedResource Include="Resources\Light.png" />
     <EmbeddedResource Include="Resources\LightFocused.png" />
     <EmbeddedResource Include="Resources\LightHovered.png" />
     <EmbeddedResource Include="Resources\LightPressed.png" />
-    <EmbeddedResource Include="Resources\Locked.png" />
-    <EmbeddedResource Include="Resources\LockedHovered.png" />
-    <EmbeddedResource Include="Resources\LockedPressed.png" />
     <EmbeddedResource Include="Resources\Pillar.png" />
     <EmbeddedResource Include="Resources\PillarFocused.png" />
     <EmbeddedResource Include="Resources\PillarHovered.png" />

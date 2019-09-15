@@ -1,4 +1,5 @@
 ﻿using ColossalFramework.IO;
+using NetworkSkins.Net;
 using NetworkSkins.Skins.Serialization;
 
 namespace NetworkSkins.Skins.Modifiers
@@ -72,7 +73,7 @@ namespace NetworkSkins.Skins.Modifiers
                 return true;
             }
 
-            if (obj.GetType() != this.GetType())
+            if (obj.GetType() != GetType())
             {
                 return false;
             }

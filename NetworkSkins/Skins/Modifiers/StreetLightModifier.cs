@@ -34,6 +34,7 @@ namespace NetworkSkins.Skins.Modifiers
                             laneProp.m_prop = StreetLight;
                             laneProp.m_finalProp = StreetLight;
                             laneProp.m_repeatDistance = RepeatDistance;
+                            StreetLightUtils.CorrectStreetLightPropAngleAndPosition(laneProp, skin.Prefab.m_halfWidth, skin.m_lanes[l].m_position);
                         });
                     }
                 }
@@ -74,7 +75,7 @@ namespace NetworkSkins.Skins.Modifiers
                 return true;
             }
 
-            if (obj.GetType() != this.GetType())
+            if (obj.GetType() != GetType())
             {
                 return false;
             }

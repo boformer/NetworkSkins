@@ -1,5 +1,5 @@
-﻿using System;
-using ColossalFramework.UI;
+﻿using ColossalFramework.UI;
+using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.Locale;
 using NetworkSkins.TranslationFramework;
 using UnityEngine;
@@ -29,6 +29,12 @@ namespace NetworkSkins.GUI
         public delegate void ExtrasButtonClickedEventHandler(UIButton focusedButton, UIButton[] buttons);
         public event ExtrasButtonClickedEventHandler EventExtrasClicked;
 
+        public delegate void PipetteButtonClickedEventHandler(UIButton focusedButton, UIButton[] buttons);
+        public event PipetteButtonClickedEventHandler EventPipetteClicked;
+
+        public delegate void ResetButtonClickedEventHandler(UIButton focusedButton, UIButton[] buttons);
+        public event ResetButtonClickedEventHandler EventResetClicked;
+
         public delegate void TreesButtonVisibilityChangedEventHandler(UIButton focusedButton, UIButton[] buttons, bool visible);
         public event TreesButtonVisibilityChangedEventHandler EventTreesVisibilityChanged;
 
@@ -47,8 +53,8 @@ namespace NetworkSkins.GUI
         public delegate void ColorButtonVisibilityChangedEventHandler(UIButton focusedButton, UIButton[] buttons, bool visible);
         public event ColorButtonVisibilityChangedEventHandler EventColorVisibilityChanged;
 
-        public delegate void ExtrasButtonVisibilityChangedEventHandler(UIButton focusedButton, UIButton[] buttons, bool visible);
-        public event ExtrasButtonVisibilityChangedEventHandler EventExtrasVisibilityChanged;
+        public delegate void SettingsButtonVisibilityChangedEventHandler(UIButton focusedButton, UIButton[] buttons, bool visible);
+        public event SettingsButtonVisibilityChangedEventHandler EventSettingsVisibilityChanged;
         
         private UIButton treesButton;
         private UIButton lightsButton;
@@ -56,26 +62,29 @@ namespace NetworkSkins.GUI
         private UIButton pillarsButton;
         private UIButton catenaryButton;
         private UIButton colorButton;
-        private UIButton extrasButton;
+        private UIButton settingsButton;
+        private UIButton pipetteButton;
+        private UIButton resetButton;
 
         private UIButton[] buttons;
 
-        public override void Awake() {
-            base.Awake();
-            SkinController.EventPrefabChanged += OnPrefabChanged;
-        }
-
         public override void OnDestroy() {
-            base.OnDestroy();
-            SkinController.EventPrefabChanged -= OnPrefabChanged;
-
             treesButton.eventClicked -= OnTreesButtonClicked;
             lightsButton.eventClicked -= OnLightsButtonClicked;
             surfacesButton.eventClicked -= OnSurfacesButtonClicked;
             pillarsButton.eventClicked -= OnPillarsButtonClicked;
             catenaryButton.eventClicked -= OnCatenaryButtonClicked;
             colorButton.eventClicked -= OnColorButtonClicked;
-            extrasButton.eventClicked -= OnExtrasButtonClicked;
+            settingsButton.eventClicked -= OnSettingsButtonClicked;
+            resetButton.eventClicked -= OnResetButtonClicked;
+            treesButton.eventVisibilityChanged -= OnTreesButtonVisibilityChanged;
+            lightsButton.eventVisibilityChanged -= OnLightsButtonVisibilityChanged;
+            surfacesButton.eventVisibilityChanged -= OnSurfacesButtonVisibilityChanged;
+            pillarsButton.eventVisibilityChanged -= OnPillarsButtonVisibilityChanged;
+            catenaryButton.eventVisibilityChanged -= OnCatenaryButtonVisibilityChanged;
+            colorButton.eventVisibilityChanged -= OnColorButtonVisibilityChanged;
+            settingsButton.eventVisibilityChanged -= OnSettingsButtonVisibilityChanged;
+            base.OnDestroy();
         }
 
         public override void Build(PanelType panelType, Layout layout) {
@@ -83,53 +92,60 @@ namespace NetworkSkins.GUI
             CreateButtons();
             UIPanel space = AddUIComponent<UIPanel>();
             space.size = new Vector2(width, 0.1f);
-            RefreshUI(null);
+            Refresh();
         }
 
         protected override void RefreshUI(NetInfo netInfo) {
-            treesButton.isVisible = SkinController.TreesEnabled;
-            lightsButton.isVisible = SkinController.StreetLight.Enabled;
-            surfacesButton.isVisible = SkinController.TerrainSurface.Enabled;
-            pillarsButton.isVisible = SkinController.PillarsEnabled;
-            catenaryButton.isVisible = SkinController.Catenary.Enabled;
-            colorButton.isVisible = SkinController.Color.Enabled;
-        }
-
-        private void OnPrefabChanged(NetInfo netInfo) {
-            RefreshUI(netInfo);
+            treesButton.isVisible = NetworkSkinPanelController.TreesEnabled;
+            lightsButton.isVisible = NetworkSkinPanelController.StreetLight.Enabled;
+            surfacesButton.isVisible = NetworkSkinPanelController.TerrainSurface.Enabled;
+            pillarsButton.isVisible = NetworkSkinPanelController.PillarsEnabled;
+            catenaryButton.isVisible = NetworkSkinPanelController.Catenary.Enabled;
+            colorButton.isVisible = NetworkSkinPanelController.Color.Enabled;
         }
 
         private void CreateButtons() {
-            Vector2 buttonSize = new Vector2(Layout.Size.x - Layout.Spacing * 2, size.x - Layout.Spacing * 2);
+            Vector2 buttonSize = new Vector2(Layout.Size.x - Layout.Spacing * 2, Layout.Size.x - Layout.Spacing * 2);
 
-            treesButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Tree, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_TREES));
-            treesButton.eventClicked += OnTreesButtonClicked;
-            treesButton.eventVisibilityChanged += OnTreesButtonVisibilityChanged;
-
-            lightsButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Light, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_LIGHTS));
-            lightsButton.eventClicked += OnLightsButtonClicked;
-            lightsButton.eventVisibilityChanged += OnLightsButtonVisibilityChanged;
-
-            surfacesButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Surface, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_SIDEWALKS));
+            surfacesButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Surface, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_SURFACE));
             surfacesButton.eventClicked += OnSurfacesButtonClicked;
             surfacesButton.eventVisibilityChanged += OnSurfacesButtonVisibilityChanged;
-
-            pillarsButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Pillar, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_PILLARS));
-            pillarsButton.eventClicked += OnPillarsButtonClicked;
-            pillarsButton.eventVisibilityChanged += OnPillarsButtonVisibilityChanged;
-
-            catenaryButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Catenary, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_CATENARY));
-            catenaryButton.eventClicked += OnCatenaryButtonClicked;
-            catenaryButton.eventVisibilityChanged += OnCatenaryButtonVisibilityChanged;
 
             colorButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Color, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_COLOR));
             colorButton.eventClicked += OnColorButtonClicked;
             colorButton.eventVisibilityChanged += OnColorButtonVisibilityChanged;
 
-            extrasButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Settings, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_EXTRAS));
-            extrasButton.textPadding = new RectOffset(0, 0, 0, 8);
-            extrasButton.eventClicked += OnExtrasButtonClicked;
-            extrasButton.eventVisibilityChanged += OnExtraButtonVisibilityChanged;
+            lightsButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Light, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_LIGHTS));
+            lightsButton.eventClicked += OnLightsButtonClicked;
+            lightsButton.eventVisibilityChanged += OnLightsButtonVisibilityChanged;
+
+            catenaryButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Catenary, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_CATENARY));
+            catenaryButton.eventClicked += OnCatenaryButtonClicked;
+            catenaryButton.eventVisibilityChanged += OnCatenaryButtonVisibilityChanged;
+
+            treesButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Tree, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_TREES));
+            treesButton.eventClicked += OnTreesButtonClicked;
+            treesButton.eventVisibilityChanged += OnTreesButtonVisibilityChanged;
+
+            pillarsButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Pillar, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_PILLARS));
+            pillarsButton.eventClicked += OnPillarsButtonClicked;
+            pillarsButton.eventVisibilityChanged += OnPillarsButtonVisibilityChanged;
+
+            resetButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Undo, atlas: Resources.Atlas, isFocusable: false, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_RESETCURRENT));
+            resetButton.eventClicked += OnResetButtonClicked;
+
+            UIPanel panel = AddUIComponent<UIPanel>();
+            panel.size = new Vector2(30.0f, 4.0f);
+            panel.atlas = Resources.DefaultAtlas;
+            panel.backgroundSprite = "WhiteRect";
+            panel.color = new Color32(53, 54, 54, 255);
+
+            settingsButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Settings, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_SETTINGS));
+            settingsButton.eventClicked += OnSettingsButtonClicked;
+            settingsButton.eventVisibilityChanged += OnSettingsButtonVisibilityChanged;
+
+            pipetteButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Pipette, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_PIPETTE));
+            pipetteButton.eventClicked += OnPipetteButtonClicked;
 
             CreateButtonArray();
         }
@@ -142,7 +158,9 @@ namespace NetworkSkins.GUI
                 pillarsButton,
                 catenaryButton,
                 colorButton,
-                extrasButton
+                settingsButton,
+                pipetteButton,
+                resetButton
             };
         }
 
@@ -170,36 +188,52 @@ namespace NetworkSkins.GUI
             EventColorVisibilityChanged?.Invoke(component as UIButton, buttons, value);
         }
 
-        private void OnExtraButtonVisibilityChanged(UIComponent component, bool value) {
-            EventExtrasVisibilityChanged?.Invoke(component as UIButton, buttons, value);
+        private void OnSettingsButtonVisibilityChanged(UIComponent component, bool value) {
+            EventSettingsVisibilityChanged?.Invoke(component as UIButton, buttons, value);
         }
 
         private void OnTreesButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
             EventTreesClicked?.Invoke(component as UIButton, buttons);
+            treesButton.RefreshTooltip();
         }
 
         private void OnLightsButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
             EventLightsClicked?.Invoke(component as UIButton, buttons);
+            lightsButton.RefreshTooltip();
         }
 
         private void OnSurfacesButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
             EventSurfacesClicked?.Invoke(component as UIButton, buttons);
+            surfacesButton.RefreshTooltip();
         }
 
         private void OnPillarsButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
             EventPillarsClicked?.Invoke(component as UIButton, buttons);
+            pillarsButton.RefreshTooltip();
         }
 
         private void OnCatenaryButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
             EventCatenaryClicked?.Invoke(component as UIButton, buttons);
+            catenaryButton.RefreshTooltip();
         }
 
         private void OnColorButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
             EventColorClicked?.Invoke(component as UIButton, buttons);
+            colorButton.RefreshTooltip();
         }
 
-        private void OnExtrasButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
+        private void OnSettingsButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
             EventExtrasClicked?.Invoke(component as UIButton, buttons);
+            settingsButton.RefreshTooltip();
+        }
+
+        private void OnPipetteButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
+            EventPipetteClicked?.Invoke(component as UIButton, buttons);
+            UIView.Find("DefaultTooltip")?.Hide();
+        }
+        private void OnResetButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
+            EventResetClicked?.Invoke(component as UIButton, buttons);
+            resetButton.RefreshTooltip();
         }
     }
 }

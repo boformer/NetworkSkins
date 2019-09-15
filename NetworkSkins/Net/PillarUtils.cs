@@ -8,9 +8,22 @@ namespace NetworkSkins.Net
 {
     public static class PillarUtils
     {
+        private const string MetroOverhaulPackageName = "816260433";
+
         public static bool SupportsPillars(NetInfo prefab, PillarType type)
         {
             var netAi = prefab.m_netAI;
+            if (netAi == null) return false;
+
+            // Disable pillar selection for MOM tracks, as it comes with its own pillar selector!
+            var netAiName = netAi.GetType().Name;
+            if (netAiName == "TrainTrackAIMetro" 
+                || netAiName == "TrainTrackBridgeAIMetro" 
+                || netAiName == "TrainTrackTunnelAIMetro")
+            {
+                return false;
+            }
+
             if (type == PillarType.Bridge)
             {
                 return netAi is RoadBridgeAI
@@ -66,6 +79,12 @@ namespace NetworkSkins.Net
                 uniquePillars.Add(pillar);
             }
 
+            // Get metro overhaul pillars
+            foreach (var pillar in GetMetroOverhaulPillars())
+            { 
+                uniquePillars.Add(pillar);
+            }
+            
             var pillars = new List<BuildingInfo>(uniquePillars);
 
             // Sort by name
@@ -89,14 +108,41 @@ namespace NetworkSkins.Net
                 // only accept buildings with a basic AI
                 if (prefab.m_buildingAI.GetType() != typeof(BuildingAI)) continue;
 
-                var asset = PackageManager.FindAssetByName(prefab.name);
+                var separatorIndex = prefab.name.IndexOf('.');
+                if (separatorIndex == -1) continue;
 
-                var crpPath = asset?.package?.packagePath;
+                string packageName = prefab.name.Substring(0, separatorIndex);
+                var package = PackageManager.GetPackage(packageName);
+                var crpPath = package?.packagePath;
                 if (crpPath == null) continue;
 
                 var pillarConfigPath = Path.Combine(Path.GetDirectoryName(crpPath), "Pillar.xml");
 
                 if (File.Exists(pillarConfigPath))
+                {
+                    pillars.Add(prefab);
+                }
+            }
+
+            return pillars;
+        }
+
+        public static List<BuildingInfo> GetMetroOverhaulPillars()
+        {
+            var pillars = new List<BuildingInfo>();
+
+            var prefabCount = PrefabCollection<BuildingInfo>.LoadedCount();
+
+            // support for custom pillars
+            for (uint prefabIndex = 0; prefabIndex < prefabCount; prefabIndex++)
+            {
+                var prefab = PrefabCollection<BuildingInfo>.GetLoaded(prefabIndex);
+                if (prefab == null) continue;
+
+                // only accept buildings with a basic AI
+                if (prefab.m_buildingAI.GetType() != typeof(BuildingAI)) continue;
+
+                if(prefab.name.StartsWith(MetroOverhaulPackageName))
                 {
                     pillars.Add(prefab);
                 }
@@ -257,6 +303,11 @@ namespace NetworkSkins.Net
             {
                 monorailTrackAi.m_middlePillarInfo = middlePillarInfo;
             }
+        }
+
+        public static string GetName(this PrefabInfo prefabInfo) {
+            string name = prefabInfo.GetUncheckedLocalizedTitle();
+            return name.Contains(".") ? name.Substring(name.IndexOf('.') + 1) : name;
         }
     }
 }

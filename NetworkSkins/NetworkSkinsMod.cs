@@ -1,4 +1,5 @@
-﻿using ColossalFramework.UI;
+﻿using ColossalFramework.Plugins;
+using ColossalFramework.UI;
 using Harmony;
 using ICities;
 using NetworkSkins.GUI;
@@ -6,6 +7,8 @@ using NetworkSkins.Locale;
 using NetworkSkins.Persistence;
 using NetworkSkins.Skins;
 using NetworkSkins.TranslationFramework;
+using System;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using static UnityEngine.Object;
 
@@ -15,17 +18,20 @@ namespace NetworkSkins
     {
         private const string HarmonyId = "boformer.NetworkSkins";
 
-        public string Name => "Network Skins";
+        public string Name => "Network Skins 2 Beta";
         public string Description => Translation.Instance.GetTranslation(TranslationID.MOD_DESCRIPTION);
         
         private HarmonyInstance harmony;
 
-        private MainPanel panel;
+        private NetworkSkinPanel panel;
         private GameObject skinControllerGameObject;
         private GameObject persistenceServiceGameObject;
 
+
         #region Lifecycle
-        private static bool InGame => LoadingManager.exists && LoadingManager.instance.m_loadingComplete;
+        public static bool InGame => (ToolManager.instance.m_properties.m_mode == ItemClass.Availability.Game);
+
+        public static UITextureAtlas defaultAtlas;
 
         public void OnEnabled()
         {
@@ -33,7 +39,7 @@ namespace NetworkSkins
 
             InstallHarmony();
 
-            if (InGame)
+            if (LoadingManager.exists && LoadingManager.instance.m_loadingComplete)
             {
                 Install();
             }
@@ -78,10 +84,9 @@ namespace NetworkSkins
                 Debug.Log("NetworkSkins Patching...");
 
 #if DEBUG
-                //HarmonyInstance.SELF_PATCHING = false;
                 HarmonyInstance.DEBUG = true;
 #endif
-                
+                HarmonyInstance.SELF_PATCHING = false;
                 harmony = HarmonyInstance.Create(HarmonyId);
                 harmony.PatchAll(GetType().Assembly);
             }
@@ -102,21 +107,22 @@ namespace NetworkSkins
         #region NetToolMonitor/GUI
         private void Install()
         {
-            return;
+            // try to get InGame atlas
+            defaultAtlas = InGame ? UIView.GetAView().defaultAtlas : UIView.library?.Get<OptionsMainPanel>("OptionsPanel")?.GetComponent<UIPanel>()?.atlas;
             persistenceServiceGameObject = new GameObject(nameof(PersistenceService));
-            skinControllerGameObject = new GameObject(nameof(SkinController));
+            skinControllerGameObject = new GameObject(nameof(NetworkSkinPanelController));
             persistenceServiceGameObject.transform.parent = NetworkSkinManager.instance.gameObject.transform;
             skinControllerGameObject.transform.parent = NetworkSkinManager.instance.gameObject.transform;
             PersistenceService.Instance = persistenceServiceGameObject.AddComponent<PersistenceService>();
-            SkinController.Instance = skinControllerGameObject.AddComponent<SkinController>();
-            SkinController.Instance.EventToolStateChanged += OnNetToolStateChanged;
+            NetworkSkinPanelController.Instance = skinControllerGameObject.AddComponent<NetworkSkinPanelController>();
+            NetworkSkinPanelController.Instance.EventToolStateChanged += OnNetToolStateChanged;
         }
 
         private void Uninstall()
         {
-            if (SkinController.Instance != null)
+            if (NetworkSkinPanelController.Instance != null)
             {
-                SkinController.Instance.EventToolStateChanged -= OnNetToolStateChanged;
+                NetworkSkinPanelController.Instance.EventToolStateChanged -= OnNetToolStateChanged;
                 if (skinControllerGameObject != null)
                 {
                     Destroy(skinControllerGameObject);
@@ -136,13 +142,15 @@ namespace NetworkSkins
                 Destroy(panel.gameObject);
                 panel = null;
             }
+
+            defaultAtlas = null;
         }
 
         private void OnNetToolStateChanged(bool isToolEnabled)
         {
             if (isToolEnabled)
             {
-                panel = UIView.GetAView().AddUIComponent(typeof(MainPanel)) as MainPanel;
+                panel = UIView.GetAView().AddUIComponent(typeof(NetworkSkinPanel)) as NetworkSkinPanel;
             }
             else
             {
@@ -154,5 +162,12 @@ namespace NetworkSkins
             }
         }
         #endregion
+
+        public static Type ResolveSerializedType(string type)
+        {
+            var assemblyName = typeof(NetworkSkinsMod).Assembly.GetName();
+            var fixedType = Regex.Replace(type, $@"{assemblyName.Name}, Version=\d+.\d+.\d+.\d+", $"{assemblyName.Name}, Version={assemblyName.Version}");
+            return Type.GetType(fixedType);
+        }
     }
 }

@@ -1,92 +1,41 @@
-﻿using ColossalFramework.UI;
+﻿using System;
+using ColossalFramework.UI;
+using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.Locale;
+using NetworkSkins.Net;
 using NetworkSkins.TranslationFramework;
-using System;
-using NetworkSkins.Skins.Modifiers;
 using UnityEngine;
 
-namespace NetworkSkins.GUI
+namespace NetworkSkins.GUI.UIFastList
 {
     public class ListRow : PanelBase, IUIFastListRow
     {
-        public delegate void SelectedChangedEventHandler(string itemID, bool selected);
-        public event SelectedChangedEventHandler EventSelectedChanged;
+        //public delegate void SelectedChangedEventHandler(string itemID, bool selected);
+        //public event SelectedChangedEventHandler EventSelectedChanged;
 
         public delegate void FavouriteChangedEventHandler(string itemID, bool favourite);
         public event FavouriteChangedEventHandler EventFavouriteChanged;
 
-        private static string[] enumNames = Enum.GetNames(typeof(Surface));
+        public delegate void BlacklistedChangedEventHandler(string itemID, bool blacklisted);
+        public event BlacklistedChangedEventHandler EventBlacklistedChanged;
+
+        private static readonly string[] enumNames = Enum.GetNames(typeof(Surface));
 
         private UIPanel thumbnailPanel;
-        private UITextureSprite thumbnailSprite;
+        private UISprite thumbnailSprite;
+        private UITextureSprite thumbnailSprite2;
         private UILabel nameLabel;
         private UIPanel checkboxPanel;
+        private UIPanel lightColorPanel;
         private UICheckBox favouriteCheckbox;
+        private UISprite checkedSprite;
+        private UISprite uncheckedSprite;
         private ListItem itemData;
         private Color32 thumbnailBackgroundColor = new Color32(131, 141, 145, 255);
         private Color32 evenColor = new Color32(67, 76, 80, 255); 
         private Color32 oddColor = new Color32(57, 67, 70, 255);
-        private Color32 hoverColor = new Color32(131, 141, 145, 255);
-        private Color32 selectedColor = PanelBase.FocusedColor;
+        private Color32 selectedColor = FocusedColor;
         private bool isRowOdd;
-
-        public override void Build(PanelType panelType, Layout layout) {
-            base.Build(panelType, layout);
-            backgroundSprite = "WhiteRect";
-            CreateThumbnail();
-            CreateLabel();
-            UIUtil.CreateSpace(5.0f, 30.0f, this);
-            CreateCheckbox();
-            UIUtil.CreateSpace(5.0f, 30.0f, this);
-            eventMouseEnter += OnMouseEnterEvent;
-            eventMouseLeave += OnMouseLeaveEvent;
-        }
-
-        public void UpdateColor(string itemID) {
-            if (itemData != null && itemData.ID == itemID) {
-                color = selectedColor;
-            } else {
-                color = isRowOdd ? oddColor : evenColor;
-            }
-        }
-
-        private void CreateThumbnail() {
-            thumbnailPanel = AddUIComponent<UIPanel>();
-            thumbnailPanel.size = new Vector2(33.0f, 30.0f);
-            thumbnailPanel.backgroundSprite = "WhiteRect";
-            thumbnailPanel.color = thumbnailBackgroundColor;
-            thumbnailSprite = thumbnailPanel.AddUIComponent<UITextureSprite>();
-            thumbnailSprite.size = new Vector2(31.0f, 28.0f);
-            thumbnailSprite.relativePosition = new Vector2(1.0f, 1.0f);
-        }
-
-        private void CreateLabel() {
-            nameLabel = AddUIComponent<UILabel>();
-            nameLabel.autoSize = false;
-            nameLabel.size = new Vector2(253.0f, 30.0f);
-            nameLabel.padding = new RectOffset(0, 0, 8, 0);
-            nameLabel.font = UIUtil.Font;
-        }
-
-        private void CreateCheckbox() {
-            checkboxPanel = AddUIComponent<UIPanel>();
-            checkboxPanel.size = new Vector2(32.0f, 30.0f);
-            favouriteCheckbox = checkboxPanel.AddUIComponent<UICheckBox>();
-            favouriteCheckbox.size = new Vector2(22f, 22f);
-            favouriteCheckbox.relativePosition = new Vector3(9.0f, 4.0f);
-            UISprite uncheckedSprite = favouriteCheckbox.AddUIComponent<UISprite>();
-            uncheckedSprite.atlas = Resources.Atlas;
-            uncheckedSprite.spriteName = Resources.StarOutline;
-            uncheckedSprite.size = favouriteCheckbox.size;
-            uncheckedSprite.relativePosition = Vector3.zero;
-            UISprite checkedSprite = uncheckedSprite.AddUIComponent<UISprite>();
-            checkedSprite.atlas = Resources.Atlas;
-            checkedSprite.spriteName = Resources.Star;
-            checkedSprite.size = favouriteCheckbox.size;
-            checkedSprite.relativePosition = Vector2.zero;
-            favouriteCheckbox.checkedBoxObject = checkedSprite;
-            favouriteCheckbox.eventCheckChanged += OnFavouriteCheckboxCheckChanged;
-        }
 
         public override void Awake() {
             base.Awake();
@@ -94,21 +43,25 @@ namespace NetworkSkins.GUI
         }
 
         public override void OnDestroy() {
-            base.OnDestroy();
-            if (favouriteCheckbox != null)
-                favouriteCheckbox.eventCheckChanged -= OnFavouriteCheckboxCheckChanged;
+            if (favouriteCheckbox != null) {
+                favouriteCheckbox.eventClicked -= OnFavouriteCheckboxMouseUp;
+            }
             eventMouseEnter -= OnMouseEnterEvent;
             eventMouseLeave -= OnMouseLeaveEvent;
+            EventFavouriteChanged = null;
+            //EventSelectedChanged = null;
+            EventBlacklistedChanged = null;
+            base.OnDestroy();
         }
 
         public void Select(bool isRowOdd) {
             color = selectedColor;
-            EventSelectedChanged?.Invoke(itemData.ID, true);
+            //EventSelectedChanged?.Invoke(itemData.ID, true);
         }
 
         public void Deselect(bool isRowOdd) {
             color = isRowOdd ? oddColor : evenColor;
-            EventSelectedChanged?.Invoke(itemData.ID, false);
+            //EventSelectedChanged?.Invoke(itemData.ID, false);
         }
 
         public void Display(object data, bool isRowOdd) {
@@ -119,46 +72,174 @@ namespace NetworkSkins.GUI
             }
         }
 
+        public override void Build(PanelType panelType, Layout layout) {
+            base.Build(panelType, layout);
+            atlas = Resources.DefaultAtlas;
+            backgroundSprite = "WhiteRect";
+            CreateThumbnail();
+            CreateLabel();
+            CreateLightColorPanel();
+            CreateCheckbox();
+            UIUtil.CreateSpace(5.0f, 30.0f, this);
+            eventMouseEnter += OnMouseEnterEvent;
+            eventMouseLeave += OnMouseLeaveEvent;
+        }
+
+        protected override void RefreshUI(NetInfo netInfo) {
+            if (itemData != null) {
+                color = NetworkSkinPanelController.IsSelected(itemData.ID, itemData.Type) ? selectedColor : isRowOdd ? oddColor : evenColor;
+            }
+        }
+
+        private void CreateThumbnail() {
+            thumbnailPanel = AddUIComponent<UIPanel>();
+            thumbnailPanel.size = new Vector2(33.0f, 30.0f);
+            thumbnailPanel.backgroundSprite = "WhiteRect";
+            thumbnailPanel.color = thumbnailBackgroundColor;
+            thumbnailPanel.atlas = Resources.DefaultAtlas;
+
+            thumbnailSprite = thumbnailPanel.AddUIComponent<UISprite>();
+            thumbnailSprite.size = new Vector2(31.0f, 28.0f);
+            thumbnailSprite.relativePosition = new Vector2(1.0f, 1.0f);
+
+            thumbnailSprite2 = thumbnailPanel.AddUIComponent<UITextureSprite>();
+            thumbnailSprite2.size = new Vector2(31.0f, 28.0f);
+            thumbnailSprite2.relativePosition = new Vector2(1.0f, 1.0f);
+        }
+
+        private void CreateLabel() {
+            nameLabel = AddUIComponent<UILabel>();
+            nameLabel.autoSize = false;
+            nameLabel.size = new Vector2(255.0f, 30.0f);
+            nameLabel.padding = new RectOffset(0, 0, 8, 0);
+            nameLabel.textScale = 0.8f;
+            nameLabel.font = UIUtil.Font;
+        }
+
+        private void CreateLightColorPanel() {
+            UIPanel lightPanel = AddUIComponent<UIPanel>();
+            lightPanel.size = new Vector2(12.0f, 30.0f);
+            lightColorPanel = lightPanel.AddUIComponent<UIPanel>();
+            lightColorPanel.size = new Vector2(12.0f, 12.0f);
+            lightColorPanel.atlas = Resources.DefaultAtlas;
+            lightColorPanel.backgroundSprite = "PieChartWhiteFg";
+            lightColorPanel.relativePosition = new Vector2(0.0f, 9.0f);
+        }
+
+        private void CreateCheckbox() {
+            checkboxPanel = AddUIComponent<UIPanel>();
+            checkboxPanel.size = new Vector2(22.0f, 30.0f);
+            favouriteCheckbox = checkboxPanel.AddUIComponent<UICheckBox>();
+            favouriteCheckbox.size = new Vector2(22f, 22f);
+            favouriteCheckbox.relativePosition = new Vector3(0.0f, 4.0f);
+            uncheckedSprite = favouriteCheckbox.AddUIComponent<UISprite>();
+            uncheckedSprite.atlas = Resources.Atlas;
+            uncheckedSprite.spriteName = Resources.StarOutline;
+            uncheckedSprite.size = favouriteCheckbox.size;
+            uncheckedSprite.relativePosition = Vector3.zero;
+            checkedSprite = uncheckedSprite.AddUIComponent<UISprite>();
+            checkedSprite.atlas = Resources.Atlas;
+            checkedSprite.spriteName = Resources.Star;
+            checkedSprite.size = favouriteCheckbox.size;
+            checkedSprite.relativePosition = Vector2.zero;
+            favouriteCheckbox.checkedBoxObject = checkedSprite;
+            favouriteCheckbox.eventMouseUp += OnFavouriteCheckboxMouseUp;
+        }
+
+        private void OnFavouriteCheckboxMouseUp(UIComponent component, UIMouseEventParameter eventParam) {
+            if (eventParam.buttons == UIMouseButton.Right) {
+                if (itemData.IsDefault) return;
+                bool blackListed = !itemData.IsBlacklisted;
+                itemData.IsBlacklisted = blackListed;
+                if (blackListed) {
+                    favouriteCheckbox.isChecked = true;
+                    checkedSprite.spriteName = Resources.Blacklisted;
+                    uncheckedSprite.spriteName = "";
+                    if (itemData.IsFavourite) {
+                        itemData.IsFavourite = false;
+                        EventFavouriteChanged?.Invoke(itemData.ID, false);
+                    }
+                } else {
+                    if (!itemData.IsFavourite) {
+                        favouriteCheckbox.isChecked = false;
+                    }
+                    uncheckedSprite.spriteName = Resources.StarOutline;
+                }
+                EventBlacklistedChanged?.Invoke(itemData.ID, blackListed);
+            } else if (eventParam.buttons == UIMouseButton.Left) {
+                bool favourite = !itemData.IsFavourite;
+                itemData.IsFavourite = favourite;
+                if (favourite) {
+                    favouriteCheckbox.isChecked = true;
+                    checkedSprite.spriteName = Resources.Star;
+                    uncheckedSprite.spriteName = Resources.StarOutline;
+                    if (itemData.IsBlacklisted) {
+                        itemData.IsBlacklisted = false;
+                        EventBlacklistedChanged?.Invoke(itemData.ID, false);
+                    }
+                } else {
+                    if (!itemData.IsBlacklisted) {
+                        favouriteCheckbox.isChecked = false;
+                    }
+                }
+                EventFavouriteChanged?.Invoke(itemData.ID, favourite);
+            }
+            UpdateCheckboxTooltip();
+        }
+
         private void DisplayItem(bool isRowOdd) {
-            color = SkinController.IsSelected(itemData.ID, itemData.Type) ? selectedColor : isRowOdd ? oddColor : evenColor;
-            thumbnailSprite.texture = itemData.Thumbnail;
+            color = NetworkSkinPanelController.IsSelected(itemData.ID, itemData.Type) ? selectedColor : isRowOdd ? oddColor : evenColor;
+            if(itemData.ThumbnailAtlas != null && itemData.ThumbnailSprite != null)
+            {
+                thumbnailSprite.isVisible = true;
+                thumbnailSprite2.isVisible = false;
+                thumbnailSprite.atlas = itemData.ThumbnailAtlas;
+                thumbnailSprite.spriteName = itemData.ThumbnailSprite;
+            } else
+            {
+                thumbnailSprite.isVisible = false;
+                thumbnailSprite2.isVisible = true;
+                thumbnailSprite2.texture = itemData.ThumbnailTexture;
+            }
+
             nameLabel.text = itemData.DisplayName;
-            favouriteCheckbox.isChecked = itemData.IsFavourite;
+            lightColorPanel.color = itemData.LightColor;
+            favouriteCheckbox.isChecked = itemData.IsFavourite || IsBlacklisted();
+            checkedSprite.spriteName = IsBlacklisted() ? Resources.Blacklisted : Resources.Star;
+            uncheckedSprite.spriteName = IsBlacklisted() ? "" :  Resources.StarOutline;
             favouriteCheckbox.isVisible = true;
             for (int i = 0; i < enumNames.Length; i++) {
                 if (itemData.ID == enumNames[i]) {
                     favouriteCheckbox.isVisible = false;
                 }
             }
+            if (itemData.ID == "#DEFAULT#" || itemData.ID == "#NONE#") favouriteCheckbox.isVisible = false;
             UpdateCheckboxTooltip();
+        }
+
+        private bool IsBlacklisted() {
+            return itemData.IsBlacklisted && !itemData.IsDefault;
         }
 
         private void UpdateCheckboxTooltip() {
             favouriteCheckbox.tooltip = itemData.IsFavourite
                             ? Translation.Instance.GetTranslation(TranslationID.TOOLTIP_REMOVEFAVOURITE)
-                            : Translation.Instance.GetTranslation(TranslationID.TOOLTIP_ADDFAVOURITE);
+                            : itemData.IsBlacklisted
+                            ? Translation.Instance.GetTranslation(TranslationID.TOOLTIP_REMOVEBLACKLIST)
+                            : Translation.Instance.GetTranslation(TranslationID.TOOLTIP_ADDFAVOURITE_ADDBLACKLIST);
             favouriteCheckbox.RefreshTooltip();
         }
 
         private void OnMouseLeaveEvent(UIComponent component, UIMouseEventParameter eventParam) {
             if (itemData != null) {
-                color = SkinController.IsSelected(itemData.ID, itemData.Type) ? selectedColor : isRowOdd ? oddColor : evenColor;
+                color = NetworkSkinPanelController.IsSelected(itemData.ID, itemData.Type) ? selectedColor : isRowOdd ? oddColor : evenColor;
             }
         }
 
         private void OnMouseEnterEvent(UIComponent component, UIMouseEventParameter eventParam) {
             if (itemData != null) {
-                if (!SkinController.IsSelected(itemData.ID, itemData.Type)) color = new Color32((byte)((int)oddColor.r + 25), (byte)(oddColor.g + (byte)25), (byte)(oddColor.b + (byte)25), 255);
+                if (!NetworkSkinPanelController.IsSelected(itemData.ID, itemData.Type)) color = new Color32((byte)(oddColor.r + 25), (byte)(oddColor.g + 25), (byte)(oddColor.b + 25), 255);
             }
-        }
-
-        private void OnFavouriteCheckboxCheckChanged(UIComponent component, bool value) {
-            itemData.IsFavourite = value;
-            UpdateCheckboxTooltip();
-            EventFavouriteChanged?.Invoke(itemData.ID, value);
-        }
-
-        protected override void RefreshUI(NetInfo netInfo) {
         }
     }
 }

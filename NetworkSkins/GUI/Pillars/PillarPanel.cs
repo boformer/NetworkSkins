@@ -1,53 +1,57 @@
-﻿using NetworkSkins.Net;
-using System.Linq;
+﻿using System.Linq;
+using NetworkSkins.GUI.Abstraction;
+using NetworkSkins.Net;
+using UnityEngine;
 
-namespace NetworkSkins.GUI
+namespace NetworkSkins.GUI.Pillars
 {
     public class PillarPanel : ListPanelBase<PillarList, BuildingInfo>
     {
         protected override void RefreshUI(NetInfo netInfo) {
-            SetTabEnabled(Pillar.Bridge, SkinController.BridgeBridgePillar.Enabled);
-            SetTabEnabled(Pillar.BridgeMiddle, SkinController.BridgeMiddlePillar.Enabled);
-            SetTabEnabled(Pillar.Elevated, SkinController.ElevatedBridgePillar.Enabled);
-            SetTabEnabled(Pillar.ElevatedMiddle, SkinController.ElevatedMiddlePillar.Enabled);
+            base.RefreshUI(netInfo);
+            pillarTabstrip.isVisible = true;
+            SetTabEnabled(Pillar.Bridge, NetworkSkinPanelController.BridgeBridgePillar.Enabled);
+            SetTabEnabled(Pillar.BridgeMiddle, NetworkSkinPanelController.BridgeMiddlePillar.Enabled);
+            SetTabEnabled(Pillar.Elevated, NetworkSkinPanelController.ElevatedBridgePillar.Enabled);
+            SetTabEnabled(Pillar.ElevatedMiddle, NetworkSkinPanelController.ElevatedMiddlePillar.Enabled);
             int tabCount = pillarTabs.Count(tab => tab.isVisible);
             if (tabCount != 0) {
                 for (int i = 0; i < (int)Pillar.Count; i++) {
-                    pillarTabs[i].width = pillarTabStrip.width / tabCount;
+                    pillarTabs[i].width = pillarTabstrip.width / tabCount;
                 }
             }
-            list.RefreshRowsData();
+            if (tabCount == 1) {
+                pillarTabstrip.isVisible = false;
+            }
+            RefreshTabstrip();
+        }
+
+        private void RefreshTabstrip() {
+            _ignoreEvents = true;
+            pillarTabstrip.selectedIndex = (int)NetworkSkinPanelController.Pillar;
+            _ignoreEvents = false;
         }
 
         private void SetTabEnabled(Pillar pillar, bool enabled) {
             pillarTabs[(int)pillar].isVisible = enabled;
         }
 
-        protected override void OnSearchLostFocus() {
-        }
-
-        protected override void OnSearchTextChanged(string text) {
-        }
-
         protected override void OnPanelBuilt() {
-            laneTabStrip.isVisible = false;
+            laneTabstripContainer.isVisible = false;
             Refresh();
         }
 
-        protected override void OnFavouriteChanged(string itemID, bool favourite) {
-
-        }
-
-        protected override void OnSelectedChanged(string itemID, bool selected) {
-            if (!selected) return;
-            switch (SkinController.PillarElevationCombination) {
-                case Pillar.Elevated: SkinController.ElevatedBridgePillar.SetSelectedItem(itemID); break;
-                case Pillar.ElevatedMiddle: SkinController.ElevatedMiddlePillar.SetSelectedItem(itemID); break;
-                case Pillar.Bridge: SkinController.BridgeBridgePillar.SetSelectedItem(itemID); break;
-                case Pillar.BridgeMiddle: SkinController.BridgeMiddlePillar.SetSelectedItem(itemID); break;
+        protected override void OnItemClick(string itemID)
+        {
+            switch (NetworkSkinPanelController.Pillar) {
+                case Pillar.Elevated: NetworkSkinPanelController.ElevatedBridgePillar.SetSelectedItem(itemID); break;
+                case Pillar.ElevatedMiddle: NetworkSkinPanelController.ElevatedMiddlePillar.SetSelectedItem(itemID); break;
+                case Pillar.Bridge: NetworkSkinPanelController.BridgeBridgePillar.SetSelectedItem(itemID); break;
+                case Pillar.BridgeMiddle: NetworkSkinPanelController.BridgeMiddlePillar.SetSelectedItem(itemID); break;
                 default: break;
             }
-            list.Select(itemID);
         }
     }
+
+    public class PillarList : ListBase<BuildingInfo> { }
 }

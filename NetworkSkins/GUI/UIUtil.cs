@@ -50,14 +50,18 @@ namespace NetworkSkins.GUI
             button.text = text;
             button.tooltip = tooltip;
             button.textPadding = new RectOffset(0, 0, 3, 0);
+            button.disabledTextColor = new Color32(128, 128, 128, 255);
             button.normalBgSprite = backgroundSprite;
             button.hoveredBgSprite = string.Concat(backgroundSprite, "Hovered");
             button.pressedBgSprite = string.Concat(backgroundSprite, "Pressed");
+            button.disabledBgSprite = string.Concat(backgroundSprite, "Disabled");
             button.focusedBgSprite = string.Concat(backgroundSprite, isFocusable ? "Focused" : "");
             button.normalFgSprite = foregroundSprite;
             button.hoveredFgSprite = string.Concat(foregroundSprite, "Hovered");
             button.pressedFgSprite = string.Concat(foregroundSprite, "Pressed");
+            button.disabledFgSprite = string.Concat(foregroundSprite, "Disabled");
             button.focusedFgSprite = string.Concat(foregroundSprite, isFocusable ? "Focused" : "");
+            button.atlas = Resources.DefaultAtlas;
             if (atlas != null) button.atlas = atlas;
 
             return button;

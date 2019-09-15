@@ -8,12 +8,14 @@ namespace NetworkSkins
     public class Resources
     {
         public static Resources Atlas { get; private set; } = new Resources();
+
+        public static UITextureAtlas DefaultAtlas => NetworkSkinsMod.defaultAtlas;
+
+        public static string Blacklisted = "Blacklisted";
         public static string DragHandle =       "DragHandle";
         public static string Star =             "Star";
         public static string StarOutline =      "StarOutline";
         public static string Locked =           "Locked";
-        public static string LockedPressed =    "LockedPressed";
-        public static string LockedHovered =    "LockedHovered";
         public static string Unlocked =         "Unlocked";
         public static string UnlockedPressed =  "UnlockedPressed";
         public static string UnlockedHovered =  "UnlockedHovered";
@@ -41,26 +43,29 @@ namespace NetworkSkins
         public static string SurfacePressed =   "SurfacePressed";
         public static string SurfaceHovered =   "SurfaceHovered";
         public static string SurfaceFocused =   "SurfaceFocused";
-        public static string Eyedropper =       "Eyedropper";
-        public static string EyedropperPressed ="EyedropperPressed";
-        public static string EyedropperHovered ="EyedropperHovered";
-        public static string EyedropperFocused ="EyedropperFocused";
+        public static string Pipette = "Pipette";
+        public static string PipettePressed = "PipettePressed";
+        public static string PipetteHovered = "PipetteHovered";
+        public static string PipetteFocused = "PipetteFocused";
+        public static string PipetteCursor  = "PipetteCursor";
         public static string Settings =         "Settings";
         public static string SettingsPressed =  "SettingsPressed";
         public static string SettingsHovered =  "SettingsHovered";
         public static string SettingsFocused =  "SettingsFocused";
         public static string Swatch = "Swatch";
+        public static string Undo = "Undo";
+        public static string UndoPressed = "UndoPressed";
+        public static string UndoHovered = "UndoHovered";
 
         private UITextureAtlas UITextureAtlas { get; set; }
 
-        private string[] spriteNames = new string[] {
+        private readonly string[] _spriteNames = new string[] {
+            "Blacklisted",
             "DragHandle",
             "DragHandle",
             "Star",
             "StarOutline",
             "Locked",
-            "LockedPressed",
-            "LockedHovered",
             "Unlocked",
             "UnlockedPressed",
             "UnlockedHovered",
@@ -88,16 +93,19 @@ namespace NetworkSkins
             "SurfacePressed",
             "SurfaceHovered",
             "SurfaceFocused",
-            "Eyedropper",
-            "EyedropperPressed",
-            "EyedropperHovered",
-            "EyedropperFocused",
+            "Pipette",
+            "PipettePressed",
+            "PipetteHovered",
+            "PipetteCursor",
             "Settings",
             "SettingsPressed",
             "SettingsHovered",
             "SettingsFocused",
-            "Swatch"
-    };
+            "Swatch",
+            "Undo",
+            "UndoPressed",
+            "UndoHovered"
+        };
 
         public Resources() {
             CreateAtlas();
@@ -110,24 +118,23 @@ namespace NetworkSkins
         private void CreateAtlas() {
             UITextureAtlas textureAtlas = ScriptableObject.CreateInstance<UITextureAtlas>();
 
-            Texture2D[] textures = new Texture2D[spriteNames.Length];
+            Texture2D[] textures = new Texture2D[_spriteNames.Length];
             Texture2D texture2D = new Texture2D(1, 1, TextureFormat.ARGB32, false);
 
-            for (int i = 0; i < spriteNames.Length; i++)
-                textures[i] = GetTextureFromAssemblyManifest(spriteNames[i] + ".png");
+            for (int i = 0; i < _spriteNames.Length; i++)
+                textures[i] = GetTextureFromAssemblyManifest(_spriteNames[i] + ".png");
 
             int maxSize = 1024;
-            Rect[] regions = new Rect[spriteNames.Length];
-            regions = texture2D.PackTextures(textures, 2, maxSize);
+            Rect[] regions = texture2D.PackTextures(textures, 2, maxSize);
 
-            Material material = UnityEngine.Object.Instantiate<Material>(UIView.GetAView().defaultAtlas.material);
+            Material material = Object.Instantiate<Material>(UIView.GetAView().defaultAtlas.material);
             material.mainTexture = texture2D;
             textureAtlas.material = material;
             textureAtlas.name = "NetworkSkinsAtlas";
 
-            for (int i = 0; i < spriteNames.Length; i++) {
+            for (int i = 0; i < _spriteNames.Length; i++) {
                 UITextureAtlas.SpriteInfo item = new UITextureAtlas.SpriteInfo {
-                    name = spriteNames[i],
+                    name = _spriteNames[i],
                     texture = textures[i],
                     region = regions[i],
                 };
@@ -146,6 +153,7 @@ namespace NetworkSkins
                 manifestResourceStream.Read(array, 0, array.Length);
                 texture2D.LoadImage(array);
             }
+            texture2D.wrapMode = TextureWrapMode.Clamp;
             texture2D.Apply();
             return texture2D;
         }

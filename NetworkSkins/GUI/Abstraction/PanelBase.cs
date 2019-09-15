@@ -2,9 +2,9 @@
 using NetworkSkins.Persistence;
 using UnityEngine;
 
-namespace NetworkSkins.GUI
+namespace NetworkSkins.GUI.Abstraction
 {
-    public abstract class PanelBase : UIPanel
+    public class PanelBase : UIPanel
     {
         public delegate void DragEndEventHandler();
         public Layout Layout { get; set; }
@@ -12,20 +12,21 @@ namespace NetworkSkins.GUI
         public static Color32 GUIColor { get; set; } = new Color32(128, 128, 128, 255);
         public static Color32 FocusedColor = new Color32(88, 181, 205, 255);
         public PanelType PanelType { get; private set; }
-        protected SkinController SkinController => SkinController.Instance;
+        protected NetworkSkinPanelController NetworkSkinPanelController => NetworkSkinPanelController.Instance;
         protected PersistenceService Persistence => PersistenceService.Instance;
 
 
         public override void Awake() {
             base.Awake();
-            if (SkinController != null) {
-                SkinController.EventPrefabChanged += OnPrefabChanged;
+            atlas = Resources.DefaultAtlas;
+            if (NetworkSkinPanelController != null) {
+                NetworkSkinPanelController.EventGUIDirty += OnPrefabChanged;
             }
         }
 
         public override void OnDestroy() {
+            NetworkSkinPanelController.EventGUIDirty -= OnPrefabChanged;
             base.OnDestroy();
-            SkinController.EventPrefabChanged -= OnPrefabChanged;
         }
         public virtual void Build(PanelType panelType, Layout layout) {
             PanelType = panelType;
@@ -33,10 +34,12 @@ namespace NetworkSkins.GUI
             Layout.Apply(this);
         }
 
-        protected abstract void RefreshUI(NetInfo netInfo);
+        protected virtual void RefreshUI(NetInfo netInfo) {
 
-        protected virtual void Refresh() {
-            RefreshUI(SkinController.Prefab);
+        }
+
+        protected void Refresh() {
+            RefreshUI(NetworkSkinPanelController.Prefab);
         }
 
         private void OnPrefabChanged(NetInfo netInfo) {

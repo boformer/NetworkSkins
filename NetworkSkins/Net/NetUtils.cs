@@ -118,6 +118,43 @@ namespace NetworkSkins.Net
         }
 
         [CanBeNull]
+        public static NetInfo GetTunnelPrefab(NetInfo prefab)
+        {
+            if (prefab.m_netAI is RoadAI roadAi)
+            {
+                return roadAi.m_tunnelInfo;
+            }
+            if (prefab.m_netAI is RoadTunnelAI)
+            {
+                return prefab;
+            }
+            else if (prefab.m_netAI is TrainTrackAI trainTrackAi)
+            {
+                return trainTrackAi.m_tunnelInfo;
+            }
+            else if (prefab.m_netAI is TrainTrackTunnelAI)
+            {
+                return prefab;
+            }
+            else if (prefab.m_netAI is PedestrianPathAI pathAi)
+            {
+                return pathAi.m_tunnelInfo;
+            }
+            else if (prefab.m_netAI is PedestrianWayAI wayAi)
+            {
+                return wayAi.m_tunnelInfo;
+            }
+            else if (prefab.m_netAI is PedestrianTunnelAI)
+            {
+                return prefab;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        [CanBeNull]
         public static NetLaneProps.Prop GetMatchingLaneProp(NetInfo prefab, Func<NetLaneProps.Prop, bool> matcher, LanePosition? position = null)
         {
             if (prefab?.m_lanes == null) return null;
@@ -140,6 +177,30 @@ namespace NetworkSkins.Net
             }
 
             return null;
+        }
+
+        public static NetInfo FindDefaultElevation(NetInfo info) {
+            for (uint i = 0; i < PrefabCollection<NetInfo>.LoadedCount(); i++) {
+                NetInfo prefab = PrefabCollection<NetInfo>.GetLoaded(i);
+                if ((AssetEditorRoadUtils.TryGetBridge(prefab) != null && AssetEditorRoadUtils.TryGetBridge(prefab).name == info.name) ||
+                   (AssetEditorRoadUtils.TryGetElevated(prefab) != null && AssetEditorRoadUtils.TryGetElevated(prefab).name == info.name) ||
+                   (AssetEditorRoadUtils.TryGetSlope(prefab) != null && AssetEditorRoadUtils.TryGetSlope(prefab).name == info.name) ||
+                   (AssetEditorRoadUtils.TryGetTunnel(prefab) != null && AssetEditorRoadUtils.TryGetTunnel(prefab).name == info.name)) {
+                    return prefab;
+                }
+            }
+            return info;
+        }
+
+        public static bool IsValidNet(NetInfo info) {
+            if (info == null) return false;
+            NetAI ai = info.m_netAI;
+            return ai is RoadBaseAI ||
+                   ai is TrainTrackBaseAI ||
+                   ai is PedestrianBridgeAI ||
+                   ai is PedestrianPathAI ||
+                   ai is PedestrianTunnelAI ||
+                   ai is PedestrianWayAI;
         }
     }
 }

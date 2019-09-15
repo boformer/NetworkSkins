@@ -1,8 +1,8 @@
-﻿using ColossalFramework.UI;
-using System;
+﻿using System;
+using ColossalFramework.UI;
 using UnityEngine;
 
-namespace NetworkSkins.GUI
+namespace NetworkSkins.GUI.UIFastList
 {
     // by SamSamTs
     public interface IUIFastListRow
@@ -248,9 +248,6 @@ namespace NetworkSkins.GUI
                     m_selectedRowId = newRowId;
                     m_rows[m_selectedRowId].Select((m_selectedDataId % 2) == 1);
                 }
-
-                if (EventSelectedIndexChanged != null && m_selectedDataId != oldId)
-                    EventSelectedIndexChanged(this, m_selectedDataId);
             }
         }
 
@@ -275,9 +272,9 @@ namespace NetworkSkins.GUI
 
         #region Events
         /// <summary>
-        /// Called when the currently selected row changed
+        /// Called when a row is clicked
         /// </summary>
-        public event PropertyChangedEventHandler<int> EventSelectedIndexChanged;
+        public event PropertyChangedEventHandler<int> EventItemClick;
         #endregion
 
         #region Public methods
@@ -401,8 +398,9 @@ namespace NetworkSkins.GUI
             int max = Mathf.Min(m_rowsData.m_size, m_rows.m_size);
             for (int i = 0; i < max; i++) {
                 if (component == (UIComponent)m_rows[i]) {
-                    SelectedIndex = i + Mathf.FloorToInt(m_pos);
-                    return;
+                    int index = i + Mathf.FloorToInt(m_pos);
+                    EventItemClick?.Invoke(component, index);
+                    SelectedIndex = index;
                 }
             }
         }
@@ -488,6 +486,7 @@ namespace NetworkSkins.GUI
             m_panel.color = m_color;
             m_panel.clipChildren = true;
             m_panel.relativePosition = Vector2.zero;
+            m_panel.atlas = Resources.DefaultAtlas;
 
             // Scrollbar
             m_scrollbar = AddUIComponent<UIScrollbar>();
@@ -506,6 +505,7 @@ namespace NetworkSkins.GUI
             tracSprite.size = tracSprite.parent.size;
             tracSprite.fillDirection = UIFillDirection.Vertical;
             tracSprite.spriteName = "LevelBarBackground";
+            tracSprite.atlas = Resources.DefaultAtlas;
 
             m_scrollbar.trackObject = tracSprite;
 
@@ -515,6 +515,7 @@ namespace NetworkSkins.GUI
             thumbSprite.autoSize = true;
             thumbSprite.width = 12f;
             thumbSprite.spriteName = "LevelBarForeground";
+            thumbSprite.atlas = Resources.DefaultAtlas;
 
             m_scrollbar.thumbObject = thumbSprite;
 
