@@ -51,15 +51,52 @@ namespace NetworkSkins.GUI.Surfaces
         {
             var modifiers = new Dictionary<NetInfo, List<NetworkSkinModifier>>();
 
-            if (SelectedItem != null && SelectedItem is SimpleItem item && item != DefaultItem)
+            if (SelectedItem != null && SelectedItem is SimpleItem item/* && item != DefaultItem*/)
             {
+                /*
                 modifiers[Prefab] = new List<NetworkSkinModifier>
                 {
-                    new TerrainSurfaceModifier(item.Value)
+                    new TerrainSurfaceModifier(item.Value),
                 };
+                */
+
+                modifiers[Prefab] = BuildExampleModifiersForSurface(item.Value);
             }
 
             return modifiers;
+        }
+
+        private static List<NetworkSkinModifier> BuildExampleModifiersForSurface(Surface s)
+        {
+            switch (s)
+            {
+                case Surface.Pavement:
+                    return new List<NetworkSkinModifier>()
+                    {
+                        new TerrainSurfaceModifier(Surface.Pavement),
+                        new ThemeTextureModifier(ThemeTextureType.Pavement, "rectangle_pavers"),
+                    };
+                case Surface.Gravel:
+                    return new List<NetworkSkinModifier>()
+                    {
+                        new TerrainSurfaceModifier(Surface.Gravel),
+                        new ThemeTextureModifier(ThemeTextureType.Gravel, "marble_tiles"),
+                        new ThemeTextureModifier(ThemeTextureType.Road, "straight_cobblestone")
+                    };
+                case Surface.Ruined:
+                    return new List<NetworkSkinModifier>()
+                    {
+                        new TerrainSurfaceModifier(Surface.Pavement),
+                        new ThemeTextureModifier(ThemeTextureType.Pavement, "square_tiles"),
+                    };
+                case Surface.None:
+                default:
+                    return new List<NetworkSkinModifier>()
+                    {
+                        new TerrainSurfaceModifier(Surface.Pavement),
+                        new ThemeTextureModifier(ThemeTextureType.Pavement, "hexagonal_pavers"),
+                    };
+            }
         }
 
         protected override string SelectedItemKey => "TerrainSurface";
