@@ -1,9 +1,6 @@
 ﻿using ColossalFramework.IO;
-using NetworkSkins.Skins.Modifiers;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using UnityEngine;
 
 namespace NetworkSkins.Skins.Serialization
 {
@@ -24,7 +21,7 @@ namespace NetworkSkins.Skins.Serialization
 
         public static List<NetworkSkinModifier> Deserialize(byte[] data)
         {
-            return Deserialize(data, out var errors);
+            return Deserialize(data, out _);
         }
 
 
