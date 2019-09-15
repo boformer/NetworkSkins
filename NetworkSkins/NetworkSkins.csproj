@@ -65,6 +65,7 @@
     <Compile Include="GUI\Misc\DistancePanel.cs" />
     <Compile Include="Legacy\LegacyLightPropEnabler.cs" />
     <Compile Include="Persistence\LegacySegmentData.cs" />
+    <Compile Include="Skins\Serialization\ModifierDataContainer.cs" />
     <Compile Include="Tool\PipetteTool.cs" />
     <Compile Include="GUI\SettingsPanel.cs" />
     <Compile Include="Net\Pillar.cs" />
