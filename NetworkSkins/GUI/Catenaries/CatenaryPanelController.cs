@@ -5,7 +5,6 @@ using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.Net;
 using NetworkSkins.Skins;
 using NetworkSkins.Skins.Modifiers;
-using UnityEngine;
 
 namespace NetworkSkins.GUI.Catenaries
 {
@@ -185,6 +184,9 @@ namespace NetworkSkins.GUI.Catenaries
 
                 var bridgePrefab = NetUtils.GetBridgePrefab(Prefab);
                 if (bridgePrefab != null) modifiers[bridgePrefab] = prefabModifiers;
+
+                var tunnelPrefab = NetUtils.GetTunnelPrefab(Prefab);
+                if (tunnelPrefab != null) modifiers[tunnelPrefab] = prefabModifiers;
             }
 
             return modifiers;

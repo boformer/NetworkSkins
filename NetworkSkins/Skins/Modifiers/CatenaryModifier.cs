@@ -33,11 +33,13 @@ namespace NetworkSkins.Skins.Modifiers
     {
         public readonly PropInfo Catenary;
         private readonly PropInfo _endCatenary;
+        private readonly PropInfo _tunnelCatenary;
 
         public CatenaryModifier(PropInfo catenary) : base(NetworkSkinModifierType.Catenary)
         {
             Catenary = catenary;
             _endCatenary = CatenaryUtils.GetEndCatenary(catenary);
+            _tunnelCatenary = CatenaryUtils.GetTunnelCatenary(catenary);
         }
 
         public override void Apply(NetworkSkin skin)
@@ -67,7 +69,9 @@ namespace NetworkSkins.Skins.Modifiers
                 for (var p = skin.m_lanes[l].m_laneProps.m_props.Length - 1; p >= 0; p--)
                 {
                     var laneProp = skin.m_lanes[l].m_laneProps.m_props[p];
-                    if(laneProp != null && (CatenaryUtils.IsNormalCatenaryProp(laneProp.m_finalProp) || CatenaryUtils.IsEndCatenaryProp(laneProp.m_finalProp)))
+                    if (laneProp?.m_finalProp == null) continue;
+
+                    if(CatenaryUtils.IsNormalCatenaryProp(laneProp.m_finalProp) || CatenaryUtils.IsEndCatenaryProp(laneProp.m_finalProp))
                     {
                         if (Catenary == _endCatenary)
                         {
@@ -148,6 +152,13 @@ namespace NetworkSkins.Skins.Modifiers
                             }
                         }
                     }
+                    else if (CatenaryUtils.IsTunnelCatenaryProp(laneProp.m_finalProp))
+                    {
+                        if(_tunnelCatenary != null)
+                        {
+                            ReplaceWithTunnelCatenary(skin, l, p);
+                        }
+                    }
                 }
             }
         }
@@ -168,6 +179,16 @@ namespace NetworkSkins.Skins.Modifiers
             {
                 laneProp2.m_prop = _endCatenary;
                 laneProp2.m_finalProp = _endCatenary;
+                CatenaryUtils.CorrectCatenaryPropAngleAndPosition(laneProp2);
+            });
+        }
+
+        private void ReplaceWithTunnelCatenary(NetworkSkin skin, int l, int p)
+        {
+            skin.UpdateLaneProp(l, p, laneProp2 =>
+            {
+                laneProp2.m_prop = _tunnelCatenary;
+                laneProp2.m_finalProp = _tunnelCatenary;
                 CatenaryUtils.CorrectCatenaryPropAngleAndPosition(laneProp2);
             });
         }
@@ -197,7 +218,7 @@ namespace NetworkSkins.Skins.Modifiers
                 for (var p = skin.m_lanes[l].m_laneProps.m_props.Length - 1; p >= 0; p--)
                 {
                     var finalProp = skin.m_lanes[l].m_laneProps.m_props[p]?.m_finalProp;
-                    if (CatenaryUtils.IsNormalCatenaryProp(finalProp) || CatenaryUtils.IsEndCatenaryProp(finalProp))
+                    if (CatenaryUtils.IsNormalCatenaryProp(finalProp) || CatenaryUtils.IsEndCatenaryProp(finalProp) || CatenaryUtils.IsTunnelCatenaryProp(finalProp))
                     {
                         skin.RemoveLaneProp(l, p);
                     }

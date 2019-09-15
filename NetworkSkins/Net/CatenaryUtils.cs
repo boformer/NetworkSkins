@@ -44,8 +44,10 @@ namespace NetworkSkins.Net
 
         private const string R69_DOUBLE_NORMAL = "cat2n";
         private const string R69_DOUBLE_END = "cat2e";
+        private const string R69_DOUBLE_TUNNEL = "cat2t";
         private const string R69_SINGLE_NORMAL = "cat1n";
         private const string R69_SINGLE_END = "cat1e";
+        private const string R69_SINGLE_TUNNEL = "cat1t";
 
         public static PropInfo GetDefaultNormalCatenary(NetInfo prefab)
         {
@@ -97,7 +99,24 @@ namespace NetworkSkins.Net
             if (prop == null) return false;
             return ParseR69RailwayType(prop, out var type) && type == R69_SINGLE_END;
         }
-        
+
+        public static bool IsTunnelCatenaryProp(PropInfo prop)
+        {
+            return IsDoubleRailTunnelCatenaryProp(prop) || IsSingleRailTunnelCatenaryProp(prop);
+        }
+
+        public static bool IsDoubleRailTunnelCatenaryProp(PropInfo prop)
+        {
+            if (prop == null) return false;
+            return ParseR69RailwayType(prop, out var type) && type == R69_DOUBLE_TUNNEL;
+        }
+
+        public static bool IsSingleRailTunnelCatenaryProp(PropInfo prop)
+        {
+            if (prop == null) return false;
+            return ParseR69RailwayType(prop, out var type) && type == R69_SINGLE_TUNNEL;
+        }
+
         public static PropInfo GetEndCatenary(PropInfo prop)
         {
             if (ParseR69RailwayTag(prop, out var type, out var styleName))
@@ -113,6 +132,23 @@ namespace NetworkSkins.Net
             }
 
             return prop;
+        }
+
+        public static PropInfo GetTunnelCatenary(PropInfo prop)
+        {
+            if (ParseR69RailwayTag(prop, out var type, out var styleName))
+            {
+                if (type == R69_DOUBLE_NORMAL)
+                {
+                    return GetR69RailwayProp(R69_DOUBLE_TUNNEL, styleName) ?? prop;
+                }
+                else if (type == R69_SINGLE_NORMAL)
+                {
+                    return GetR69RailwayProp(R69_SINGLE_TUNNEL, styleName) ?? prop;
+                }
+            }
+
+            return null;
         }
 
         public static void CorrectCatenaryPropAngleAndPosition(NetLaneProps.Prop laneProp)

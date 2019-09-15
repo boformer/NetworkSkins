@@ -118,6 +118,43 @@ namespace NetworkSkins.Net
         }
 
         [CanBeNull]
+        public static NetInfo GetTunnelPrefab(NetInfo prefab)
+        {
+            if (prefab.m_netAI is RoadAI roadAi)
+            {
+                return roadAi.m_tunnelInfo;
+            }
+            if (prefab.m_netAI is RoadTunnelAI)
+            {
+                return prefab;
+            }
+            else if (prefab.m_netAI is TrainTrackAI trainTrackAi)
+            {
+                return trainTrackAi.m_tunnelInfo;
+            }
+            else if (prefab.m_netAI is TrainTrackTunnelAI)
+            {
+                return prefab;
+            }
+            else if (prefab.m_netAI is PedestrianPathAI pathAi)
+            {
+                return pathAi.m_tunnelInfo;
+            }
+            else if (prefab.m_netAI is PedestrianWayAI wayAi)
+            {
+                return wayAi.m_tunnelInfo;
+            }
+            else if (prefab.m_netAI is PedestrianTunnelAI)
+            {
+                return prefab;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        [CanBeNull]
         public static NetLaneProps.Prop GetMatchingLaneProp(NetInfo prefab, Func<NetLaneProps.Prop, bool> matcher, LanePosition? position = null)
         {
             if (prefab?.m_lanes == null) return null;
