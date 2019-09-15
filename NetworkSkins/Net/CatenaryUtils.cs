@@ -119,15 +119,15 @@ namespace NetworkSkins.Net
 
         public static PropInfo GetEndCatenary(PropInfo prop)
         {
-            if (ParseR69RailwayTag(prop, out var type, out var styleName))
+            if (ParseR69RailwayTag(prop, out var type, out var styleName, out var subStyleName, out var variationName))
             {
                 if(type == R69_DOUBLE_NORMAL)
                 {
-                    return GetR69RailwayProp(R69_DOUBLE_END, styleName) ?? prop;
+                    return GetR69RailwayPropWithFallback(R69_DOUBLE_END, styleName, subStyleName, variationName) ?? prop;
                 }
                 else if(type == R69_SINGLE_NORMAL)
                 {
-                    return GetR69RailwayProp(R69_SINGLE_END, styleName) ?? prop;
+                    return GetR69RailwayPropWithFallback(R69_SINGLE_END, styleName, subStyleName, variationName) ?? prop;
                 }
             }
 
@@ -136,15 +136,15 @@ namespace NetworkSkins.Net
 
         public static PropInfo GetTunnelCatenary(PropInfo prop)
         {
-            if (ParseR69RailwayTag(prop, out var type, out var styleName))
+            if (ParseR69RailwayTag(prop, out var type, out var styleName, out var subStyleName, out var variationName))
             {
                 if (type == R69_DOUBLE_NORMAL)
                 {
-                    return GetR69RailwayProp(R69_DOUBLE_TUNNEL, styleName) ?? prop;
+                    return GetR69RailwayPropWithFallback(R69_DOUBLE_TUNNEL, styleName, subStyleName, variationName);
                 }
                 else if (type == R69_SINGLE_NORMAL)
                 {
-                    return GetR69RailwayProp(R69_SINGLE_TUNNEL, styleName) ?? prop;
+                    return GetR69RailwayPropWithFallback(R69_SINGLE_TUNNEL, styleName, subStyleName, variationName);
                 }
             }
 
@@ -212,13 +212,35 @@ namespace NetworkSkins.Net
             return segment?.m_material?.shader?.name == "Custom/Net/Electricity";
         }
 
-        private static PropInfo GetR69RailwayProp(string type, string styleName)
+        // Fallback to variationName = null, then subStyleName = null if no prop has been found
+        private static PropInfo GetR69RailwayPropWithFallback(string type, string styleName, string subStyleName, string variationName)
+        {
+            var prefab = GetR69RailwayProp(type, styleName, subStyleName, variationName);
+            if (prefab != null) return prefab;
+
+            if (variationName != null)
+            {
+                prefab = GetR69RailwayProp(type, styleName, subStyleName, null);
+                if (prefab != null) return prefab;
+            }
+
+            if (subStyleName != null)
+            {
+                prefab = GetR69RailwayProp(type, styleName, null, null);
+                if (prefab != null) return prefab;
+            }
+
+            return null;
+        }
+
+        private static PropInfo GetR69RailwayProp(string type, string styleName, string subStyleName, string variationName)
         {
             var prefabCount = PrefabCollection<PropInfo>.LoadedCount();
             for (uint prefabIndex = 0; prefabIndex < prefabCount; prefabIndex++)
             {
                 var prefab = PrefabCollection<PropInfo>.GetLoaded(prefabIndex);
-                if (ParseR69RailwayTag(prefab, out var prefabType, out var prefabStyleName) && prefabType == type && prefabStyleName == styleName)
+                if (ParseR69RailwayTag(prefab, out var prefabType, out var prefabStyleName, out var prefabSubStyleName, out var prefabVariationName)
+                    && prefabType == type && prefabStyleName == styleName && prefabSubStyleName == subStyleName && prefabVariationName == variationName)
                 {
                     return prefab;
                 }
@@ -229,25 +251,35 @@ namespace NetworkSkins.Net
 
         private static bool ParseR69RailwayType(PropInfo prop, out string type)
         {
-            return ParseR69RailwayTag(prop, out type, out var styleName);
+            return ParseR69RailwayTag(prop, out type, out var styleName, out string subStyleName, out string variationName);
         }
 
-        private static bool ParseR69RailwayTag(PropInfo prop, out string type, out string styleName)
+        private static bool ParseR69RailwayTag(PropInfo prop, out string type, out string styleName, out string subStyleName, out string variationName)
         {
+            // Allowed tag layouts:
+            // r69rwp-cat2n#STYLE#
+            // r69rwp-cat2n#STYLE-SUBSTYLE#
+            // r69rwp-cat2n#STYLE-SUBSTYLE (VARIATION)#
+            // Also see: https://gist.github.com/ronyx69/b4cd41742803eaeac6d19322384a0f4a
+
             if (prop?.m_material?.name != null)
             {
                 // do not match end of string because Unity might have appended extra text like " (Instance)" 
-                var match = Regex.Match(prop.m_material.name, @"\Ar69rwp-([a-z0-9]+)#(.+)#");
+                var match = Regex.Match(prop.m_material.name, @"\Ar69rwp-([a-z0-9]+)#(.+?)(-.+?)?( \(.+\))?#");
                 if (match.Success)
                 {
                     type = match.Groups[1].Value;
                     styleName = match.Groups[2].Value;
+                    subStyleName = match.Groups[3].Success ? match.Groups[3].Value : null;
+                    variationName = match.Groups[4].Success ? match.Groups[4].Value : null;
                     return true;
                 }
             }
 
             type = null;
             styleName = null;
+            subStyleName = null;
+            variationName = null;
             return false;
         }
 
