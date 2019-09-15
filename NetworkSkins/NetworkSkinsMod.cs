@@ -1,4 +1,5 @@
-﻿using ColossalFramework.UI;
+﻿using ColossalFramework.Plugins;
+using ColossalFramework.UI;
 using Harmony;
 using ICities;
 using NetworkSkins.GUI;
@@ -164,6 +165,19 @@ namespace NetworkSkins
             var assemblyName = typeof(NetworkSkinsMod).Assembly.GetName();
             var fixedType = Regex.Replace(type, $@"{assemblyName.Name}, Version=\d+.\d+.\d+.\d+", $"{assemblyName.Name}, Version={assemblyName.Version}");
             return Type.GetType(fixedType);
+        }
+
+        public static bool IsModEnabled(ulong workshopId)
+        {
+            foreach (var current in PluginManager.instance.GetPluginsInfo())
+            {
+                if (current.isEnabled && current.publishedFileID.AsUInt64 == workshopId)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
