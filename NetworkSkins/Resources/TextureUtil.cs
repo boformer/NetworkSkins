@@ -13,7 +13,7 @@ namespace NetworkSkins
         {
             if (!HasThumbDict.TryGetValue(info.name, out bool hasThumb))
             {
-                Texture2D texture = info.m_Atlas?.texture;
+                Texture2D texture = GetSpriteTexture(info.m_Atlas, info.m_Thumbnail);
                 hasThumb = HasThumbDict[info.name] = (texture != null && !texture.IsTransparent());
             }
 
