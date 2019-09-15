@@ -6,6 +6,18 @@ namespace NetworkSkins.Net
 {
     public static class CatenaryUtils
     {
+        // Tram Pole Center
+        // 
+        private static readonly string[] TramPoleSideNames = new[]
+        {
+            "Tram Pole Side"
+        };
+
+        private static readonly string[] TramPoleCenterNames = new[]
+{
+            "Tram Pole Center"
+        };
+
         private static readonly string[] DoubleCatenaryNames = new[]
         {
             "RailwayPowerline",
@@ -42,7 +54,7 @@ namespace NetworkSkins.Net
 
         public static bool IsNormalCatenaryProp(PropInfo prop)
         {
-            return IsDoubleRailNormalCatenaryProp(prop) || IsSingleRailNormalCatenaryProp(prop);
+            return IsDoubleRailNormalCatenaryProp(prop) || IsSingleRailNormalCatenaryProp(prop) || IsTramPoleSideProp(prop) || IsTramPoleCenterProp(prop);
         }
 
         public static bool IsDoubleRailNormalCatenaryProp(PropInfo prop)
@@ -55,6 +67,18 @@ namespace NetworkSkins.Net
         {
             if (prop == null) return false;
             return Array.IndexOf(SingleCatenaryNames, prop.name) != -1 || ParseR69RailwayType(prop, out var type) && type == R69_SINGLE_NORMAL;
+        }
+
+        public static bool IsTramPoleSideProp(PropInfo prop)
+        {
+            if (prop == null) return false;
+            return Array.IndexOf(TramPoleSideNames, prop.name) != -1;
+        }
+
+        public static bool IsTramPoleCenterProp(PropInfo prop)
+        {
+            if (prop == null) return false;
+            return Array.IndexOf(TramPoleCenterNames, prop.name) != -1;
         }
 
         public static bool IsEndCatenaryProp(PropInfo prop)

@@ -246,7 +246,7 @@ namespace NetworkSkins.GUI
             BridgeBridgePillar.OnPrefabWithModifiersSelected(bridgePrefab, modifiers);
             BridgeMiddlePillar.OnPrefabWithModifiersSelected(bridgePrefab, modifiers);
 
-            Catenary.OnPrefabWithModifiersSelected(bridgePrefab, modifiers);
+            Catenary.OnPrefabWithModifiersSelected(prefab, modifiers);
 
             _ignoreModifierEvents = false;
 

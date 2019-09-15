@@ -13,7 +13,7 @@ namespace NetworkSkins.GUI.Catenaries
     {
         protected override List<Item> BuildItems(ref Item defaultItem)
         {
-            if (!(Prefab.m_netAI is TrainTrackBaseAI))
+            if (!(Prefab.m_netAI is TrainTrackBaseAI || Prefab.m_netAI is RoadBaseAI))
             {
                 return new List<Item>();
             }
@@ -41,9 +41,9 @@ namespace NetworkSkins.GUI.Catenaries
                 items.Add(defaultItem);
             }
 
-            var singleTrack = IsSingleTrack(uniqueDefaultCatenaries);
+            var catenaryType = GetCatenaryType(uniqueDefaultCatenaries);
 
-            var catenaries = GetAvailableCatenaries(singleTrack);
+            var catenaries = GetAvailableCatenaries(catenaryType);
 
             foreach (var catenary in catenaries)
             {
@@ -105,12 +105,31 @@ namespace NetworkSkins.GUI.Catenaries
             return defaultCatenaries;
         }
 
-        private static bool IsSingleTrack(ICollection<PropInfo> defaultCatenaries)
+        private static CatenaryType GetCatenaryType(ICollection<PropInfo> defaultCatenaries)
         {
-            return defaultCatenaries.Any(CatenaryUtils.IsSingleRailNormalCatenaryProp);
+            foreach(var prop in defaultCatenaries)
+            {
+                if (CatenaryUtils.IsDoubleRailNormalCatenaryProp(prop))
+                {
+                    return CatenaryType.TrainDouble;
+                }
+                else if (CatenaryUtils.IsSingleRailNormalCatenaryProp(prop))
+                {
+                    return CatenaryType.TrainSingle;
+                }
+                else if (CatenaryUtils.IsTramPoleSideProp(prop))
+                {
+                    return CatenaryType.TramPoleSide;
+                }
+                else if (CatenaryUtils.IsTramPoleCenterProp(prop))
+                {
+                    return CatenaryType.TramPoleCenter;
+                }
+            }
+            return CatenaryType.TrainDouble;
         }
 
-        private List<PropInfo> GetAvailableCatenaries(bool singleTrack)
+        private List<PropInfo> GetAvailableCatenaries(CatenaryType type)
         {
             var catenaries = new List<PropInfo>();
 
@@ -118,25 +137,31 @@ namespace NetworkSkins.GUI.Catenaries
             for (uint prefabIndex = 0; prefabIndex < prefabCount; prefabIndex++)
             {
                 var prefab = PrefabCollection<PropInfo>.GetLoaded(prefabIndex);
-                if (singleTrack)
+                if (IsCatenaryProp(prefab, type) && CatenaryUtils.IsCatenaryPropVisibeInUI(prefab))
                 {
-                    if (CatenaryUtils.IsSingleRailNormalCatenaryProp(prefab) && CatenaryUtils.IsCatenaryPropVisibeInUI(prefab))
-                    {
-                        catenaries.Add(prefab);
-                    }
-                }
-                else
-                {
-                    if (CatenaryUtils.IsDoubleRailNormalCatenaryProp(prefab) && CatenaryUtils.IsCatenaryPropVisibeInUI(prefab))
-                    {
-                        catenaries.Add(prefab);
-                    }
+                    catenaries.Add(prefab);
                 }
             }
 
             catenaries.Sort((a, b) => string.Compare(a.GetUncheckedLocalizedTitle(), b.GetUncheckedLocalizedTitle(), StringComparison.Ordinal));
 
             return catenaries;
+        }
+
+        private bool IsCatenaryProp(PropInfo prefab, CatenaryType type) {
+            switch(type)
+            {
+                case CatenaryType.TrainDouble:
+                    return CatenaryUtils.IsDoubleRailNormalCatenaryProp(prefab);
+                case CatenaryType.TrainSingle:
+                    return CatenaryUtils.IsSingleRailNormalCatenaryProp(prefab);
+                case CatenaryType.TramPoleSide:
+                    return CatenaryUtils.IsTramPoleSideProp(prefab);
+                case CatenaryType.TramPoleCenter:
+                    return CatenaryUtils.IsTramPoleCenterProp(prefab);
+                default:
+                    return false;
+            }
         }
 
         protected override Dictionary<NetInfo, List<NetworkSkinModifier>> BuildModifiers()
@@ -166,5 +191,13 @@ namespace NetworkSkins.GUI.Catenaries
         }
 
         protected override string SelectedItemKey => $"Catenary";
+    }
+
+    public enum CatenaryType
+    {
+        TrainDouble,
+        TrainSingle,
+        TramPoleSide,
+        TramPoleCenter
     }
 }
