@@ -12,9 +12,9 @@
     <Translation ID="LABEL_GRAVEL" String="砾石" />
     <Translation ID="LABEL_RUINED" String="土" />
     <Translation ID="LABEL_ELEVATED" String="高于地面物体" />
-    <Translation ID="LABEL_ELEVATEDMIDDLE" String="高于地面物体 （地质内）" />
+    <Translation ID="LABEL_ELEVATEDMIDDLE" String="高架桥支柱" />
     <Translation ID="LABEL_BRIDGE" String="桥梁" />
-    <Translation ID="LABEL_BRIDGEMIDDLE" String="桥梁 （地质内）" />
+    <Translation ID="LABEL_BRIDGEMIDDLE" String="桥梁支柱" />
     <Translation ID="LABEL_DISTANCE" String="距离" />
     <Translation ID="LABEL_RED" String="红" />
     <Translation ID="LABEL_GREEN" String="绿" />
