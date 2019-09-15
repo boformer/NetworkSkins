@@ -39,34 +39,41 @@ namespace NetworkSkins.GUI.Surfaces
 
         protected ListItem CreateListItem(Surface surfaceType) {
             TerrainManager terrainManager = TerrainManager.instance;
-            Texture2D thumbnail;
+            UITextureAtlas thumbnailAtlas = null;
+            string thumbnailSprite = null;
+            Texture2D thumbnailTexture = null;
             string name;
             var isFavourite = IsFavourite(surfaceType.ToString());
             var isDefault = IsDefault(surfaceType.ToString());
             var prefix = isDefault
                 ? string.Concat("(", Translation.Instance.GetTranslation(TranslationID.LABEL_DEFAULT), ") ")
                 : string.Empty;
+
             switch (surfaceType) {
                 case Surface.Pavement:
                     name = Translation.Instance.GetTranslation(TranslationID.LABEL_PAVEMENT);
-                    thumbnail = terrainManager.m_properties.m_pavementDiffuse;
+                    thumbnailTexture = terrainManager.m_properties.m_pavementDiffuse;
                     break;
                 case Surface.Gravel:
                     name = Translation.Instance.GetTranslation(TranslationID.LABEL_GRAVEL);
-                    thumbnail = terrainManager.m_properties.m_gravelDiffuse;
+                    thumbnailTexture = terrainManager.m_properties.m_gravelDiffuse;
                     break;
                 case Surface.Ruined:
                     name = Translation.Instance.GetTranslation(TranslationID.LABEL_RUINED);
-                    thumbnail = terrainManager.m_properties.m_ruinedDiffuse;
+                    thumbnailTexture = terrainManager.m_properties.m_ruinedDiffuse;
                     break;
                 default:
                     name = Translation.Instance.GetTranslation(TranslationID.LABEL_NONE);
-                    thumbnail = Resources.NietIcon;
+                    thumbnailAtlas = Resources.DefaultAtlas;
+                    thumbnailSprite = "Niet";
                     break;
             }
+
+
+
             var id = surfaceType == Surface.None ? "#NONE#" : Enum.GetName(typeof(Surface), surfaceType);
             var displayName = string.Concat(prefix, name);
-            return new ListItem(id, displayName, thumbnail, isFavourite, false, isDefault, ItemType.Surfaces, default(Color));
+            return new ListItem(id, displayName, thumbnailAtlas, thumbnailSprite, thumbnailTexture, isFavourite, false, isDefault, ItemType.Surfaces, default(Color));
         }
     }
 }

@@ -9,37 +9,7 @@ namespace NetworkSkins
     {
         public static Resources Atlas { get; private set; } = new Resources();
 
-        private static Texture2D _niet;
-        public static Texture2D NietIcon {
-            get {
-                if (_niet == null) {
-                    _niet = DefaultAtlas.GetSpriteTexture("Niet");
-                }
-                return _niet;
-            }
-        }
-
         public static UITextureAtlas DefaultAtlas => NetworkSkinsMod.defaultAtlas;
-
-        private static Texture2D _default;
-        public static Texture2D DefaultIcon {
-            get {
-                if (_default == null) {
-                    _default = UIView.GetAView().defaultAtlas.GetSpriteTexture("IconPolicyExtraInsulationDisabled");
-                }
-                return _default;
-            }
-        }
-
-        private static Texture2D _prop;
-        public static Texture2D PropIcon {
-            get {
-                if (_prop == null) {
-                    _prop = UIView.GetAView().defaultAtlas.GetSpriteTexture("ToolbarIconProps");
-                }
-                return _prop;
-            }
-        }
 
         public static string Blacklisted = "Blacklisted";
         public static string DragHandle =       "DragHandle";

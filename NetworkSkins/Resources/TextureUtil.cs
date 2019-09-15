@@ -1,6 +1,5 @@
 ﻿using ColossalFramework.UI;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
@@ -8,14 +7,17 @@ namespace NetworkSkins
 {
     public static class TextureUtil {
 
-        private static Dictionary<string, bool> HasThumbDict = new Dictionary<string, bool>();
+        private static readonly Dictionary<string, bool> HasThumbDict = new Dictionary<string, bool>();
 
-        public static Texture2D MakeReadable(this Texture texture) {
-            RenderTexture temporary = RenderTexture.GetTemporary(texture.width, texture.height, 0);
-            Graphics.Blit(texture, temporary);
-            Texture2D result = temporary.ToTexture2D();
-            RenderTexture.ReleaseTemporary(temporary);
-            return result;
+        public static bool IsThumbTransparent(PrefabInfo info)
+        {
+            if (!HasThumbDict.TryGetValue(info.name, out bool hasThumb))
+            {
+                Texture2D texture = GetSpriteTexture(info.m_Atlas, info.m_Thumbnail);
+                hasThumb = HasThumbDict[info.name] = (texture != null && !texture.IsTransparent());
+            }
+
+            return !hasThumb;
         }
 
         public static bool IsTransparent(this Texture2D texture) {
@@ -28,7 +30,15 @@ namespace NetworkSkins
                 Object.Destroy(readableTexture);
                 return isTransparent;
             }
-            
+        }
+
+        public static Texture2D MakeReadable(this Texture texture)
+        {
+            RenderTexture temporary = RenderTexture.GetTemporary(texture.width, texture.height, 0);
+            Graphics.Blit(texture, temporary);
+            Texture2D result = temporary.ToTexture2D();
+            RenderTexture.ReleaseTemporary(temporary);
+            return result;
         }
 
         private static bool ArePixelsTransparent(Color[] pixels) {
@@ -47,18 +57,7 @@ namespace NetworkSkins
             RenderTexture.active = active;
             return texture2D;
         }
-
-        public static Texture2D GetThumbnail(this PrefabInfo info) {
-            Texture2D tex = info.m_Atlas?.sprites?.Find(sprite => sprite?.name == info.m_Thumbnail)?.texture;
-            if (HasThumbDict.TryGetValue(info.name, out bool hasThumb)) {
-                if (hasThumb) return tex;
-                return Resources.PropIcon;
-            }
-            bool isNull = tex == null, isTransparent = tex.IsTransparent();
-            HasThumbDict[info.name] = !isNull && !isTransparent;
-            return isNull || isTransparent ? Resources.PropIcon : tex;
-        }
-
+               
         public static Texture2D GetSpriteTexture(this UITextureAtlas atlas, string spriteName) {
             return atlas?.sprites?.Find(sprite => sprite?.name == spriteName)?.texture;
         }
