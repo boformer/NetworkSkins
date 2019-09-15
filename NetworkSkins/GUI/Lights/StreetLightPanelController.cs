@@ -114,7 +114,7 @@ namespace NetworkSkins.GUI.Lights
                 }
             }
 
-            Debug.Log($"Built {items.Count} street light items with default {singleDefaultStreetLight}");
+            //Debug.Log($"Built {items.Count} street light items with default {singleDefaultStreetLight}");
 
             return items;
         }

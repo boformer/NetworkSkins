@@ -80,7 +80,7 @@ namespace NetworkSkins.GUI.Trees
                 }
             }
 
-            Debug.Log($"Built {items.Count} tree items with default {defaultTree} in lane {Position}");
+            //Debug.Log($"Built {items.Count} tree items with default {defaultTree} in lane {Position}");
 
             return items;
         }

@@ -377,7 +377,7 @@ namespace NetworkSkins.GUI
 
             MergeModifiers(modifiers, Catenary.Modifiers);
 
-            Debug.Log($"Built {modifiers.Values.Sum(p => p.Count)} modifiers for {modifiers.Count} prefabs.");
+            //Debug.Log($"Built {modifiers.Values.Sum(p => p.Count)} modifiers for {modifiers.Count} prefabs.");
 
             NetworkSkinManager.instance.SetActiveModifiers(modifiers);
         }

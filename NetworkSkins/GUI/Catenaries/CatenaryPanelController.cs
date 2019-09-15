@@ -56,7 +56,7 @@ namespace NetworkSkins.GUI.Catenaries
                 }
             }
 
-            Debug.Log($"Built {items.Count} catenary items with default {singleDefaultCatenary}");
+            //Debug.Log($"Built {items.Count} catenary items with default {singleDefaultCatenary}");
 
             return items;
         }

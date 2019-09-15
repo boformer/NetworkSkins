@@ -46,7 +46,7 @@ namespace NetworkSkins.GUI.Pillars
                 }
             }
 
-            Debug.Log($"Built {_items.Count} street light items with default {defaultPillar} for {Prefab}");
+            //Debug.Log($"Built {_items.Count} pillar items with default {defaultPillar} for {Prefab}");
 
             return _items;
         }
