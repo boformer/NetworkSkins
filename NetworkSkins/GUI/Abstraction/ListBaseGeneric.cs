@@ -116,13 +116,34 @@ namespace NetworkSkins.GUI.Abstraction
                ? si1.Value.GetName()
                : string.Empty;
             string displayName = string.Concat(prefix, name);
-            
-            Texture2D thumbnail = id == "#NONE#"
-                ? Resources.NietIcon
-                : item is ListPanelController<T>.SimpleItem si2
-                ? si2.Value.GetThumbnail()
-                : Resources.DefaultIcon;
 
+            UITextureAtlas thumbnailAtlas;
+            string thumbnailSprite;
+            if(id == "#NONE#")
+            {
+                thumbnailAtlas = Resources.DefaultAtlas;
+                thumbnailSprite = "Niet";
+            }
+            else if(item is ListPanelController<T>.SimpleItem si2)
+            {
+                if(!TextureUtil.IsThumbTransparent(si2.Value))
+                {
+                    thumbnailAtlas = si2.Value.m_Atlas;
+                    thumbnailSprite = si2.Value.m_Thumbnail;
+                }
+                else
+                {
+                    thumbnailAtlas = Resources.DefaultAtlas;
+                    thumbnailSprite = "ToolbarIconProps";
+                }
+            }
+            else
+            {
+                // Default item
+                thumbnailAtlas = Resources.DefaultAtlas;
+                thumbnailSprite = "IconPolicyExtraInsulationDisabled";
+            }
+            
             ItemType type = UIUtil.PanelToItemType(PanelType);
 
             Color color = id == "#NONE#"
@@ -131,7 +152,7 @@ namespace NetworkSkins.GUI.Abstraction
                 ? si3.Value.GetLightColor()
                 : default;
 
-            return new ListItem(id, displayName, thumbnail, isFavourite, isBlacklisted, isDefault, type, color);
+            return new ListItem(id, displayName, thumbnailAtlas, thumbnailSprite, null, isFavourite, isBlacklisted, isDefault, type, color);
         }
     }
 }

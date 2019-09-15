@@ -22,7 +22,8 @@ namespace NetworkSkins.GUI.UIFastList
         private static readonly string[] enumNames = Enum.GetNames(typeof(Surface));
 
         private UIPanel thumbnailPanel;
-        private UITextureSprite thumbnailSprite;
+        private UISprite thumbnailSprite;
+        private UITextureSprite thumbnailSprite2;
         private UILabel nameLabel;
         private UIPanel checkboxPanel;
         private UIPanel lightColorPanel;
@@ -96,9 +97,14 @@ namespace NetworkSkins.GUI.UIFastList
             thumbnailPanel.backgroundSprite = "WhiteRect";
             thumbnailPanel.color = thumbnailBackgroundColor;
             thumbnailPanel.atlas = Resources.DefaultAtlas;
-            thumbnailSprite = thumbnailPanel.AddUIComponent<UITextureSprite>();
+
+            thumbnailSprite = thumbnailPanel.AddUIComponent<UISprite>();
             thumbnailSprite.size = new Vector2(31.0f, 28.0f);
             thumbnailSprite.relativePosition = new Vector2(1.0f, 1.0f);
+
+            thumbnailSprite2 = thumbnailPanel.AddUIComponent<UITextureSprite>();
+            thumbnailSprite2.size = new Vector2(31.0f, 28.0f);
+            thumbnailSprite2.relativePosition = new Vector2(1.0f, 1.0f);
         }
 
         private void CreateLabel() {
@@ -183,7 +189,19 @@ namespace NetworkSkins.GUI.UIFastList
 
         private void DisplayItem(bool isRowOdd) {
             color = NetworkSkinPanelController.IsSelected(itemData.ID, itemData.Type) ? selectedColor : isRowOdd ? oddColor : evenColor;
-            thumbnailSprite.texture = itemData.Thumbnail;
+            if(itemData.ThumbnailAtlas != null && itemData.ThumbnailSprite != null)
+            {
+                thumbnailSprite.isVisible = true;
+                thumbnailSprite2.isVisible = false;
+                thumbnailSprite.atlas = itemData.ThumbnailAtlas;
+                thumbnailSprite.spriteName = itemData.ThumbnailSprite;
+            } else
+            {
+                thumbnailSprite.isVisible = false;
+                thumbnailSprite2.isVisible = true;
+                thumbnailSprite2.texture = itemData.ThumbnailTexture;
+            }
+
             nameLabel.text = itemData.DisplayName;
             lightColorPanel.color = itemData.LightColor;
             favouriteCheckbox.isChecked = itemData.IsFavourite || IsBlacklisted();
