@@ -17,35 +17,6 @@ namespace NetworkSkins.Skins
         public const string DataKey = "NetworkSkins_APPLIED_SKINS";
         public const string LegacyDataKey = "NetworkSkins_SEGMENTS";
 
-        private static NetworkSkinManager _instance;
-        public static NetworkSkinManager instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = FindObjectOfType<NetworkSkinManager>();
-                    if (_instance == null)
-                    {
-                        var gameObject = new GameObject(nameof(NetworkSkinManager));
-                        _instance = gameObject.AddComponent<NetworkSkinManager>();
-                        DontDestroyOnLoad(_instance.gameObject);
-                    }
-                }
-                return _instance;
-            }
-        }
-
-        public static NetworkSkinManager Ensure() => instance;
-
-        public static void Uninstall()
-        {
-            if (_instance != null)
-            {
-                Destroy(_instance.gameObject);
-            }
-        }
-
         // stores which data is applied to a network segment
         // this is an array field for high lookup performance
         // can contain null values!

@@ -333,6 +333,11 @@ namespace NetworkSkins.Patches.NetNode
             
             var customSegmentsNodesInstructions = new[]
             {
+                // NetInfo.Segment[] customSegments = info.m_segments;
+                new CodeInstruction(infoLdInstruction), // info
+                new CodeInstruction(OpCodes.Ldfld, netInfoSegmentsField),
+                new CodeInstruction(OpCodes.Stloc, customSegmentsLocalVar),
+
                 // NetInfo.Node[] customNodes = info.m_nodes;
                 new CodeInstruction(infoLdInstruction), // info
                 new CodeInstruction(OpCodes.Ldfld, netInfoNodesField),
@@ -351,7 +356,7 @@ namespace NetworkSkins.Patches.NetNode
                 new CodeInstruction(OpCodes.Ldfld, networkSkinSegmentsField),
                 new CodeInstruction(OpCodes.Stloc, customSegmentsLocalVar),
 
-                // customLanes = SegmentSkinManager.NodeSkins[nodeID].m_nodes;
+                // customNodes = SegmentSkinManager.NodeSkins[nodeID].m_nodes;
                 new CodeInstruction(OpCodes.Ldsfld, nodeSkinsField),
                 new CodeInstruction(nodeIdLdInstruction), // nodeID
                 new CodeInstruction(OpCodes.Ldelem_Ref),
@@ -382,7 +387,7 @@ namespace NetworkSkins.Patches.NetNode
                             operand = customSegmentsLocalVar
                         };
                         codes.RemoveAt(index + 1);
-                    }/*
+                    }
                     else if (codes[index + 1].operand == netInfoNodesField)
                     {
                         // It is important that we copy the labels from the existing instruction!
@@ -393,7 +398,7 @@ namespace NetworkSkins.Patches.NetNode
                             operand = customNodesLocalVar
                         };
                         codes.RemoveAt(index + 1);
-                    }*/
+                    }
                 }
             }
 

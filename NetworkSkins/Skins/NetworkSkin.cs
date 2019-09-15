@@ -76,17 +76,17 @@ namespace NetworkSkins.Skins
                 Array.Copy(Prefab.m_segments, m_segments, m_segments.Length);
             }
 
-            if (prefab.m_nodes != null)
+            if (Prefab.m_nodes != null)
             {
-                m_nodes = new NetInfo.Node[prefab.m_nodes.Length];
-                Array.Copy(prefab.m_nodes, m_nodes, m_nodes.Length);
+                m_nodes = new NetInfo.Node[Prefab.m_nodes.Length];
+                Array.Copy(Prefab.m_nodes, m_nodes, m_nodes.Length);
             }
             
-            m_createPavement = prefab.m_createPavement;
-            m_createGravel = prefab.m_createGravel;
-            m_createRuining = prefab.m_createRuining;
-            m_clipTerrain = prefab.m_clipTerrain;
-            m_color = prefab.m_color;
+            m_createPavement = Prefab.m_createPavement;
+            m_createGravel = Prefab.m_createGravel;
+            m_createRuining = Prefab.m_createRuining;
+            m_clipTerrain = Prefab.m_clipTerrain;
+            m_color = Prefab.m_color;
 
             m_hasWires = false;
             UpdateHasWires();
