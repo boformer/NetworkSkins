@@ -1,0 +1,8 @@
+﻿Roads which need XYS upgrade:
+
+Basic Road
+Basic Road Bicycle
+Basic Road Tram
+Oneway Road
+Oneway Road Tram
+Small Road Monorail	

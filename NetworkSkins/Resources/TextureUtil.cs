@@ -52,11 +52,11 @@ namespace NetworkSkins
             Texture2D tex = info.m_Atlas?.sprites?.Find(sprite => sprite?.name == info.m_Thumbnail)?.texture;
             if (HasThumbDict.TryGetValue(info.name, out bool hasThumb)) {
                 if (hasThumb) return tex;
-                return Resources.PropIcon;
+                return Sprites.PropIcon;
             }
             bool isNull = tex == null, isTransparent = tex.IsTransparent();
             HasThumbDict[info.name] = !isNull && !isTransparent;
-            return isNull || isTransparent ? Resources.PropIcon : tex;
+            return isNull || isTransparent ? Sprites.PropIcon : tex;
         }
 
         public static Texture2D GetSpriteTexture(this UITextureAtlas atlas, string spriteName) {

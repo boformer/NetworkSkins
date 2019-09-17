@@ -59,13 +59,13 @@ namespace NetworkSkins.GUI.Colors
             textField.selectionSprite = "EmptySprite";
             textField.selectOnFocus = true;
             textField.text = savedSwatch.Name;
-            textField.atlas = Resources.DefaultAtlas;
+            textField.atlas = Sprites.DefaultAtlas;
             deleteButton = AddUIComponent<UIButton>();
             deleteButton.normalBgSprite = "";
             deleteButton.hoveredBgSprite = "DeleteLineButtonHover";
             deleteButton.pressedBgSprite = "DeleteLineButtonPressed";
             deleteButton.size = new Vector2(19.0f, 19.0f);
-            deleteButton.atlas = Resources.DefaultAtlas;
+            deleteButton.atlas = Sprites.DefaultAtlas;
             swatchButton.EventSwatchClicked += OnSwatchClicked;
             textField.eventTextChanged += OnTextChanged;
             deleteButton.eventClicked += OnDeleteClicked;

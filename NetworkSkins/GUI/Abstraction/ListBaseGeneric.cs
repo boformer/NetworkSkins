@@ -118,10 +118,10 @@ namespace NetworkSkins.GUI.Abstraction
             string displayName = string.Concat(prefix, name);
             
             Texture2D thumbnail = id == "#NONE#"
-                ? Resources.NietIcon
+                ? Sprites.NietIcon
                 : item is ListPanelController<T>.SimpleItem si2
                 ? si2.Value.GetThumbnail()
-                : Resources.DefaultIcon;
+                : Sprites.DefaultIcon;
 
             ItemType type = UIUtil.PanelToItemType(PanelType);
 

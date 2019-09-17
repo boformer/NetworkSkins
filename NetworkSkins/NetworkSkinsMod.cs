@@ -1,12 +1,15 @@
-﻿using ColossalFramework.UI;
+﻿using ColossalFramework.IO;
+using ColossalFramework.UI;
 using Harmony;
 using ICities;
 using NetworkSkins.GUI;
 using NetworkSkins.Locale;
 using NetworkSkins.Persistence;
 using NetworkSkins.Skins;
+using NetworkSkins.Skins.Bundles;
 using NetworkSkins.TranslationFramework;
 using System;
+using System.IO;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using static UnityEngine.Object;
@@ -35,12 +38,16 @@ namespace NetworkSkins
         public void OnEnabled()
         {
             NetworkSkinManager.Ensure();
+            BundleManager.Ensure();
 
-            InstallHarmony();
+            //InstallHarmony();
 
             if (LoadingManager.exists && LoadingManager.instance.m_loadingComplete)
             {
                 Install();
+                SkinBundle bundle = BundleManager.instance.MakeDefaultBundle();
+                string json = JsonUtility.ToJson(bundle);
+                File.WriteAllText(Path.Combine(DataLocation.addonsPath, $"{bundle.Name}.json"), json);
             }
         }
 

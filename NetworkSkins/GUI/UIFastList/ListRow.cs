@@ -73,7 +73,7 @@ namespace NetworkSkins.GUI.UIFastList
 
         public override void Build(PanelType panelType, Layout layout) {
             base.Build(panelType, layout);
-            atlas = Resources.DefaultAtlas;
+            atlas = Sprites.DefaultAtlas;
             backgroundSprite = "WhiteRect";
             CreateThumbnail();
             CreateLabel();
@@ -95,7 +95,7 @@ namespace NetworkSkins.GUI.UIFastList
             thumbnailPanel.size = new Vector2(33.0f, 30.0f);
             thumbnailPanel.backgroundSprite = "WhiteRect";
             thumbnailPanel.color = thumbnailBackgroundColor;
-            thumbnailPanel.atlas = Resources.DefaultAtlas;
+            thumbnailPanel.atlas = Sprites.DefaultAtlas;
             thumbnailSprite = thumbnailPanel.AddUIComponent<UITextureSprite>();
             thumbnailSprite.size = new Vector2(31.0f, 28.0f);
             thumbnailSprite.relativePosition = new Vector2(1.0f, 1.0f);
@@ -115,7 +115,7 @@ namespace NetworkSkins.GUI.UIFastList
             lightPanel.size = new Vector2(12.0f, 30.0f);
             lightColorPanel = lightPanel.AddUIComponent<UIPanel>();
             lightColorPanel.size = new Vector2(12.0f, 12.0f);
-            lightColorPanel.atlas = Resources.DefaultAtlas;
+            lightColorPanel.atlas = Sprites.DefaultAtlas;
             lightColorPanel.backgroundSprite = "PieChartWhiteFg";
             lightColorPanel.relativePosition = new Vector2(0.0f, 9.0f);
         }
@@ -127,13 +127,13 @@ namespace NetworkSkins.GUI.UIFastList
             favouriteCheckbox.size = new Vector2(22f, 22f);
             favouriteCheckbox.relativePosition = new Vector3(0.0f, 4.0f);
             uncheckedSprite = favouriteCheckbox.AddUIComponent<UISprite>();
-            uncheckedSprite.atlas = Resources.Atlas;
-            uncheckedSprite.spriteName = Resources.StarOutline;
+            uncheckedSprite.atlas = Sprites.Atlas;
+            uncheckedSprite.spriteName = Sprites.StarOutline;
             uncheckedSprite.size = favouriteCheckbox.size;
             uncheckedSprite.relativePosition = Vector3.zero;
             checkedSprite = uncheckedSprite.AddUIComponent<UISprite>();
-            checkedSprite.atlas = Resources.Atlas;
-            checkedSprite.spriteName = Resources.Star;
+            checkedSprite.atlas = Sprites.Atlas;
+            checkedSprite.spriteName = Sprites.Star;
             checkedSprite.size = favouriteCheckbox.size;
             checkedSprite.relativePosition = Vector2.zero;
             favouriteCheckbox.checkedBoxObject = checkedSprite;
@@ -147,7 +147,7 @@ namespace NetworkSkins.GUI.UIFastList
                 itemData.IsBlacklisted = blackListed;
                 if (blackListed) {
                     favouriteCheckbox.isChecked = true;
-                    checkedSprite.spriteName = Resources.Blacklisted;
+                    checkedSprite.spriteName = Sprites.Blacklisted;
                     uncheckedSprite.spriteName = "";
                     if (itemData.IsFavourite) {
                         itemData.IsFavourite = false;
@@ -157,7 +157,7 @@ namespace NetworkSkins.GUI.UIFastList
                     if (!itemData.IsFavourite) {
                         favouriteCheckbox.isChecked = false;
                     }
-                    uncheckedSprite.spriteName = Resources.StarOutline;
+                    uncheckedSprite.spriteName = Sprites.StarOutline;
                 }
                 EventBlacklistedChanged?.Invoke(itemData.ID, blackListed);
             } else if (eventParam.buttons == UIMouseButton.Left) {
@@ -165,8 +165,8 @@ namespace NetworkSkins.GUI.UIFastList
                 itemData.IsFavourite = favourite;
                 if (favourite) {
                     favouriteCheckbox.isChecked = true;
-                    checkedSprite.spriteName = Resources.Star;
-                    uncheckedSprite.spriteName = Resources.StarOutline;
+                    checkedSprite.spriteName = Sprites.Star;
+                    uncheckedSprite.spriteName = Sprites.StarOutline;
                     if (itemData.IsBlacklisted) {
                         itemData.IsBlacklisted = false;
                         EventBlacklistedChanged?.Invoke(itemData.ID, false);
@@ -187,8 +187,8 @@ namespace NetworkSkins.GUI.UIFastList
             nameLabel.text = itemData.DisplayName;
             lightColorPanel.color = itemData.LightColor;
             favouriteCheckbox.isChecked = itemData.IsFavourite || IsBlacklisted();
-            checkedSprite.spriteName = IsBlacklisted() ? Resources.Blacklisted : Resources.Star;
-            uncheckedSprite.spriteName = IsBlacklisted() ? "" :  Resources.StarOutline;
+            checkedSprite.spriteName = IsBlacklisted() ? Sprites.Blacklisted : Sprites.Star;
+            uncheckedSprite.spriteName = IsBlacklisted() ? "" :  Sprites.StarOutline;
             favouriteCheckbox.isVisible = true;
             for (int i = 0; i < enumNames.Length; i++) {
                 if (itemData.ID == enumNames[i]) {

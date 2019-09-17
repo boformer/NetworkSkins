@@ -61,7 +61,7 @@ namespace NetworkSkins.GUI.Surfaces
                     break;
                 default:
                     name = Translation.Instance.GetTranslation(TranslationID.LABEL_NONE);
-                    thumbnail = Resources.NietIcon;
+                    thumbnail = Sprites.NietIcon;
                     break;
             }
             var id = surfaceType == Surface.None ? "#NONE#" : Enum.GetName(typeof(Surface), surfaceType);

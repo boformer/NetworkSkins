@@ -59,7 +59,7 @@ namespace NetworkSkins.GUI.Abstraction
             laneTabstrip.builtinKeyNavigation = true;
             laneTabstrip.size = new Vector2(width - (Spacing * 2.0f) - 35.0f, 30.0f);
             laneTabstrip.eventSelectedIndexChanged += OnLaneTabstripSelectedIndexChanged;
-            laneTabstrip.atlas = Resources.DefaultAtlas;
+            laneTabstrip.atlas = Sprites.DefaultAtlas;
         }
 
         private void CreatePillarTabstrip() {
@@ -67,12 +67,12 @@ namespace NetworkSkins.GUI.Abstraction
             pillarTabstrip.builtinKeyNavigation = true;
             pillarTabstrip.size = new Vector2(width - (Spacing * 2.0f), 30.0f);
             pillarTabstrip.eventSelectedIndexChanged += OnPillarTabstripSelectedIndexChanged;
-            pillarTabstrip.atlas = Resources.DefaultAtlas;
+            pillarTabstrip.atlas = Sprites.DefaultAtlas;
         }
 
         private void CreateLockButton() {
             Vector2 buttonSize = new Vector2(30.0f, 30.0f);
-            lockButton = UIUtil.CreateButton(buttonSize, parentComponent: laneTabstripContainer, backgroundSprite: Resources.Unlocked, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_LOCK));
+            lockButton = UIUtil.CreateButton(buttonSize, parentComponent: laneTabstripContainer, backgroundSprite: Sprites.Unlocked, atlas: Sprites.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_LOCK));
             lockButton.eventClicked += OnLockClicked;
         }
 
@@ -84,18 +84,18 @@ namespace NetworkSkins.GUI.Abstraction
         }
 
         private void UnlockLaneTabs() {
-            lockButton.normalBgSprite = Resources.Unlocked;
-            lockButton.hoveredBgSprite = Resources.UnlockedHovered;
-            lockButton.pressedBgSprite = Resources.UnlockedPressed;
+            lockButton.normalBgSprite = Sprites.Unlocked;
+            lockButton.hoveredBgSprite = Sprites.UnlockedHovered;
+            lockButton.pressedBgSprite = Sprites.UnlockedPressed;
             for (int i = 0; i < laneTabs.Length; i++) {
                 laneTabs[i].Enable();
             }
         }
 
         private void LockLaneTabs() {
-            lockButton.normalBgSprite = Resources.Locked;
-            lockButton.hoveredBgSprite = Resources.Locked;
-            lockButton.pressedBgSprite = Resources.Locked;
+            lockButton.normalBgSprite = Sprites.Locked;
+            lockButton.hoveredBgSprite = Sprites.Locked;
+            lockButton.pressedBgSprite = Sprites.Locked;
             for (int i = 0; i < laneTabs.Length; i++) {
                 laneTabs[i].Disable();
             }

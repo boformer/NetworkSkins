@@ -12,8 +12,8 @@ namespace NetworkSkins.GUI.Colors
 
         public void Build(Color color) {
             size = new Vector2(19.0f, 19.0f);
-            atlas = Resources.Atlas;
-            normalBgSprite = Resources.Swatch;
+            atlas = Sprites.Atlas;
+            normalBgSprite = Sprites.Swatch;
             hoveredColor = new Color32((byte)Mathf.Min((color.r + 32), 255), (byte)Mathf.Min((color.g + 32), 255), (byte)Mathf.Min((color.b + 32), 255), 255);
             pressedColor = new Color32((byte)Mathf.Min((color.r + 64), 255), (byte)Mathf.Min((color.g + 64), 255), (byte)Mathf.Min((color.b + 64), 255), 255);
             focusedColor = color;

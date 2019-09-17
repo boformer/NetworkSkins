@@ -44,7 +44,7 @@ namespace NetworkSkins.Tool
             base.Awake();
             enabled = false;
             CursorInfo = ScriptableObject.CreateInstance<CursorInfo>();
-            CursorInfo.m_texture = TextureUtil.GetSpriteTexture(Resources.Atlas, Resources.PipetteCursor);
+            CursorInfo.m_texture = TextureUtil.GetSpriteTexture(Sprites.Atlas, Sprites.PipetteCursor);
             CursorInfo.m_hotspot = new Vector2(5f, 0f);
             FieldInfo fieldInfo = typeof(ToolController).GetField("m_tools", BindingFlags.Instance | BindingFlags.NonPublic);
             ToolBase[] tools = (ToolBase[])fieldInfo.GetValue(ToolsModifierControl.toolController);

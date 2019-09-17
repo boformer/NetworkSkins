@@ -104,7 +104,7 @@ namespace NetworkSkins.GUI.Colors
             colorPanel.backgroundSprite = "WhiteRect";
             colorPanel.size = new Vector2(28.0f, 25.0f);
             colorPanel.color = NetworkSkinPanelController.Color.SelectedColor;
-            colorPanel.atlas = Resources.DefaultAtlas;
+            colorPanel.atlas = Sprites.DefaultAtlas;
 
             Color32 color32 = colorPanel.color;
             CreateLabel(Translation.Instance.GetTranslation(TranslationID.LABEL_RED));
@@ -126,7 +126,7 @@ namespace NetworkSkins.GUI.Colors
             label.verticalAlignment = UIVerticalAlignment.Middle;
             label.textAlignment = UIHorizontalAlignment.Right;
             label.padding = new RectOffset(0, 0, 5, 0);
-            label.atlas = Resources.DefaultAtlas;
+            label.atlas = Sprites.DefaultAtlas;
             return label;
         }
 
@@ -150,7 +150,7 @@ namespace NetworkSkins.GUI.Colors
             textField.eventTextChanged += OnTextChanged;
             textField.eventTextSubmitted += OnTextSubmitted;
             textField.text = text;
-            textField.atlas = Resources.DefaultAtlas;
+            textField.atlas = Sprites.DefaultAtlas;
             return textField;
         }
 
