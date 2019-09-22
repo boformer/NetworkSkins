@@ -49,6 +49,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -205,6 +206,7 @@
     <Content Include="Patches\NetSegment\NetSegmentPopulateGroupDataPatch.txt" />
     <Content Include="Patches\NetSegment\NetSegmentRenderInstancePatch.txt" />
     <Content Include="Resources\Notes.txt" />
+    <Content Include="Skins\Bundles\NS-Bundle.xml" />
     <EmbeddedResource Include="Resources\Sprites\Undo.png" />
     <EmbeddedResource Include="Resources\Sprites\UndoHovered.png" />
     <EmbeddedResource Include="Resources\Sprites\UndoPressed.png" />

@@ -10,5 +10,7 @@ namespace NetworkSkins.Skins.Bundles
         public string Name;
         public List<Network> Networks;
         public List<BooleanOption> BooleanOptions;
+
+        public SkinBundle() { }
     }
 }

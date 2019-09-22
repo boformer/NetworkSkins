@@ -11,6 +11,7 @@ using NetworkSkins.TranslationFramework;
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Xml.Serialization;
 using UnityEngine;
 using static UnityEngine.Object;
 
@@ -46,8 +47,12 @@ namespace NetworkSkins
             {
                 Install();
                 SkinBundle bundle = BundleManager.instance.MakeDefaultBundle();
-                string json = JsonUtility.ToJson(bundle);
-                File.WriteAllText(Path.Combine(DataLocation.addonsPath, $"{bundle.Name}.json"), json);
+
+                string fileName = Path.Combine(DataLocation.addonsPath, $"NS-Bundle.xml"); ;
+                XmlSerializer serializer = new XmlSerializer(typeof(SkinBundle));
+                using (StreamWriter writer = new StreamWriter(fileName)) {
+                    serializer.Serialize(writer, bundle);
+                }
             }
         }
 

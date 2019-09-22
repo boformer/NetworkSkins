@@ -65,13 +65,13 @@ namespace NetworkSkins.Skins.Bundles
             };
 
             var slopeSegment = new NetTexture() {
-                Index = 0,
+                Index = 1,
                 Diffuse = "basic-road-slope.png",
                 LodDiffuse = "basic-road-slope-lod.png"
             };
 
             var slopeNode = new NetTexture() {
-                Index = 0,
+                Index = 1,
                 Diffuse = "basic-road-slope-node.png",
                 LodDiffuse = "basic-road-slope-node-lod.png"
             };
