@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Language UniqueName="it" ReadableName="Italiano" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2009/XMLSchema/XMLSchema.xsd">
+  <Translations>
+    <Translation ID="MOD_DESCRIPTION" String="Cambia l'aspetto visivo di strade, binari e altri Networks" />
+    <Translation ID="LABEL_NONE" String="Nessuno" />
+    <Translation ID="LABEL_DEFAULT" String="Default" />
+    <Translation ID="LABEL_SEARCH" String="Cerca" />
+    <Translation ID="LABEL_LEFTLANE" String="Corsia Sinistra" />
+    <Translation ID="LABEL_MIDDLELANE" String="Corsia Centrale" />
+    <Translation ID="LABEL_RIGHTLANE" String="Corsia Destra" />
+    <Translation ID="LABEL_PAVEMENT" String="Marciapiede" />
+    <Translation ID="LABEL_GRAVEL" String="Ghiaia" />
+    <Translation ID="LABEL_RUINED" String="Sterrato" />
+    <Translation ID="LABEL_ELEVATED" String="Elevata" />
+    <Translation ID="LABEL_ELEVATEDMIDDLE" String="Elevata Centrale" />
+    <Translation ID="LABEL_BRIDGE" String="Ponte" />
+    <Translation ID="LABEL_BRIDGEMIDDLE" String="Ponte Centrale" />
+    <Translation ID="LABEL_DISTANCE" String="Distanza" />
+    <Translation ID="LABEL_RED" String="R" />
+    <Translation ID="LABEL_GREEN" String="G" />
+    <Translation ID="LABEL_BLUE" String="B" />
+    <Translation ID="LABEL_GLOBAL_SELECTION_DATA" String="Salva le selezioni attive a livello globale" />
+    <Translation ID="LABEL_HIDEBLACKLISTED" String="Nascondi gli elementi nella blacklist" />
+    <Translation ID="LABEL_DISPLAYATSELECTED" String="Auto-scroll fino al selezionato" />
+    <Translation ID="LABEL_NEW_SWATCH" String="Nuovo Colore" />
+    <Translation ID="TOOLTIP_HIDEBLACKLISTED" String="Abilitare questa opzione per nascondere gli elementi nella blacklist dagli elenchi" />
+    <Translation ID="TOOLTIP_GLOBAL_SELECTION_DATA" String="Abilita questa opzione per fare in modo che la mod ricordi le&#10;ultime skin utilizzate per ogni Network a livello globale, anziché per salvataggio" />
+    <Translation ID="TOOLTIP_DISPLAYATSELECTED" String="Abilitare questa opzione per scorrere automaticamente all'elemento&#10;attualmente selezionato quando si apre un pannello" />
+    <Translation ID="TOOLTIP_TREES" String="Alberi" />
+    <Translation ID="TOOLTIP_LIGHTS" String="Luci" />
+    <Translation ID="TOOLTIP_SURFACE" String="Superfici" />
+    <Translation ID="TOOLTIP_PILLARS" String="Piloni" />
+    <Translation ID="TOOLTIP_CATENARY" String="Catenarie" />
+    <Translation ID="TOOLTIP_COLOR" String="Colore" />
+    <Translation ID="TOOLTIP_SETTINGS" String="Impostazioni" />
+    <Translation ID="TOOLTIP_PIPETTE" String="Pipetta&#10;Fare clic su un segmento per copiarne la skin e selezionare il Network" />
+    <Translation ID="TOOLTIP_LOCK" String="Attiva il blocco per modificare tutte le corsie contemporaneamente" />
+    <Translation ID="TOOLTIP_ADDFAVOURITE_ADDBLACKLIST" String="Clic col sinistro per aggiungere ai preferiti, Clic col destro per aggiungere alla blacklist" />
+    <Translation ID="TOOLTIP_REMOVEFAVOURITE" String="Clic col sinistro per rimuovere dai preferiti, Clic col destro per aggiungere alla blacklist" />
+    <Translation ID="TOOLTIP_REMOVEBLACKLIST" String="Clic col sinistro per aggiungere ai preferiti, Clic col destro per rimuovere dalla blacklist" />
+    <Translation ID="TOOLTIP_RESETCURRENT" String="Ripristina tutte le impostazioni per il network attualmente selezionata" />
+    <Translation ID="TOOLTIP_BUTTON_SAVE_MAXREACHED" String="Hai raggiunto la quantità massima di colori salvati" />
+    <Translation ID="TOOLTIP_BUTTON_SAVE_COLOREXISTS" String="Il colore attualmente selezionato è già salvato" />
+    <Translation ID="TOOLTIP_BUTTON_SAVE" String="Salva il colore corrente come preferito" />
+    <Translation ID="BUTTON_RESET" String="Reset" />
+    <Translation ID="BUTTON_SAVE" String="Salva" />
+    <Translation ID="TOOLTIP_BUTTON_DELETE" String="Cancella" />
+  </Translations>
+</Language>
