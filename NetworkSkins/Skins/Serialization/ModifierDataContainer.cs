@@ -1,6 +1,11 @@
 ﻿using ColossalFramework.IO;
 using System.Collections.Generic;
 using System.IO;
+#if DEBUG
+using NetworkSkins.Skins.Modifiers;
+using System.Linq;
+using UnityEngine;
+#endif
 
 namespace NetworkSkins.Skins.Serialization
 {

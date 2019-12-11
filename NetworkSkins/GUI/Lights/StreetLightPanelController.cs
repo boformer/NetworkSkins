@@ -26,6 +26,16 @@ namespace NetworkSkins.GUI.Lights
             OnChanged();
         }
 
+        public override void Reset()
+        {
+            base.Reset();
+
+            if (Enabled)
+            {
+                SetRepeatDistance(DefaultRepeatDistance);
+            }
+        }
+
         protected override void Build()
         {
             base.Build();

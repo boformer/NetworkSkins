@@ -6,6 +6,7 @@ namespace NetworkSkins.Net
 {
     public static class StreetLightUtils
     {
+        private const string AmericanSignReplacerWorkshopId = "1523608557";
         public static List<PropInfo> GetAvailableStreetLights()
         {
             var streetLights = new List<PropInfo>();
@@ -48,6 +49,9 @@ namespace NetworkSkins.Net
                 {
                     if (prefab.name.ToLower().Contains("taxiway")) return false;
                     if (prefab.name.ToLower().Contains("runway")) return false;
+
+                    // American highway signs with integrated lights are NOT street lights!
+                    if (prefab.name.StartsWith(AmericanSignReplacerWorkshopId)) return false;
 
                     foreach (var effect in prefab.m_effects)
                     {
