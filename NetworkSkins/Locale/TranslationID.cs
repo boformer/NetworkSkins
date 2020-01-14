@@ -23,7 +23,8 @@
         public const string LABEL_GLOBAL_SELECTION_DATA = "LABEL_GLOBAL_SELECTION_DATA";
         public const string LABEL_HIDEBLACKLISTED = "LABEL_HIDEBLACKLISTED";
         public const string LABEL_DISPLAYATSELECTED = "LABEL_DISPLAYATSELECTED";
-        public const string LABEL_NEW_SWATCH = "LABEL_NEW_SWATCH"; 
+        public const string LABEL_NEW_SWATCH = "LABEL_NEW_SWATCH";
+        public const string LABEL_HIDE_NODE_MARKINGS = "LABEL_HIDE_NODE_MARKINGS";
         public const string TOOLTIP_GLOBAL_SELECTION_DATA = "TOOLTIP_GLOBAL_SELECTION_DATA";
         public const string TOOLTIP_HIDEBLACKLISTED = "TOOLTIP_HIDEBLACKLISTED";
         public const string TOOLTIP_DISPLAYATSELECTED = "TOOLTIP_DISPLAYATSELECTED";
@@ -32,7 +33,8 @@
         public const string TOOLTIP_SURFACE = "TOOLTIP_SURFACE";
         public const string TOOLTIP_PILLARS = "TOOLTIP_PILLARS";
         public const string TOOLTIP_CATENARY = "TOOLTIP_CATENARY";
-        public const string TOOLTIP_COLOR = "TOOLTIP_COLOR"; 
+        public const string TOOLTIP_COLOR = "TOOLTIP_COLOR";
+        public const string TOOLTIP_ROAD_DECORATION = "TOOLTIP_ROAD_DECORATION";
         public const string TOOLTIP_SETTINGS = "TOOLTIP_SETTINGS";
         public const string TOOLTIP_PIPETTE = "TOOLTIP_PIPETTE";
         public const string TOOLTIP_LOCK = "TOOLTIP_LOCK";
@@ -44,6 +46,7 @@
         public const string TOOLTIP_BUTTON_SAVE_MAXREACHED = "TOOLTIP_BUTTON_SAVE_MAXREACHED";
         public const string TOOLTIP_BUTTON_SAVE_COLOREXISTS = "TOOLTIP_BUTTON_SAVE_COLOREXISTS";
         public const string TOOLTIP_BUTTON_SAVE = "TOOLTIP_BUTTON_SAVE";
+        public const string TOOLTIP_HIDE_NODE_MARKINGS = "TOOLTIP_HIDE_NODE_MARKINGS";
         public const string BUTTON_RESET = "BUTTON_RESET";
         public const string BUTTON_SAVE = "BUTTON_SAVE";
     }

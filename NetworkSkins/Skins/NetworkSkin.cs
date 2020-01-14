@@ -43,7 +43,7 @@ namespace NetworkSkins.Skins
 
         public bool m_hasWires;
 
-        public bool m_hidePedestrianCrossings;
+        public bool m_nodeMarkingsHidden;
         
         public int UseCount = 0;
 
@@ -81,7 +81,7 @@ namespace NetworkSkins.Skins
             m_createRuining = Prefab.m_createRuining;
             m_clipTerrain = Prefab.m_clipTerrain;
             m_color = Prefab.m_color;
-            m_hidePedestrianCrossings = false;
+            m_nodeMarkingsHidden = false;
 
             UpdateHasWires();
 

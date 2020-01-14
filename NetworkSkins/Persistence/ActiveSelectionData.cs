@@ -112,6 +112,19 @@ namespace NetworkSkins.Persistence
             _values[new ValueKey(prefab.name, key)] = string.Concat("#", ColorUtility.ToHtmlStringRGB(value));
         }
 
+        public bool? GetBoolValue(NetInfo prefab, string key)
+        {
+            var value = GetValue(prefab, key);
+            if (value == null) return null;
+
+            return value == "true";
+        }
+
+        public void SetBoolValue(NetInfo prefab, string key, bool value)
+        {
+            _values[new ValueKey(prefab.name, key)] = value ? "true" : "false";
+        }
+
         public void ClearValue(NetInfo prefab, string key) {
             _values.Remove(new ValueKey(prefab.name, key));
         }

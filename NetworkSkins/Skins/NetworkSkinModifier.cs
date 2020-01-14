@@ -42,8 +42,8 @@ namespace NetworkSkins.Skins
                     return PillarModifier.DeserializeImpl(s, prefabCollection, errors);
                 case NetworkSkinModifierType.Catenary:
                     return CatenaryModifier.DeserializeImpl(s, prefabCollection, errors);
-                case NetworkSkinModifierType.NoPedestrianCrossing:
-                    return PedestrianCrossingModifier.DeserializeImpl(s);
+                case NetworkSkinModifierType.RoadDecoration:
+                    return RoadDecorationModifier.DeserializeImpl(s);
                 default:
                     return null;
             }
@@ -59,6 +59,6 @@ namespace NetworkSkins.Skins
         Tree = 4,
         Pillar = 5,
         Catenary = 6,
-        NoPedestrianCrossing = 7
+        RoadDecoration = 7
     }
 }
