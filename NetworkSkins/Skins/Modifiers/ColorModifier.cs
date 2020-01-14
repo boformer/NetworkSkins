@@ -1,5 +1,4 @@
 ﻿using ColossalFramework.IO;
-using NetworkSkins.Skins.Serialization;
 using UnityEngine;
 
 namespace NetworkSkins.Skins.Modifiers
@@ -27,7 +26,7 @@ namespace NetworkSkins.Skins.Modifiers
             s.WriteUInt8(Color.a);
         }
 
-        public static ColorModifier DeserializeImpl(DataSerializer s, NetworkSkinLoadErrors errors)
+        public static ColorModifier DeserializeImpl(DataSerializer s)
         {
             var color = new Color32((byte)s.ReadUInt8(), (byte)s.ReadUInt8(), (byte)s.ReadUInt8(), (byte)s.ReadUInt8());
             return new ColorModifier(color);

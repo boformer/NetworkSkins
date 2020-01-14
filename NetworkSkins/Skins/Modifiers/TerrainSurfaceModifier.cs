@@ -1,6 +1,5 @@
 ﻿using ColossalFramework.IO;
 using NetworkSkins.Net;
-using NetworkSkins.Skins.Serialization;
 
 namespace NetworkSkins.Skins.Modifiers
 {
@@ -47,7 +46,7 @@ namespace NetworkSkins.Skins.Modifiers
             s.WriteUInt8((uint)GroundType);
         }
 
-        public static TerrainSurfaceModifier DeserializeImpl(DataSerializer s, NetworkSkinLoadErrors errors)
+        public static TerrainSurfaceModifier DeserializeImpl(DataSerializer s)
         {
             var groundType = (Surface)s.ReadUInt8();
 
