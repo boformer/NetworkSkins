@@ -64,7 +64,7 @@ namespace NetworkSkins.GUI.RoadDecoration
 
         private void RefreshCanHideNodeMarkings()
         {
-            _canHideNodeMarkings = Prefab.m_netAI is RoadBaseAI && Prefab.m_hasPedestrianLanes && Prefab.m_hasForwardVehicleLanes;
+            _canHideNodeMarkings = Prefab.m_netAI is RoadBaseAI;
         }
 
         protected override Dictionary<NetInfo, List<NetworkSkinModifier>> BuildModifiers()
