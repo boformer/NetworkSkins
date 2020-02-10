@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.Net;
 using NetworkSkins.Persistence;
@@ -62,9 +63,27 @@ namespace NetworkSkins.GUI.RoadDecoration
             }
         }
 
+        private static bool CanHideMarkings(NetInfo prefab)
+        {
+            try
+            {
+                MethodInfo mCanHideMarkings =
+                    Assembly
+                    .Load("HideTMPECrosswalks.dll")
+                    .GetType("HideTMPECrosswalks.Utils.PrefabUtils")
+                    .GetMethod("CanHideMarkings", BindingFlags.Static | BindingFlags.Public);
+
+                return (bool)mCanHideMarkings.Invoke(null, new object[] { prefab });
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         private void RefreshCanHideNodeMarkings()
         {
-            _canHideNodeMarkings = Prefab.m_netAI is RoadBaseAI;
+            _canHideNodeMarkings = CanHideMarkings(Prefab);
         }
 
         protected override Dictionary<NetInfo, List<NetworkSkinModifier>> BuildModifiers()
