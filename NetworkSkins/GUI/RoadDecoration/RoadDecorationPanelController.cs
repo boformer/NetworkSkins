@@ -67,13 +67,21 @@ namespace NetworkSkins.GUI.RoadDecoration
         {
             try
             {
-                MethodInfo mCanHideMarkings =
+                MethodInfo m_CanHideMarkings =
                     Assembly
                     .Load("HideTMPECrosswalks.dll")
                     .GetType("HideTMPECrosswalks.Utils.PrefabUtils")
                     .GetMethod("CanHideMarkings", BindingFlags.Static | BindingFlags.Public);
-
-                return (bool)mCanHideMarkings.Invoke(null, new object[] { prefab });
+                FieldInfo f_isEnabled = 
+                    Assembly
+                    .Load("HideTMPECrosswalks.dll")
+                    .GetType("HideTMPECrosswalks.KianModInfo")
+                    .GetField("IsEnabled", BindingFlags.Static | BindingFlags.Public);
+                bool enabled = (bool)f_isEnabled.GetValue(null);
+                if (!enabled) {
+                    return false;
+                }
+                return (bool)m_CanHideMarkings.Invoke(null, new object[] { prefab });
             }
             catch
             {
