@@ -72,15 +72,6 @@ namespace NetworkSkins.GUI.RoadDecoration
                     .Load("HideTMPECrosswalks.dll")
                     .GetType("HideTMPECrosswalks.Utils.PrefabUtils")
                     .GetMethod("CanHideMarkings", BindingFlags.Static | BindingFlags.Public);
-                FieldInfo f_isEnabled = 
-                    Assembly
-                    .Load("HideTMPECrosswalks.dll")
-                    .GetType("HideTMPECrosswalks.KianModInfo")
-                    .GetField("IsEnabled", BindingFlags.Static | BindingFlags.Public);
-                bool enabled = (bool)f_isEnabled.GetValue(null);
-                if (!enabled) {
-                    return false;
-                }
                 return (bool)m_CanHideMarkings.Invoke(null, new object[] { prefab });
             }
             catch
