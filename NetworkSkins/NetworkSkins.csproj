@@ -31,13 +31,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <SteamPath >~/Library/Application Support/Steam/</SteamPath>
-    <SteamPath Condition="! Exists ('$(SteamPath)')">$(ProgramFiles)\Steam\</SteamPath>    
+    <SteamPath>~/Library/Application Support/Steam/</SteamPath>
+    <SteamPath Condition="! Exists ('$(SteamPath)')">$(ProgramFiles)\Steam\</SteamPath>
     <SteamPath Condition="! Exists ('$(SteamPath)')">$(Registry:HKEY_CURRENT_USER\Software\Valve\Steam@SteamPath)</SteamPath>
     <ManagedDLLPath>$(SteamPath)\steamapps\common\Cities_Skylines\Cities_Data\Managed</ManagedDLLPath>
     <ManagedDLLPath Condition="!  Exists ('$(ManagedDLLPath)')">C:\References</ManagedDLLPath>
   </PropertyGroup>
-  
   <ItemGroup>
     <Reference Include="0Harmony, Version=1.2.0.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -213,6 +212,10 @@
     <Content Include="Patches\NetSegment\NetSegmentCalculateGroupDataPatch.txt" />
     <Content Include="Patches\NetSegment\NetSegmentPopulateGroupDataPatch.txt" />
     <Content Include="Patches\NetSegment\NetSegmentRenderInstancePatch.txt" />
+    <EmbeddedResource Include="Resources\Crossing.png" />
+    <EmbeddedResource Include="Resources\CrossingFocused.png" />
+    <EmbeddedResource Include="Resources\CrossingHovered.png" />
+    <EmbeddedResource Include="Resources\CrossingPressed.png" />
     <EmbeddedResource Include="Resources\Undo.png" />
     <EmbeddedResource Include="Resources\UndoHovered.png" />
     <EmbeddedResource Include="Resources\UndoPressed.png" />
