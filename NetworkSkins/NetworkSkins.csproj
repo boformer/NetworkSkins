@@ -32,9 +32,11 @@
   </PropertyGroup>
   <PropertyGroup>
     <SteamPath>~/Library/Application Support/Steam/</SteamPath>
-    <SteamPath Condition="! Exists ('$(SteamPath)')">$(ProgramFiles)\Steam\</SteamPath>
+    <SteamPath Condition="! Exists ('$(SteamPath)')">$(ProgramFiles)\Steam</SteamPath>
     <SteamPath Condition="! Exists ('$(SteamPath)')">$(Registry:HKEY_CURRENT_USER\Software\Valve\Steam@SteamPath)</SteamPath>
-    <ManagedDLLPath>$(SteamPath)\steamapps\common\Cities_Skylines\Cities_Data\Managed</ManagedDLLPath>
+    <CSPath>$(SteamPath)\steamapps\common\Cities_Skylines</CSPath>
+    <ManagedDLLPath>$(CSPath)\Cities_Data\Managed</ManagedDLLPath>
+    <ManagedDLLPath Condition="!  Exists ('$(ManagedDLLPath)')">..\dependencies</ManagedDLLPath>
     <ManagedDLLPath Condition="!  Exists ('$(ManagedDLLPath)')">C:\References</ManagedDLLPath>
   </PropertyGroup>
   <ItemGroup>
