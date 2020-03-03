@@ -6,7 +6,7 @@ Mod for Cities: Skylines
 Harmony Dependency
 ------------------
 
-**Uses a custom build of Harmony 2.0.0.0, found in the libs folder!** 
+**Uses a local custom build of Harmony 2.0.0.0, found in the libs folder!** 
 
 The build is based on this [Harmony commit](https://github.com/pardeike/Harmony/tree/58dc1823d5970e8251ec6ce0d54c371bc08e26f6), with the following change to `HarmonyInstance.UnpatchAll`:
 
