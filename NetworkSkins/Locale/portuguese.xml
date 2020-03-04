@@ -23,6 +23,7 @@
 		<Translation ID="LABEL_HIDEBLACKLISTED" String="Esconder itens banidos" />
 		<Translation ID="LABEL_DISPLAYATSELECTED" String="Rolar para a seleção" />
 		<Translation ID="LABEL_NEW_SWATCH" String="Nova cor" />
+    <Translation ID="LABEL_HIDE_NODE_MARKINGS" String="Hide Intersection Markings" />
 		<Translation ID="TOOLTIP_HIDEBLACKLISTED" String="Ative esta opção para esconder os itens banidos." />
 		<Translation ID="TOOLTIP_GLOBAL_SELECTION_DATA" String="Ative essa opção para usar suas configurações por tipo de segmento em todos os savegames, ao invés de por savegame." />
 		<Translation ID="TOOLTIP_DISPLAYATSELECTED" String="Ative essa opção para rolar as opções para o valor atualmente aplicado quando mudar a seleção" />
@@ -32,6 +33,7 @@
 		<Translation ID="TOOLTIP_PILLARS" String="Pilares" />
 		<Translation ID="TOOLTIP_CATENARY" String="Catenária" />
 		<Translation ID="TOOLTIP_COLOR" String="Cor" />
+    <Translation ID="TOOLTIP_ROAD_DECORATION" String="Markings" />
 		<Translation ID="TOOLTIP_SETTINGS" String="Opções" />
 		<Translation ID="TOOLTIP_PIPETTE" String="Conta-gotas&#xA;Clique no segmento para copiar a estilização e depois selecione o segmento para aplicação" />
 		<Translation ID="TOOLTIP_LOCK" String="Ative a trava para mudar todas as faixas de uma vez" />
@@ -42,6 +44,7 @@
 		<Translation ID="TOOLTIP_BUTTON_SAVE_MAXREACHED" String="Você atingiu o número máximo de cores salvas" />
 		<Translation ID="TOOLTIP_BUTTON_SAVE_COLOREXISTS" String="A cor selecionada já está salva" />
 		<Translation ID="TOOLTIP_BUTTON_SAVE" String="Salvar a cor como favorita" />
+    <Translation ID="TOOLTIP_HIDE_NODE_MARKINGS" String="Hide markings such as pedestrian crossings and stop lines" />
 		<Translation ID="BUTTON_RESET" String="Redefinir" />
 		<Translation ID="BUTTON_SAVE" String="Salvar" />
 		<Translation ID="TOOLTIP_BUTTON_DELETE" String="Apaga" />

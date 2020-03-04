@@ -23,6 +23,7 @@
     <Translation ID="LABEL_HIDEBLACKLISTED" String="Verberg items van de zwarte lijst" />
     <Translation ID="LABEL_DISPLAYATSELECTED" String="Automatisch scrollen naar de selectie" />
     <Translation ID="LABEL_NEW_SWATCH" String="Nieuwe kleur" />
+    <Translation ID="LABEL_HIDE_NODE_MARKINGS" String="Hide Intersection Markings" />
     <Translation ID="TOOLTIP_HIDEBLACKLISTED" String="Schakel deze optie in om items van de zwarte lijst te verbergen in de lijst" />
     <Translation ID="TOOLTIP_GLOBAL_SELECTION_DATA" String="Schakel deze optie in om de mod overkoepelend in het hele spel te laten onthouden welke instellingen het laatst bij een skin zijn gekozen, in plaats van per opgeslagen stad" />
     <Translation ID="TOOLTIP_DISPLAYATSELECTED" String="Schakel deze optie in om automatisch naar het huidig geselecteerde item te scrollen wanneer je een paneel opent" />
@@ -32,6 +33,7 @@
     <Translation ID="TOOLTIP_PILLARS" String="Palen" />
     <Translation ID="TOOLTIP_CATENARY" String="Bovenleiding" />
     <Translation ID="TOOLTIP_COLOR" String="Kleur" />
+    <Translation ID="TOOLTIP_ROAD_DECORATION" String="Markings" />
     <Translation ID="TOOLTIP_SETTINGS" String="Instellingen" />
     <Translation ID="TOOLTIP_PIPETTE" String="Pipet&#10;Klik op een segment om een kopie te maken van de skin en het netwerk te selecteren" />
     <Translation ID="TOOLTIP_LOCK" String="Activeer de vergrendeling om alle rijbanen tegelijk te bewerken" />
@@ -42,6 +44,7 @@
     <Translation ID="TOOLTIP_BUTTON_SAVE_MAXREACHED" String="Je hebt het maximale aantal opgeslagen kleuren bereikt" />
     <Translation ID="TOOLTIP_BUTTON_SAVE_COLOREXISTS" String="De huidige geselecteerde kleur is al opgeslagen" />
     <Translation ID="TOOLTIP_BUTTON_SAVE" String="Sla huidige kleur op als favoriet" />
+    <Translation ID="TOOLTIP_HIDE_NODE_MARKINGS" String="Hide markings such as pedestrian crossings and stop lines" />
     <Translation ID="BUTTON_RESET" String="Opnieuw instellen" />
     <Translation ID="BUTTON_SAVE" String="Opslaan" />
     <Translation ID="TOOLTIP_BUTTON_DELETE" String="Verwijderen" />

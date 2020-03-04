@@ -23,6 +23,7 @@
     <Translation ID="LABEL_HIDEBLACKLISTED" String="Nascondi gli elementi nella blacklist" />
     <Translation ID="LABEL_DISPLAYATSELECTED" String="Auto-scroll fino al selezionato" />
     <Translation ID="LABEL_NEW_SWATCH" String="Nuovo Colore" />
+    <Translation ID="LABEL_HIDE_NODE_MARKINGS" String="Hide Intersection Markings" />
     <Translation ID="TOOLTIP_HIDEBLACKLISTED" String="Abilitare questa opzione per nascondere gli elementi nella blacklist dagli elenchi" />
     <Translation ID="TOOLTIP_GLOBAL_SELECTION_DATA" String="Abilita questa opzione per fare in modo che la mod ricordi le&#10;ultime skin utilizzate per ogni Network a livello globale, anziché per salvataggio" />
     <Translation ID="TOOLTIP_DISPLAYATSELECTED" String="Abilitare questa opzione per scorrere automaticamente all'elemento&#10;attualmente selezionato quando si apre un pannello" />
@@ -32,6 +33,7 @@
     <Translation ID="TOOLTIP_PILLARS" String="Piloni" />
     <Translation ID="TOOLTIP_CATENARY" String="Catenarie" />
     <Translation ID="TOOLTIP_COLOR" String="Colore" />
+    <Translation ID="TOOLTIP_ROAD_DECORATION" String="Markings" />
     <Translation ID="TOOLTIP_SETTINGS" String="Impostazioni" />
     <Translation ID="TOOLTIP_PIPETTE" String="Pipetta&#10;Fare clic su un segmento per copiarne la skin e selezionare il Network" />
     <Translation ID="TOOLTIP_LOCK" String="Attiva il blocco per modificare tutte le corsie contemporaneamente" />
@@ -42,6 +44,7 @@
     <Translation ID="TOOLTIP_BUTTON_SAVE_MAXREACHED" String="Hai raggiunto la quantità massima di colori salvati" />
     <Translation ID="TOOLTIP_BUTTON_SAVE_COLOREXISTS" String="Il colore attualmente selezionato è già salvato" />
     <Translation ID="TOOLTIP_BUTTON_SAVE" String="Salva il colore corrente come preferito" />
+    <Translation ID="TOOLTIP_HIDE_NODE_MARKINGS" String="Hide markings such as pedestrian crossings and stop lines" />
     <Translation ID="BUTTON_RESET" String="Reset" />
     <Translation ID="BUTTON_SAVE" String="Salva" />
     <Translation ID="TOOLTIP_BUTTON_DELETE" String="Cancella" />

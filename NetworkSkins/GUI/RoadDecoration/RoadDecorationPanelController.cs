@@ -16,6 +16,32 @@ namespace NetworkSkins.GUI.RoadDecoration
 
         public bool _canHideNodeMarkings = false;
 
+        private MethodInfo _canHideMarkings;
+
+        public RoadDecorationPanelController()
+        {
+            _canHideMarkings = FindCanHideMarkingsMethod();
+        }
+
+        private static MethodInfo FindCanHideMarkingsMethod()
+        {
+            try
+            {
+                var assembly = Assembly.Load("HideCrosswalks");
+                if (assembly == null) return null;
+
+                var method = assembly.GetType("HideCrosswalks.NetInfoExt")?
+                    .GetMethod("GetCanHideMarkings", BindingFlags.Static | BindingFlags.Public); 
+                if (method != null) return method;
+
+                return assembly.GetType("HideTMPECrosswalks.Utils.PrefabUtils")?
+                    .GetMethod("CanHideMarkings", BindingFlags.Static | BindingFlags.Public);
+            }
+            catch
+            {
+                return null;
+            }
+        }
 
         public void SetNodeMarkingsHidden(bool nodeMarkingsHidden)
         {
@@ -63,34 +89,9 @@ namespace NetworkSkins.GUI.RoadDecoration
             }
         }
 
-        private static bool CanHideMarkings(NetInfo prefab)
+        private bool CanHideMarkings(NetInfo prefab)
         {
-            try
-            {
-                MethodInfo m_CanHideMarkings =
-                    Assembly
-                    .Load("HideCrosswalks.dll")
-                    .GetType("HideTMPECrosswalks.Utils.PrefabUtils")
-                    .GetMethod("CanHideMarkings", BindingFlags.Static | BindingFlags.Public);
-                return (bool)m_CanHideMarkings.Invoke(null, new object[] { prefab });
-            }
-            catch
-            {
-                try
-                {
-                    //legacy
-                    MethodInfo m_CanHideMarkings =
-                        Assembly
-                        .Load("HideCrosswalks.dll")
-                        .GetType("HideCrosswalks.NetInfoExt")
-                        .GetMethod("GetCanHideMarkings", BindingFlags.Static | BindingFlags.Public);
-                    return (bool)m_CanHideMarkings.Invoke(null, new object[] { prefab });
-                }
-                catch
-                {
-                    return false;
-                }
-            }
+            return _canHideMarkings != null && (bool)_canHideMarkings.Invoke(null, new object[] { prefab });
         }
 
         private void RefreshCanHideNodeMarkings()
