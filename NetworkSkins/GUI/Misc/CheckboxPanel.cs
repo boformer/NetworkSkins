@@ -38,6 +38,11 @@ namespace NetworkSkins.GUI
             label.tooltip = checkbox.tooltip = tooltip;
         }
 
+        public void SetChecked(bool state)
+        {
+            checkbox.isChecked = state;
+        }
+
         private void CreateCheckbox() {
             checkbox = AddUIComponent<UICheckBox>();
             checkbox.size = new Vector2(15.0f, 15.0f);

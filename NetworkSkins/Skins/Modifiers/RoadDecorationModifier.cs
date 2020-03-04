@@ -1,30 +1,64 @@
-﻿namespace NetworkSkins.Skins.Modifiers
+﻿using ColossalFramework.IO;
+
+namespace NetworkSkins.Skins.Modifiers
 {
-    /*
     public class RoadDecorationModifier : NetworkSkinModifier
     {
-        // TODO add fields
-
-        public RoadDecorationModifier() : base(NetworkSkinModifierType.RoadDecoration)
+        public readonly bool nodeMarkingsHidden;
+        public RoadDecorationModifier(bool nodeMarkingsHidden) : base(NetworkSkinModifierType.RoadDecoration) 
         {
+            this.nodeMarkingsHidden = nodeMarkingsHidden;
         }
 
         public override void Apply(NetworkSkin skin)
         {
-
+            skin.m_nodeMarkingsHidden = nodeMarkingsHidden;
         }
 
-        protected override void SerializeFields(DataSerializer s)
+        #region Serialization
+        protected override void SerializeImpl(DataSerializer s)
         {
-
+            s.WriteBool(nodeMarkingsHidden);
         }
 
-        public static RoadDecorationModifier DeserializeImpl(DataSerializer s, NetworkSkinErrors errors)
+        public static RoadDecorationModifier DeserializeImpl(DataSerializer s)
         {
-            return new RoadDecorationModifier();
+            var nodeMarkingsHidden = s.ReadBool();
+
+            return new RoadDecorationModifier(nodeMarkingsHidden);
+        }
+        #endregion
+
+        #region Equality
+        protected bool Equals(RoadDecorationModifier other)
+        {
+            return nodeMarkingsHidden == other.nodeMarkingsHidden;
         }
 
-        // TODO equality
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+
+            return Equals((RoadDecorationModifier)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return 1034881573 + nodeMarkingsHidden.GetHashCode();
+        }
+        #endregion
     }
-    */
 }

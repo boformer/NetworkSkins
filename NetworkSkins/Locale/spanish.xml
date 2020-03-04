@@ -23,6 +23,7 @@
     <Translation ID="LABEL_HIDEBLACKLISTED" String="Ocultar elementos en la lista negra" />
     <Translation ID="LABEL_DISPLAYATSELECTED" String="Auto-scroll a selección" />
     <Translation ID="LABEL_NEW_SWATCH" String="Nuevo color" />
+    <Translation ID="LABEL_HIDE_NODE_MARKINGS" String="Hide Intersection Markings" />
     <Translation ID="TOOLTIP_HIDEBLACKLISTED" String="Activa esta opción para ocultar del desplegable los elementos en la lista negra" />
     <Translation ID="TOOLTIP_GLOBAL_SELECTION_DATA" String="Activa esta opción para que el mod recuerde las últimas opciones de skins para cada network globalmente, no solo en esta partida guardada" />
     <Translation ID="TOOLTIP_DISPLAYATSELECTED" String="Activa esta opción para ir automáticamente al elemento seleccionado cuando abres un panel" />
@@ -32,6 +33,7 @@
     <Translation ID="TOOLTIP_PILLARS" String="Pilares" />
     <Translation ID="TOOLTIP_CATENARY" String="Catenarias" />
     <Translation ID="TOOLTIP_COLOR" String="Color" />
+    <Translation ID="TOOLTIP_ROAD_DECORATION" String="Markings" />
     <Translation ID="TOOLTIP_SETTINGS" String="Opciones" />
     <Translation ID="TOOLTIP_PIPETTE" String="Pipeta&#10;Haz click en un segmento para copiar su skin y seleccionar la network" />
     <Translation ID="TOOLTIP_LOCK" String="Activa el candado para modificar todos los carriles automáticamente" />
@@ -42,6 +44,7 @@
     <Translation ID="TOOLTIP_BUTTON_SAVE_MAXREACHED" String="Has alcanzado el número máximo de colores guardados" />
     <Translation ID="TOOLTIP_BUTTON_SAVE_COLOREXISTS" String="El color seleccionado ya está guardado" />
     <Translation ID="TOOLTIP_BUTTON_SAVE" String="Guardar color como favorito" />
+    <Translation ID="TOOLTIP_HIDE_NODE_MARKINGS" String="Hide markings such as pedestrian crossings and stop lines" />
     <Translation ID="BUTTON_RESET" String="Resetear" />
     <Translation ID="BUTTON_SAVE" String="Guardar" />
     <Translation ID="TOOLTIP_BUTTON_DELETE" String="Eliminar" />

@@ -31,9 +31,9 @@ namespace NetworkSkins.Skins
             switch (type)
             {
                 case NetworkSkinModifierType.TerrainSurface:
-                    return TerrainSurfaceModifier.DeserializeImpl(s, errors);
+                    return TerrainSurfaceModifier.DeserializeImpl(s);
                 case NetworkSkinModifierType.Color:
-                    return ColorModifier.DeserializeImpl(s, errors);
+                    return ColorModifier.DeserializeImpl(s);
                 case NetworkSkinModifierType.StreetLight:
                     return StreetLightModifier.DeserializeImpl(s, prefabCollection, errors);
                 case NetworkSkinModifierType.Tree:
@@ -42,6 +42,8 @@ namespace NetworkSkins.Skins
                     return PillarModifier.DeserializeImpl(s, prefabCollection, errors);
                 case NetworkSkinModifierType.Catenary:
                     return CatenaryModifier.DeserializeImpl(s, prefabCollection, errors);
+                case NetworkSkinModifierType.RoadDecoration:
+                    return RoadDecorationModifier.DeserializeImpl(s);
                 default:
                     return null;
             }

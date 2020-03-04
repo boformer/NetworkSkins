@@ -5,6 +5,7 @@ using NetworkSkins.GUI.Catenaries;
 using NetworkSkins.GUI.Colors;
 using NetworkSkins.GUI.Lights;
 using NetworkSkins.GUI.Pillars;
+using NetworkSkins.GUI.RoadDecoration;
 using NetworkSkins.GUI.Surfaces;
 using NetworkSkins.GUI.Trees;
 using NetworkSkins.Net;
@@ -43,6 +44,8 @@ namespace NetworkSkins.GUI
         public PillarPanelController BridgeMiddlePillar;
 
         public CatenaryPanelController Catenary;
+
+        public RoadDecorationPanelController RoadDecoration;
 
         public NetInfo Prefab { get; private set; }
 
@@ -90,6 +93,9 @@ namespace NetworkSkins.GUI
 
             Catenary = new CatenaryPanelController();
             Catenary.EventModifiersChanged += OnModifiersChanged;
+
+            RoadDecoration = new RoadDecorationPanelController();
+            RoadDecoration.EventModifiersChanged += OnModifiersChanged;
 
             Tool = ToolsModifierControl.toolController.gameObject.AddComponent<PipetteTool>();
             Tool.EventNetInfoPipetted += OnNetInfoPipetted;
@@ -144,6 +150,7 @@ namespace NetworkSkins.GUI
             BridgeBridgePillar.Reset();
             BridgeMiddlePillar.Reset();
             Catenary.Reset();
+            RoadDecoration.Reset();
 
             _ignoreModifierEvents = false;
 
@@ -248,6 +255,8 @@ namespace NetworkSkins.GUI
 
             Catenary.OnPrefabWithModifiersSelected(prefab, modifiers);
 
+            RoadDecoration.OnPrefabWithModifiersSelected(prefab, modifiers);
+
             _ignoreModifierEvents = false;
 
             UpdateActiveModifiers();
@@ -281,6 +290,8 @@ namespace NetworkSkins.GUI
             BridgeMiddlePillar.OnPrefabChanged(bridgePrefab);
 
             Catenary.OnPrefabChanged(prefab);
+
+            RoadDecoration.OnPrefabChanged(prefab);
 
             _ignoreModifierEvents = false;
 
@@ -376,6 +387,8 @@ namespace NetworkSkins.GUI
             MergeModifiers(modifiers, BridgeMiddlePillar.Modifiers);
 
             MergeModifiers(modifiers, Catenary.Modifiers);
+
+            MergeModifiers(modifiers, RoadDecoration.Modifiers);
 
             //Debug.Log($"Built {modifiers.Values.Sum(p => p.Count)} modifiers for {modifiers.Count} prefabs.");
 

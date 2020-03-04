@@ -23,6 +23,7 @@
     <Translation ID="LABEL_HIDEBLACKLISTED" String="Elemente auf der Blacklist verstecken" />
     <Translation ID="LABEL_DISPLAYATSELECTED" String="Automatisch zum selektierten Element scrollen" />
     <Translation ID="LABEL_NEW_SWATCH" String="Neue Farbe" />
+    <Translation ID="LABEL_HIDE_NODE_MARKINGS" String="Kreuzungs-Markierungen entfernen" />
     <Translation ID="TOOLTIP_HIDEBLACKLISTED" String="Wenn du diese Option aktivierst, werden Elemente auf der Blacklist in den Listen versteckt" />
     <Translation ID="TOOLTIP_GLOBAL_SELECTION_DATA" String="Wenn du diese Option aktivierst, wird der zuletzt genutzte Skin global gespeichert, ansonsten nur im Spielstand der jeweiligen Stadt" />
     <Translation ID="TOOLTIP_DISPLAYATSELECTED" String="Aktiviere diese Option, um automatisch zum selektierten Element zu scrollen, wenn du eine Auswahlliste öffnest" />
@@ -32,6 +33,7 @@
     <Translation ID="TOOLTIP_PILLARS" String="Brückenpfeiler" />
     <Translation ID="TOOLTIP_CATENARY" String="Oberleitung" />
     <Translation ID="TOOLTIP_COLOR" String="Farbe" />
+    <Translation ID="TOOLTIP_ROAD_DECORATION" String="Markierungen" />
     <Translation ID="TOOLTIP_SETTINGS" String="Einstellungen" />
     <Translation ID="TOOLTIP_PIPETTE" String="Pipette&#10;Klicke auf ein Segment, um dessen Skin zu kopieren und das Netzwerk auszuwählen" />
     <Translation ID="TOOLTIP_LOCK" String="Aktiviere das Schloss, um alle Spuren gleichzeitig zu bearbeiten" />
@@ -42,6 +44,7 @@
     <Translation ID="TOOLTIP_BUTTON_SAVE_MAXREACHED" String="Du hast die maximale Zahl an gespeicherten Farben erreicht" />
     <Translation ID="TOOLTIP_BUTTON_SAVE_COLOREXISTS" String="Die ausgewählte Farbe ist schon gespeichert" />
     <Translation ID="TOOLTIP_BUTTON_SAVE" String="Ausgewählte Farbe zu den Favoriten hinzufügen" />
+    <Translation ID="TOOLTIP_HIDE_NODE_MARKINGS" String="Markierungen (z.B. Zebrastreifen oder Haltelinien) entfernen" />
     <Translation ID="BUTTON_RESET" String="Zurücksetzen" />
     <Translation ID="BUTTON_SAVE" String="Speichern" />
     <Translation ID="TOOLTIP_BUTTON_DELETE" String="Löschen" />

@@ -8,53 +8,27 @@ namespace NetworkSkins.GUI
 {
     public class ButtonBar : PanelBase
     {
-        public delegate void TreesButtonClickedEventHandler(UIButton focusedButton, UIButton[] buttons);
-        public event TreesButtonClickedEventHandler EventTreesClicked;
+        public delegate void ButtonClickedEventHandler(UIButton focusedButton, UIButton[] buttons);
+        public event ButtonClickedEventHandler EventTreesClicked;
+        public event ButtonClickedEventHandler EventLightsClicked;
+        public event ButtonClickedEventHandler EventSurfacesClicked;
+        public event ButtonClickedEventHandler EventPillarsClicked;
+        public event ButtonClickedEventHandler EventCatenaryClicked;
+        public event ButtonClickedEventHandler EventColorClicked;
+        public event ButtonClickedEventHandler EventExtrasClicked;
+        public event ButtonClickedEventHandler EventPipetteClicked;
+        public event ButtonClickedEventHandler EventRoadDecorationClicked;
+        public event ButtonClickedEventHandler EventResetClicked;
 
-        public delegate void LightsButtonClickedEventHandler(UIButton focusedButton, UIButton[] buttons);
-        public event LightsButtonClickedEventHandler EventLightsClicked;
-
-        public delegate void SurfacesButtonClickedEventHandler(UIButton focusedButton, UIButton[] buttons);
-        public event SurfacesButtonClickedEventHandler EventSurfacesClicked;
-
-        public delegate void PillarsButtonClickedEventHandler(UIButton focusedButton, UIButton[] buttons);
-        public event PillarsButtonClickedEventHandler EventPillarsClicked;
-
-        public delegate void CatenaryButtonClickedEventHandler(UIButton focusedButton, UIButton[] buttons);
-        public event CatenaryButtonClickedEventHandler EventCatenaryClicked;
-
-        public delegate void ColorButtonClickedEventHandler(UIButton focusedButton, UIButton[] buttons);
-        public event ColorButtonClickedEventHandler EventColorClicked;
-
-        public delegate void ExtrasButtonClickedEventHandler(UIButton focusedButton, UIButton[] buttons);
-        public event ExtrasButtonClickedEventHandler EventExtrasClicked;
-
-        public delegate void PipetteButtonClickedEventHandler(UIButton focusedButton, UIButton[] buttons);
-        public event PipetteButtonClickedEventHandler EventPipetteClicked;
-
-        public delegate void ResetButtonClickedEventHandler(UIButton focusedButton, UIButton[] buttons);
-        public event ResetButtonClickedEventHandler EventResetClicked;
-
-        public delegate void TreesButtonVisibilityChangedEventHandler(UIButton focusedButton, UIButton[] buttons, bool visible);
-        public event TreesButtonVisibilityChangedEventHandler EventTreesVisibilityChanged;
-
-        public delegate void LightsButtonVisibilityChangedEventHandler(UIButton focusedButton, UIButton[] buttons, bool visible);
-        public event LightsButtonVisibilityChangedEventHandler EventLightsVisibilityChanged;
-
-        public delegate void SurfacesButtonVisibilityChangedEventHandler(UIButton focusedButton, UIButton[] buttons, bool visible);
-        public event SurfacesButtonVisibilityChangedEventHandler EventSurfacesVisibilityChanged;
-
-        public delegate void PillarsButtonVisibilityChangedEventHandler(UIButton focusedButton, UIButton[] buttons, bool visible);
-        public event PillarsButtonVisibilityChangedEventHandler EventPillarsVisibilityChanged;
-
-        public delegate void CatenaryButtonVisibilityChangedEventHandler(UIButton focusedButton, UIButton[] buttons, bool visible);
-        public event CatenaryButtonVisibilityChangedEventHandler EventCatenaryVisibilityChanged;
-
-        public delegate void ColorButtonVisibilityChangedEventHandler(UIButton focusedButton, UIButton[] buttons, bool visible);
-        public event ColorButtonVisibilityChangedEventHandler EventColorVisibilityChanged;
-
-        public delegate void SettingsButtonVisibilityChangedEventHandler(UIButton focusedButton, UIButton[] buttons, bool visible);
-        public event SettingsButtonVisibilityChangedEventHandler EventSettingsVisibilityChanged;
+        public delegate void ButtonVisibilityChangedEventHandler(UIButton focusedButton, UIButton[] buttons, bool visible);
+        public event ButtonVisibilityChangedEventHandler EventTreesVisibilityChanged;
+        public event ButtonVisibilityChangedEventHandler EventLightsVisibilityChanged;
+        public event ButtonVisibilityChangedEventHandler EventSurfacesVisibilityChanged;
+        public event ButtonVisibilityChangedEventHandler EventPillarsVisibilityChanged;
+        public event ButtonVisibilityChangedEventHandler EventCatenaryVisibilityChanged;
+        public event ButtonVisibilityChangedEventHandler EventColorVisibilityChanged;
+        public event ButtonVisibilityChangedEventHandler EventRoadDecorationVisibilityChanged;
+        public event ButtonVisibilityChangedEventHandler EventSettingsVisibilityChanged;
         
         private UIButton treesButton;
         private UIButton lightsButton;
@@ -62,6 +36,7 @@ namespace NetworkSkins.GUI
         private UIButton pillarsButton;
         private UIButton catenaryButton;
         private UIButton colorButton;
+        private UIButton roadDecorationButton;
         private UIButton settingsButton;
         private UIButton pipetteButton;
         private UIButton resetButton;
@@ -75,6 +50,7 @@ namespace NetworkSkins.GUI
             pillarsButton.eventClicked -= OnPillarsButtonClicked;
             catenaryButton.eventClicked -= OnCatenaryButtonClicked;
             colorButton.eventClicked -= OnColorButtonClicked;
+            roadDecorationButton.eventClicked -= OnRoadDecorationButtonClicked;
             settingsButton.eventClicked -= OnSettingsButtonClicked;
             resetButton.eventClicked -= OnResetButtonClicked;
             treesButton.eventVisibilityChanged -= OnTreesButtonVisibilityChanged;
@@ -83,6 +59,7 @@ namespace NetworkSkins.GUI
             pillarsButton.eventVisibilityChanged -= OnPillarsButtonVisibilityChanged;
             catenaryButton.eventVisibilityChanged -= OnCatenaryButtonVisibilityChanged;
             colorButton.eventVisibilityChanged -= OnColorButtonVisibilityChanged;
+            roadDecorationButton.eventVisibilityChanged -= OnRoadDecorationButtonVisibilityChanged;
             settingsButton.eventVisibilityChanged -= OnSettingsButtonVisibilityChanged;
             base.OnDestroy();
         }
@@ -102,6 +79,7 @@ namespace NetworkSkins.GUI
             pillarsButton.isVisible = NetworkSkinPanelController.PillarsEnabled;
             catenaryButton.isVisible = NetworkSkinPanelController.Catenary.Enabled;
             colorButton.isVisible = NetworkSkinPanelController.Color.Enabled;
+            roadDecorationButton.isVisible = NetworkSkinPanelController.RoadDecoration.Enabled;
         }
 
         private void CreateButtons() {
@@ -114,6 +92,10 @@ namespace NetworkSkins.GUI
             colorButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Color, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_COLOR));
             colorButton.eventClicked += OnColorButtonClicked;
             colorButton.eventVisibilityChanged += OnColorButtonVisibilityChanged;
+            
+            roadDecorationButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.RoadDecoration, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_ROAD_DECORATION));
+            roadDecorationButton.eventClicked += OnRoadDecorationButtonClicked;
+            roadDecorationButton.eventVisibilityChanged += OnRoadDecorationButtonVisibilityChanged;
 
             lightsButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Light, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_LIGHTS));
             lightsButton.eventClicked += OnLightsButtonClicked;
@@ -158,6 +140,7 @@ namespace NetworkSkins.GUI
                 pillarsButton,
                 catenaryButton,
                 colorButton,
+                roadDecorationButton,
                 settingsButton,
                 pipetteButton,
                 resetButton
@@ -186,6 +169,10 @@ namespace NetworkSkins.GUI
 
         private void OnColorButtonVisibilityChanged(UIComponent component, bool value) {
             EventColorVisibilityChanged?.Invoke(component as UIButton, buttons, value);
+        }
+
+        private void OnRoadDecorationButtonVisibilityChanged(UIComponent component, bool value) {
+            EventRoadDecorationVisibilityChanged?.Invoke(component as UIButton, buttons, value);
         }
 
         private void OnSettingsButtonVisibilityChanged(UIComponent component, bool value) {
@@ -220,6 +207,11 @@ namespace NetworkSkins.GUI
         private void OnColorButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
             EventColorClicked?.Invoke(component as UIButton, buttons);
             colorButton.RefreshTooltip();
+        }
+
+        private void OnRoadDecorationButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
+            EventRoadDecorationClicked?.Invoke(component as UIButton, buttons);
+            roadDecorationButton.RefreshTooltip();
         }
 
         private void OnSettingsButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {

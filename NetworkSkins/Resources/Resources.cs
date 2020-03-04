@@ -39,6 +39,10 @@ namespace NetworkSkins
         public static string ColorPressed =     "ColorPressed";
         public static string ColorHovered =     "ColorHovered";
         public static string ColorFocused =     "ColorFocused";
+        public static string RoadDecoration =   "Crossing";
+        public static string RoadDecorationPressed = "CrossingPressed";
+        public static string RoadDecorationHovered = "CrossingHovered";
+        public static string RoadDecorationFocused = "CrossingFocused";
         public static string Surface =          "Surface";
         public static string SurfacePressed =   "SurfacePressed";
         public static string SurfaceHovered =   "SurfaceHovered";
@@ -89,6 +93,10 @@ namespace NetworkSkins
             "ColorPressed",
             "ColorHovered",
             "ColorFocused",
+            "Crossing",
+            "CrossingPressed",
+            "CrossingHovered",
+            "CrossingFocused",
             "Surface",
             "SurfacePressed",
             "SurfaceHovered",

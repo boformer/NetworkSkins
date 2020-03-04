@@ -23,6 +23,7 @@
     <Translation ID="LABEL_HIDEBLACKLISTED" String="Cacher les items désactivés" />
     <Translation ID="LABEL_DISPLAYATSELECTED" String="Afficher l'item sélectionné automatiquement" />
     <Translation ID="LABEL_NEW_SWATCH" String="Nouvelle couleur" />
+    <Translation ID="LABEL_HIDE_NODE_MARKINGS" String="Hide Intersection Markings" />
     <Translation ID="TOOLTIP_HIDEBLACKLISTED" String="Désactiver les items inutilisés permet de gagner du temps" />
     <Translation ID="TOOLTIP_GLOBAL_SELECTION_DATA" String="Les paramètres serviront pour toutes les Sauvegardes plutôt que chaque Sauvegarde individuellement" />
     <Translation ID="TOOLTIP_DISPLAYATSELECTED" String="Lorsqu'un panneau est ouvert, la sélection en cours sera automatiquement atteinte" />
@@ -32,6 +33,7 @@
     <Translation ID="TOOLTIP_PILLARS" String="Piliers" />
     <Translation ID="TOOLTIP_CATENARY" String="Caténaires" />
     <Translation ID="TOOLTIP_COLOR" String="Couleur" />
+    <Translation ID="TOOLTIP_ROAD_DECORATION" String="Markings" />
     <Translation ID="TOOLTIP_SETTINGS" String="Paramètres" />
     <Translation ID="TOOLTIP_PIPETTE" String="Pipette&#10;Cliquez sur un segment pour copier ses paramètres" />
     <Translation ID="TOOLTIP_LOCK" String="Modifier toutes les Voies simultanément" />
@@ -42,6 +44,7 @@
     <Translation ID="TOOLTIP_BUTTON_SAVE_MAXREACHED" String="Le nombre maximal de Favoris est atteint!" />
     <Translation ID="TOOLTIP_BUTTON_SAVE_COLOREXISTS" String="Cette couleur est déjà en Favoris!" />
     <Translation ID="TOOLTIP_BUTTON_SAVE" String="Enregistrer la couleur en Favoris" />
+    <Translation ID="TOOLTIP_HIDE_NODE_MARKINGS" String="Hide markings such as pedestrian crossings and stop lines" />
     <Translation ID="BUTTON_RESET" String="Rétablir" />
     <Translation ID="BUTTON_SAVE" String="Conserver" />
     <Translation ID="TOOLTIP_BUTTON_DELETE" String="Supprimer" />

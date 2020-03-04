@@ -5,6 +5,7 @@ using NetworkSkins.GUI.Catenaries;
 using NetworkSkins.GUI.Colors;
 using NetworkSkins.GUI.Lights;
 using NetworkSkins.GUI.Pillars;
+using NetworkSkins.GUI.RoadDecoration;
 using NetworkSkins.GUI.Surfaces;
 using NetworkSkins.GUI.Trees;
 using NetworkSkins.Tool;
@@ -21,6 +22,7 @@ namespace NetworkSkins.GUI
         private PillarPanel pillarPanel;
         private CatenaryPanel catenaryPanel;
         private ColorPanel colorPanel;
+        private RoadDecorationPanel roadDecorationPanel;
         private SettingsPanel settingsPanel;
         private UIPanel space;
         private PanelBase currentPanel;
@@ -138,6 +140,13 @@ namespace NetworkSkins.GUI
             currentPanel = colorPanel;
         }
 
+        private void CreateRoadDecorationPanel()
+        {
+            roadDecorationPanel = AddUIComponent<RoadDecorationPanel>();
+            roadDecorationPanel.Build(PanelType.RoadDecoration, new Layout(new Vector2(228.6f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 0, "GenericPanel"));
+            currentPanel = roadDecorationPanel;
+        }
+
         private void CreateSettingsPanel() {
             settingsPanel = AddUIComponent<SettingsPanel>();
             settingsPanel.Build(PanelType.Settings, new Layout(new Vector2(228.6f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 0, "GenericPanel"));
@@ -165,6 +174,7 @@ namespace NetworkSkins.GUI
             toolBar.ButtonBar.EventSurfacesClicked += OnSurfacesClicked;
             toolBar.ButtonBar.EventPillarsClicked += OnPillarsClicked;
             toolBar.ButtonBar.EventColorClicked += OnColorClicked;
+            toolBar.ButtonBar.EventRoadDecorationClicked += OnRoadDecorationClicked;
             toolBar.ButtonBar.EventCatenaryClicked += OnCatenaryClicked;
             toolBar.ButtonBar.EventExtrasClicked += OnExtrasClicked;
             toolBar.ButtonBar.EventPipetteClicked += OnPipetteClicked;
@@ -177,6 +187,7 @@ namespace NetworkSkins.GUI
             toolBar.ButtonBar.EventSurfacesVisibilityChanged += OnSurfacesVisibilityChanged;
             toolBar.ButtonBar.EventPillarsVisibilityChanged += OnPillarsVisibilityChanged;
             toolBar.ButtonBar.EventColorVisibilityChanged += OnColorVisibilityChanged;
+            toolBar.ButtonBar.EventRoadDecorationVisibilityChanged += OnRoadDecorationVisibilityChanged;
             toolBar.ButtonBar.EventCatenaryVisibilityChanged += OnCatenaryVisibilityChanged;
             toolBar.ButtonBar.EventSettingsVisibilityChanged += OnSettingsVisibilityChanged;
         }
@@ -187,6 +198,7 @@ namespace NetworkSkins.GUI
             toolBar.ButtonBar.EventSurfacesClicked -= OnSurfacesClicked;
             toolBar.ButtonBar.EventPillarsClicked -= OnPillarsClicked;
             toolBar.ButtonBar.EventColorClicked -= OnColorClicked;
+            toolBar.ButtonBar.EventRoadDecorationClicked -= OnRoadDecorationClicked;
             toolBar.ButtonBar.EventCatenaryClicked -= OnCatenaryClicked;
             toolBar.ButtonBar.EventExtrasClicked -= OnExtrasClicked;
             toolBar.ButtonBar.EventPipetteClicked -= OnPipetteClicked;
@@ -199,6 +211,7 @@ namespace NetworkSkins.GUI
             toolBar.ButtonBar.EventSurfacesVisibilityChanged -= OnSurfacesVisibilityChanged;
             toolBar.ButtonBar.EventPillarsVisibilityChanged -= OnPillarsVisibilityChanged;
             toolBar.ButtonBar.EventColorVisibilityChanged -= OnColorVisibilityChanged;
+            toolBar.ButtonBar.EventRoadDecorationVisibilityChanged -= OnRoadDecorationVisibilityChanged;
             toolBar.ButtonBar.EventCatenaryVisibilityChanged -= OnCatenaryVisibilityChanged;
             toolBar.ButtonBar.EventSettingsVisibilityChanged -= OnSettingsVisibilityChanged;
         }
@@ -223,6 +236,16 @@ namespace NetworkSkins.GUI
             if (!visible && colorPanel != null) {
                 SetButtonUnfocused(button);
                 Destroy(colorPanel.gameObject);
+            }
+            RefreshZOrder();
+        }
+
+        private void OnRoadDecorationVisibilityChanged(UIButton button, UIButton[] buttons, bool visible)
+        {
+            if (!visible && roadDecorationPanel != null)
+            {
+                SetButtonUnfocused(button);
+                Destroy(roadDecorationPanel.gameObject);
             }
             RefreshZOrder();
         }
@@ -291,6 +314,22 @@ namespace NetworkSkins.GUI
                 RefreshButtons(button, buttons);
                 CloseAll();
                 CreateColorsPanel();
+            }
+            RefreshZOrder();
+        }
+
+        private void OnRoadDecorationClicked(UIButton button, UIButton[] buttons)
+        {
+            if (roadDecorationPanel != null)
+            {
+                SetButtonUnfocused(button);
+                Destroy(roadDecorationPanel.gameObject);
+            }
+            else
+            {
+                RefreshButtons(button, buttons);
+                CloseAll();
+                CreateRoadDecorationPanel();
             }
             RefreshZOrder();
         }
@@ -369,6 +408,9 @@ namespace NetworkSkins.GUI
             }
             if (colorPanel != null) {
                 Destroy(colorPanel.gameObject);
+            }
+            if (roadDecorationPanel != null) {
+                Destroy(roadDecorationPanel.gameObject);
             }
             if (settingsPanel != null) {
                 Destroy(settingsPanel.gameObject);

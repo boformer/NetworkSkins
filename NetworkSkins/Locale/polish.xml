@@ -23,6 +23,7 @@
     <Translation ID="LABEL_HIDEBLACKLISTED" String="Ukryj zablokowane obiekty" />
     <Translation ID="LABEL_DISPLAYATSELECTED" String="Auto-Przewiń do wybranego" />
     <Translation ID="LABEL_NEW_SWATCH" String="Nowy Kolor" />
+    <Translation ID="LABEL_HIDE_NODE_MARKINGS" String="Hide Intersection Markings" />
     <Translation ID="TOOLTIP_HIDEBLACKLISTED" String="Włącz tę opcję aby zablokować obiekty z listy" />
     <Translation ID="TOOLTIP_GLOBAL_SELECTION_DATA" String="Włącz tę opcję aby mod zapamiętał twój ostatnio użyty styl dla każdej sieci" />
     <Translation ID="TOOLTIP_DISPLAYATSELECTED" String="Włącz tę opcję aby mod auto-przewinął do obecnie używanego obiektu kiedy otworzysz panel" />
@@ -32,6 +33,7 @@
     <Translation ID="TOOLTIP_PILLARS" String="Filary" />
     <Translation ID="TOOLTIP_CATENARY" String="Trakcja" />
     <Translation ID="TOOLTIP_COLOR" String="Kolor" />
+    <Translation ID="TOOLTIP_ROAD_DECORATION" String="Markings" />
     <Translation ID="TOOLTIP_SETTINGS" String="Ustawienia" />
     <Translation ID="TOOLTIP_PIPETTE" String="Pipeta&#10;Kliknijk na segment aby skopiować jego styl i wybrać sieć" />
     <Translation ID="TOOLTIP_LOCK" String="Kliknij na kłódkę aby modyfikować wszystkie pasy jednocześnie" />
@@ -42,6 +44,7 @@
     <Translation ID="TOOLTIP_BUTTON_SAVE_MAXREACHED" String="Osiągnięto maksymalną ilosć zapisanych kolorów" />
     <Translation ID="TOOLTIP_BUTTON_SAVE_COLOREXISTS" String="Obecnie wybrany kolor jest już zapisany" />
     <Translation ID="TOOLTIP_BUTTON_SAVE" String="Zapisz obecnie wybrany kolor jako ulubiony" />
+    <Translation ID="TOOLTIP_HIDE_NODE_MARKINGS" String="Hide markings such as pedestrian crossings and stop lines" />
     <Translation ID="BUTTON_RESET" String="Resetuj" />
     <Translation ID="BUTTON_SAVE" String="Zapisz" />
     <Translation ID="TOOLTIP_BUTTON_DELETE" String="Usuń" />

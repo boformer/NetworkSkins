@@ -63,8 +63,11 @@
     <Compile Include="GUI\Misc\ButtonPanel.cs" />
     <Compile Include="GUI\Misc\CheckboxPanel.cs" />
     <Compile Include="GUI\Misc\DistancePanel.cs" />
+    <Compile Include="GUI\RoadDecoration\RoadDecorationPanel.cs" />
+    <Compile Include="GUI\RoadDecoration\RoadDecorationPanelController.cs" />
     <Compile Include="Legacy\LegacyLightPropEnabler.cs" />
     <Compile Include="Persistence\LegacySegmentData.cs" />
+    <Compile Include="Skins\Modifiers\RoadDecorationModifier.cs" />
     <Compile Include="Skins\Serialization\ModifierDataContainer.cs" />
     <Compile Include="Tool\PipetteTool.cs" />
     <Compile Include="GUI\SettingsPanel.cs" />
@@ -155,7 +158,6 @@
     <Compile Include="Skins\Serialization\NetworkSkinDataContainer.cs" />
     <Compile Include="Skins\Serialization\NetworkSkinLoadErrors.cs" />
     <Compile Include="Skins\Modifiers\PillarModifier.cs" />
-    <Compile Include="Skins\Modifiers\RoadDecorationModifier.cs" />
     <Compile Include="Skins\Modifiers\TreeModifier.cs" />
     <Compile Include="Skins\Modifiers\TerrainSurfaceModifier.cs" />
     <Compile Include="Skins\NetworkSkinManager.cs" />
@@ -172,6 +174,7 @@
     <Content Include="Locale\chinese.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Locale\italian.xml" />
     <Content Include="Locale\portuguese.xml" />
     <Content Include="Locale\russian.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -202,6 +205,10 @@
     <Content Include="Patches\NetSegment\NetSegmentCalculateGroupDataPatch.txt" />
     <Content Include="Patches\NetSegment\NetSegmentPopulateGroupDataPatch.txt" />
     <Content Include="Patches\NetSegment\NetSegmentRenderInstancePatch.txt" />
+    <EmbeddedResource Include="Resources\Crossing.png" />
+    <EmbeddedResource Include="Resources\CrossingFocused.png" />
+    <EmbeddedResource Include="Resources\CrossingHovered.png" />
+    <EmbeddedResource Include="Resources\CrossingPressed.png" />
     <EmbeddedResource Include="Resources\Undo.png" />
     <EmbeddedResource Include="Resources\UndoHovered.png" />
     <EmbeddedResource Include="Resources\UndoPressed.png" />

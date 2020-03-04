@@ -23,6 +23,7 @@
     <Translation ID="LABEL_HIDEBLACKLISTED" String="隐藏黑名单内的物体" />
     <Translation ID="LABEL_DISPLAYATSELECTED" String="跳换到当前选项" />
     <Translation ID="LABEL_NEW_SWATCH" String="新颜色" />
+    <Translation ID="LABEL_HIDE_NODE_MARKINGS" String="Hide Intersection Markings" />
     <Translation ID="TOOLTIP_HIDEBLACKLISTED" String="激活此选项会将黑名单内的物体从名单上隐藏掉" />
     <Translation ID="TOOLTIP_GLOBAL_SELECTION_DATA" String="激活此选项会使模组记住最后用过的皮肤设置（可在其他地图使用）" />
     <Translation ID="TOOLTIP_DISPLAYATSELECTED" String="激活此选项会在你打开新界面时自动跳换到当前选项" />
@@ -32,6 +33,7 @@
     <Translation ID="TOOLTIP_PILLARS" String="柱子" />
     <Translation ID="TOOLTIP_CATENARY" String="复链吊架" />
     <Translation ID="TOOLTIP_COLOR" String="颜色" />
+    <Translation ID="TOOLTIP_ROAD_DECORATION" String="Markings" />
     <Translation ID="TOOLTIP_SETTINGS" String="设置" />
     <Translation ID="TOOLTIP_PIPETTE" String="吸管&#10;将当前选择的交通皮肤换为鼠标点击部分的皮肤" />
     <Translation ID="TOOLTIP_LOCK" String="锁定同时修改所有道路" />
@@ -42,6 +44,7 @@
     <Translation ID="TOOLTIP_BUTTON_SAVE_MAXREACHED" String="已达到收藏颜色最高值" />
     <Translation ID="TOOLTIP_BUTTON_SAVE_COLOREXISTS" String="此颜色已在收藏中" />
     <Translation ID="TOOLTIP_BUTTON_SAVE" String="收藏颜色" />
+    <Translation ID="TOOLTIP_HIDE_NODE_MARKINGS" String="Hide markings such as pedestrian crossings and stop lines" />
     <Translation ID="BUTTON_RESET" String="重置" />
     <Translation ID="BUTTON_SAVE" String="保存" />
     <Translation ID="TOOLTIP_BUTTON_DELETE" String="删除" />
