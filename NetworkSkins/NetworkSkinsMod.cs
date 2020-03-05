@@ -1,6 +1,6 @@
 ﻿using ColossalFramework.Plugins;
 using ColossalFramework.UI;
-using Harmony;
+using HarmonyLib;
 using ICities;
 using NetworkSkins.GUI;
 using NetworkSkins.Locale;
@@ -8,6 +8,7 @@ using NetworkSkins.Persistence;
 using NetworkSkins.Skins;
 using NetworkSkins.TranslationFramework;
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using static UnityEngine.Object;
@@ -21,7 +22,7 @@ namespace NetworkSkins
         public string Name => "Network Skins 2 Beta";
         public string Description => Translation.Instance.GetTranslation(TranslationID.MOD_DESCRIPTION);
         
-        private HarmonyInstance harmony;
+        private Harmony harmony;
 
         private NetworkSkinPanel panel;
         private GameObject skinControllerGameObject;
@@ -81,10 +82,9 @@ namespace NetworkSkins
                 Debug.Log("NetworkSkins Patching...");
 
 #if DEBUG
-                HarmonyInstance.DEBUG = true;
+                Harmony.DEBUG = true;
 #endif
-                HarmonyInstance.SELF_PATCHING = false;
-                harmony = HarmonyInstance.Create(HarmonyId);
+                harmony = new Harmony(HarmonyId);
                 harmony.PatchAll(GetType().Assembly);
             }
         }
@@ -93,10 +93,26 @@ namespace NetworkSkins
         {
             if (harmony != null)
             {
-                harmony.UnpatchAll(HarmonyId);
+                UnpatchAll(HarmonyId);
                 harmony = null;
 
                 Debug.Log("NetworkSkins Reverted...");
+            }
+        }
+
+        // Copy of Harmony.UnpatchAll() with undo order fixed.
+        private void UnpatchAll(string harmonyID = null)
+        {
+            bool IDCheck(Patch patchInfo) => harmonyID == null || patchInfo.owner == harmonyID;
+
+            var originals = Harmony.GetAllPatchedMethods().ToList();
+            foreach (var original in originals)
+            {
+                var info = Harmony.GetPatchInfo(original);
+                info.Postfixes.DoIf(IDCheck, patchInfo => harmony.Unpatch(original, patchInfo.PatchMethod));
+                info.Prefixes.DoIf(IDCheck, patchInfo => harmony.Unpatch(original, patchInfo.PatchMethod));
+                info.Transpilers.DoIf(IDCheck, patchInfo => harmony.Unpatch(original, patchInfo.PatchMethod));
+                info.Finalizers.DoIf(IDCheck, patchInfo => harmony.Unpatch(original, patchInfo.PatchMethod));
             }
         }
         #endregion
