@@ -5,6 +5,7 @@ using NetworkSkins.Skins;
 
 // ReSharper disable InconsistentNaming
 
+
 namespace NetworkSkins.Patches.NetManager
 {
     [HarmonyPatch]

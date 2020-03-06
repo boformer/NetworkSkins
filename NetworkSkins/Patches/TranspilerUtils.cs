@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
+using System.Text.RegularExpressions;
+using UnityEngine;
 
 namespace NetworkSkins.Patches
 {
@@ -110,6 +113,7 @@ namespace NetworkSkins.Patches
             }
         }
 
+
         public static CodeInstruction BuildStLocFromLdLoc(CodeInstruction instruction)
         {
             if (instruction.opcode == OpCodes.Ldloc_0)
@@ -141,5 +145,25 @@ namespace NetworkSkins.Patches
                 throw new Exception("Statement is not ldloc!");
             }
         }
+
+        /// <summary>
+        /// determines if <paramref name="other"/> is same as <paramref name="original"/>
+        /// or if it is a patched version of <paramref name="original"/>
+        /// </summary>
+        public static bool CompareMethods(MethodBase original, MethodBase other)
+        {
+            if (other == null) throw new ArgumentNullException("other");
+            if (original==null) throw new ArgumentNullException("original");
+            return original == other || Regex.IsMatch(other.Name, @"\b" + original.Name + "_Patch");
+        }
+
+        public static bool CompareMethods(string original, MethodBase other) =>
+            original == other.Name || Regex.IsMatch(other.Name, @"\b" + original + "_Patch");
+
+
+        public static bool IsMemberOf<T>(MethodBase method)=>
+            typeof(T).IsAssignableFrom(method?.DeclaringType); 
+
+
     }
 }

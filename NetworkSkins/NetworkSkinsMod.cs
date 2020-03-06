@@ -93,7 +93,7 @@ namespace NetworkSkins
         {
             if (harmony != null)
             {
-                UnpatchAll(HarmonyId);
+                UnpatchAll();
                 harmony = null;
 
                 Debug.Log("NetworkSkins Reverted...");
@@ -101,11 +101,11 @@ namespace NetworkSkins
         }
 
         // Copy of Harmony.UnpatchAll() with undo order fixed.
-        private void UnpatchAll(string harmonyID = null)
+        private void UnpatchAll()
         {
-            bool IDCheck(Patch patchInfo) => harmonyID == null || patchInfo.owner == harmonyID;
+            bool IDCheck(Patch patchInfo) => patchInfo.owner == HarmonyId;
 
-            var originals = Harmony.GetAllPatchedMethods().ToList();
+            var originals = harmony.GetPatchedMethods().ToList();
             foreach (var original in originals)
             {
                 var info = Harmony.GetPatchInfo(original);
