@@ -6,7 +6,6 @@ using System.Reflection;
 
 namespace NetworkSkins.Patches.NetManager
 {
-    // TODO check compat with ParallelRoadTool
     [HarmonyPatch(typeof(global::NetManager), "CreateSegment")]
     public static class NetManagerCreateSegmentPatch
     {
