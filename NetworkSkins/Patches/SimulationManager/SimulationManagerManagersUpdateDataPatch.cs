@@ -1,4 +1,4 @@
-﻿using Harmony;
+﻿using HarmonyLib;
 using NetworkSkins.Skins;
 
 namespace NetworkSkins.Patches.SimulationManager

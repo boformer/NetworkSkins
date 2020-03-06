@@ -12,37 +12,31 @@ namespace NetworkSkins.Patches
     {
         public static void GetActiveNodeBuilding(NetAI netAI, ushort nodeID, ref global::NetNode data, out BuildingInfo building, out float heightOffset)
         {
-            var patcherState = Apply(netAI.m_info, NetworkSkinManager.instance.GetActiveSkin(netAI.m_info));
+            var applied = Apply(netAI.m_info, NetworkSkinManager.instance.GetActiveSkin(netAI.m_info), out var patcherState);
             netAI.GetNodeBuilding(nodeID, ref data, out building, out heightOffset);
-            Revert(netAI.m_info, patcherState);
+            if(applied) Revert(netAI.m_info, patcherState);
         }
 
-        public static PillarPatcherState? Apply(NetInfo info, NetworkSkin skin)
+        public static bool Apply(NetInfo info, NetworkSkin skin, out PillarPatcherState state)
         {
             if (info == null || skin == null)
             {
-                return null;
+                state = default;
+                return false;
             }
 
-            var state = new PillarPatcherState(info);
-
+            state = new PillarPatcherState(info);
             PillarUtils.SetBridgePillar(info, skin.m_bridgePillarInfo);
             PillarUtils.SetBridgePillar2(info, skin.m_bridgePillarInfo2);
             PillarUtils.SetBridgePillar3(info, skin.m_bridgePillarInfo3);
             PillarUtils.SetBridgePillars(info, skin.m_bridgePillarInfos);
             PillarUtils.SetMiddlePillar(info, skin.m_middlePillarInfo);
-
-            return state;
+            return true;
         }
 
-        public static void Revert(NetInfo info, PillarPatcherState? state)
+        public static void Revert(NetInfo info, PillarPatcherState state)
         {
-            if (info == null || state == null)
-            {
-                return;
-            }
-
-            state.Value.Restore(info);
+            state.Restore(info);
         }
     }
     public struct PillarPatcherState

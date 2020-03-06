@@ -10,42 +10,36 @@ namespace NetworkSkins.Patches
     {
         public static Color GetSegmentColor(NetAI netAI, ushort segmentID, ref global::NetSegment data, InfoManager.InfoMode infoMode)
         {
-            var patcherState = Apply(netAI.m_info, NetworkSkinManager.SegmentSkins[segmentID]);
+            bool applied = Apply(netAI.m_info, NetworkSkinManager.SegmentSkins[segmentID], out var patcherState);
             var segmentColor = netAI.GetColor(segmentID, ref data, infoMode);
-            Revert(netAI.m_info, patcherState);
+            if(applied) Revert(netAI.m_info, patcherState);
             return segmentColor;
         }
 
         public static Color GetNodeColor(NetAI netAI, ushort nodeID, ref global::NetNode data, InfoManager.InfoMode infoMode)
         {
-            var patcherState = Apply(netAI.m_info, NetworkSkinManager.NodeSkins[nodeID]);
+            var applied = Apply(netAI.m_info, NetworkSkinManager.NodeSkins[nodeID], out var patcherState);
             var segmentColor = netAI.GetColor(nodeID, ref data, infoMode);
-            Revert(netAI.m_info, patcherState);
+            if(applied) Revert(netAI.m_info, patcherState);
             return segmentColor;
         }
 
-        public static Color? Apply(NetInfo info, NetworkSkin skin)
+        public static bool Apply(NetInfo info, NetworkSkin skin, out Color state)
         {
-            if (info == null || skin == null || info.m_color == skin.m_color)
+            if (info == null || skin == null)
             {
-                return null;
+                state = default;
+                return false;
             }
 
-            var state = info.m_color;
-
+            state = info.m_color;
             info.m_color = skin.m_color;
-
-            return state;
+            return true;
         }
 
-        public static void Revert(NetInfo info, Color? state)
+        public static void Revert(NetInfo info, Color state)
         {
-            if (info == null || state == null)
-            {
-                return;
-            }
-
-            info.m_color = state.Value;
+            info.m_color = state;
         }
     }
 }
