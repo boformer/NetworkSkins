@@ -66,6 +66,10 @@
     <Compile Include="GUI\RoadDecoration\RoadDecorationPanel.cs" />
     <Compile Include="GUI\RoadDecoration\RoadDecorationPanelController.cs" />
     <Compile Include="Legacy\LegacyLightPropEnabler.cs" />
+    <Compile Include="NS2HelpersExtensions.cs" />
+    <Compile Include="Patches\NetTool\NetToolCreateNode0Path.cs" />
+    <Compile Include="Patches\NetTool\NetToolMoveMiddleNodePatch.cs" />
+    <Compile Include="Patches\NetTool\NetToolSplitSegmentPatch.cs" />
     <Compile Include="Persistence\LegacySegmentData.cs" />
     <Compile Include="Skins\Modifiers\RoadDecorationModifier.cs" />
     <Compile Include="Skins\Serialization\ModifierDataContainer.cs" />
