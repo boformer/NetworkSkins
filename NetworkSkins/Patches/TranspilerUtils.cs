@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Reflection.Emit;
-using HarmonyLib;
+using Harmony;
 using System.Text.RegularExpressions;
 using UnityEngine;
 

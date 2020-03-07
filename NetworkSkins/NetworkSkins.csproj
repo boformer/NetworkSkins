@@ -31,8 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony, Version=2.0.0.8, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>True</SpecificVersion>
+    <Reference Include="0Harmony">
       <HintPath>..\libs\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">

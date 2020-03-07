@@ -1,6 +1,6 @@
 ﻿using ColossalFramework.Plugins;
 using ColossalFramework.UI;
-using HarmonyLib;
+using Harmony;
 using ICities;
 using NetworkSkins.GUI;
 using NetworkSkins.Locale;
@@ -22,7 +22,7 @@ namespace NetworkSkins
         public string Name => "Network Skins 2 Beta";
         public string Description => Translation.Instance.GetTranslation(TranslationID.MOD_DESCRIPTION);
         
-        private Harmony harmony;
+        private HarmonyInstance harmony;
 
         private NetworkSkinPanel panel;
         private GameObject skinControllerGameObject;
@@ -82,9 +82,10 @@ namespace NetworkSkins
                 Debug.Log("NetworkSkins Patching...");
 
 #if DEBUG
-                Harmony.DEBUG = true;
+                HarmonyInstance.DEBUG = true;
 #endif
-                harmony = new Harmony(HarmonyId);
+                HarmonyInstance.SELF_PATCHING = false;
+                harmony = HarmonyInstance.Create(HarmonyId);
                 harmony.PatchAll(GetType().Assembly);
             }
         }
@@ -108,11 +109,11 @@ namespace NetworkSkins
             var originals = harmony.GetPatchedMethods().ToList();
             foreach (var original in originals)
             {
-                var info = Harmony.GetPatchInfo(original);
-                info.Postfixes.DoIf(IDCheck, patchInfo => harmony.Unpatch(original, patchInfo.PatchMethod));
-                info.Prefixes.DoIf(IDCheck, patchInfo => harmony.Unpatch(original, patchInfo.PatchMethod));
-                info.Transpilers.DoIf(IDCheck, patchInfo => harmony.Unpatch(original, patchInfo.PatchMethod));
-                info.Finalizers.DoIf(IDCheck, patchInfo => harmony.Unpatch(original, patchInfo.PatchMethod));
+                var info = HarmonyInstance.GetPatchInfo(original);
+                info.Postfixes.DoIf(IDCheck, patchInfo => harmony.Unpatch(original, patchInfo.patch));
+                info.Prefixes.DoIf(IDCheck, patchInfo => harmony.Unpatch(original, patchInfo.patch));
+                info.Transpilers.DoIf(IDCheck, patchInfo => harmony.Unpatch(original, patchInfo.patch));
+                //info. Finalizers.DoIf(IDCheck, patchInfo => harmony.Unpatch(original, patchInfo.PatchMethod)); // for harmony 2.0.0.8
             }
         }
         #endregion

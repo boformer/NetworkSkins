@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using HarmonyLib;
+using Harmony;
 using NetworkSkins.Skins;
 using UnityEngine;
 

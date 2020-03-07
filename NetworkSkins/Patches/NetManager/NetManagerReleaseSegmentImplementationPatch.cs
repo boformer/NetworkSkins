@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Reflection;
-using HarmonyLib;
+using Harmony;
 using NetworkSkins.Skins;
 using NetworkSkins.Patches.NetTool;
 // ReSharper disable InconsistentNaming
