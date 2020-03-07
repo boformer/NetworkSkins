@@ -8,7 +8,7 @@ namespace NetworkSkins.Patches.NetManager
     [HarmonyPatch(typeof(global::NetManager), "CreateSegment")]
     public static class NetManagerCreateSegmentPatch
     {
-        public static void Postfix(ref ushort segment, NetInfo info, bool __result)
+        public static void Postfix(ref ushort segment, bool __result)
         {
             if (!__result || !NS2HelpersExtensions.InSimulationThread())
             {

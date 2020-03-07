@@ -9,6 +9,7 @@ using NetworkSkins.Skins;
 using NetworkSkins.TranslationFramework;
 using System;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using static UnityEngine.Object;
