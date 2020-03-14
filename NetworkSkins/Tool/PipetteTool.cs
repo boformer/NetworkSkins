@@ -67,6 +67,7 @@ namespace NetworkSkins.Tool
         protected override void OnEnable() {
             base.OnEnable();
             this.m_toolController.ClearColliding();
+            ToolCursor = CursorInfo;
         }
 
         protected override void OnDisable() {
@@ -76,10 +77,10 @@ namespace NetworkSkins.Tool
         private void ApplyTool() {
             if (HoveredSegmentId != 0)
             {
-                NetInfo info = NetManager.instance.m_segments.m_buffer[HoveredSegmentId].Info;
+                NetInfo info = HoveredSegmentId.ToSegment().Info;
                 var modifiers = NetworkSkinManager.instance.GetModifiersForSegment(HoveredSegmentId);
                 info = NetUtils.FindDefaultElevation(info);
-                ThreadHelper.dispatcher.Dispatch(() => ShowInPanel(info, modifiers));
+                ShowInPanel(info, modifiers);
             }
         }
 
@@ -121,6 +122,7 @@ namespace NetworkSkins.Tool
                 networkButton.SimulateClick();
                 scrollablePanel.ScrollIntoView(networkButton);
             }
+            Debug.Log("KIAN> invoking EventNetInfoPipetted ...");
             SimulationManager.instance.AddAction(() => EventNetInfoPipetted?.Invoke(info));
         }
 
@@ -135,13 +137,9 @@ namespace NetworkSkins.Tool
         protected override void OnToolUpdate()
         {
             DetermineHoveredElements();
-            ToolCursor = null;
-            if (HoveredSegmentId != null)
-            {
-                if (Input.GetMouseButtonDown(0))
-                {
-                    ApplyTool();
-                }
+            ToolCursor = HoveredSegmentId != 0 ? CursorInfo : null;
+            if (HoveredSegmentId != 0 && Input.GetMouseButtonDown(0)) {
+                ApplyTool();
             }
 
         }
