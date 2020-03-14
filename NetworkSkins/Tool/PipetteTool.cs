@@ -122,7 +122,6 @@ namespace NetworkSkins.Tool
                 networkButton.SimulateClick();
                 scrollablePanel.ScrollIntoView(networkButton);
             }
-            Debug.Log("KIAN> invoking EventNetInfoPipetted ...");
             SimulationManager.instance.AddAction(() => EventNetInfoPipetted?.Invoke(info));
         }
 
