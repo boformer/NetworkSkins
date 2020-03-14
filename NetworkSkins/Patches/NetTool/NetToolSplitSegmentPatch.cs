@@ -6,14 +6,13 @@ namespace NetworkSkins.Patches.NetTool
     [HarmonyPatch(typeof(global::NetTool), "SplitSegment")]
     public class NetToolSplitSegmentPatch
     {
-        public static bool Called = false;
-        public static ushort SegmentID = 0;
+        internal static NetworkSkin Skin;
 
-        public static void Prefix()
+        public static void Prefix(ushort segment)
         {
             if (NS2HelpersExtensions.InSimulationThread())
             {
-                Called = true;
+                Skin = NetworkSkinManager.instance.CopySegmentSkin(segment);
             }
         }
 
@@ -21,13 +20,11 @@ namespace NetworkSkins.Patches.NetTool
         {
             if (NS2HelpersExtensions.InSimulationThread())
             {
-                // Delete data of last moved segment
-                if (SegmentID > 0)
+                if (Skin != null)
                 {
-                    NetworkSkinManager.instance.OnSegmentRelease(SegmentID);
+                    NetworkSkinManager.instance.UsageRemoved(Skin);
+                    Skin = null;
                 }
-                SegmentID = 0;
-                Called = false;
             }
         }
     }

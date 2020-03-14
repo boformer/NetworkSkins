@@ -2,7 +2,6 @@
 using System.Reflection;
 using Harmony;
 using NetworkSkins.Skins;
-using NetworkSkins.Patches.NetTool;
 // ReSharper disable InconsistentNaming
 
 
@@ -22,18 +21,8 @@ namespace NetworkSkins.Patches.NetManager
 
         public static void Prefix(ushort segment)
         {
-            if (!NS2HelpersExtensions.InSimulationThread())
+            if (NS2HelpersExtensions.InSimulationThread())
             {
-                return;
-            }
-
-            if (NetToolMoveMiddleNodePatch.Called) {
-                NS2HelpersExtensions.Assert(NetToolMoveMiddleNodePatch.SegmentID == 0, "expected NetToolMoveMiddleNodePatch.SegmentID == 0");
-                NetToolMoveMiddleNodePatch.SegmentID = segment; // do not release skin here as it is necessary later.
-            } else if (NetToolSplitSegmentPatch.Called) {
-                NS2HelpersExtensions.Assert(NetToolSplitSegmentPatch.SegmentID == 0, "expected NetToolSplitSegmentPatch.SegmentID == 0");
-                NetToolSplitSegmentPatch.SegmentID = segment; // do not release skin here as it is necessary later.
-            } else {
                 NetworkSkinManager.instance.OnSegmentRelease(segment);
             }
         }

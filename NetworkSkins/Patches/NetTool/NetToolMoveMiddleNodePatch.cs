@@ -6,14 +6,14 @@ namespace NetworkSkins.Patches.NetTool
     [HarmonyPatch(typeof(global::NetTool), "MoveMiddleNode")]
     public static class NetToolMoveMiddleNodePatch
     {
-        public static bool Called = false;
-        public static ushort SegmentID = 0;
+        public static NetworkSkin Skin = null;
         
-        public static void Prefix()
+        public static void Prefix(ref ushort node) // TODO remove ref when in lates harmony.
         {
             if (NS2HelpersExtensions.InSimulationThread())
             {
-                Called = true;
+                ushort segment = node.ToNode().GetFirstSegment();
+                Skin = NetworkSkinManager.instance.CopySegmentSkin(segment);
             }
         }
 
@@ -21,13 +21,11 @@ namespace NetworkSkins.Patches.NetTool
         {
             if (NS2HelpersExtensions.InSimulationThread())
             {
-                // Delete data of last moved segment
-                if (SegmentID > 0)
+                if (Skin != null)
                 {
-                    NetworkSkinManager.instance.OnSegmentRelease(SegmentID);
+                    NetworkSkinManager.instance.UsageRemoved(Skin);
+                    Skin = null;
                 }
-                SegmentID = 0;
-                Called = false;
             }
         }
     }

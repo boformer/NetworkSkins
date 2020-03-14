@@ -15,12 +15,11 @@ namespace NetworkSkins.Patches.NetManager
                 return;
             }
 
-            if (NetToolMoveMiddleNodePatch.SegmentID > 0) {
-                NetworkSkinManager.instance.OnSegmentTransferData(NetToolMoveMiddleNodePatch.SegmentID, segment);
-            } else if (NetToolSplitSegmentPatch.SegmentID > 0) {
-                NetworkSkinManager.instance.OnSegmentTransferData(NetToolSplitSegmentPatch.SegmentID, segment);
-            }
-            else if(NetToolCreateNode0Patch.Called) {
+            if (NetToolMoveMiddleNodePatch.Skin != null) {
+                NetworkSkinManager.instance.PasteSegmentSkin(segment, NetToolMoveMiddleNodePatch.Skin);
+            } else if (NetToolSplitSegmentPatch.Skin != null) {
+                NetworkSkinManager.instance.PasteSegmentSkin(segment, NetToolSplitSegmentPatch.Skin);
+            } else if(NetToolCreateNode0Patch.Called) {
                 // only when it is called from nettool.
                 NetworkSkinManager.instance.OnSegmentPlaced(segment);
             }
