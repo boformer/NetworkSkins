@@ -8,7 +8,6 @@ using System.Reflection;
 using NetworkSkins.GUI;
 using NetworkSkins.Skins;
 using UnityEngine;
-using ColossalFramework.Threading;
 
 namespace NetworkSkins.Tool
 {
@@ -16,26 +15,14 @@ namespace NetworkSkins.Tool
     {
         public delegate void NetInfoPipettedEventHandler(NetInfo info);
         public event NetInfoPipettedEventHandler EventNetInfoPipetted;
-        private Ray MouseRay { get; set; }
-        private float MouseRayLength { get; set; }
-        private Vector3 MouseRayRight { get; set; }
-        private bool MouseLeftDown { get; set; }
-        private InstanceID HoverInstance { get; set; }
-        private InstanceID HoverInstance2 { get; set; }
-        private bool MouseRightDown { get; set; }
-        private int SubHoverIndex { get; set; }
-        private RaycastOutput RayOutput;
-        private bool MouseRayValid { get; set; }
         private CursorInfo CursorInfo { get; set; }
-        private bool Active { get; set; }
-
         private Dictionary<string, UIComponent> _componentCache = new Dictionary<string, UIComponent>();
-        
+
         private UIButton TSCloseButton {
             get {
                 if (!_componentCache.TryGetValue("TSCloseButton", out UIComponent button))
                     button = UIView.Find("TSCloseButton");
-                    _componentCache["TSCloseButton"] = button;
+                _componentCache["TSCloseButton"] = button;
                 return button as UIButton;
             }
         }
@@ -61,8 +48,9 @@ namespace NetworkSkins.Tool
             Destroy(ToolsModifierControl.toolController.gameObject.GetComponent<PipetteTool>());
         }
 
-        protected override void OnDestroy() { 
-            try {
+        protected override void OnDestroy() {
+            try
+            {
                 FieldInfo fieldInfo = typeof(ToolController).GetField("m_tools", BindingFlags.Instance | BindingFlags.NonPublic);
                 List<ToolBase> tools = ((ToolBase[])fieldInfo.GetValue(ToolsModifierControl.toolController)).ToList();
                 tools.Remove(this);
@@ -83,73 +71,15 @@ namespace NetworkSkins.Tool
 
         protected override void OnDisable() {
             base.OnDisable();
-            Active = MouseLeftDown = MouseRightDown = MouseRayValid = false;
-        }
-
-        public override void SimulationStep() {
-            ToolBase.RaycastInput input = new ToolBase.RaycastInput {
-                m_ray = MouseRay,
-                m_length = MouseRayLength,
-                m_rayRight = MouseRayRight
-            };
-
-            if (MouseRayValid && ToolBase.RayCast(input, out RayOutput)) {
-                InstanceID instanceID = InstanceID.Empty;
-                InstanceID instanceID2 = InstanceID.Empty;
-                if (RayOutput.m_netSegment != 0 && !(NetManager.instance.NetAdjust is null)) {
-                    int index = NetManager.instance.NetAdjust.CheckHoverSegment(ref RayOutput.m_netSegment, RayOutput.m_hitPos);
-                    if (index != 0) RayOutput.m_overlayButtonIndex = index;
-                }
-                if (RayOutput.m_netSegment != 0) {
-                    RayOutput.m_hitPos = NetManager.instance.m_segments.m_buffer[RayOutput.m_netSegment].GetClosestPosition(RayOutput.m_hitPos);
-                    NetInfo info = NetManager.instance.m_segments.m_buffer[RayOutput.m_netSegment].Info;
-                    if (NetUtils.IsValidNet(info)) {
-                        instanceID.NetSegment = RayOutput.m_netSegment;
-                        ushort segment2 = FindSecondarySegment(RayOutput.m_netSegment);
-                        if (segment2 != 0) {
-                            instanceID2.NetSegment = segment2;
-                        }
-                    }
-                }
-
-                SetHoverInstances(instanceID, instanceID2);
-
-                SubHoverIndex = RayOutput.m_overlayButtonIndex;
-                if (MouseLeftDown != MouseRightDown) {
-                    ApplyTool();
-                }
-            }
-        }
-
-        public static ushort FindSecondarySegment(ushort segment) {
-            if (segment == 0) return 0;
-            NetManager netManager = NetManager.instance;
-            ushort node = netManager.m_segments.m_buffer[segment].m_startNode;
-            if ((netManager.m_nodes.m_buffer[node].m_flags & NetNode.Flags.Double) == 0) {
-                node = netManager.m_segments.m_buffer[segment].m_endNode;
-                if ((netManager.m_nodes.m_buffer[node].m_flags & NetNode.Flags.Double) == 0) {
-                    return 0;
-                }
-            }
-            for (int i = 0; i < 8; ++i) {
-                ushort segment2 = netManager.m_nodes.m_buffer[node].GetSegment(i);
-                if (segment2 != 0 && segment2 != segment) {
-                    return segment2;
-                }
-            }
-            return 0;
         }
 
         private void ApplyTool() {
-            if (MouseLeftDown) {
-                if (!Active && HoverInstance.NetSegment != 0) {
-                    Active = true;
-                    NetInfo info = NetManager.instance.m_segments.m_buffer[HoverInstance.NetSegment].Info;
-
-                    var modifiers = NetworkSkinManager.instance.GetModifiersForSegment(HoverInstance.NetSegment);
-                    info = NetUtils.FindDefaultElevation(info);
-                    ThreadHelper.dispatcher.Dispatch(() => ShowInPanel(info, modifiers));
-                }
+            if (HoveredSegmentId != 0)
+            {
+                NetInfo info = NetManager.instance.m_segments.m_buffer[HoveredSegmentId].Info;
+                var modifiers = NetworkSkinManager.instance.GetModifiersForSegment(HoveredSegmentId);
+                info = NetUtils.FindDefaultElevation(info);
+                ShowInPanel(info, modifiers);
             }
         }
 
@@ -170,7 +100,8 @@ namespace NetworkSkins.Tool
                         subMenuTabstripIndex = parent.zOrder;
                         scrollablePanel = current as UIScrollablePanel;
                     }
-                    if (current.name == "GTSContainer") {
+                    if (current.name == "GTSContainer")
+                    {
                         menuTabstripIndex = parent.zOrder;
                         subMenuTabstrip = parent.Find<UITabstrip>("GroupToolstrip");
                     }
@@ -178,8 +109,8 @@ namespace NetworkSkins.Tool
                     parent = parent.parent;
                 }
                 UITabstrip menuTabstrip = current.Find<UITabstrip>("MainToolstrip");
-                if (scrollablePanel == null 
-                || subMenuTabstrip == null 
+                if (scrollablePanel == null
+                || subMenuTabstrip == null
                 || menuTabstrip == null
                 || menuTabstripIndex == -1
                 || subMenuTabstripIndex == -1) return;
@@ -201,72 +132,194 @@ namespace NetworkSkins.Tool
             return component as T;
         }
 
-        protected override void OnToolGUI(Event e) {
-            if (!this.m_toolController.IsInsideUI && e.type == EventType.MouseDown) {
-                if (e.button == 0) {
-                    MouseLeftDown = true;
-                } else if (e.button == 1) {
-                    MouseRightDown = true;
-                }
-            } else if (e.type == EventType.MouseUp) {
-                if (e.button == 0) {
-                    Active = MouseLeftDown = false;
-                } else if (e.button == 1) {
-                    MouseRightDown = false;
-                }
+        protected override void OnToolUpdate()
+        {
+            DetermineHoveredElements();
+            ToolCursor = HoveredSegmentId != 0 ? CursorInfo : null;
+            if (HoveredSegmentId != 0 && Input.GetMouseButtonDown(0)) {
+                ApplyTool();
             }
+
         }
 
-        protected override void OnToolLateUpdate() {
-            MouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-            MouseRayLength = Camera.main.farClipPlane;
-            MouseRayRight = Camera.main.transform.TransformDirection(Vector3.right);
-            MouseRayValid = (!m_toolController.IsInsideUI && Cursor.visible);
-        }
+        public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
+        {
+            if (HoveredSegmentId != 0)
+            {
+                ushort segment = HoveredSegmentId;
+                NetManager netManager = NetManager.instance;
+                Color color = GetToolColor(false, false);
+                float alpha = 1.0f;
+                NetTool.CheckOverlayAlpha(ref netManager.m_segments.m_buffer[HoveredSegmentId], ref alpha);
+                color.a *= alpha;
 
-        private void SetHoverInstances(InstanceID id1, InstanceID id2) {
-            if (id1 != HoverInstance) {
-                HoverInstance = id1;
-            }
-            if (id2 != HoverInstance2) {
-                HoverInstance2 = id2;
-            }
-        }
-
-        public override void RenderOverlay(RenderManager.CameraInfo cameraInfo) {
-            if (!MouseRayValid) {
-                base.RenderOverlay(cameraInfo);
-                return;
-            }
-
-            switch (HoverInstance.Type) {
-                case InstanceType.NetSegment: {
-                    ushort segment = HoverInstance.NetSegment;
-                    ushort segment2 = HoverInstance2.NetSegment;
-                    NetManager netManager = NetManager.instance;
-                    Color color = GetToolColor(false, false);
-                    float alpha = 1.0f;
-                    NetTool.CheckOverlayAlpha(ref netManager.m_segments.m_buffer[segment], ref alpha);
-                    if (segment2 != 0) {
-                        NetTool.CheckOverlayAlpha(ref netManager.m_segments.m_buffer[segment2], ref alpha);
-                    }
-                    color.a *= alpha;
-
-                    if (netManager.NetAdjust != null) {
-                        if (netManager.NetAdjust.RenderOverlay(cameraInfo, segment, color, SubHoverIndex)) {
-                            break;
-                        }
-                    }
-
-                    NetTool.RenderOverlay(cameraInfo, ref netManager.m_segments.m_buffer[segment], color, color);
-                    if (segment2 != 0) {
-                        NetTool.RenderOverlay(cameraInfo, ref netManager.m_segments.m_buffer[segment2], color, color);
-                    }
-                    
-                    break;
-                }
+                NetTool.RenderOverlay(
+                    cameraInfo,
+                    ref netManager.m_segments.m_buffer[HoveredSegmentId],
+                    color,
+                    color);
             }
             base.RenderOverlay(cameraInfo);
         }
+
+        #region raycast
+        private Ray MouseRay => Camera.main.ScreenPointToRay(Input.mousePosition);
+        private float MouseRayLength => Camera.main.farClipPlane;
+        private Vector3 MouseRayRight => Camera.main.transform.TransformDirection(Vector3.right);
+        private bool MouseRayValid => isActiveAndEnabled && Cursor.visible && !m_toolController.IsInsideUI;
+
+        internal const float MAX_HIT_ERROR = 2.5f;
+        internal static ushort HoveredNodeId;
+        internal static ushort HoveredSegmentId;
+
+        private ushort RayCastNode(out RaycastOutput nodeOutput)
+        {
+            RaycastInput nodeInput = new RaycastInput(MouseRay, MouseRayLength)
+            {
+                m_rayRight = MouseRayRight,
+                m_netService = {
+                        // find road nodes
+                        m_itemLayers = ItemClass.Layer.Default | ItemClass.Layer.MetroTunnels,
+                        m_service = ItemClass.Service.Road
+                    },
+                m_ignoreTerrain = true,
+                m_ignoreNodeFlags = NetNode.Flags.Untouchable
+            };
+
+            if (!RayCast(nodeInput, out nodeOutput))
+            {
+                // find train nodes
+                nodeInput.m_netService.m_service = ItemClass.Service.PublicTransport;
+                nodeInput.m_netService.m_subService = ItemClass.SubService.PublicTransportTrain;
+
+                if (!RayCast(nodeInput, out nodeOutput))
+                {
+                    // find metro nodes
+                    nodeInput.m_netService.m_subService =
+                        ItemClass.SubService.PublicTransportMetro;
+
+                    if (!RayCast(nodeInput, out nodeOutput))
+                    {
+                        return 0;
+                    }
+                }
+            }
+            return nodeOutput.m_netNode;
+        }
+
+        private ushort RayCastSegment(out RaycastOutput segmentOutput)
+        {
+            RaycastInput segmentInput = new RaycastInput(MouseRay, MouseRayLength)
+            {
+                m_netService = {
+                        // find road segments
+                        m_itemLayers = ItemClass.Layer.Default | ItemClass.Layer.MetroTunnels,
+                        m_service = ItemClass.Service.Road
+                    },
+                m_ignoreTerrain = true,
+                m_ignoreSegmentFlags = NetSegment.Flags.Untouchable
+            };
+
+            if (!RayCast(segmentInput, out segmentOutput))
+            {
+                segmentInput.m_netService.m_service = ItemClass.Service.PublicTransport;
+                segmentInput.m_netService.m_subService =
+                    ItemClass.SubService.PublicTransportTrain;
+
+                if (!RayCast(segmentInput, out segmentOutput))
+                {
+                    // find metro segments
+                    segmentInput.m_netService.m_subService =
+                        ItemClass.SubService.PublicTransportMetro;
+
+                    if (!RayCast(segmentInput, out segmentOutput))
+                    {
+                        return 0;
+                    }
+                }
+            }
+            return segmentOutput.m_netSegment;
+        }
+
+        private bool DetermineHoveredElements()
+        {
+            HoveredSegmentId = 0;
+            HoveredNodeId = 0;
+
+            RaycastOutput raycastOutput;
+            if (MouseRayValid)
+            {
+                // TODO: why level crossings do not give a node hit?
+                HoveredNodeId = RayCastNode(out raycastOutput);
+                if (HoveredNodeId != 0)
+                {
+                    HoveredSegmentId = GetHoveredSegmentFromNode(raycastOutput.m_hitPos);
+                }
+                else if ((HoveredSegmentId = RayCastSegment(out raycastOutput)) != 0)
+                {
+                    HoveredNodeId = GetHoveredNodeFromSegment(raycastOutput.m_hitPos);
+                }
+                if (HoveredNodeId != 0)
+                {
+                    // to increase accuracy around nodes.
+                    HoveredSegmentId = GetHoveredSegmentFromNode(raycastOutput.m_hitPos);
+                }
+            }
+
+            return HoveredNodeId != 0 || HoveredSegmentId != 0;
+        }
+
+        /// <summary>
+        /// returns the segment connected to HoveredNodeId that is closest to the input position.
+        /// </summary>
+        internal ushort GetHoveredSegmentFromNode(Vector3 hitPos)
+        {
+            ushort minSegId = 0;
+            NetManager netManager = NetManager.instance;
+            NetNode node = netManager.m_nodes.m_buffer[HoveredNodeId];
+            float minDistance = float.MaxValue;
+
+            for (int i = 0; i < 8; ++i)
+            {
+                ushort segmentId = node.GetSegment(i);
+                Vector3 pos = netManager.m_segments.m_buffer[segmentId].GetClosestPosition(hitPos);
+                float distance = (hitPos - pos).sqrMagnitude;
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    minSegId = segmentId;
+                }
+            };
+            return minSegId;
+        }
+
+        /// <summary>
+        /// checks distance to start and end nodes of HoveredSegmentId to get node.
+        /// </summary>
+        internal ushort GetHoveredNodeFromSegment(Vector3 hitPos)
+        {
+            // alternative way to get a node hit: check distance to start and end nodes
+            // of the segment
+            NetManager netManager = NetManager.instance;
+            ushort startNodeId = netManager.m_segments.m_buffer[HoveredSegmentId].m_startNode;
+            ushort endNodeId = netManager.m_segments.m_buffer[HoveredSegmentId].m_endNode;
+
+            NetNode[] nodesBuffer = Singleton<NetManager>.instance.m_nodes.m_buffer;
+            float startDist = (hitPos - nodesBuffer[startNodeId]
+                                                        .m_position).magnitude;
+            float endDist = (hitPos - nodesBuffer[endNodeId]
+                                                      .m_position).magnitude;
+            if (startDist < endDist && startDist < 75f)
+            {
+                return startNodeId;
+            }
+            else if (endDist < startDist && endDist < 75f)
+            {
+                return endNodeId;
+            }
+            return 0;
+        }
+
+        #endregion
     }
 }
