@@ -8,7 +8,6 @@ using System.Reflection;
 using NetworkSkins.GUI;
 using NetworkSkins.Skins;
 using UnityEngine;
-using ColossalFramework.Threading;
 
 namespace NetworkSkins.Tool
 {
@@ -77,7 +76,7 @@ namespace NetworkSkins.Tool
         private void ApplyTool() {
             if (HoveredSegmentId != 0)
             {
-                NetInfo info = HoveredSegmentId.ToSegment().Info;
+                NetInfo info = NetManager.instance.m_segments.m_buffer[HoveredSegmentId].Info;
                 var modifiers = NetworkSkinManager.instance.GetModifiersForSegment(HoveredSegmentId);
                 info = NetUtils.FindDefaultElevation(info);
                 ShowInPanel(info, modifiers);
@@ -151,12 +150,12 @@ namespace NetworkSkins.Tool
                 NetManager netManager = NetManager.instance;
                 Color color = GetToolColor(false, false);
                 float alpha = 1.0f;
-                NetTool.CheckOverlayAlpha(ref HoveredSegmentId.ToSegment(), ref alpha);
+                NetTool.CheckOverlayAlpha(ref netManager.m_segments.m_buffer[HoveredSegmentId], ref alpha);
                 color.a *= alpha;
 
                 NetTool.RenderOverlay(
                     cameraInfo,
-                    ref HoveredSegmentId.ToSegment(),
+                    ref netManager.m_segments.m_buffer[HoveredSegmentId],
                     color,
                     color);
             }
@@ -276,13 +275,14 @@ namespace NetworkSkins.Tool
         internal ushort GetHoveredSegmentFromNode(Vector3 hitPos)
         {
             ushort minSegId = 0;
-            NetNode node = NetManager.instance.m_nodes.m_buffer[HoveredNodeId];
+            NetManager netManager = NetManager.instance;
+            NetNode node = netManager.m_nodes.m_buffer[HoveredNodeId];
             float minDistance = float.MaxValue;
 
             for (int i = 0; i < 8; ++i)
             {
                 ushort segmentId = node.GetSegment(i);
-                Vector3 pos = segmentId.ToSegment().GetClosestPosition(hitPos);
+                Vector3 pos = netManager.m_segments.m_buffer[segmentId].GetClosestPosition(hitPos);
                 float distance = (hitPos - pos).sqrMagnitude;
                 if (distance < minDistance)
                 {
@@ -300,8 +300,9 @@ namespace NetworkSkins.Tool
         {
             // alternative way to get a node hit: check distance to start and end nodes
             // of the segment
-            ushort startNodeId = HoveredSegmentId.ToSegment().m_startNode;
-            ushort endNodeId = HoveredSegmentId.ToSegment().m_endNode;
+            NetManager netManager = NetManager.instance;
+            ushort startNodeId = netManager.m_segments.m_buffer[HoveredSegmentId].m_startNode;
+            ushort endNodeId = netManager.m_segments.m_buffer[HoveredSegmentId].m_endNode;
 
             NetNode[] nodesBuffer = Singleton<NetManager>.instance.m_nodes.m_buffer;
             float startDist = (hitPos - nodesBuffer[startNodeId]
