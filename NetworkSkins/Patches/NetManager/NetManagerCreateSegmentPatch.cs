@@ -5,7 +5,6 @@ using NetworkSkins.Skins;
 
 namespace NetworkSkins.Patches.NetManager
 {
-    // TODO check compat with ParallelRoadTool
     [HarmonyPatch(typeof(global::NetManager), "CreateSegment")]
     public static class NetManagerCreateSegmentPatch
     {
@@ -21,7 +20,7 @@ namespace NetworkSkins.Patches.NetManager
             var caller3 = new System.Diagnostics.StackFrame(firstStackFrameIndex + 2).GetMethod();
 
             // Support for ParallelRoadTool
-            if (caller1.Name == "CreateSegmentOriginal" && caller2.Name == "CreateSegment")
+            if (IsNameMatching(caller1.Name, "CreateSegmentOriginal") && IsNameMatching(caller2.Name, "CreateSegment"))
             {
                 firstStackFrameIndex += 2;
                 caller1 = new System.Diagnostics.StackFrame(firstStackFrameIndex).GetMethod();
@@ -29,9 +28,9 @@ namespace NetworkSkins.Patches.NetManager
                 caller3 = new System.Diagnostics.StackFrame(firstStackFrameIndex + 2).GetMethod();
             }
 
-            if (caller1.Name == "CreateNode" || caller1.Name.StartsWith("CreateNode_Patch"))
+            if (IsNameMatching(caller1.Name, "CreateNode"))
             {
-                if (caller2.Name == "CreateNode" || caller2.Name.StartsWith("CreateNode_Patch"))
+                if (IsNameMatching(caller2.Name, "CreateNode"))
                 {
                     // check that caller was called by NetTool
                     var caller3Type = caller3.DeclaringType;
@@ -58,14 +57,14 @@ namespace NetworkSkins.Patches.NetManager
                         NetManagerReleaseSegmentImplementationPatch.MoveMiddleNode_releasedSegment = 0;
                     }
                 }
-                else if (caller2.Name == "LoadPaths" || caller2.Name.StartsWith("LoadPaths_Patch"))
+                else if (IsNameMatching(caller2.Name, "LoadPaths"))
                 {
                     // segment created because user placed building with integrated network
                     // currently not doing anything
                 }
             }
             // segment that was modified because user added network, apply style of previous segment
-            else if (caller1.Name == "MoveMiddleNode" || caller1.Name.StartsWith("MoveMiddleNode_Patch"))
+            else if (IsNameMatching(caller1.Name, "MoveMiddleNode"))
             {
                 if (NetManagerReleaseSegmentImplementationPatch.MoveMiddleNode_releasedSegment > 0)
                 {
@@ -80,7 +79,7 @@ namespace NetworkSkins.Patches.NetManager
                 }
             }
             // segment that was split by new node, apply style of previous segment
-            else if (caller1.Name == "SplitSegment" || caller1.Name.StartsWith("SplitSegment_Patch"))
+            else if (IsNameMatching(caller1.Name, "SplitSegment"))
             {
                 if (NetManagerReleaseSegmentImplementationPatch.SplitSegment_releasedSegment > 0)
                 {
@@ -90,6 +89,12 @@ namespace NetworkSkins.Patches.NetManager
                     }
                 }
             }
+        }
+
+        public static bool IsNameMatching(string methodName, string name) {
+            return methodName == name
+                || methodName.StartsWith($"{name}_Patch")
+                || methodName.StartsWith($"DMD<DMD<{name}_Patch");
         }
     }
 }
