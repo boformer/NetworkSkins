@@ -1,7 +1,5 @@
 ﻿using Harmony;
 using NetworkSkins.Skins;
-using System;
-using System.Reflection;
 // ReSharper disable InconsistentNaming
 
 namespace NetworkSkins.Patches.LoadingWrapper

@@ -66,6 +66,7 @@
     <Compile Include="GUI\RoadDecoration\RoadDecorationPanel.cs" />
     <Compile Include="GUI\RoadDecoration\RoadDecorationPanelController.cs" />
     <Compile Include="Legacy\LegacyLightPropEnabler.cs" />
+    <Compile Include="Patches\LoadingWrapper\LoadingWrapperOnLevelLoadedPatch.cs" />
     <Compile Include="Patches\ParallelRoadTool\NetManagerDetourPatch.cs" />
     <Compile Include="Persistence\LegacySegmentData.cs" />
     <Compile Include="Skins\Modifiers\RoadDecorationModifier.cs" />
