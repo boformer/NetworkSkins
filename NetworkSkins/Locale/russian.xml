@@ -1,41 +1,41 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Language UniqueName="ru" ReadableName="Pусский" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2009/XMLSchema/XMLSchema.xsd">
   <Translations>
-    <Translation ID="MOD_DESCRIPTION" String="Изменение визуального вида дорог, железнодорожных путей и других инфраструктур" />
+    <Translation ID="MOD_DESCRIPTION" String="Изменение внешнего вида дорог, железнодорожных путей и других протяжённых объектов инфраструктуры" />
     <Translation ID="LABEL_NONE" String="Ничего" />
     <Translation ID="LABEL_DEFAULT" String="По умолчанию" />
     <Translation ID="LABEL_SEARCH" String="Поиск" />
-    <Translation ID="LABEL_LEFTLANE" String="Левая линия" />
-    <Translation ID="LABEL_MIDDLELANE" String="Средняя линия" />
-    <Translation ID="LABEL_RIGHTLANE" String="Правая линия" />
+    <Translation ID="LABEL_LEFTLANE" String="Левая сторона" />
+    <Translation ID="LABEL_MIDDLELANE" String="Центральная часть" />
+    <Translation ID="LABEL_RIGHTLANE" String="Правая сторона" />
     <Translation ID="LABEL_PAVEMENT" String="Тротуар" />
     <Translation ID="LABEL_GRAVEL" String="Гравий" />
-    <Translation ID="LABEL_RUINED" String="Грязь" />
-    <Translation ID="LABEL_ELEVATED" String="Возвышенный" />
-    <Translation ID="LABEL_ELEVATEDMIDDLE" String="Возвышенная середина" />
+    <Translation ID="LABEL_RUINED" String="Почва" />
+    <Translation ID="LABEL_ELEVATED" String="Надземная" />
+    <Translation ID="LABEL_ELEVATEDMIDDLE" String="Опора" />
     <Translation ID="LABEL_BRIDGE" String="Мост" />
-    <Translation ID="LABEL_BRIDGEMIDDLE" String="Середина моста" />
+    <Translation ID="LABEL_BRIDGEMIDDLE" String="Опора моста" />
     <Translation ID="LABEL_DISTANCE" String="Дистанция" />
-    <Translation ID="LABEL_RED" String="Р" />
-    <Translation ID="LABEL_GREEN" String="Г" />
-    <Translation ID="LABEL_BLUE" String="Б" />
+    <Translation ID="LABEL_RED" String="R" />
+    <Translation ID="LABEL_GREEN" String="G" />
+    <Translation ID="LABEL_BLUE" String="B" />
     <Translation ID="LABEL_GLOBAL_SELECTION_DATA" String="Сохранить активные выделения глобально" />
-    <Translation ID="LABEL_HIDEBLACKLISTED" String="Спрятать элементы из чёрного списка" />
+    <Translation ID="LABEL_HIDEBLACKLISTED" String="Скрыть элементы из чёрного списка" />
     <Translation ID="LABEL_DISPLAYATSELECTED" String="Авто-прокрутка к выбранному" />
     <Translation ID="LABEL_NEW_SWATCH" String="Новый цвет" />
-    <Translation ID="LABEL_HIDE_NODE_MARKINGS" String="Hide Intersection Markings" />
-    <Translation ID="TOOLTIP_HIDEBLACKLISTED" String="Включить опцию спрятать элементы из чёрного списка из списков" />
-    <Translation ID="TOOLTIP_GLOBAL_SELECTION_DATA" String="Включить эту опцию для запоминания мода вашей последней использованной опции скина для каждой из сетей глобально, нежели  для каждого сохранения" />
-    <Translation ID="TOOLTIP_DISPLAYATSELECTED" String="Включить эту опцию для автоматического пролистывания к выделенному элементу, когда вы открываете панель" />
+    <Translation ID="LABEL_HIDE_NODE_MARKINGS" String="Скрыть разметку перекрёстка" />
+    <Translation ID="TOOLTIP_HIDEBLACKLISTED" String="Включить опцию 'Скрыть элементы из чёрного списка'" />
+    <Translation ID="TOOLTIP_GLOBAL_SELECTION_DATA" String="Запомнить последние настройки скина(доступно на других картах)" />
+    <Translation ID="TOOLTIP_DISPLAYATSELECTED" String="Включить опцию 'Автоматическое пролистывание к выделенному элементу, при открытии панели'" />
     <Translation ID="TOOLTIP_TREES" String="Деревья" />
     <Translation ID="TOOLTIP_LIGHTS" String="Освещение" />
     <Translation ID="TOOLTIP_SURFACE" String="Поверхность" />
     <Translation ID="TOOLTIP_PILLARS" String="Опоры" />
     <Translation ID="TOOLTIP_CATENARY" String="Контактные сети" />
     <Translation ID="TOOLTIP_COLOR" String="Цвет" />
-    <Translation ID="TOOLTIP_ROAD_DECORATION" String="Markings" />
+    <Translation ID="TOOLTIP_ROAD_DECORATION" String="Разметка" />
     <Translation ID="TOOLTIP_SETTINGS" String="Настройки" />
-    <Translation ID="TOOLTIP_PIPETTE" String="Пипетка&#10;Нажмите на сегмент, чтобы скопировать  скин и выбрать сеть" />
+    <Translation ID="TOOLTIP_PIPETTE" String="Пипетка&#10;Нажмите на сегмент, чтобы скопировать скин и выбрать сеть" />
     <Translation ID="TOOLTIP_LOCK" String="Активировать замок чтобы модифицировать все линии одновременно" />
     <Translation ID="TOOLTIP_ADDFAVOURITE_ADDBLACKLIST" String="Левый клик чтобы добавить в избранное, правый клик чтобы добавить в чёрный список" />
     <Translation ID="TOOLTIP_REMOVEFAVOURITE" String="Левый клик чтобы убрать из избранного, правый клик чтобы добавить в чёрный список" />
@@ -44,7 +44,7 @@
     <Translation ID="TOOLTIP_BUTTON_SAVE_MAXREACHED" String="Вы достигли лимита для сохранённых цветов" />
     <Translation ID="TOOLTIP_BUTTON_SAVE_COLOREXISTS" String="Выбранный цвет уже сохранен" />
     <Translation ID="TOOLTIP_BUTTON_SAVE" String="Сохранить этот цвет в избранное" />
-    <Translation ID="TOOLTIP_HIDE_NODE_MARKINGS" String="Hide markings such as pedestrian crossings and stop lines" />
+    <Translation ID="TOOLTIP_HIDE_NODE_MARKINGS" String="Скрыть разметку, такую как пешеходные переходы и линии остановки" />
     <Translation ID="BUTTON_RESET" String="Сброс" />
     <Translation ID="BUTTON_SAVE" String="Сохранить" />
     <Translation ID="TOOLTIP_BUTTON_DELETE" String="Удалить" />
