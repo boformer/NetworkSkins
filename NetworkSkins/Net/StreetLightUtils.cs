@@ -26,6 +26,29 @@ namespace NetworkSkins.Net
             return streetLights;
         }
 
+        public static bool HasSingularStreetLight(NetInfo prefab) {
+            if (prefab?.m_lanes == null) return false;
+
+            NetLaneProps.Prop lastLaneProp = null;
+
+            foreach (var lane in prefab.m_lanes) {
+                var laneProps = lane?.m_laneProps?.m_props;
+                if (laneProps == null) continue;
+
+                foreach (var laneProp in laneProps) {
+                    if (laneProp != null && IsStreetLightProp(laneProp.m_finalProp)) {
+                        if(lastLaneProp != null && (lastLaneProp.m_finalProp != laneProp.m_finalProp 
+                            || lastLaneProp.m_repeatDistance != laneProp.m_repeatDistance)) {
+                            return false;
+                        }
+                        lastLaneProp = laneProp;
+                    }
+                }
+            }
+
+            return lastLaneProp != null;
+        }
+
         [CanBeNull]
         public static PropInfo GetDefaultStreetLight(NetInfo prefab)
         {
@@ -43,7 +66,10 @@ namespace NetworkSkins.Net
 
             if (prefab.m_class.m_service == ItemClass.Service.Road ||
                 prefab.m_class.m_subService == ItemClass.SubService.PublicTransportPlane ||
-                prefab.name.ToLower().Contains("streetlamp") || prefab.name.ToLower().Contains("streetlight") || prefab.name.ToLower().Contains("lantern"))
+                prefab.name.ToLower().Contains("streetlamp") 
+                || prefab.name.ToLower().Contains("streetlight") 
+                || prefab.name.ToLower().Contains("lantern")
+                || prefab.name.ToLower().Contains("street light"))
             {
                 if (prefab.m_effects != null && prefab.m_effects.Length > 0)
                 {
@@ -66,13 +92,22 @@ namespace NetworkSkins.Net
             return false;
         }
 
-        public static void CorrectStreetLightPropAngleAndPosition(NetLaneProps.Prop laneProp, float halfWidth, float lanePosition)
+        public static void CorrectStreetLightPropAngleAndPosition(NetInfo info, NetLaneProps.Prop laneProp, float halfWidth, float lanePosition)
         {
+            if (info.name.StartsWith("Nature Reserve Path 02") && laneProp.m_angle == -90) {
+                laneProp.m_angle += 90;
+            }
+
             // Rotate street lights standing on left side of pedestrian paths
             float propX = laneProp.m_position.x + lanePosition;
             if(propX < 0 && halfWidth + propX < 3f)
             {
                 laneProp.m_angle = 180;
+            }
+
+            // some props are rotated the wrong way!
+            if(laneProp.m_prop?.name == "Zoo Streetlight 01" || laneProp.m_prop?.name == "Nature Reserve Streetlight 01" || laneProp.m_prop?.name == "Amusement Park Streetlight 01") {
+                laneProp.m_angle -= 90;
             }
         }
     }

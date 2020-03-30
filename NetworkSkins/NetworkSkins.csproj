@@ -69,6 +69,8 @@
     <Compile Include="Patches\NetTool\NetToolCreateNode0Path.cs" />
     <Compile Include="Patches\NetTool\NetToolMoveMiddleNodePatch.cs" />
     <Compile Include="Patches\NetTool\NetToolSplitSegmentPatch.cs" />
+    <Compile Include="Patches\LoadingWrapper\LoadingWrapperOnLevelLoadedPatch.cs" />
+    <Compile Include="Patches\ParallelRoadTool\NetManagerDetourPatch.cs" />
     <Compile Include="Persistence\LegacySegmentData.cs" />
     <Compile Include="Skins\Modifiers\RoadDecorationModifier.cs" />
     <Compile Include="Skins\Serialization\ModifierDataContainer.cs" />

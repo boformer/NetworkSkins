@@ -82,7 +82,8 @@ namespace NetworkSkins.GUI.Lights
 
         protected override void OnChanged()
         {
-            CanEditRepeatDistance = SelectedItem != DefaultItem || !(SelectedItem is DefaultVariantItem);
+            // fix for nature trail with repeat distance 0f!
+            CanEditRepeatDistance = DefaultRepeatDistance >= 2.0f && (SelectedItem != DefaultItem || !(SelectedItem is DefaultVariantItem));
             base.OnChanged();
         }
 
@@ -134,20 +135,30 @@ namespace NetworkSkins.GUI.Lights
             var defaultStreetLights = new Dictionary<NetInfo, PropInfo>();
 
             var groundStreetLight = StreetLightUtils.GetDefaultStreetLight(Prefab);
-            if (groundStreetLight != null) defaultStreetLights[Prefab] = groundStreetLight;
+            if (groundStreetLight != null) {
+                if (!StreetLightUtils.HasSingularStreetLight(Prefab)) return new Dictionary<NetInfo, PropInfo>(); 
+                defaultStreetLights[Prefab] = groundStreetLight;
+            }
+
 
             var elevatedPrefab = NetUtils.GetElevatedPrefab(Prefab);
             if (elevatedPrefab != null)
             {
                 var elevatedStreetLight = StreetLightUtils.GetDefaultStreetLight(elevatedPrefab);
-                if (elevatedStreetLight != null) defaultStreetLights[elevatedPrefab] = elevatedStreetLight;
+                if (elevatedStreetLight != null) {
+                    if (!StreetLightUtils.HasSingularStreetLight(elevatedPrefab)) return new Dictionary<NetInfo, PropInfo>();
+                    defaultStreetLights[elevatedPrefab] = elevatedStreetLight;
+                }
             }
 
             var bridgePrefab = NetUtils.GetBridgePrefab(Prefab);
             if (bridgePrefab != null)
             {
                 var bridgeStreetLight = StreetLightUtils.GetDefaultStreetLight(bridgePrefab);
-                if (bridgeStreetLight != null) defaultStreetLights[bridgePrefab] = bridgeStreetLight;
+                if (bridgeStreetLight != null) {
+                    if (!StreetLightUtils.HasSingularStreetLight(bridgePrefab)) return new Dictionary<NetInfo, PropInfo>();
+                    defaultStreetLights[bridgePrefab] = bridgeStreetLight;
+                }
             }
 
             return defaultStreetLights;
@@ -159,11 +170,13 @@ namespace NetworkSkins.GUI.Lights
             
             if (SelectedItem != null && SelectedItem is SimpleItem item)
             {
-                if (item != DefaultItem || SelectedRepeatDistance != DefaultRepeatDistance)
+                // fix for nature trail with repeat distance 0f!
+                var repeatDistance = DefaultRepeatDistance >= 2.0f ? SelectedRepeatDistance : DefaultRepeatDistance;
+                if (item != DefaultItem || repeatDistance != DefaultRepeatDistance)
                 {
                     var prefabModifiers = new List<NetworkSkinModifier>
                     {
-                        new StreetLightModifier(item.Value, SelectedRepeatDistance)
+                        new StreetLightModifier(item.Value, repeatDistance)
                     };
 
                     modifiers[Prefab] = prefabModifiers;
