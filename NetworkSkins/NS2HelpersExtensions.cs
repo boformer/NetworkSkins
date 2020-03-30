@@ -7,13 +7,11 @@ namespace NetworkSkins
 {
     internal static class NS2HelpersExtensions
     {
-        internal static ref NetNode ToNode(this ushort nodeID) => ref NetManager.instance.m_nodes.m_buffer[nodeID];
-        internal static ref NetSegment ToSegment(this ushort nodeID) => ref NetManager.instance.m_segments.m_buffer[nodeID];
-        
-        internal static ushort GetFirstSegment(this NetNode node)
+        public static ushort GetFirstSegment(ushort nodeID)
         {
+            ref global::NetNode node = ref global::NetManager.instance.m_nodes.m_buffer[nodeID];
             ushort ret = 0;
-            for(int i = 0; i < 8; ++i)
+            for (int i = 0; i < 8; ++i)
             {
                 ret = node.GetSegment(i);
                 if (ret > 0)

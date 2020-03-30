@@ -15,9 +15,9 @@ namespace NetworkSkins.Patches.NetManager
                 return;
             }
 
-            if (NetToolMoveMiddleNodePatch.Skin != null) {
+            if (NetToolMoveMiddleNodePatch.CopySkin) {
                 NetworkSkinManager.instance.PasteSegmentSkin(segment, NetToolMoveMiddleNodePatch.Skin);
-            } else if (NetToolSplitSegmentPatch.Skin != null) {
+            } else if (NetToolSplitSegmentPatch.CopySkin) {
                 NetworkSkinManager.instance.PasteSegmentSkin(segment, NetToolSplitSegmentPatch.Skin);
             } else if(NetToolCreateNode0Patch.Called) {
                 // only when it is called from nettool.
