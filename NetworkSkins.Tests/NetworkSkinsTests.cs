@@ -1,9 +1,5 @@
 ﻿using ICities;
 using System;
-using System.Linq;
-using ColossalFramework.Plugins;
-using ColossalFramework.UI;
-using UnityEngine;
 
 namespace NetworkSkins.Tests
 {
