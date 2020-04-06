@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using Harmony;
-using NetworkSkins.Net;
+using HarmonyLib;
 using NetworkSkins.Skins;
 using UnityEngine;
 // ReSharper disable InconsistentNaming

@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection.Emit;
-using Harmony;
+using HarmonyLib;
 using UnityEngine;
 
 namespace NetworkSkins.Patches.NetManager

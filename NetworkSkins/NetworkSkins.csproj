@@ -8,11 +8,6 @@
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony, Version=1.2.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\libs\0Harmony.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-      <Private>true</Private>
-    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>C:\References\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
@@ -35,6 +30,9 @@
     <Content Include="Locale\*.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CitiesHarmony.API" Version="1.0.3" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebugType>none</DebugType>

@@ -1,9 +1,9 @@
-﻿using ColossalFramework.Plugins;
+﻿using CitiesHarmony.API;
 using ColossalFramework.UI;
-using Harmony;
 using ICities;
 using NetworkSkins.GUI;
 using NetworkSkins.Locale;
+using NetworkSkins.Patches;
 using NetworkSkins.Persistence;
 using NetworkSkins.Skins;
 using NetworkSkins.TranslationFramework;
@@ -16,13 +16,9 @@ namespace NetworkSkins
 {
     public class NetworkSkinsMod : ILoadingExtension, IUserMod
     {
-        private const string HarmonyId = "boformer.NetworkSkins";
-
         public string Name => "Network Skins 2";
         public string Description => Translation.Instance.GetTranslation(TranslationID.MOD_DESCRIPTION);
         
-        private HarmonyInstance harmony;
-
         private NetworkSkinPanel panel;
         private GameObject skinControllerGameObject;
         private GameObject persistenceServiceGameObject;
@@ -37,7 +33,7 @@ namespace NetworkSkins
         {
             NetworkSkinManager.Ensure();
 
-            InstallHarmony();
+            HarmonyHelper.DoOnHarmonyReady(NetworkSkinsPatcher.Install);
 
             if (LoadingManager.exists && LoadingManager.instance.m_loadingComplete)
             {
@@ -67,37 +63,9 @@ namespace NetworkSkins
         {
             Uninstall();
 
-            UninstallHarmony();
+            if (HarmonyHelper.IsHarmonyInstalled) NetworkSkinsPatcher.Uninstall();
 
             NetworkSkinManager.Uninstall();
-        }
-        #endregion
-
-        #region Harmony
-        private void InstallHarmony()
-        {
-            if (harmony == null)
-            {
-                Debug.Log("NetworkSkins Patching...");
-
-#if DEBUG
-                HarmonyInstance.DEBUG = true;
-#endif
-                HarmonyInstance.SELF_PATCHING = false;
-                harmony = HarmonyInstance.Create(HarmonyId);
-                harmony.PatchAll(GetType().Assembly);
-            }
-        }
-
-        private void UninstallHarmony()
-        {
-            if (harmony != null)
-            {
-                harmony.UnpatchAll(HarmonyId);
-                harmony = null;
-
-                Debug.Log("NetworkSkins Reverted...");
-            }
         }
         #endregion
 

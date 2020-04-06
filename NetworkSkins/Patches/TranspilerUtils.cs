@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Reflection.Emit;
-using Harmony;
+using HarmonyLib;
 
 namespace NetworkSkins.Patches
 {
@@ -12,6 +12,7 @@ namespace NetworkSkins.Patches
             UnityEngine.Debug.Log(message);
 #endif
         }
+
         public static bool IsSameInstruction(CodeInstruction a, CodeInstruction b, bool debug = false)
         {
             if (a.opcode == b.opcode)
