@@ -1,10 +1,8 @@
 ﻿using ColossalFramework.IO;
 using NetworkSkins.Net;
 
-namespace NetworkSkins.Skins.Modifiers
-{
-    public class RoadDecorationModifier : NetworkSkinModifier
-    {
+namespace NetworkSkins.Skins.Modifiers {
+    public class RoadDecorationModifier : NetworkSkinModifier {
         public readonly bool nodeMarkingsHidden;
         public readonly bool arrowsHidden;
         public readonly bool signsHidden;
@@ -13,14 +11,13 @@ namespace NetworkSkins.Skins.Modifiers
         public readonly bool trafficLightsHidden;
 
         public RoadDecorationModifier(
-            bool nodeMarkingsHidden, 
-            bool arrowsHidden, 
-            bool signsHidden, 
-            bool decorationHidden, 
-            bool transportStopsHidden, 
-            bool trafficLightsHidden) 
-            : base(NetworkSkinModifierType.RoadDecoration) 
-        {
+            bool nodeMarkingsHidden,
+            bool arrowsHidden,
+            bool signsHidden,
+            bool decorationHidden,
+            bool transportStopsHidden,
+            bool trafficLightsHidden)
+            : base(NetworkSkinModifierType.RoadDecoration) {
             this.nodeMarkingsHidden = nodeMarkingsHidden;
             this.arrowsHidden = arrowsHidden;
             this.signsHidden = signsHidden;
@@ -29,8 +26,7 @@ namespace NetworkSkins.Skins.Modifiers
             this.trafficLightsHidden = trafficLightsHidden;
         }
 
-        public override void Apply(NetworkSkin skin)
-        {
+        public override void Apply(NetworkSkin skin) {
             skin.m_nodeMarkingsHidden = nodeMarkingsHidden;
 
             if (skin.m_lanes != null) {
@@ -42,7 +38,7 @@ namespace NetworkSkins.Skins.Modifiers
                         if (arrowsHidden && RoadDecorationUtils.IsArrow(laneProps[p]?.m_finalProp)
                             || signsHidden && RoadDecorationUtils.IsSign(laneProps[p]?.m_finalProp)
                             || decorationHidden && RoadDecorationUtils.IsDecoration(laneProps[p]?.m_finalProp)
-                            || transportStopsHidden && RoadDecorationUtils.IsTransportStop(laneProps[p]?.m_finalProp) 
+                            || transportStopsHidden && RoadDecorationUtils.IsTransportStop(laneProps[p]?.m_finalProp)
                             || trafficLightsHidden && RoadDecorationUtils.IsTrafficLight(laneProps[p]?.m_finalProp)) {
                             skin.RemoveLaneProp(l, p);
                         }
@@ -52,8 +48,7 @@ namespace NetworkSkins.Skins.Modifiers
         }
 
         #region Serialization
-        protected override void SerializeImpl(DataSerializer s)
-        {
+        protected override void SerializeImpl(DataSerializer s) {
             s.WriteBool(nodeMarkingsHidden);
             s.WriteBool(arrowsHidden);
             s.WriteBool(signsHidden);
@@ -62,8 +57,7 @@ namespace NetworkSkins.Skins.Modifiers
             s.WriteBool(trafficLightsHidden);
         }
 
-        public static RoadDecorationModifier DeserializeImpl(DataSerializer s)
-        {
+        public static RoadDecorationModifier DeserializeImpl(DataSerializer s) {
             var nodeMarkingsHidden = s.ReadBool();
 
             if (s.version < 1) {
@@ -80,34 +74,27 @@ namespace NetworkSkins.Skins.Modifiers
         #endregion
 
         #region Equality
-        protected bool Equals(RoadDecorationModifier other)
-        {
-            return nodeMarkingsHidden == other.nodeMarkingsHidden;
+        protected bool Equals(RoadDecorationModifier other) {
+            return nodeMarkingsHidden == other.nodeMarkingsHidden && arrowsHidden == other.arrowsHidden && signsHidden == other.signsHidden && decorationHidden == other.decorationHidden && transportStopsHidden == other.transportStopsHidden && trafficLightsHidden == other.trafficLightsHidden;
         }
 
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj.GetType() != GetType())
-            {
-                return false;
-            }
-
+        public override bool Equals(object obj) {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
             return Equals((RoadDecorationModifier)obj);
         }
 
-        public override int GetHashCode()
-        {
-            return 1034881573 + nodeMarkingsHidden.GetHashCode();
+        public override int GetHashCode() {
+            unchecked {
+                var hashCode = nodeMarkingsHidden.GetHashCode();
+                hashCode = (hashCode * 397) ^ arrowsHidden.GetHashCode();
+                hashCode = (hashCode * 397) ^ signsHidden.GetHashCode();
+                hashCode = (hashCode * 397) ^ decorationHidden.GetHashCode();
+                hashCode = (hashCode * 397) ^ transportStopsHidden.GetHashCode();
+                hashCode = (hashCode * 397) ^ trafficLightsHidden.GetHashCode();
+                return hashCode;
+            }
         }
         #endregion
     }

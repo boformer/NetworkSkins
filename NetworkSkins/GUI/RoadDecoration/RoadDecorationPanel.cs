@@ -45,7 +45,7 @@ namespace NetworkSkins.GUI.RoadDecoration
             decorationHiddenCheckbox.SetChecked(NetworkSkinPanelController.RoadDecoration.DecorationHidden);
 
             transportStopsHiddenCheckbox.isVisible = NetworkSkinPanelController.RoadDecoration.HasTransportStops;
-            transportStopsHiddenCheckbox.SetChecked(NetworkSkinPanelController.RoadDecoration.HasTransportStops);
+            transportStopsHiddenCheckbox.SetChecked(NetworkSkinPanelController.RoadDecoration.TransportStopsHidden);
 
             trafficLightsHiddenCheckbox.isVisible = NetworkSkinPanelController.RoadDecoration.HasTrafficLights;
             trafficLightsHiddenCheckbox.SetChecked(NetworkSkinPanelController.RoadDecoration.TrafficLightsHidden);

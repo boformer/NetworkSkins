@@ -118,7 +118,7 @@ namespace NetworkSkins.GUI.RoadDecoration
 
         public override void Reset()
         {
-            if (!Enabled || !NodeMarkingsHidden) return;
+            if (!Enabled) return;
 
             NodeMarkingsHidden = false;
             ArrowsHidden = false;
