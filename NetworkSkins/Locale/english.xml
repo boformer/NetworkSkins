@@ -38,7 +38,7 @@
     <Translation ID="TOOLTIP_PILLARS" String="Pillars" />
     <Translation ID="TOOLTIP_CATENARY" String="Catenaries" />
     <Translation ID="TOOLTIP_COLOR" String="Color" />
-    <Translation ID="TOOLTIP_ROAD_DECORATION" String="Markings" />
+    <Translation ID="TOOLTIP_ROAD_DECORATION" String="Road Decoration" />
     <Translation ID="TOOLTIP_SETTINGS" String="Settings" />
     <Translation ID="TOOLTIP_PIPETTE" String="Pipette&#10;Click on a segment to copy its skin and select the network" />
     <Translation ID="TOOLTIP_LOCK" String="Activate the lock to modify all lanes simultaneously" />
@@ -50,11 +50,11 @@
     <Translation ID="TOOLTIP_BUTTON_SAVE_COLOREXISTS" String="The currently selected color is already saved" />
     <Translation ID="TOOLTIP_BUTTON_SAVE" String="Save current color as favorite" />
     <Translation ID="TOOLTIP_HIDE_NODE_MARKINGS" String="Hide markings such as pedestrian crossings and stop lines" />
-        <Translation ID="TOOLTIP_HIDE_ROAD_ARROWS" String="TBD" />
-    <Translation ID="TOOLTIP_HIDE_ROAD_SIGNS" String="TBD" />
-    <Translation ID="TOOLTIP_HIDE_ROAD_DECORATION" String="TBD" />
-    <Translation ID="TOOLTIP_HIDE_TRANSPORT_STOPS" String="TBD" />
-    <Translation ID="TOOLTIP_HIDE_TRAFFIC_LIGHTS" String="TBD" />
+	  <Translation ID="TOOLTIP_HIDE_ROAD_ARROWS" String="Hide driving direction arrows (rules stay active!)" />
+    <Translation ID="TOOLTIP_HIDE_ROAD_SIGNS" String="Hide traffic signs (e.g. speed limit)" />
+    <Translation ID="TOOLTIP_HIDE_ROAD_DECORATION" String="Hide decorations (e.g. electrical boxes or hydrants)" />
+    <Translation ID="TOOLTIP_HIDE_TRANSPORT_STOPS" String="Hide stops and signs for public transport (stops are still functional!)" />
+    <Translation ID="TOOLTIP_HIDE_TRAFFIC_LIGHTS" String="Hide traffic lights (lights are invisible but rules are active!)" />
     <Translation ID="BUTTON_RESET" String="Reset" />
     <Translation ID="BUTTON_SAVE" String="Save" />
     <Translation ID="TOOLTIP_BUTTON_DELETE" String="Delete" />

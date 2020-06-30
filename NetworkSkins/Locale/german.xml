@@ -24,13 +24,11 @@
     <Translation ID="LABEL_DISPLAYATSELECTED" String="Automatisch zum selektierten Element scrollen" />
     <Translation ID="LABEL_NEW_SWATCH" String="Neue Farbe" />
     <Translation ID="LABEL_HIDE_NODE_MARKINGS" String="Kreuzungs-Markierungen entfernen" />
-
-    <Translation ID="LABEL_HIDE_ROAD_ARROWS" String="Hide Road Arrows" />
-    <Translation ID="LABEL_HIDE_ROAD_SIGNS" String="Hide Road Signs" />
-    <Translation ID="LABEL_HIDE_ROAD_DECORATION" String="Hide Road Decoration" />
-    <Translation ID="LABEL_HIDE_TRANSPORT_STOPS" String="Hide Transport Stops" />
-    <Translation ID="LABEL_HIDE_TRAFFIC_LIGHTS" String="Hide Traffic Lights" />
-
+    <Translation ID="LABEL_HIDE_ROAD_ARROWS" String="Fahrrichtungspfeile ausblenden" />
+    <Translation ID="LABEL_HIDE_ROAD_SIGNS" String="Verkehrsschilder entfernen" />
+    <Translation ID="LABEL_HIDE_ROAD_DECORATION" String="Straßendekorationen entfernen" />
+    <Translation ID="LABEL_HIDE_TRANSPORT_STOPS" String="Transport Haltestellen ausblenden" />
+    <Translation ID="LABEL_HIDE_TRAFFIC_LIGHTS" String="Ampeln ausblenden" />
     <Translation ID="TOOLTIP_HIDEBLACKLISTED" String="Wenn du diese Option aktivierst, werden Elemente auf der Blacklist in den Listen versteckt" />
     <Translation ID="TOOLTIP_GLOBAL_SELECTION_DATA" String="Wenn du diese Option aktivierst, wird der zuletzt genutzte Skin global gespeichert, ansonsten nur im Spielstand der jeweiligen Stadt" />
     <Translation ID="TOOLTIP_DISPLAYATSELECTED" String="Aktiviere diese Option, um automatisch zum selektierten Element zu scrollen, wenn du eine Auswahlliste öffnest" />
@@ -40,7 +38,7 @@
     <Translation ID="TOOLTIP_PILLARS" String="Brückenpfeiler" />
     <Translation ID="TOOLTIP_CATENARY" String="Oberleitung" />
     <Translation ID="TOOLTIP_COLOR" String="Farbe" />
-    <Translation ID="TOOLTIP_ROAD_DECORATION" String="Markierungen" />
+    <Translation ID="TOOLTIP_ROAD_DECORATION" String="Stra0endekoration" />
     <Translation ID="TOOLTIP_SETTINGS" String="Einstellungen" />
     <Translation ID="TOOLTIP_PIPETTE" String="Pipette&#10;Klicke auf ein Segment, um dessen Skin zu kopieren und das Netzwerk auszuwählen" />
     <Translation ID="TOOLTIP_LOCK" String="Aktiviere das Schloss, um alle Spuren gleichzeitig zu bearbeiten" />
@@ -52,13 +50,11 @@
     <Translation ID="TOOLTIP_BUTTON_SAVE_COLOREXISTS" String="Die ausgewählte Farbe ist schon gespeichert" />
     <Translation ID="TOOLTIP_BUTTON_SAVE" String="Ausgewählte Farbe zu den Favoriten hinzufügen" />
     <Translation ID="TOOLTIP_HIDE_NODE_MARKINGS" String="Markierungen (z.B. Zebrastreifen oder Haltelinien) entfernen" />
-
-    <Translation ID="TOOLTIP_HIDE_ROAD_ARROWS" String="TBD" />
-    <Translation ID="TOOLTIP_HIDE_ROAD_SIGNS" String="TBD" />
-    <Translation ID="TOOLTIP_HIDE_ROAD_DECORATION" String="TBD" />
-    <Translation ID="TOOLTIP_HIDE_TRANSPORT_STOPS" String="TBD" />
-    <Translation ID="TOOLTIP_HIDE_TRAFFIC_LIGHTS" String="TBD" />
-
+    <Translation ID="TOOLTIP_HIDE_ROAD_ARROWS" String="Fahrrichtungspfeile ausblenden (Fahrtrichtungsgebote bleiben aktiv!)" />
+    <Translation ID="TOOLTIP_HIDE_ROAD_SIGNS" String="Verkehrsschilder (z.B. Links abbiegen verboten oder Stop) entfernen" />
+    <Translation ID="TOOLTIP_HIDE_ROAD_DECORATION" String="Straßendekorationen (z.B. Stromkästen oder Hydranten) entfernen" />
+    <Translation ID="TOOLTIP_HIDE_TRANSPORT_STOPS" String="Haltestellen und Beschilderung ausblenden (Haltestellen werden weiterhin angefahren)" />
+    <Translation ID="TOOLTIP_HIDE_TRAFFIC_LIGHTS" String="Alle Ampeln an dieser Straße ausblenden (Ampelregeln sind weiter aktiv!)" />
     <Translation ID="BUTTON_RESET" String="Zurücksetzen" />
     <Translation ID="BUTTON_SAVE" String="Speichern" />
     <Translation ID="TOOLTIP_BUTTON_DELETE" String="Löschen" />
