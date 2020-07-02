@@ -14,7 +14,16 @@ namespace NetworkSkins.Net {
             "Road Arrow LFR",
             "Road Arrow LR",
             "Road Arrow R",
-            "Tram Arrow"
+            "Tram Arrow",
+
+            //clus road arrows
+            "2128887855.Arrow Forward 2_Data",
+            "2128887855.Arrow Forward - Right_Data",
+            "2128887855.Arrow Left 2_Data",
+            "2128887855.Arrow Forward - Left_Data ",
+            "2128887855.Arrow Forward - Right - Left_Data",
+            "2128887855.Arrow - Right - Left_Data",
+            "2128887855.Arrow Right 2_Data"
         };
         private static readonly string[] SignNames = new[]
         {
