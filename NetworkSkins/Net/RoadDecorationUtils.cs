@@ -38,6 +38,7 @@ namespace NetworkSkins.Net {
             "Info Terminal",
             "Parking Meter",
             "Random Street Prop",
+            "Random Street Prop NoParking",            
             "Random Industrial Street Prop",
             "Delineator 01",
             "Delineator 02",
@@ -52,6 +53,8 @@ namespace NetworkSkins.Net {
             "Tram Stop Sign",
             "Trolleybus Stop",
             "Trolleybus Stop Large 01",
+            "Sightseeing Bus Stop Small",
+            "Sightseeing Bus Stop Large",
             "Taxiway Sign 01",
             "Taxiway Sign 02"
         };
