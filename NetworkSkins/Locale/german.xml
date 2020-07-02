@@ -38,7 +38,7 @@
     <Translation ID="TOOLTIP_PILLARS" String="Brückenpfeiler" />
     <Translation ID="TOOLTIP_CATENARY" String="Oberleitung" />
     <Translation ID="TOOLTIP_COLOR" String="Farbe" />
-    <Translation ID="TOOLTIP_ROAD_DECORATION" String="Stra0endekoration" />
+    <Translation ID="TOOLTIP_ROAD_DECORATION" String="Straßendekoration" />
     <Translation ID="TOOLTIP_SETTINGS" String="Einstellungen" />
     <Translation ID="TOOLTIP_PIPETTE" String="Pipette&#10;Klicke auf ein Segment, um dessen Skin zu kopieren und das Netzwerk auszuwählen" />
     <Translation ID="TOOLTIP_LOCK" String="Aktiviere das Schloss, um alle Spuren gleichzeitig zu bearbeiten" />
