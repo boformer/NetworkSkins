@@ -55,6 +55,10 @@ namespace NetworkSkins.Net {
             "Bike Lane",
             "Road Decal Slow",
             "Manhole",
+            
+            //Vanilla Props used on Parklife Pathes as Roads by Chamëleon
+            "Plant Pot 02",
+            "Plant Pot 03",
 
             //clus road decals
             "1919886860.Be Aware Stop Ahead - Decal #01_Data",
