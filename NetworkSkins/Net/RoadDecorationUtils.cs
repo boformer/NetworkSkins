@@ -16,6 +16,13 @@ namespace NetworkSkins.Net {
             "Road Arrow R",
             "Tram Arrow",
 
+            //Australian replacer Arrows
+            "2071057587.AU Arrow Right_Data",
+            "2071057587.AU Arrow Left_Data",
+            "2071057587.AU Arrow Straight_Data",
+            "2071057587.AU Arrow Straight Left_Data",
+            "2071057587.AU Arrow Straight Right_Data",
+
             //clus road arrows
             "2128887855.Arrow Forward 2_Data",
             "2128887855.Arrow Forward - Right_Data",
@@ -23,7 +30,66 @@ namespace NetworkSkins.Net {
             "2128887855.Arrow Forward - Left_Data ",
             "2128887855.Arrow Forward - Right - Left_Data",
             "2128887855.Arrow - Right - Left_Data",
-            "2128887855.Arrow Right 2_Data"
+            "2128887855.Arrow Right 2_Data",
+
+            //Danish replacer Arrows
+            "2071058348.DK Arrow Right_Data",
+            "2071058348.DK Arrow Left_Data",
+            "2071058348.DK Arrow Straight_Data",
+            "2071058348.DK Arrow Straight Left_Data",
+            "2071058348.DK Arrow Straight Right_Data",
+
+            //French replacer Arrows
+            "1083162158.FR Arrow Right_Data",
+            "1083162158.FR Arrow Left_Data",
+            "1083162158.FR Arrow Straight_Data",
+            "1083162158.FR Arrow Straight Left_Data",
+            "1083162158.FR Arrow Straight Right_Data",
+
+            //German replacer Arrows
+            "1866391549.DE Arrow Right_Data",
+            "1866391549.DE Arrow Left_Data",
+            "1866391549.DE Arrow Straight_Data",
+            "1866391549.DE Arrow Straight Left_Data",
+            "1866391549.DE Arrow Straight Right_Data",
+
+            //Japanese replacer Arrows
+            "1568009578.JP Arrow Right_Data",
+            "1568009578.JP Arrow Left_Data",
+            "1568009578.JP Arrow Forward_Data",
+            "1568009578.JP Arrow Forward Left_Data",
+            "1568009578.JP Arrow Forward Right_Data",
+            "1568009578.JP Arrow Left Right_Data",
+
+            //Korean replacer Arrows
+            "1787627069.tdb Right Arrow_Data",
+            "1787627069.tdb Left Arrow_Data",
+            "1787627069.tdb Straight Arrow_Data",
+            "1787627069.tdb Left Straight Arrow_Data",
+            "1787627069.tdb Right Straight Arrow_Data",
+
+            //Malaysian replacer Arrows
+            "2013521990.MY Arrow Right 2_Data",
+            "2013521990.MY Arrow Left 2_Data",
+            "2013521990.MY Arrow Straight_Data",
+            "2013521990.MY Arrow Straight Left_Data",
+            "2013521990.MY Arrow Straight Right_Data",
+
+            //Spain replacer Arrows
+            "2008960441.Spanish Arrow Forward_Data",
+            "2008960441.Spanish Arrow Forward Left_Data",
+            "2008960441.Spanish Arrow Forward Left Right_Data",
+            "2008960441.Spanish Arrow Forward Right_Data",
+            "2008960441.Spanish Arrow Left_Data",
+            "2008960441.Spanish Arrow Left Right_Data",
+            "2008960441.Spanish Arrow Right_Data",
+
+            //USRP replacer Arrows
+            "2088550283.USRP Arrow Right_Data",
+            "2088550283.USRP Arrow Left_Data",
+            "2088550283.USRP Arrow Forward_Data",
+            "2088550283.USRP Arrow Left-Forward_Data",
+            "2088550283.USRP Arrow Forward-Right_Data"
         };
         private static readonly string[] SignNames = new[]
         {
