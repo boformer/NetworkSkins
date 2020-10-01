@@ -22,6 +22,13 @@ namespace NetworkSkins.Net {
             "2071057587.AU Arrow Straight_Data",
             "2071057587.AU Arrow Straight Left_Data",
             "2071057587.AU Arrow Straight Right_Data",
+            
+            //BIG Urban Roads Arrows
+            "2228643473.BIG Urban Roads Decal Arrow R_Data",
+            "2228643473.BIG Urban Roads Decal Arrow L_Data",
+            "2228643473.BIG Urban Roads Decal Arrow F_Data",
+            "2228643473.BIG Urban Roads Decal Arrow FL_Data",
+            "2228643473.BIG Urban Roads Decal Arrow FR_Data",            
 
             //clus road arrows
             "2128887855.Arrow Forward 2_Data",
