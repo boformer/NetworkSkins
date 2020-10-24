@@ -34,7 +34,7 @@ namespace NetworkSkins.Net {
             "2128887855.Arrow Forward 2_Data",
             "2128887855.Arrow Forward - Right_Data",
             "2128887855.Arrow Left 2_Data",
-            "2128887855.Arrow Forward - Left_Data ",
+            "2128887855.Arrow Forward - Left_Data",
             "2128887855.Arrow Forward - Right - Left_Data",
             "2128887855.Arrow - Right - Left_Data",
             "2128887855.Arrow Right 2_Data",
@@ -169,7 +169,6 @@ namespace NetworkSkins.Net {
             "1919886860.Striped Yellow Line - Decal_Data",
 
             //clus warning lights
-
             "1919887701.Warning Light #01_Data"
         };
 
