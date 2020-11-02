@@ -309,8 +309,26 @@ namespace NetworkSkins.Net {
             "2032407437.Traffic Light - TLTRAM_T1_Data",
             "2032407437.Traffic Light - TLTRAM_T1M_Data",
             "2032407437.Traffic Light - TLTRAM_T2_Data",
-            "2032407437.Traffic Light - TLTRAM_T2M_Data"
-  
+            "2032407437.Traffic Light - TLTRAM_T2M_Data",
+
+           //Nouvilas Madrid Traffic Lights (will be released soon)
+
+            "2270587845.Madrid TrafficLights M blink_Data",
+            "2270587845.Madrid TrafficLights P Left_Data",
+            "2270587845.Madrid TrafficLights P Right_Data",
+            "2270587845.Madrid Traffic Lights - MSP Left_Data",
+            "2270587845.Madrid Traffic Lights - MSP Righ_Data",
+            "2270587845.Madrid TrafficLights LMSP Left_Data",
+            "2270587845.Madrid TrafficLights LMSP Right_Data",
+            "2270587845.Madrid TrafficLights dLMSP Left_Data",
+            "2270587845.Madrid TrafficLights dLMSP Right_Data",
+            "2270587845.MMadrid TrafficLights xLMSP Left_Data",
+            "2270587845.Madrid TrafficLights xLMSP Right_Data",
+            "2270587845.Madrid TrafficLights MS Left_Data",
+            "2270587845.Madrid TrafficLights MS Right_Data",
+            "2270587845.Madrid TrafficLights LMS Left_Data",
+            "2270587845.Madrid TrafficLights LMS Right_Data"
+
         };
 
         public static bool IsArrow(PropInfo prop) {
