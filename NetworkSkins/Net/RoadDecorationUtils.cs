@@ -172,35 +172,35 @@ namespace NetworkSkins.Net {
             "1919887701.Warning Light #01_Data"
         };
 
-        private static readonly string[] TransportStopNames = new[]
-        {
-            "Bus Stop Large",
-            "Bus Stop Small",
-            "Tram Stop",
-            "Tram Stop Sign",
-            "Trolleybus Stop",
-            "Trolleybus Stop Large 01",
-            "Sightseeing Bus Stop Small",
-            "Sightseeing Bus Stop Large",
-            "Taxiway Sign 01",
-            "Taxiway Sign 02",
+        //private static readonly string[] TransportStopNames = new[]
+        //{
+        //    "Bus Stop Large",
+        //    "Bus Stop Small",
+        //    "Tram Stop",
+        //    "Tram Stop Sign",
+        //    "Trolleybus Stop",
+        //    "Trolleybus Stop Large 01",
+        //    "Sightseeing Bus Stop Small",
+        //    "Sightseeing Bus Stop Large",
+        //    "Taxiway Sign 01",
+        //    "Taxiway Sign 02",
 
-            //clus stops
-            "1919887701.Bus Shelter #01 - Frame_Data",
-            "1919887701.Bus Shelter 01 - Glass_Data",
-            "1919887701.Bus Shelter without Time Table_Data",
-            "1919887701.Tram Shelter #01 - Frame_Data",
-            "1919887701.Tram Shelter #01 - Glass _Data",
-            "1919887701.Tram Shelter #03 - Frame_Data",
-            "1919887701.Tram Shelter #03 - Glass_Data",
-            "1919887701.Tram Shelter #04 - Frame_Data",
-            "1919887701.Tram Shelter #04 - Glass_Data",
+        //    //clus stops
+        //    "1919887701.Bus Shelter #01 - Frame_Data",
+        //    "1919887701.Bus Shelter 01 - Glass_Data",
+        //    "1919887701.Bus Shelter without Time Table_Data",
+        //    "1919887701.Tram Shelter #01 - Frame_Data",
+        //    "1919887701.Tram Shelter #01 - Glass _Data",
+        //    "1919887701.Tram Shelter #03 - Frame_Data",
+        //    "1919887701.Tram Shelter #03 - Glass_Data",
+        //    "1919887701.Tram Shelter #04 - Frame_Data",
+        //    "1919887701.Tram Shelter #04 - Glass_Data",
 
-            //Pewex stops (used also for clus stops)
-            "1743534472.Bus Stop Sign_Data",
-            "1743534472.Tram Stop Sign_Data"
+        //    //Pewex stops (used also for clus stops)
+        //    "1743534472.Bus Stop Sign_Data",
+        //    "1743534472.Tram Stop Sign_Data"
 
-        };
+        //};
 
         //private static readonly string[] TrafficLightNames = new[]
         //{
@@ -346,9 +346,11 @@ namespace NetworkSkins.Net {
             return Array.IndexOf(DecorationNames, prop.name) != -1;
         }
 
-        public static bool IsTransportStop(PropInfo prop) {
-            if (prop == null) return false;
-            return Array.IndexOf(TransportStopNames, prop.name) != -1;
+        public static readonly NetLane.Flags stopFlags = NetLane.Flags.Stop | NetLane.Flags.Stop2 | NetLane.Flags.Stops;
+        public static bool IsTransportStop(NetLaneProps.Prop laneProp) {
+            if (laneProp.m_finalProp == null) return false;
+
+            return (laneProp.m_flagsRequired & stopFlags) != NetLane.Flags.None;
         }
 
         public static bool IsTrafficLight(NetLaneProps.Prop laneProp) {

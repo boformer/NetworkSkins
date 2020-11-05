@@ -41,7 +41,7 @@ namespace NetworkSkins.Skins.Modifiers {
                         if (arrowsHidden && RoadDecorationUtils.IsArrow(laneProps[p]?.m_finalProp)
                             || signsHidden && RoadDecorationUtils.IsSign(laneProps[p]?.m_finalProp)
                             || decorationHidden && RoadDecorationUtils.IsDecoration(laneProps[p]?.m_finalProp)
-                            || transportStopsHidden && RoadDecorationUtils.IsTransportStop(laneProps[p]?.m_finalProp)
+                            || transportStopsHidden && RoadDecorationUtils.IsTransportStop(laneProps[p])
                             || trafficLightsHidden && RoadDecorationUtils.IsTrafficLight(laneProps[p])
                             || levelCrossingsHidden && RoadDecorationUtils.IsLevelCrossing(laneProps[p])) {
                             skin.RemoveLaneProp(l, p);

@@ -191,7 +191,7 @@ namespace NetworkSkins.GUI.RoadDecoration
             HasArrows = variations.Any(prefab => NetUtils.GetMatchingLaneProp(prefab, laneProp => RoadDecorationUtils.IsArrow(laneProp.m_finalProp)) != null);
             HasSigns = variations.Any(prefab => NetUtils.GetMatchingLaneProp(prefab, laneProp => RoadDecorationUtils.IsSign(laneProp.m_finalProp)) != null);
             HasDecoration = variations.Any(prefab => NetUtils.GetMatchingLaneProp(prefab, laneProp => RoadDecorationUtils.IsDecoration(laneProp.m_finalProp)) != null);
-            HasTransportStops = variations.Any(prefab => NetUtils.GetMatchingLaneProp(prefab, laneProp => RoadDecorationUtils.IsTransportStop(laneProp.m_finalProp)) != null);
+            HasTransportStops = variations.Any(prefab => NetUtils.GetMatchingLaneProp(prefab, laneProp => RoadDecorationUtils.IsTransportStop(laneProp)) != null);
             HasTrafficLights = variations.Any(prefab => NetUtils.GetMatchingLaneProp(prefab, laneProp => RoadDecorationUtils.IsTrafficLight(laneProp)) != null);
             HasLevelCrossings = variations.Any(prefab => NetUtils.GetMatchingLaneProp(prefab, laneProp => RoadDecorationUtils.IsLevelCrossing(laneProp)) != null);
         }
