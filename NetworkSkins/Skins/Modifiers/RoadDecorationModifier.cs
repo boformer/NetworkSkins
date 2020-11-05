@@ -9,6 +9,7 @@ namespace NetworkSkins.Skins.Modifiers {
         public readonly bool decorationHidden;
         public readonly bool transportStopsHidden;
         public readonly bool trafficLightsHidden;
+        public readonly bool levelCrossingsHidden;
 
         public RoadDecorationModifier(
             bool nodeMarkingsHidden,
@@ -16,7 +17,8 @@ namespace NetworkSkins.Skins.Modifiers {
             bool signsHidden,
             bool decorationHidden,
             bool transportStopsHidden,
-            bool trafficLightsHidden)
+            bool trafficLightsHidden, 
+            bool levelCrossingsHidden)
             : base(NetworkSkinModifierType.RoadDecoration) {
             this.nodeMarkingsHidden = nodeMarkingsHidden;
             this.arrowsHidden = arrowsHidden;
@@ -24,6 +26,7 @@ namespace NetworkSkins.Skins.Modifiers {
             this.decorationHidden = decorationHidden;
             this.transportStopsHidden = transportStopsHidden;
             this.trafficLightsHidden = trafficLightsHidden;
+            this.levelCrossingsHidden = levelCrossingsHidden;
         }
 
         public override void Apply(NetworkSkin skin) {
@@ -39,7 +42,8 @@ namespace NetworkSkins.Skins.Modifiers {
                             || signsHidden && RoadDecorationUtils.IsSign(laneProps[p]?.m_finalProp)
                             || decorationHidden && RoadDecorationUtils.IsDecoration(laneProps[p]?.m_finalProp)
                             || transportStopsHidden && RoadDecorationUtils.IsTransportStop(laneProps[p]?.m_finalProp)
-                            || trafficLightsHidden && RoadDecorationUtils.IsTrafficLight(laneProps[p]?.m_finalProp)) {
+                            || trafficLightsHidden && RoadDecorationUtils.IsTrafficLight(laneProps[p])
+                            || levelCrossingsHidden && RoadDecorationUtils.IsLevelCrossing(laneProps[p])) {
                             skin.RemoveLaneProp(l, p);
                         }
                     }
@@ -55,27 +59,36 @@ namespace NetworkSkins.Skins.Modifiers {
             s.WriteBool(decorationHidden);
             s.WriteBool(transportStopsHidden);
             s.WriteBool(trafficLightsHidden);
+            s.WriteBool(levelCrossingsHidden);
         }
 
         public static RoadDecorationModifier DeserializeImpl(DataSerializer s) {
             var nodeMarkingsHidden = s.ReadBool();
 
             if (s.version < 1) {
-                return new RoadDecorationModifier(nodeMarkingsHidden, false, false, false, false, false);
+                return new RoadDecorationModifier(nodeMarkingsHidden, false, false, false, false, false, false);
             }
+
 
             var arrowsHidden = s.ReadBool();
             var signsHidden = s.ReadBool();
             var decorationHidden = s.ReadBool();
             var transportStopsHidden = s.ReadBool();
             var trafficLightsHidden = s.ReadBool();
-            return new RoadDecorationModifier(nodeMarkingsHidden, arrowsHidden, signsHidden, decorationHidden, transportStopsHidden, trafficLightsHidden);
+
+            if (s.version < 2) {
+                return new RoadDecorationModifier(nodeMarkingsHidden, arrowsHidden, signsHidden, decorationHidden, transportStopsHidden, trafficLightsHidden, false);
+            }
+
+            var levelCrossingsHidden = s.ReadBool();
+
+            return new RoadDecorationModifier(nodeMarkingsHidden, arrowsHidden, signsHidden, decorationHidden, transportStopsHidden, trafficLightsHidden, levelCrossingsHidden);
         }
         #endregion
 
         #region Equality
         protected bool Equals(RoadDecorationModifier other) {
-            return nodeMarkingsHidden == other.nodeMarkingsHidden && arrowsHidden == other.arrowsHidden && signsHidden == other.signsHidden && decorationHidden == other.decorationHidden && transportStopsHidden == other.transportStopsHidden && trafficLightsHidden == other.trafficLightsHidden;
+            return nodeMarkingsHidden == other.nodeMarkingsHidden && arrowsHidden == other.arrowsHidden && signsHidden == other.signsHidden && decorationHidden == other.decorationHidden && transportStopsHidden == other.transportStopsHidden && trafficLightsHidden == other.trafficLightsHidden && levelCrossingsHidden == other.levelCrossingsHidden;
         }
 
         public override bool Equals(object obj) {
@@ -93,6 +106,7 @@ namespace NetworkSkins.Skins.Modifiers {
                 hashCode = (hashCode * 397) ^ decorationHidden.GetHashCode();
                 hashCode = (hashCode * 397) ^ transportStopsHidden.GetHashCode();
                 hashCode = (hashCode * 397) ^ trafficLightsHidden.GetHashCode();
+                hashCode = (hashCode * 397) ^ levelCrossingsHidden.GetHashCode();
                 return hashCode;
             }
         }

@@ -14,6 +14,7 @@ namespace NetworkSkins.GUI.RoadDecoration
         private CheckboxPanel decorationHiddenCheckbox;
         private CheckboxPanel transportStopsHiddenCheckbox;
         private CheckboxPanel trafficLightsHiddenCheckbox;
+        private CheckboxPanel levelCrossingsHiddenCheckbox;
 
         public override void OnDestroy()
         {
@@ -49,6 +50,9 @@ namespace NetworkSkins.GUI.RoadDecoration
 
             trafficLightsHiddenCheckbox.isVisible = NetworkSkinPanelController.RoadDecoration.HasTrafficLights;
             trafficLightsHiddenCheckbox.SetChecked(NetworkSkinPanelController.RoadDecoration.TrafficLightsHidden);
+
+            levelCrossingsHiddenCheckbox.isVisible = NetworkSkinPanelController.RoadDecoration.HasLevelCrossings;
+            levelCrossingsHiddenCheckbox.SetChecked(NetworkSkinPanelController.RoadDecoration.LevelCrossingsHidden);
         }
 
         private void CreateNodeMarkingsHiddenCheckbox()
@@ -106,6 +110,15 @@ namespace NetworkSkins.GUI.RoadDecoration
                 Translation.Instance.GetTranslation(TranslationID.TOOLTIP_HIDE_TRAFFIC_LIGHTS));
             trafficLightsHiddenCheckbox.EventCheckboxStateChanged += NetworkSkinPanelController.RoadDecoration.SetTrafficLightsHidden;
             trafficLightsHiddenCheckbox.isVisible = NetworkSkinPanelController.RoadDecoration.HasTrafficLights;
+
+            levelCrossingsHiddenCheckbox = AddUIComponent<CheckboxPanel>();
+            levelCrossingsHiddenCheckbox.Build(PanelType.None, new Layout(new Vector2(0.0f, 28.0f), true, LayoutDirection.Horizontal, LayoutStart.TopLeft, 10));
+            levelCrossingsHiddenCheckbox.Initialize(
+                NetworkSkinPanelController.RoadDecoration.LevelCrossingsHidden,
+                Translation.Instance.GetTranslation(TranslationID.LABEL_HIDE_LEVEL_CROSSINGS),
+                Translation.Instance.GetTranslation(TranslationID.TOOLTIP_HIDE_LEVEL_CROSSINGS));
+            levelCrossingsHiddenCheckbox.EventCheckboxStateChanged += NetworkSkinPanelController.RoadDecoration.SetLevelCrossingsHidden;
+            levelCrossingsHiddenCheckbox.isVisible = NetworkSkinPanelController.RoadDecoration.HasLevelCrossings;
         }
     }
 }

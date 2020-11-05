@@ -7,7 +7,7 @@ namespace NetworkSkins.Skins.Serialization
 {
     public class NetworkSkinDataContainer : IDataContainer
     {
-        public const int Version = 1;
+        public const int Version = 2;
 
         protected List<NetworkSkin> AppliedSkins;
         protected NetworkSkin[] SegmentSkins;

@@ -202,134 +202,134 @@ namespace NetworkSkins.Net {
 
         };
 
-        private static readonly string[] TrafficLightNames = new[]
-        {
-            "Traffic Light 01",
-            "Traffic Light 02",
-            "Traffic Light 01 Mirror",
-            "Traffic Light 02 Mirror",
-            "Traffic Light Pedestrian",
-            "Traffic Light European 01",
-            "Traffic Light European 02",
-            "Traffic Light European 01 Mirror",
-            "Traffic Light European 02 Mirror",
-            "Traffic Light Pedestrian European",
+        //private static readonly string[] TrafficLightNames = new[]
+        //{
+        //    "Traffic Light 01",
+        //    "Traffic Light 02",
+        //    "Traffic Light 01 Mirror",
+        //    "Traffic Light 02 Mirror",
+        //    "Traffic Light Pedestrian",
+        //    "Traffic Light European 01",
+        //    "Traffic Light European 02",
+        //    "Traffic Light European 01 Mirror",
+        //    "Traffic Light European 02 Mirror",
+        //    "Traffic Light Pedestrian European",
 
-            //BIG Roads Traffic Lights (old) [need to be added for compability]
-
-
-            //BIG Urban Traffic Lights
-            "2236570542.BIG Roads TL Single_Data",
-            "2236570542.BIG Roads TL 1L+P_Data",
-            "2236570542.BIG Roads TL 1L+P 1Way_Data",
-            "2236570542.BIG Roads TL 2L+P_Data",
-            "2236570542.BIG Roads TL 3L+P_Data",
-            "2236570542.BIG Roads TL 3L+P Doghouse_Data",
-            "2236570542.BIG Roads TL Pedestrians_Data",
-            "2236570542.BIG Roads TL Pedestrians Mirror_Data",
-
-            //BIG Suburban Traffic Lights (will be released soon)
+        //    //BIG Roads Traffic Lights (old) [need to be added for compability]
 
 
-            //clus traffic lights
-            "2032407437.Traffic Light - TLB_01_Data",
-            "2032407437.Traffic Light - TLBUS_B1_Data",
-            "2032407437.Traffic Light - TLBUS_B2I_Data",
-            "2032407437.Traffic Light - TLBUS_B2IM_Data",
-            "2032407437.Traffic Light - TLBUS B3N1_Data",
-            "2032407437.Traffic Light - TLBUS B3N1M_Data",
-            "2032407437.Traffic Light - TLBUS_TllExchang_Data",
-            "2032407437.Traffic Light - TLBUS_TllExch A_Data",
-            "2032407437.Traffic Light - TLBUS_TllExch AM_Data",
-            "2032407437.Traffic Light - TLBUS_TllExch M_Data",
-            "2032407437.Traffic Light - TLD_D1_Data",
-            "2032407437.Traffic Light - TLD_D1M_Data",
-            "2032407437.Traffic Light - TLD_D2_Data",
-            "2032407437.Traffic Light - TLD_D2M_Data",
-            "2032407437.Traffic Light - TLD_D3_Data",
-            "2032407437.Traffic Light - TLD_D3M_Data",
-            "2032407437.Traffic Light - TLD_D4_Data",
-            "2032407437.Traffic Light - TLD_D5_Data",
-            "2032407437.Traffic Light - TLD_D5M_Data",
-            "2032407437.Traffic Light - TLI_I01_Data",
-            "2032407437.Traffic Light - TLI_I01M_Data",
-            "2032407437.Traffic Light - TLI_I02_Data",
-            "2032407437.Traffic Light - TLI_I02M_Data",
-            "2032407437.Traffic Light - TLI_I03_Data",
-            "2032407437.Traffic Light - TLI_I03M_Data",
-            "2032407437.Traffic Light - TLI_I04_Data",
-            "2032407437.Traffic Light - TLI_I04M_Data",
-            "2032407437.Traffic Light - TLI_I05_Data",
-            "2032407437.Traffic Light - TLI_I05M_Data",
-            "2032407437.Traffic Light - TLM_Mhe1_Data",
-            "2032407437.Traffic Light - TLM_Mhe1M_Data",
-            "2032407437.Traffic Light - TLM_Mhe2_Data",
-            "2032407437.Traffic Light - TLM_Mhe2M_Data",
-            "2032407437.Traffic Light - TLM_Mhe3_Data",
-            "2032407437.Traffic Light - TLM_Mhe3M_Data",
-            "2032407437.Traffic Light - TLM_Mhe4_Data",
-            "2032407437.Traffic Light - TLM_Mhe4M_Data",
-            "2032407437.Traffic Light - TLM_Mhe5_Data",
-            "2032407437.Traffic Light - TLM_Mhe5M_Data",
-            "2032407437.Traffic Light - TLM_Mhe6_Data",
-            "2032407437.Traffic Light - TLM_Mhe6M_Data",
-            "2032407437.Traffic Light - TLP_P1_Data",
-            "2032407437.Traffic Light - TLP_P2_Data",
-            "2032407437.Traffic Light - TLP_P5_Data",
-            "2032407437.Traffic Light - TLPedDBL_H_Data",
-            "2032407437.Traffic Light - TLPedDBL_L_Data",
-            "2032407437.Traffic Light - TLS_S1_Data",
-            "2032407437.Traffic Light - TLS_S1M_Data",
-            "2032407437.Traffic Light - TLS_S2_Data",
-            "2032407437.Traffic Light - TLS_S2M_Data",
-            "2032407437.Traffic Light - TLS_S3_Data",
-            "2032407437.Traffic Light - TLS_S3M_Data",
-            "2032407437.Traffic Light - TLS_S4_Data",
-            "2032407437.Traffic Light - TLS_S4M_Data",
-            "2032407437.Traffic Light - TLS_S5_Data",
-            "2032407437.Traffic Light - TLS_S5M_Data",
-            "2032407437.Traffic Light - TLS_S6_Data",
-            "2032407437.Traffic Light - TLS_S7_Data",
-            "2032407437.Traffic Light - TLT_T1_Data",
-            "2032407437.Traffic Light - TLT_T1M_Data",
-            "2032407437.Traffic Light - TLT_T2_Data",
-            "2032407437.Traffic Light - TLT_T2M_Data",
-            "2032407437.Traffic Light - TLT_T3_Data",
-            "2032407437.Traffic Light - TLT_T3M_Data",
-            "2032407437.Traffic Light - TLT_T4_Data",
-            "2032407437.Traffic Light - TLT_T4M_Data",
-            "2032407437.Traffic Light - TLT_T5_Data",
-            "2032407437.Traffic Light - TLT_T5M_Data",
-            "2032407437.Traffic Light - TLT_T6_Data",
-            "2032407437.Traffic Light - TLT_T6M_Data",
-            "2032407437.Traffic Light - TLT_T7_Data",
-            "2032407437.Traffic Light - TLT_T7M_Data",
-            "2032407437.Traffic Light - TLT_T8_Data",
-            "2032407437.Traffic Light - TLT_T8M_Data",
-            "2032407437.Traffic Light - TLTRAM_T1_Data",
-            "2032407437.Traffic Light - TLTRAM_T1M_Data",
-            "2032407437.Traffic Light - TLTRAM_T2_Data",
-            "2032407437.Traffic Light - TLTRAM_T2M_Data",
+        //    //BIG Urban Traffic Lights
+        //    "2236570542.BIG Roads TL Single_Data",
+        //    "2236570542.BIG Roads TL 1L+P_Data",
+        //    "2236570542.BIG Roads TL 1L+P 1Way_Data",
+        //    "2236570542.BIG Roads TL 2L+P_Data",
+        //    "2236570542.BIG Roads TL 3L+P_Data",
+        //    "2236570542.BIG Roads TL 3L+P Doghouse_Data",
+        //    "2236570542.BIG Roads TL Pedestrians_Data",
+        //    "2236570542.BIG Roads TL Pedestrians Mirror_Data",
 
-           //Nouvilas Madrid Traffic Lights (will be released soon)
+        //    //BIG Suburban Traffic Lights (will be released soon)
 
-            "2270587845.Madrid TrafficLights M blink_Data",
-            "2270587845.Madrid TrafficLights P Left_Data",
-            "2270587845.Madrid TrafficLights P Right_Data",
-            "2270587845.Madrid Traffic Lights - MSP Left_Data",
-            "2270587845.Madrid Traffic Lights - MSP Righ_Data",
-            "2270587845.Madrid TrafficLights LMSP Left_Data",
-            "2270587845.Madrid TrafficLights LMSP Right_Data",
-            "2270587845.Madrid TrafficLights dLMSP Left_Data",
-            "2270587845.Madrid TrafficLights dLMSP Right_Data",
-            "2270587845.MMadrid TrafficLights xLMSP Left_Data",
-            "2270587845.Madrid TrafficLights xLMSP Right_Data",
-            "2270587845.Madrid TrafficLights MS Left_Data",
-            "2270587845.Madrid TrafficLights MS Right_Data",
-            "2270587845.Madrid TrafficLights LMS Left_Data",
-            "2270587845.Madrid TrafficLights LMS Right_Data"
 
-        };
+        //    //clus traffic lights
+        //    "2032407437.Traffic Light - TLB_01_Data",
+        //    "2032407437.Traffic Light - TLBUS_B1_Data",
+        //    "2032407437.Traffic Light - TLBUS_B2I_Data",
+        //    "2032407437.Traffic Light - TLBUS_B2IM_Data",
+        //    "2032407437.Traffic Light - TLBUS B3N1_Data",
+        //    "2032407437.Traffic Light - TLBUS B3N1M_Data",
+        //    "2032407437.Traffic Light - TLBUS_TllExchang_Data",
+        //    "2032407437.Traffic Light - TLBUS_TllExch A_Data",
+        //    "2032407437.Traffic Light - TLBUS_TllExch AM_Data",
+        //    "2032407437.Traffic Light - TLBUS_TllExch M_Data",
+        //    "2032407437.Traffic Light - TLD_D1_Data",
+        //    "2032407437.Traffic Light - TLD_D1M_Data",
+        //    "2032407437.Traffic Light - TLD_D2_Data",
+        //    "2032407437.Traffic Light - TLD_D2M_Data",
+        //    "2032407437.Traffic Light - TLD_D3_Data",
+        //    "2032407437.Traffic Light - TLD_D3M_Data",
+        //    "2032407437.Traffic Light - TLD_D4_Data",
+        //    "2032407437.Traffic Light - TLD_D5_Data",
+        //    "2032407437.Traffic Light - TLD_D5M_Data",
+        //    "2032407437.Traffic Light - TLI_I01_Data",
+        //    "2032407437.Traffic Light - TLI_I01M_Data",
+        //    "2032407437.Traffic Light - TLI_I02_Data",
+        //    "2032407437.Traffic Light - TLI_I02M_Data",
+        //    "2032407437.Traffic Light - TLI_I03_Data",
+        //    "2032407437.Traffic Light - TLI_I03M_Data",
+        //    "2032407437.Traffic Light - TLI_I04_Data",
+        //    "2032407437.Traffic Light - TLI_I04M_Data",
+        //    "2032407437.Traffic Light - TLI_I05_Data",
+        //    "2032407437.Traffic Light - TLI_I05M_Data",
+        //    "2032407437.Traffic Light - TLM_Mhe1_Data",
+        //    "2032407437.Traffic Light - TLM_Mhe1M_Data",
+        //    "2032407437.Traffic Light - TLM_Mhe2_Data",
+        //    "2032407437.Traffic Light - TLM_Mhe2M_Data",
+        //    "2032407437.Traffic Light - TLM_Mhe3_Data",
+        //    "2032407437.Traffic Light - TLM_Mhe3M_Data",
+        //    "2032407437.Traffic Light - TLM_Mhe4_Data",
+        //    "2032407437.Traffic Light - TLM_Mhe4M_Data",
+        //    "2032407437.Traffic Light - TLM_Mhe5_Data",
+        //    "2032407437.Traffic Light - TLM_Mhe5M_Data",
+        //    "2032407437.Traffic Light - TLM_Mhe6_Data",
+        //    "2032407437.Traffic Light - TLM_Mhe6M_Data",
+        //    "2032407437.Traffic Light - TLP_P1_Data",
+        //    "2032407437.Traffic Light - TLP_P2_Data",
+        //    "2032407437.Traffic Light - TLP_P5_Data",
+        //    "2032407437.Traffic Light - TLPedDBL_H_Data",
+        //    "2032407437.Traffic Light - TLPedDBL_L_Data",
+        //    "2032407437.Traffic Light - TLS_S1_Data",
+        //    "2032407437.Traffic Light - TLS_S1M_Data",
+        //    "2032407437.Traffic Light - TLS_S2_Data",
+        //    "2032407437.Traffic Light - TLS_S2M_Data",
+        //    "2032407437.Traffic Light - TLS_S3_Data",
+        //    "2032407437.Traffic Light - TLS_S3M_Data",
+        //    "2032407437.Traffic Light - TLS_S4_Data",
+        //    "2032407437.Traffic Light - TLS_S4M_Data",
+        //    "2032407437.Traffic Light - TLS_S5_Data",
+        //    "2032407437.Traffic Light - TLS_S5M_Data",
+        //    "2032407437.Traffic Light - TLS_S6_Data",
+        //    "2032407437.Traffic Light - TLS_S7_Data",
+        //    "2032407437.Traffic Light - TLT_T1_Data",
+        //    "2032407437.Traffic Light - TLT_T1M_Data",
+        //    "2032407437.Traffic Light - TLT_T2_Data",
+        //    "2032407437.Traffic Light - TLT_T2M_Data",
+        //    "2032407437.Traffic Light - TLT_T3_Data",
+        //    "2032407437.Traffic Light - TLT_T3M_Data",
+        //    "2032407437.Traffic Light - TLT_T4_Data",
+        //    "2032407437.Traffic Light - TLT_T4M_Data",
+        //    "2032407437.Traffic Light - TLT_T5_Data",
+        //    "2032407437.Traffic Light - TLT_T5M_Data",
+        //    "2032407437.Traffic Light - TLT_T6_Data",
+        //    "2032407437.Traffic Light - TLT_T6M_Data",
+        //    "2032407437.Traffic Light - TLT_T7_Data",
+        //    "2032407437.Traffic Light - TLT_T7M_Data",
+        //    "2032407437.Traffic Light - TLT_T8_Data",
+        //    "2032407437.Traffic Light - TLT_T8M_Data",
+        //    "2032407437.Traffic Light - TLTRAM_T1_Data",
+        //    "2032407437.Traffic Light - TLTRAM_T1M_Data",
+        //    "2032407437.Traffic Light - TLTRAM_T2_Data",
+        //    "2032407437.Traffic Light - TLTRAM_T2M_Data",
+
+        //   //Nouvilas Madrid Traffic Lights (will be released soon)
+
+        //    "2270587845.Madrid TrafficLights M blink_Data",
+        //    "2270587845.Madrid TrafficLights P Left_Data",
+        //    "2270587845.Madrid TrafficLights P Right_Data",
+        //    "2270587845.Madrid Traffic Lights - MSP Left_Data",
+        //    "2270587845.Madrid Traffic Lights - MSP Righ_Data",
+        //    "2270587845.Madrid TrafficLights LMSP Left_Data",
+        //    "2270587845.Madrid TrafficLights LMSP Right_Data",
+        //    "2270587845.Madrid TrafficLights dLMSP Left_Data",
+        //    "2270587845.Madrid TrafficLights dLMSP Right_Data",
+        //    "2270587845.MMadrid TrafficLights xLMSP Left_Data",
+        //    "2270587845.Madrid TrafficLights xLMSP Right_Data",
+        //    "2270587845.Madrid TrafficLights MS Left_Data",
+        //    "2270587845.Madrid TrafficLights MS Right_Data",
+        //    "2270587845.Madrid TrafficLights LMS Left_Data",
+        //    "2270587845.Madrid TrafficLights LMS Right_Data"
+
+        //};
 
         public static bool IsArrow(PropInfo prop) {
             if (prop == null) return false;
@@ -350,10 +350,21 @@ namespace NetworkSkins.Net {
             if (prop == null) return false;
             return Array.IndexOf(TransportStopNames, prop.name) != -1;
         }
-        
-        public static bool IsTrafficLight(PropInfo prop) {
-            if (prop == null) return false;
-            return Array.IndexOf(TrafficLightNames, prop.name) != -1;
+
+        public static bool IsTrafficLight(NetLaneProps.Prop laneProp) {
+            if (laneProp.m_finalProp == null || laneProp.m_finalProp.m_material?.shader?.name != "Custom/Props/Prop/TrafficLight") return false;
+
+            return (laneProp.m_startFlagsRequired & NetNode.Flags.TrafficLights) != NetNode.Flags.None
+                        && (laneProp.m_startFlagsForbidden & NetNode.Flags.LevelCrossing) != NetNode.Flags.None
+                   || (laneProp.m_endFlagsRequired & NetNode.Flags.TrafficLights) != NetNode.Flags.None
+                        && (laneProp.m_endFlagsForbidden & NetNode.Flags.LevelCrossing) != NetNode.Flags.None;
+        }
+
+        public static bool IsLevelCrossing(NetLaneProps.Prop laneProp) {
+            if (laneProp.m_finalProp == null || laneProp.m_finalProp.m_material?.shader?.name != "Custom/Props/Prop/TrafficLight") return false;
+
+            return (laneProp.m_startFlagsRequired & NetNode.Flags.LevelCrossing) != NetNode.Flags.None
+                   || (laneProp.m_endFlagsRequired & NetNode.Flags.LevelCrossing) != NetNode.Flags.None;
         }
     }
 }

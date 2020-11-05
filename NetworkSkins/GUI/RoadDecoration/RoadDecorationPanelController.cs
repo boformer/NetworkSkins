@@ -20,6 +20,7 @@ namespace NetworkSkins.GUI.RoadDecoration
         public bool DecorationHidden { get; private set; }
         public bool TransportStopsHidden { get; private set; }
         public bool TrafficLightsHidden { get; private set; }
+        public bool LevelCrossingsHidden { get; private set; }
 
         public bool CanHideNodeMarkings { get; private set; } = false;
         public bool HasArrows { get; private set; } = false;
@@ -27,6 +28,7 @@ namespace NetworkSkins.GUI.RoadDecoration
         public bool HasDecoration { get; private set; } = false;
         public bool HasTransportStops { get; private set; } = false;
         public bool HasTrafficLights { get; private set; } = false;
+        public bool HasLevelCrossings { get; private set; } = false;
 
         private MethodInfo _canHideMarkings;
 
@@ -116,6 +118,16 @@ namespace NetworkSkins.GUI.RoadDecoration
             OnChanged();
         }
 
+        public void SetLevelCrossingsHidden(bool levelCrossingsHidden) {
+            if (LevelCrossingsHidden == levelCrossingsHidden) return;
+
+            LevelCrossingsHidden = levelCrossingsHidden;
+
+            Save();
+
+            OnChanged();
+        }
+
         public override void Reset()
         {
             if (!Enabled) return;
@@ -126,6 +138,7 @@ namespace NetworkSkins.GUI.RoadDecoration
             DecorationHidden = false;
             TransportStopsHidden = false;
             TrafficLightsHidden = false;
+            LevelCrossingsHidden = false;
 
             Save();
 
@@ -148,6 +161,7 @@ namespace NetworkSkins.GUI.RoadDecoration
             DecorationHidden = false;
             TransportStopsHidden = false;
             TrafficLightsHidden = false;
+            LevelCrossingsHidden = false;
 
             foreach (var modifier in modifiers)
             {
@@ -159,6 +173,7 @@ namespace NetworkSkins.GUI.RoadDecoration
                     DecorationHidden = roadDecorationModifier.decorationHidden;
                     TransportStopsHidden = roadDecorationModifier.transportStopsHidden;
                     TrafficLightsHidden = roadDecorationModifier.trafficLightsHidden;
+                    LevelCrossingsHidden = roadDecorationModifier.levelCrossingsHidden;
                     break;
                 }
             }
@@ -177,18 +192,19 @@ namespace NetworkSkins.GUI.RoadDecoration
             HasSigns = variations.Any(prefab => NetUtils.GetMatchingLaneProp(prefab, laneProp => RoadDecorationUtils.IsSign(laneProp.m_finalProp)) != null);
             HasDecoration = variations.Any(prefab => NetUtils.GetMatchingLaneProp(prefab, laneProp => RoadDecorationUtils.IsDecoration(laneProp.m_finalProp)) != null);
             HasTransportStops = variations.Any(prefab => NetUtils.GetMatchingLaneProp(prefab, laneProp => RoadDecorationUtils.IsTransportStop(laneProp.m_finalProp)) != null);
-            HasTrafficLights = variations.Any(prefab => NetUtils.GetMatchingLaneProp(prefab, laneProp => RoadDecorationUtils.IsTrafficLight(laneProp.m_finalProp)) != null);
+            HasTrafficLights = variations.Any(prefab => NetUtils.GetMatchingLaneProp(prefab, laneProp => RoadDecorationUtils.IsTrafficLight(laneProp)) != null);
+            HasLevelCrossings = variations.Any(prefab => NetUtils.GetMatchingLaneProp(prefab, laneProp => RoadDecorationUtils.IsLevelCrossing(laneProp)) != null);
         }
 
         protected override Dictionary<NetInfo, List<NetworkSkinModifier>> BuildModifiers()
         {
             var modifiers = new Dictionary<NetInfo, List<NetworkSkinModifier>>();
 
-            if (NodeMarkingsHidden || ArrowsHidden || SignsHidden || DecorationHidden || TransportStopsHidden || TrafficLightsHidden)
+            if (NodeMarkingsHidden || ArrowsHidden || SignsHidden || DecorationHidden || TransportStopsHidden || TrafficLightsHidden || LevelCrossingsHidden)
             {
                 var prefabModifiers = new List<NetworkSkinModifier>
                 {
-                    new RoadDecorationModifier(NodeMarkingsHidden, ArrowsHidden, SignsHidden, DecorationHidden, TransportStopsHidden, TrafficLightsHidden)
+                    new RoadDecorationModifier(NodeMarkingsHidden, ArrowsHidden, SignsHidden, DecorationHidden, TransportStopsHidden, TrafficLightsHidden, LevelCrossingsHidden)
                 };
 
                 var subPrefabs = NetUtils.GetPrefabVariations(Prefab);
@@ -212,6 +228,7 @@ namespace NetworkSkins.GUI.RoadDecoration
         private const string DecorationHiddenKey = "DecorationHidden";
         private const string TransportStopsHiddenKey = "TransportStopsHidden";
         private const string TrafficLightsHiddenKey = "TrafficLightsHidden";
+        private const string LevelCrossingsHiddenKey = "LevelCrossingsHidden";
 
         private void Load()
         {
@@ -221,6 +238,7 @@ namespace NetworkSkins.GUI.RoadDecoration
             DecorationHidden = ActiveSelectionData.Instance.GetBoolValue(Prefab, DecorationHiddenKey) ?? false;
             TransportStopsHidden = ActiveSelectionData.Instance.GetBoolValue(Prefab, TransportStopsHiddenKey) ?? false;
             TrafficLightsHidden = ActiveSelectionData.Instance.GetBoolValue(Prefab, TrafficLightsHiddenKey) ?? false;
+            LevelCrossingsHidden = ActiveSelectionData.Instance.GetBoolValue(Prefab, LevelCrossingsHiddenKey) ?? false;
         }
 
         private void Save()
@@ -254,6 +272,11 @@ namespace NetworkSkins.GUI.RoadDecoration
                 ActiveSelectionData.Instance.SetBoolValue(Prefab, TrafficLightsHiddenKey, true);
             else
                 ActiveSelectionData.Instance.ClearValue(Prefab, TrafficLightsHiddenKey);
+
+            if (LevelCrossingsHidden)
+                ActiveSelectionData.Instance.SetBoolValue(Prefab, LevelCrossingsHiddenKey, true);
+            else
+                ActiveSelectionData.Instance.ClearValue(Prefab, LevelCrossingsHiddenKey);
         }
         #endregion
     }
