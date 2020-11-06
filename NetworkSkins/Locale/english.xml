@@ -51,7 +51,7 @@
     <Translation ID="TOOLTIP_BUTTON_SAVE_COLOREXISTS" String="The currently selected color is already saved" />
     <Translation ID="TOOLTIP_BUTTON_SAVE" String="Save current color as favorite" />
     <Translation ID="TOOLTIP_HIDE_NODE_MARKINGS" String="Hide markings such as pedestrian crossings and stop lines" />
-	  <Translation ID="TOOLTIP_HIDE_ROAD_ARROWS" String="Hide driving direction arrows (rules stay active!)" />
+    <Translation ID="TOOLTIP_HIDE_ROAD_ARROWS" String="Hide driving direction arrows (rules stay active!)" />
     <Translation ID="TOOLTIP_HIDE_ROAD_SIGNS" String="Hide traffic signs (e.g. speed limit)" />
     <Translation ID="TOOLTIP_HIDE_ROAD_DECORATION" String="Hide decorations (e.g. electrical boxes or hydrants)" />
     <Translation ID="TOOLTIP_HIDE_TRANSPORT_STOPS" String="Hide stops and signs for public transport (stops are still functional!)" />
