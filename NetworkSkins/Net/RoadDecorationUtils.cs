@@ -111,6 +111,7 @@ namespace NetworkSkins.Net {
             "No Left Turn Sign",
             "No Parking Sign",
             "No Right Turn Sign",
+            "Stop Sign",
             "Street Name Sign"
         };
 
