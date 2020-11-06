@@ -55,6 +55,7 @@
     <Translation ID="TOOLTIP_HIDE_ROAD_DECORATION" String="Straßendekorationen (z.B. Stromkästen oder Hydranten) entfernen" />
     <Translation ID="TOOLTIP_HIDE_TRANSPORT_STOPS" String="Haltestellen und Beschilderung ausblenden (Haltestellen werden weiterhin angefahren)" />
     <Translation ID="TOOLTIP_HIDE_TRAFFIC_LIGHTS" String="Alle Ampeln an dieser Straße ausblenden (Ampelregeln sind weiter aktiv!)" />
+    <Translation ID="TOOLTIP_HIDE_LEVEL_CROSSINGS" String="Bahnschranken ausblenden (Bahnschranken sind unsichtbar, aber die Regeln sind weiter aktiv!)" />
     <Translation ID="BUTTON_RESET" String="Zurücksetzen" />
     <Translation ID="BUTTON_SAVE" String="Speichern" />
     <Translation ID="TOOLTIP_BUTTON_DELETE" String="Löschen" />
