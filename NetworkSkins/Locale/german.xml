@@ -29,6 +29,7 @@
     <Translation ID="LABEL_HIDE_ROAD_DECORATION" String="Straßendekorationen entfernen" />
     <Translation ID="LABEL_HIDE_TRANSPORT_STOPS" String="Transport Haltestellen ausblenden" />
     <Translation ID="LABEL_HIDE_TRAFFIC_LIGHTS" String="Ampeln ausblenden" />
+    <Translation ID="LABEL_HIDE_LEVEL_CROSSINGS" String="Bahnschranken ausblenden" />    
     <Translation ID="TOOLTIP_HIDEBLACKLISTED" String="Wenn du diese Option aktivierst, werden Elemente auf der Blacklist in den Listen versteckt" />
     <Translation ID="TOOLTIP_GLOBAL_SELECTION_DATA" String="Wenn du diese Option aktivierst, wird der zuletzt genutzte Skin global gespeichert, ansonsten nur im Spielstand der jeweiligen Stadt" />
     <Translation ID="TOOLTIP_DISPLAYATSELECTED" String="Aktiviere diese Option, um automatisch zum selektierten Element zu scrollen, wenn du eine Auswahlliste öffnest" />
