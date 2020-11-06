@@ -58,7 +58,7 @@
         public const string TOOLTIP_HIDE_ROAD_DECORATION = "TOOLTIP_HIDE_ROAD_DECORATION";
         public const string TOOLTIP_HIDE_TRANSPORT_STOPS = "TOOLTIP_HIDE_TRANSPORT_STOPS";
         public const string TOOLTIP_HIDE_TRAFFIC_LIGHTS = "TOOLTIP_HIDE_TRAFFIC_LIGHTS";
-        public const string TOOLTIP_HIDE_LEVEL_CROSSINGS = "TOOLTIP_HIDE_TRAFFIC_LIGHTS";
+        public const string TOOLTIP_HIDE_LEVEL_CROSSINGS = "TOOLTIP_HIDE_LEVEL_CROSSINGS";
         public const string BUTTON_RESET = "BUTTON_RESET";
         public const string BUTTON_SAVE = "BUTTON_SAVE";
     }
