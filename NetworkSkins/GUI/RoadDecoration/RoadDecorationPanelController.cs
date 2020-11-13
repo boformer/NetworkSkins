@@ -11,7 +11,7 @@ namespace NetworkSkins.GUI.RoadDecoration
 {
     public class RoadDecorationPanelController : FeaturePanelController
     {
-        public override bool Enabled => base.Enabled && (CanHideNodeMarkings || HasArrows || HasSigns 
+        public override bool Enabled => base.Enabled && (CanHideNodeMarkings || HasArrows || HasSigns
             || HasDecoration || HasTransportStops || HasTrafficLights);
 
         public bool NodeMarkingsHidden { get; private set; }
@@ -45,7 +45,7 @@ namespace NetworkSkins.GUI.RoadDecoration
                 if (assembly == null) return null;
 
                 var method = assembly.GetType("HideCrosswalks.NetInfoExt")?
-                    .GetMethod("GetCanHideMarkings", BindingFlags.Static | BindingFlags.Public); 
+                    .GetMethod("GetCanHideMarkings", BindingFlags.Static | BindingFlags.Public);
                 if (method != null) return method;
 
                 return assembly.GetType("HideTMPECrosswalks.Utils.PrefabUtils")?
@@ -68,7 +68,8 @@ namespace NetworkSkins.GUI.RoadDecoration
             OnChanged();
         }
 
-        public void SetArrowsHidden(bool arrowsHidden) {
+        public void SetArrowsHidden(bool arrowsHidden)
+        {
             if (ArrowsHidden == arrowsHidden) return;
 
             ArrowsHidden = arrowsHidden;
@@ -78,7 +79,8 @@ namespace NetworkSkins.GUI.RoadDecoration
             OnChanged();
         }
 
-        public void SetSignsHidden(bool signsHidden) {
+        public void SetSignsHidden(bool signsHidden)
+        {
             if (SignsHidden == signsHidden) return;
 
             SignsHidden = signsHidden;
@@ -88,7 +90,8 @@ namespace NetworkSkins.GUI.RoadDecoration
             OnChanged();
         }
 
-        public void SetDecorationHidden(bool decorationHidden) {
+        public void SetDecorationHidden(bool decorationHidden)
+        {
             if (DecorationHidden == decorationHidden) return;
 
             DecorationHidden = decorationHidden;
@@ -98,7 +101,8 @@ namespace NetworkSkins.GUI.RoadDecoration
             OnChanged();
         }
 
-        public void SetTransportStopsHidden(bool transportStopsHidden) {
+        public void SetTransportStopsHidden(bool transportStopsHidden)
+        {
             if (TransportStopsHidden == transportStopsHidden) return;
 
             TransportStopsHidden = transportStopsHidden;
@@ -108,7 +112,8 @@ namespace NetworkSkins.GUI.RoadDecoration
             OnChanged();
         }
 
-        public void SetTrafficLightsHidden(bool trafficLightsHidden) {
+        public void SetTrafficLightsHidden(bool trafficLightsHidden)
+        {
             if (TrafficLightsHidden == trafficLightsHidden) return;
 
             TrafficLightsHidden = trafficLightsHidden;
@@ -118,7 +123,8 @@ namespace NetworkSkins.GUI.RoadDecoration
             OnChanged();
         }
 
-        public void SetLevelCrossingsHidden(bool levelCrossingsHidden) {
+        public void SetLevelCrossingsHidden(bool levelCrossingsHidden)
+        {
             if (LevelCrossingsHidden == levelCrossingsHidden) return;
 
             LevelCrossingsHidden = levelCrossingsHidden;
@@ -145,9 +151,10 @@ namespace NetworkSkins.GUI.RoadDecoration
             OnChanged();
         }
 
-        protected override void Build() {
+        protected override void Build()
+        {
             Refresh();
-            
+
             Load();
         }
 

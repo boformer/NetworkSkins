@@ -32,7 +32,8 @@ namespace NetworkSkins.GUI.RoadDecoration
             autoFitChildrenHorizontally = true;
         }
 
-        protected override void RefreshUI(NetInfo netInfo) {
+        protected override void RefreshUI(NetInfo netInfo)
+        {
             nodeMarkingsHiddenCheckbox.isVisible = NetworkSkinPanelController.RoadDecoration.CanHideNodeMarkings;
             nodeMarkingsHiddenCheckbox.SetChecked(NetworkSkinPanelController.RoadDecoration.NodeMarkingsHidden);
 
