@@ -137,7 +137,21 @@ namespace NetworkSkins.Net
             "2228643473.BIG Roads R2 R2-1 Speed Limit 30_Data",
             "2228643473.BIG Roads R2 R2-1 Speed Limit 35_Data",
             "2228643473.BIG Roads R2 R3-1 No Right Turn_Data",
-            "2228643473.BIG Roads R2 R3-2 No Left Turn _Data",
+            "2228643473.BIG Roads R2 R3-2 No Left Turn_ Data",
+
+            //Canadian (Ontario) Road Signs Pack by Nochin98
+
+            "2287634130.100 KM/HR MAX SIGN_Data",
+            "2287634130.60 KM/HR MAX SIGN_Data",
+            "2287634130.50 KM/HR MAX SIGN_Data",
+            "2287634130.40 KM/HR MAX SIGN_Data",
+            "2287634130.30 KM/HR MAX SIGN_Data",
+            "2287634130.STOP SIGN_Data",
+            "2287634130.NO PARKING SIGN_Data",
+            "2287634130.DO NOT ENTER SIGN_Data",
+            "2287634130.HIGHWAY ROUTE SIGN_Data",
+            "2287634130.NO LEFT TURN SIGN_Data",
+            "2287634130.NO RIGHT TURN SIGN_Data",
 
 	        //French road signs by Raymond Pelletier
             "1073554884.French Road Sign - B14.30_Data",
