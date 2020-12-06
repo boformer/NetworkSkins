@@ -26,7 +26,7 @@ namespace NetworkSkins.Net
             "2071057587.AU Arrow Straight Right_Data",
             
             //BIG (Urban) Roads Arrows + Decals by hockenheim95
-			"2228643473.BIG Urban Roads Decal Arrow F_Data",
+	    "2228643473.BIG Urban Roads Decal Arrow F_Data",
             "2228643473.BIG Urban Roads Decal Arrow FL_Data",
             "2228643473.BIG Urban Roads Decal Arrow FR_Data",
             "2228643473.BIG Urban Roads Decal Arrow L_Data",
@@ -127,7 +127,7 @@ namespace NetworkSkins.Net
             "1263918586.AUS Speed Limit 100 km/h small_Data",
 
             //BIG Urban Roads signs by hockenheim95
-			"2228643473.BIG Roads R2 R3-7L LeftLaneTurn_Data",
+	    "2228643473.BIG Roads R2 R3-7L LeftLaneTurn_Data",
             "2228643473.BIG Roads R2 R3-7R RightLaneTurn_Data",
             "2228643473.BIG Roads R2 R3-9B 2Way LeftTurn_Data",
             "2228643473.BIG Roads R2 R5-1 Do Not Enter_Data",
@@ -137,7 +137,7 @@ namespace NetworkSkins.Net
             "2228643473.BIG Roads R2 R2-1 Speed Limit 30_Data",
             "2228643473.BIG Roads R2 R2-1 Speed Limit 35_Data",
             "2228643473.BIG Roads R2 R3-1 No Right Turn_Data",
-            "2228643473.BIG Roads R2 R3-2 No Left Turn_ Data",
+            "2228643473.BIG Roads R2 R3-2 No Left Turn _Data",
 
             //Canadian (Ontario) Road Signs Pack by Nochin98
 
@@ -281,7 +281,7 @@ namespace NetworkSkins.Net
             "Plant Pot 03",
 
             //BIG Urban Roads Props + decals
-			"2228643473.BIG Urban Roads Delineator_Data",
+	    "2228643473.BIG Urban Roads Delineator_Data",
             "2228643473.BIG Urban Roads Tunnel Exit Door_Data",
             "2228643473.BIG Urban Roads Decal BUS_Data",
             "2228643473.BIG Urban Roads Decal ONLY_Data",
