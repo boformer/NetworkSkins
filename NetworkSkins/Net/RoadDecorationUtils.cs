@@ -26,7 +26,7 @@ namespace NetworkSkins.Net
             "2071057587.AU Arrow Straight Right_Data",
             
             //BIG (Urban) Roads Arrows + Decals by hockenheim95
-	    "2228643473.BIG Urban Roads Decal Arrow F_Data",
+    	    "2228643473.BIG Urban Roads Decal Arrow F_Data",
             "2228643473.BIG Urban Roads Decal Arrow FL_Data",
             "2228643473.BIG Urban Roads Decal Arrow FR_Data",
             "2228643473.BIG Urban Roads Decal Arrow L_Data",
@@ -127,7 +127,7 @@ namespace NetworkSkins.Net
             "1263918586.AUS Speed Limit 100 km/h small_Data",
 
             //BIG Urban Roads signs by hockenheim95
-	    "2228643473.BIG Roads R2 R3-7L LeftLaneTurn_Data",
+	        "2228643473.BIG Roads R2 R3-7L LeftLaneTurn_Data",
             "2228643473.BIG Roads R2 R3-7R RightLaneTurn_Data",
             "2228643473.BIG Roads R2 R3-9B 2Way LeftTurn_Data",
             "2228643473.BIG Roads R2 R5-1 Do Not Enter_Data",
@@ -246,6 +246,10 @@ namespace NetworkSkins.Net
             "1293188397.UK 30MPH Sign_Data",
             "1293188397.UK 40MPH Sign_Data",
             "1293188397.UK National Speed Limit Sign_Data",
+
+            //US CA Freeway Props by GhostRaiderMX
+            "2322292112.3L US CA I Highway Gantry Medium_Data",
+            "2322292540.US CA I Highway Sign Entrance_Data",
 							
 	        //US DOT regulatory signs by Spence!
             "1779508928.R2 R1-1 Stop Sign_Data",
@@ -281,7 +285,7 @@ namespace NetworkSkins.Net
             "Plant Pot 03",
 
             //BIG Urban Roads Props + decals
-	    "2228643473.BIG Urban Roads Delineator_Data",
+	        "2228643473.BIG Urban Roads Delineator_Data",
             "2228643473.BIG Urban Roads Tunnel Exit Door_Data",
             "2228643473.BIG Urban Roads Decal BUS_Data",
             "2228643473.BIG Urban Roads Decal ONLY_Data",
