@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using System;
+using HarmonyLib;
 using NetworkSkins.Skins;
 
 // ReSharper disable InconsistentNaming
@@ -92,6 +93,8 @@ namespace NetworkSkins.Patches.NetManager
         }
 
         public static bool IsNameMatching(string methodName, string name) {
+            int dotIndex = methodName.LastIndexOf(".", StringComparison.InvariantCulture);
+            if (dotIndex != -1) methodName = methodName.Substring(dotIndex + 1);
             return methodName == name
                 || methodName.StartsWith($"{name}_Patch")
                 || methodName.StartsWith($"DMD<DMD<{name}_Patch");

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.Net;
@@ -10,11 +11,24 @@ namespace NetworkSkins.GUI.RoadDecoration
 {
     public class RoadDecorationPanelController : FeaturePanelController
     {
-        public override bool Enabled => base.Enabled && _canHideNodeMarkings;
+        public override bool Enabled => base.Enabled && (CanHideNodeMarkings || HasArrows || HasSigns
+            || HasDecoration || HasTransportStops || HasTrafficLights);
 
         public bool NodeMarkingsHidden { get; private set; }
+        public bool ArrowsHidden { get; private set; }
+        public bool SignsHidden { get; private set; }
+        public bool DecorationHidden { get; private set; }
+        public bool TransportStopsHidden { get; private set; }
+        public bool TrafficLightsHidden { get; private set; }
+        public bool LevelCrossingsHidden { get; private set; }
 
-        public bool _canHideNodeMarkings = false;
+        public bool CanHideNodeMarkings { get; private set; } = false;
+        public bool HasArrows { get; private set; } = false;
+        public bool HasSigns { get; private set; } = false;
+        public bool HasDecoration { get; private set; } = false;
+        public bool HasTransportStops { get; private set; } = false;
+        public bool HasTrafficLights { get; private set; } = false;
+        public bool HasLevelCrossings { get; private set; } = false;
 
         private MethodInfo _canHideMarkings;
 
@@ -31,7 +45,7 @@ namespace NetworkSkins.GUI.RoadDecoration
                 if (assembly == null) return null;
 
                 var method = assembly.GetType("HideCrosswalks.NetInfoExt")?
-                    .GetMethod("GetCanHideMarkings", BindingFlags.Static | BindingFlags.Public); 
+                    .GetMethod("GetCanHideMarkings", BindingFlags.Static | BindingFlags.Public);
                 if (method != null) return method;
 
                 return assembly.GetType("HideTMPECrosswalks.Utils.PrefabUtils")?
@@ -49,41 +63,124 @@ namespace NetworkSkins.GUI.RoadDecoration
 
             NodeMarkingsHidden = nodeMarkingsHidden;
 
-            SaveNodeMarkingsHidden();
+            Save();
+
+            OnChanged();
+        }
+
+        public void SetArrowsHidden(bool arrowsHidden)
+        {
+            if (ArrowsHidden == arrowsHidden) return;
+
+            ArrowsHidden = arrowsHidden;
+
+            Save();
+
+            OnChanged();
+        }
+
+        public void SetSignsHidden(bool signsHidden)
+        {
+            if (SignsHidden == signsHidden) return;
+
+            SignsHidden = signsHidden;
+
+            Save();
+
+            OnChanged();
+        }
+
+        public void SetDecorationHidden(bool decorationHidden)
+        {
+            if (DecorationHidden == decorationHidden) return;
+
+            DecorationHidden = decorationHidden;
+
+            Save();
+
+            OnChanged();
+        }
+
+        public void SetTransportStopsHidden(bool transportStopsHidden)
+        {
+            if (TransportStopsHidden == transportStopsHidden) return;
+
+            TransportStopsHidden = transportStopsHidden;
+
+            Save();
+
+            OnChanged();
+        }
+
+        public void SetTrafficLightsHidden(bool trafficLightsHidden)
+        {
+            if (TrafficLightsHidden == trafficLightsHidden) return;
+
+            TrafficLightsHidden = trafficLightsHidden;
+
+            Save();
+
+            OnChanged();
+        }
+
+        public void SetLevelCrossingsHidden(bool levelCrossingsHidden)
+        {
+            if (LevelCrossingsHidden == levelCrossingsHidden) return;
+
+            LevelCrossingsHidden = levelCrossingsHidden;
+
+            Save();
 
             OnChanged();
         }
 
         public override void Reset()
         {
-            if (!Enabled || !NodeMarkingsHidden) return;
+            if (!Enabled) return;
 
             NodeMarkingsHidden = false;
+            ArrowsHidden = false;
+            SignsHidden = false;
+            DecorationHidden = false;
+            TransportStopsHidden = false;
+            TrafficLightsHidden = false;
+            LevelCrossingsHidden = false;
 
-            SaveNodeMarkingsHidden();
+            Save();
 
             OnChanged();
         }
 
-
         protected override void Build()
         {
-            RefreshCanHideNodeMarkings();
+            Refresh();
 
-            NodeMarkingsHidden = LoadNodeMarkingsHidden() ?? false;
+            Load();
         }
 
         protected override void BuildWithModifiers(List<NetworkSkinModifier> modifiers)
         {
-            RefreshCanHideNodeMarkings();
+            Refresh();
 
             NodeMarkingsHidden = false;
+            ArrowsHidden = false;
+            SignsHidden = false;
+            DecorationHidden = false;
+            TransportStopsHidden = false;
+            TrafficLightsHidden = false;
+            LevelCrossingsHidden = false;
 
             foreach (var modifier in modifiers)
             {
                 if (modifier is RoadDecorationModifier roadDecorationModifier)
                 {
                     NodeMarkingsHidden = roadDecorationModifier.nodeMarkingsHidden;
+                    ArrowsHidden = roadDecorationModifier.arrowsHidden;
+                    SignsHidden = roadDecorationModifier.signsHidden;
+                    DecorationHidden = roadDecorationModifier.decorationHidden;
+                    TransportStopsHidden = roadDecorationModifier.transportStopsHidden;
+                    TrafficLightsHidden = roadDecorationModifier.trafficLightsHidden;
+                    LevelCrossingsHidden = roadDecorationModifier.levelCrossingsHidden;
                     break;
                 }
             }
@@ -94,29 +191,37 @@ namespace NetworkSkins.GUI.RoadDecoration
             return _canHideMarkings != null && (bool)_canHideMarkings.Invoke(null, new object[] { prefab });
         }
 
-        private void RefreshCanHideNodeMarkings()
+        private void Refresh()
         {
-            _canHideNodeMarkings = CanHideMarkings(Prefab);
+            CanHideNodeMarkings = CanHideMarkings(Prefab);
+            var variations = NetUtils.GetPrefabVariations(Prefab);
+            HasArrows = variations.Any(prefab => NetUtils.GetMatchingLaneProp(prefab, laneProp => RoadDecorationUtils.IsArrow(laneProp.m_finalProp)) != null);
+            HasSigns = variations.Any(prefab => NetUtils.GetMatchingLaneProp(prefab, laneProp => RoadDecorationUtils.IsSign(laneProp.m_finalProp)) != null);
+            HasDecoration = variations.Any(prefab => NetUtils.GetMatchingLaneProp(prefab, laneProp => RoadDecorationUtils.IsDecoration(laneProp.m_finalProp)) != null);
+            HasTransportStops = variations.Any(prefab => NetUtils.GetMatchingLaneProp(prefab, laneProp => RoadDecorationUtils.IsTransportStop(laneProp)) != null);
+            HasTrafficLights = variations.Any(prefab => NetUtils.GetMatchingLaneProp(prefab, laneProp => RoadDecorationUtils.IsTrafficLight(laneProp)) != null);
+            HasLevelCrossings = variations.Any(prefab => NetUtils.GetMatchingLaneProp(prefab, laneProp => RoadDecorationUtils.IsLevelCrossing(laneProp)) != null);
         }
 
         protected override Dictionary<NetInfo, List<NetworkSkinModifier>> BuildModifiers()
         {
             var modifiers = new Dictionary<NetInfo, List<NetworkSkinModifier>>();
 
-            if (NodeMarkingsHidden)
+            if (NodeMarkingsHidden || ArrowsHidden || SignsHidden || DecorationHidden || TransportStopsHidden || TrafficLightsHidden || LevelCrossingsHidden)
             {
                 var prefabModifiers = new List<NetworkSkinModifier>
                 {
-                    new RoadDecorationModifier(NodeMarkingsHidden)
+                    new RoadDecorationModifier(NodeMarkingsHidden, ArrowsHidden, SignsHidden, DecorationHidden, TransportStopsHidden, TrafficLightsHidden, LevelCrossingsHidden)
                 };
 
                 var subPrefabs = NetUtils.GetPrefabVariations(Prefab);
                 foreach (var subPrefab in subPrefabs)
                 {
-                    if (NetTextureUtils.HasRoadTexture(subPrefab))
+                    modifiers[subPrefab] = prefabModifiers;
+                    /*if (NetTextureUtils.HasRoadTexture(subPrefab))
                     {
                         modifiers[subPrefab] = prefabModifiers;
-                    }
+                    }*/
                 }
             }
 
@@ -125,22 +230,60 @@ namespace NetworkSkins.GUI.RoadDecoration
 
         #region Active Selection Data
         private const string NodeMarkingsHiddenKey = "NodeMarkingsHidden";
+        private const string ArrowsHiddenKey = "ArrowsHidden";
+        private const string SignsHiddenKey = "SignsHidden";
+        private const string DecorationHiddenKey = "DecorationHidden";
+        private const string TransportStopsHiddenKey = "TransportStopsHidden";
+        private const string TrafficLightsHiddenKey = "TrafficLightsHidden";
+        private const string LevelCrossingsHiddenKey = "LevelCrossingsHidden";
 
-        private bool? LoadNodeMarkingsHidden()
+        private void Load()
         {
-            return ActiveSelectionData.Instance.GetBoolValue(Prefab, NodeMarkingsHiddenKey);
+            NodeMarkingsHidden = ActiveSelectionData.Instance.GetBoolValue(Prefab, NodeMarkingsHiddenKey) ?? false;
+            ArrowsHidden = ActiveSelectionData.Instance.GetBoolValue(Prefab, ArrowsHiddenKey) ?? false;
+            SignsHidden = ActiveSelectionData.Instance.GetBoolValue(Prefab, SignsHiddenKey) ?? false;
+            DecorationHidden = ActiveSelectionData.Instance.GetBoolValue(Prefab, DecorationHiddenKey) ?? false;
+            TransportStopsHidden = ActiveSelectionData.Instance.GetBoolValue(Prefab, TransportStopsHiddenKey) ?? false;
+            TrafficLightsHidden = ActiveSelectionData.Instance.GetBoolValue(Prefab, TrafficLightsHiddenKey) ?? false;
+            LevelCrossingsHidden = ActiveSelectionData.Instance.GetBoolValue(Prefab, LevelCrossingsHiddenKey) ?? false;
         }
 
-        private void SaveNodeMarkingsHidden()
+        private void Save()
         {
             if (NodeMarkingsHidden)
-            {
                 ActiveSelectionData.Instance.SetBoolValue(Prefab, NodeMarkingsHiddenKey, true);
-            }
             else
-            {
                 ActiveSelectionData.Instance.ClearValue(Prefab, NodeMarkingsHiddenKey);
-            }
+
+            if (ArrowsHidden)
+                ActiveSelectionData.Instance.SetBoolValue(Prefab, ArrowsHiddenKey, true);
+            else
+                ActiveSelectionData.Instance.ClearValue(Prefab, ArrowsHiddenKey);
+
+            if (SignsHidden)
+                ActiveSelectionData.Instance.SetBoolValue(Prefab, SignsHiddenKey, true);
+            else
+                ActiveSelectionData.Instance.ClearValue(Prefab, SignsHiddenKey);
+
+            if (DecorationHidden)
+                ActiveSelectionData.Instance.SetBoolValue(Prefab, DecorationHiddenKey, true);
+            else
+                ActiveSelectionData.Instance.ClearValue(Prefab, DecorationHiddenKey);
+
+            if (TransportStopsHidden)
+                ActiveSelectionData.Instance.SetBoolValue(Prefab, TransportStopsHiddenKey, true);
+            else
+                ActiveSelectionData.Instance.ClearValue(Prefab, TransportStopsHiddenKey);
+
+            if (TrafficLightsHidden)
+                ActiveSelectionData.Instance.SetBoolValue(Prefab, TrafficLightsHiddenKey, true);
+            else
+                ActiveSelectionData.Instance.ClearValue(Prefab, TrafficLightsHiddenKey);
+
+            if (LevelCrossingsHidden)
+                ActiveSelectionData.Instance.SetBoolValue(Prefab, LevelCrossingsHiddenKey, true);
+            else
+                ActiveSelectionData.Instance.ClearValue(Prefab, LevelCrossingsHiddenKey);
         }
         #endregion
     }

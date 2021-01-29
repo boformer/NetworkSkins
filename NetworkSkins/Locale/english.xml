@@ -24,6 +24,12 @@
     <Translation ID="LABEL_DISPLAYATSELECTED" String="Auto-scroll to selected" />
     <Translation ID="LABEL_NEW_SWATCH" String="New color" />
     <Translation ID="LABEL_HIDE_NODE_MARKINGS" String="Hide Intersection Markings" />
+    <Translation ID="LABEL_HIDE_ROAD_ARROWS" String="Hide Road Arrows" />
+    <Translation ID="LABEL_HIDE_ROAD_SIGNS" String="Hide Road Signs" />
+    <Translation ID="LABEL_HIDE_ROAD_DECORATION" String="Hide Road Decoration" />
+    <Translation ID="LABEL_HIDE_TRANSPORT_STOPS" String="Hide Transport Stops" />
+    <Translation ID="LABEL_HIDE_TRAFFIC_LIGHTS" String="Hide Traffic Lights" />
+    <Translation ID="LABEL_HIDE_LEVEL_CROSSINGS" String="Hide Level Crossings" />
     <Translation ID="TOOLTIP_HIDEBLACKLISTED" String="Enable this option to hide blacklisted items from the lists" />
     <Translation ID="TOOLTIP_GLOBAL_SELECTION_DATA" String="Enable this option to make the mod remember your last used skin options for each network globally, rather than per-save" />
     <Translation ID="TOOLTIP_DISPLAYATSELECTED" String="Enable this option to automatically scroll to currently selected item when you open a panel" />
@@ -33,7 +39,7 @@
     <Translation ID="TOOLTIP_PILLARS" String="Pillars" />
     <Translation ID="TOOLTIP_CATENARY" String="Catenaries" />
     <Translation ID="TOOLTIP_COLOR" String="Color" />
-    <Translation ID="TOOLTIP_ROAD_DECORATION" String="Markings" />
+    <Translation ID="TOOLTIP_ROAD_DECORATION" String="Road Decoration" />
     <Translation ID="TOOLTIP_SETTINGS" String="Settings" />
     <Translation ID="TOOLTIP_PIPETTE" String="Pipette&#10;Click on a segment to copy its skin and select the network" />
     <Translation ID="TOOLTIP_LOCK" String="Activate the lock to modify all lanes simultaneously" />
@@ -45,6 +51,12 @@
     <Translation ID="TOOLTIP_BUTTON_SAVE_COLOREXISTS" String="The currently selected color is already saved" />
     <Translation ID="TOOLTIP_BUTTON_SAVE" String="Save current color as favorite" />
     <Translation ID="TOOLTIP_HIDE_NODE_MARKINGS" String="Hide markings such as pedestrian crossings and stop lines" />
+    <Translation ID="TOOLTIP_HIDE_ROAD_ARROWS" String="Hide driving direction arrows (rules stay active!)" />
+    <Translation ID="TOOLTIP_HIDE_ROAD_SIGNS" String="Hide traffic signs (e.g. speed limit)" />
+    <Translation ID="TOOLTIP_HIDE_ROAD_DECORATION" String="Hide decorations (e.g. electrical boxes or hydrants)" />
+    <Translation ID="TOOLTIP_HIDE_TRANSPORT_STOPS" String="Hide stops and signs for public transport (stops are still functional!)" />
+    <Translation ID="TOOLTIP_HIDE_TRAFFIC_LIGHTS" String="Hide traffic lights (lights are invisible but rules are active!)" />
+    <Translation ID="TOOLTIP_HIDE_LEVEL_CROSSINGS" String="Hide level crossings (barriers are invisible but rules are active!)" />
     <Translation ID="BUTTON_RESET" String="Reset" />
     <Translation ID="BUTTON_SAVE" String="Save" />
     <Translation ID="TOOLTIP_BUTTON_DELETE" String="Delete" />
