@@ -24,6 +24,12 @@
     <Translation ID="LABEL_DISPLAYATSELECTED" String="Авто-прокрутка к выбранному" />
     <Translation ID="LABEL_NEW_SWATCH" String="Новый цвет" />
     <Translation ID="LABEL_HIDE_NODE_MARKINGS" String="Скрыть разметку перекрёстка" />
+    <Translation ID="LABEL_HIDE_ROAD_ARROWS" String="Скрыть стрелки дорожной разметки" />
+    <Translation ID="LABEL_HIDE_ROAD_SIGNS" String="Скрыть дорожные знаки" />
+    <Translation ID="LABEL_HIDE_ROAD_DECORATION" String="Скрыть декорации дорог" />
+    <Translation ID="LABEL_HIDE_TRANSPORT_STOPS" String="Скрыть остановки" />
+    <Translation ID="LABEL_HIDE_TRAFFIC_LIGHTS" String="Скрыть светофоры" />
+    <Translation ID="LABEL_HIDE_LEVEL_CROSSINGS" String="Скрыть железнодорожные переезды" />
     <Translation ID="TOOLTIP_HIDEBLACKLISTED" String="Включить опцию 'Скрыть элементы из чёрного списка'" />
     <Translation ID="TOOLTIP_GLOBAL_SELECTION_DATA" String="Запомнить последние настройки скина(доступно на других картах)" />
     <Translation ID="TOOLTIP_DISPLAYATSELECTED" String="Включить опцию 'Автоматическое пролистывание к выделенному элементу, при открытии панели'" />
@@ -45,6 +51,12 @@
     <Translation ID="TOOLTIP_BUTTON_SAVE_COLOREXISTS" String="Выбранный цвет уже сохранен" />
     <Translation ID="TOOLTIP_BUTTON_SAVE" String="Сохранить этот цвет в избранное" />
     <Translation ID="TOOLTIP_HIDE_NODE_MARKINGS" String="Скрыть разметку, такую как пешеходные переходы и линии остановки" />
+    <Translation ID="TOOLTIP_HIDE_ROAD_ARROWS" String="Скрыть стрелки направления движения (правила остаются активными!)" />
+    <Translation ID="TOOLTIP_HIDE_ROAD_SIGNS" String="Скрыть дорожные знаки (например: 'Ограничение скорости')" />
+    <Translation ID="TOOLTIP_HIDE_ROAD_DECORATION" String="Скрыть декорации (например: распределительные коробки или гидранты) " />
+    <Translation ID="TOOLTIP_HIDE_TRANSPORT_STOPS" String="Скрыть остановки и знаки общественного транспорта (остановки работают!)" />
+    <Translation ID="TOOLTIP_HIDE_TRAFFIC_LIGHTS" String="Скрыть светофоры (светофоры невидимы, но действуют правила!)" />
+    <Translation ID="TOOLTIP_HIDE_LEVEL_CROSSINGS" String="Скрыть железнодорожные переезды (барьеры невидимы, но правила действуют!)" />
     <Translation ID="BUTTON_RESET" String="Сброс" />
     <Translation ID="BUTTON_SAVE" String="Сохранить" />
     <Translation ID="TOOLTIP_BUTTON_DELETE" String="Удалить" />
