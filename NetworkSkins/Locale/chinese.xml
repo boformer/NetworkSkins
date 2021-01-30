@@ -24,6 +24,12 @@
     <Translation ID="LABEL_DISPLAYATSELECTED" String="跳换到当前选项" />
     <Translation ID="LABEL_NEW_SWATCH" String="新颜色" />
     <Translation ID="LABEL_HIDE_NODE_MARKINGS" String="Hide Intersection Markings" />
+    <Translation ID="LABEL_HIDE_ROAD_ARROWS" String="Hide Road Arrows" />
+    <Translation ID="LABEL_HIDE_ROAD_SIGNS" String="Hide Road Signs" />
+    <Translation ID="LABEL_HIDE_ROAD_DECORATION" String="Hide Road Decoration" />
+    <Translation ID="LABEL_HIDE_TRANSPORT_STOPS" String="Hide Transport Stops" />
+    <Translation ID="LABEL_HIDE_TRAFFIC_LIGHTS" String="Hide Traffic Lights" />
+    <Translation ID="LABEL_HIDE_LEVEL_CROSSINGS" String="Hide Level Crossings" />
     <Translation ID="TOOLTIP_HIDEBLACKLISTED" String="激活此选项会将黑名单内的物体从名单上隐藏掉" />
     <Translation ID="TOOLTIP_GLOBAL_SELECTION_DATA" String="激活此选项会使模组记住最后用过的皮肤设置（可在其他地图使用）" />
     <Translation ID="TOOLTIP_DISPLAYATSELECTED" String="激活此选项会在你打开新界面时自动跳换到当前选项" />
@@ -45,6 +51,12 @@
     <Translation ID="TOOLTIP_BUTTON_SAVE_COLOREXISTS" String="此颜色已在收藏中" />
     <Translation ID="TOOLTIP_BUTTON_SAVE" String="收藏颜色" />
     <Translation ID="TOOLTIP_HIDE_NODE_MARKINGS" String="Hide markings such as pedestrian crossings and stop lines" />
+    <Translation ID="TOOLTIP_HIDE_ROAD_ARROWS" String="Hide driving direction arrows (rules stay active!)" />
+    <Translation ID="TOOLTIP_HIDE_ROAD_SIGNS" String="Hide traffic signs (e.g. speed limit)" />
+    <Translation ID="TOOLTIP_HIDE_ROAD_DECORATION" String="Hide decorations (e.g. electrical boxes or hydrants)" />
+    <Translation ID="TOOLTIP_HIDE_TRANSPORT_STOPS" String="Hide stops and signs for public transport (stops are still functional!)" />
+    <Translation ID="TOOLTIP_HIDE_TRAFFIC_LIGHTS" String="Hide traffic lights (lights are invisible but rules are active!)" />
+    <Translation ID="TOOLTIP_HIDE_LEVEL_CROSSINGS" String="Hide level crossings (barriers are invisible but rules are active!)" />
     <Translation ID="BUTTON_RESET" String="重置" />
     <Translation ID="BUTTON_SAVE" String="保存" />
     <Translation ID="TOOLTIP_BUTTON_DELETE" String="删除" />

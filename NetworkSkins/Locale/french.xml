@@ -24,6 +24,12 @@
     <Translation ID="LABEL_DISPLAYATSELECTED" String="Afficher l'item sélectionné automatiquement" />
     <Translation ID="LABEL_NEW_SWATCH" String="Nouvelle couleur" />
     <Translation ID="LABEL_HIDE_NODE_MARKINGS" String="Hide Intersection Markings" />
+    <Translation ID="LABEL_HIDE_ROAD_ARROWS" String="Hide Road Arrows" />
+    <Translation ID="LABEL_HIDE_ROAD_SIGNS" String="Hide Road Signs" />
+    <Translation ID="LABEL_HIDE_ROAD_DECORATION" String="Hide Road Decoration" />
+    <Translation ID="LABEL_HIDE_TRANSPORT_STOPS" String="Hide Transport Stops" />
+    <Translation ID="LABEL_HIDE_TRAFFIC_LIGHTS" String="Hide Traffic Lights" />
+    <Translation ID="LABEL_HIDE_LEVEL_CROSSINGS" String="Hide Level Crossings" />
     <Translation ID="TOOLTIP_HIDEBLACKLISTED" String="Désactiver les items inutilisés permet de gagner du temps" />
     <Translation ID="TOOLTIP_GLOBAL_SELECTION_DATA" String="Les paramètres serviront pour toutes les Sauvegardes plutôt que chaque Sauvegarde individuellement" />
     <Translation ID="TOOLTIP_DISPLAYATSELECTED" String="Lorsqu'un panneau est ouvert, la sélection en cours sera automatiquement atteinte" />
@@ -45,6 +51,12 @@
     <Translation ID="TOOLTIP_BUTTON_SAVE_COLOREXISTS" String="Cette couleur est déjà en Favoris!" />
     <Translation ID="TOOLTIP_BUTTON_SAVE" String="Enregistrer la couleur en Favoris" />
     <Translation ID="TOOLTIP_HIDE_NODE_MARKINGS" String="Hide markings such as pedestrian crossings and stop lines" />
+    <Translation ID="TOOLTIP_HIDE_ROAD_ARROWS" String="Hide driving direction arrows (rules stay active!)" />
+    <Translation ID="TOOLTIP_HIDE_ROAD_SIGNS" String="Hide traffic signs (e.g. speed limit)" />
+    <Translation ID="TOOLTIP_HIDE_ROAD_DECORATION" String="Hide decorations (e.g. electrical boxes or hydrants)" />
+    <Translation ID="TOOLTIP_HIDE_TRANSPORT_STOPS" String="Hide stops and signs for public transport (stops are still functional!)" />
+    <Translation ID="TOOLTIP_HIDE_TRAFFIC_LIGHTS" String="Hide traffic lights (lights are invisible but rules are active!)" />
+    <Translation ID="TOOLTIP_HIDE_LEVEL_CROSSINGS" String="Hide level crossings (barriers are invisible but rules are active!)" />
     <Translation ID="BUTTON_RESET" String="Rétablir" />
     <Translation ID="BUTTON_SAVE" String="Conserver" />
     <Translation ID="TOOLTIP_BUTTON_DELETE" String="Supprimer" />
