@@ -82,7 +82,7 @@ namespace NetworkSkins.Net
                     if (prefab.name.StartsWith(AmericanSignReplacerWorkshopId)) return false;
 
                     // All props with the traffic light shader are NOT street lights
-                    if (prefab.m_material.shader == Shader.Find("Custom/Props/Prop/TrafficLight")) return false;
+                    if (prefab.m_material?.shader?.name == "Custom/Props/Prop/TrafficLight") return false;
 
                     foreach (var effect in prefab.m_effects)
                     {
