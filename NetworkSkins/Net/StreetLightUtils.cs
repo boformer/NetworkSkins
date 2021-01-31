@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using UnityEngine;
 
 namespace NetworkSkins.Net
 {
@@ -73,11 +74,15 @@ namespace NetworkSkins.Net
             {
                 if (prefab.m_effects != null && prefab.m_effects.Length > 0)
                 {
+
                     if (prefab.name.ToLower().Contains("taxiway")) return false;
                     if (prefab.name.ToLower().Contains("runway")) return false;
 
                     // American highway signs with integrated lights are NOT street lights!
                     if (prefab.name.StartsWith(AmericanSignReplacerWorkshopId)) return false;
+
+                    // All props with the traffic light shader are NOT street lights
+                    if (prefab.m_material?.shader?.name == "Custom/Props/Prop/TrafficLight") return false;
 
                     foreach (var effect in prefab.m_effects)
                     {
