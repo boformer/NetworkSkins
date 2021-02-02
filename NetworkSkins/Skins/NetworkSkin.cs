@@ -44,7 +44,7 @@ namespace NetworkSkins.Skins
         public bool m_hasWires;
 
         public bool m_nodeMarkingsHidden;
-
+        
         public int UseCount = 0;
 
         public NetworkSkin(NetInfo prefab, List<NetworkSkinModifier> modifiers)
@@ -326,20 +326,6 @@ namespace NetworkSkins.Skins
             }
         }
 
-        private static NetLaneProps.Prop CloneProp(NetLaneProps.Prop prop)
-        {
-            if (prop is ICloneable prop2)
-            {
-                return prop2.Clone() as NetLaneProps.Prop;
-            }
-            else
-            {
-                NetLaneProps.Prop clone = new NetLaneProps.Prop();
-                CopyProperties(clone, prop);
-                return clone;
-            }
-        }
-
         private class NetworkSkinLane : NetInfo.Lane
         {
             public NetworkSkinLane(NetInfo.Lane originalLane)
@@ -350,7 +336,8 @@ namespace NetworkSkins.Skins
                     m_laneProps = UnityEngine.Object.Instantiate(originalLane.m_laneProps);
                     for (var i = 0; i < originalLane.m_laneProps.m_props.Length; i++)
                     {
-                        m_laneProps.m_props[i] = CloneProp(m_laneProps.m_props[i]);
+                        m_laneProps.m_props[i] = new NetLaneProps.Prop();
+                        CopyProperties(m_laneProps.m_props[i], originalLane.m_laneProps.m_props[i]);
                     }
                 }
             }
