@@ -328,6 +328,7 @@ namespace NetworkSkins.Skins
 
         private static NetLaneProps.Prop CloneProp(NetLaneProps.Prop prop)
         {
+            // compat with adaptive roads mod
             if (prop is ICloneable prop2)
             {
                 return prop2.Clone() as NetLaneProps.Prop;
@@ -350,7 +351,7 @@ namespace NetworkSkins.Skins
                     m_laneProps = UnityEngine.Object.Instantiate(originalLane.m_laneProps);
                     for (var i = 0; i < originalLane.m_laneProps.m_props.Length; i++)
                     {
-                        m_laneProps.m_props[i] = CloneProp(m_laneProps.m_props[i]);
+                        m_laneProps.m_props[i] = CloneProp(originalLane.m_laneProps.m_props[i]);
                     }
                 }
             }

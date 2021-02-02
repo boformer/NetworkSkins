@@ -25,17 +25,23 @@ namespace NetworkSkins.Skins.Modifiers
                 var laneProps = skin.m_lanes[l]?.m_laneProps?.m_props;
                 if (laneProps == null) continue;
 
-                for (var p = 0; p < laneProps.Length; p++)
+                for (var p = laneProps.Length - 1; p >= 0; p--)
                 {
                     if (StreetLightUtils.IsStreetLightProp(laneProps[p]?.m_finalProp))
                     {
-                        skin.UpdateLaneProp(l, p, laneProp =>
+                        if (StreetLight != null) {
+                            skin.UpdateLaneProp(l, p, laneProp =>
+                            {
+                                laneProp.m_prop = StreetLight;
+                                laneProp.m_finalProp = StreetLight;
+                                laneProp.m_repeatDistance = RepeatDistance;
+                                StreetLightUtils.CorrectStreetLightPropAngleAndPosition(skin.Prefab, laneProp, skin.Prefab.m_halfWidth, skin.m_lanes[l].m_position);
+                            });
+                        }
+                        else
                         {
-                            laneProp.m_prop = StreetLight;
-                            laneProp.m_finalProp = StreetLight;
-                            laneProp.m_repeatDistance = RepeatDistance;
-                            StreetLightUtils.CorrectStreetLightPropAngleAndPosition(skin.Prefab, laneProp, skin.Prefab.m_halfWidth, skin.m_lanes[l].m_position);
-                        });
+                            skin.RemoveLaneProp(l, p);
+                        }
                     }
                 }
             }

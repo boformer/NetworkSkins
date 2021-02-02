@@ -12,7 +12,7 @@ namespace NetworkSkins.GUI.RoadDecoration
     public class RoadDecorationPanelController : FeaturePanelController
     {
         public override bool Enabled => base.Enabled && (CanHideNodeMarkings || HasArrows || HasSigns
-            || HasDecoration || HasTransportStops || HasTrafficLights);
+            || HasDecoration || HasTransportStops || HasTrafficLights || HasLevelCrossings);
 
         public bool NodeMarkingsHidden { get; private set; }
         public bool ArrowsHidden { get; private set; }

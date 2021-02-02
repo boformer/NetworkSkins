@@ -29,16 +29,23 @@ namespace NetworkSkins.Skins.Modifiers
                 var laneProps = skin.m_lanes[l]?.m_laneProps?.m_props;
                 if (laneProps == null) continue;
 
-                for (var p = 0; p < laneProps.Length; p++)
+                for (var p = laneProps.Length - 1; p >= 0; p--)
                 {
                     if (laneProps[p]?.m_tree != null || laneProps[p]?.m_tree != null)
                     {
-                        skin.UpdateLaneProp(l, p, laneProp =>
+                        if (Tree != null)
                         {
-                            laneProp.m_tree = Tree;
-                            laneProp.m_finalTree = Tree;
-                            laneProp.m_repeatDistance = RepeatDistance;
-                        });
+                            skin.UpdateLaneProp(l, p, laneProp =>
+                            {
+                                laneProp.m_tree = Tree;
+                                laneProp.m_finalTree = Tree;
+                                laneProp.m_repeatDistance = RepeatDistance;
+                            });
+                        }
+                        else
+                        {
+                            skin.RemoveLaneProp(l, p);
+                        }
                     }
                 }
             }
