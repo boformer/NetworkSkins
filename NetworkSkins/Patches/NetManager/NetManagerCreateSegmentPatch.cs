@@ -20,13 +20,17 @@ namespace NetworkSkins.Patches.NetManager
             var caller2 = new System.Diagnostics.StackFrame(firstStackFrameIndex + 1).GetMethod();
             var caller3 = new System.Diagnostics.StackFrame(firstStackFrameIndex + 2).GetMethod();
 
+            //UnityEngine.Debug.Log($"{caller1.DeclaringType?.Name}#{caller1.Name}\n{caller2.DeclaringType?.Name}#{caller2.Name}\n{caller3.DeclaringType?.Name}#{caller3.Name}\n");
+
             // Support for ParallelRoadTool
-            if (IsNameMatching(caller1.Name, "CreateSegmentOriginal") && IsNameMatching(caller2.Name, "CreateSegment"))
+            if (caller1.Name == "CreateSegment" && caller1.DeclaringType?.FullName == "ParallelRoadTool.Detours.NetManagerDetour")
             {
-                firstStackFrameIndex += 2;
+                firstStackFrameIndex += 1;
                 caller1 = new System.Diagnostics.StackFrame(firstStackFrameIndex).GetMethod();
                 caller2 = new System.Diagnostics.StackFrame(firstStackFrameIndex + 1).GetMethod();
                 caller3 = new System.Diagnostics.StackFrame(firstStackFrameIndex + 2).GetMethod();
+
+                //UnityEngine.Debug.Log($"{caller1.DeclaringType?.Name}#{caller1.Name}\n{caller2.DeclaringType?.Name}#{caller2.Name}\n{caller3.DeclaringType?.Name}#{caller3.Name}\n");
             }
 
             if (IsNameMatching(caller1.Name, "CreateNode"))
