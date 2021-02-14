@@ -16,7 +16,7 @@ namespace NetworkSkins
 {
     public class NetworkSkinsMod : ILoadingExtension, IUserMod
     {
-        public string Name => "Network Skins 2";
+        public string Name => "Network Skins";
         public string Description => Translation.Instance.GetTranslation(TranslationID.MOD_DESCRIPTION);
         
         private NetworkSkinPanel panel;
