@@ -136,8 +136,9 @@ namespace NetworkSkins.GUI.Lights
 
             var groundStreetLight = StreetLightUtils.GetDefaultStreetLight(Prefab);
             if (groundStreetLight != null) {
-                if (!StreetLightUtils.HasSingularStreetLight(Prefab)) return new Dictionary<NetInfo, PropInfo>(); 
-                defaultStreetLights[Prefab] = groundStreetLight;
+                if (StreetLightUtils.HasSingularStreetLight(Prefab)) {
+                    defaultStreetLights[Prefab] = groundStreetLight;
+                }
             }
 
 
@@ -146,8 +147,9 @@ namespace NetworkSkins.GUI.Lights
             {
                 var elevatedStreetLight = StreetLightUtils.GetDefaultStreetLight(elevatedPrefab);
                 if (elevatedStreetLight != null) {
-                    if (!StreetLightUtils.HasSingularStreetLight(elevatedPrefab)) return new Dictionary<NetInfo, PropInfo>();
-                    defaultStreetLights[elevatedPrefab] = elevatedStreetLight;
+                    if (StreetLightUtils.HasSingularStreetLight(elevatedPrefab)) {
+                        defaultStreetLights[elevatedPrefab] = elevatedStreetLight;
+                    }
                 }
             }
 
@@ -156,8 +158,9 @@ namespace NetworkSkins.GUI.Lights
             {
                 var bridgeStreetLight = StreetLightUtils.GetDefaultStreetLight(bridgePrefab);
                 if (bridgeStreetLight != null) {
-                    if (!StreetLightUtils.HasSingularStreetLight(bridgePrefab)) return new Dictionary<NetInfo, PropInfo>();
-                    defaultStreetLights[bridgePrefab] = bridgeStreetLight;
+                    if (StreetLightUtils.HasSingularStreetLight(bridgePrefab)) {
+                        defaultStreetLights[bridgePrefab] = bridgeStreetLight;
+                    }
                 }
             }
 
@@ -179,13 +182,19 @@ namespace NetworkSkins.GUI.Lights
                         new StreetLightModifier(item.Value, repeatDistance)
                     };
 
-                    modifiers[Prefab] = prefabModifiers;
+                    if (StreetLightUtils.HasSingularStreetLight(Prefab)) {
+                        modifiers[Prefab] = prefabModifiers;
+                    }
 
                     var elevatedPrefab = NetUtils.GetElevatedPrefab(Prefab);
-                    if (elevatedPrefab != null) modifiers[elevatedPrefab] = prefabModifiers;
+                    if (StreetLightUtils.HasSingularStreetLight(elevatedPrefab)) {
+                        modifiers[elevatedPrefab] = prefabModifiers;
+                    }
 
                     var bridgePrefab = NetUtils.GetBridgePrefab(Prefab);
-                    if (bridgePrefab != null) modifiers[bridgePrefab] = prefabModifiers;
+                    if (StreetLightUtils.HasSingularStreetLight(bridgePrefab)) {
+                        modifiers[bridgePrefab] = prefabModifiers;
+                    }
                 }
             }
 
