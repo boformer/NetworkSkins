@@ -44,7 +44,10 @@ namespace NetworkSkins.Net
             else if (prefab.m_netAI is PedestrianWayAI wayAi)
             {
                 return wayAi.m_slopeInfo;
-            }
+            } 
+            else if (prefab.m_netAI is MetroTrackAI metroAi) {
+                return metroAi.m_slopeInfo;
+            } 
             else
             {
                 return null;
@@ -86,6 +89,14 @@ namespace NetworkSkins.Net
             {
                 return prefab;
             }
+            else if (prefab.m_netAI is MetroTrackAI metroAi)
+            {
+                return metroAi.m_elevatedInfo;
+            } 
+            else if (prefab.m_netAI is MetroTrackBridgeAI)
+            {
+                return prefab;
+            }
             else
             {
                 return null;
@@ -110,6 +121,10 @@ namespace NetworkSkins.Net
             else if (prefab.m_netAI is PedestrianWayAI wayAi)
             {
                 return wayAi.m_bridgeInfo;
+            }
+            else if (prefab.m_netAI is MetroTrackAI metroAi)
+            {
+                return metroAi.m_bridgeInfo;
             }
             else
             {
@@ -147,7 +162,14 @@ namespace NetworkSkins.Net
             else if (prefab.m_netAI is PedestrianTunnelAI)
             {
                 return prefab;
-            }
+            } 
+            else if (prefab.m_netAI is MetroTrackAI metroAi)
+            {
+                return metroAi.m_tunnelInfo;
+            } 
+            else if (prefab.m_netAI is MetroTrackTunnelAI) {
+                return prefab;
+            } 
             else
             {
                 return null;
@@ -190,17 +212,6 @@ namespace NetworkSkins.Net
                 }
             }
             return info;
-        }
-
-        public static bool IsValidNet(NetInfo info) {
-            if (info == null) return false;
-            NetAI ai = info.m_netAI;
-            return ai is RoadBaseAI ||
-                   ai is TrainTrackBaseAI ||
-                   ai is PedestrianBridgeAI ||
-                   ai is PedestrianPathAI ||
-                   ai is PedestrianTunnelAI ||
-                   ai is PedestrianWayAI;
         }
     }
 }

@@ -29,14 +29,16 @@ namespace NetworkSkins.Net
                 return netAi is RoadBridgeAI
                        || netAi is TrainTrackBridgeAI
                        || netAi is PedestrianBridgeAI
-                       || netAi is MonorailTrackAI;
+                       || netAi is MonorailTrackAI
+                       || netAi is MetroTrackBridgeAI;
             }
             else
             {
                 return netAi.RequireDoubleSegments()
                        && (netAi is RoadBridgeAI
                        || netAi is TrainTrackBridgeAI
-                       || netAi is MonorailTrackAI);
+                       || netAi is MonorailTrackAI
+                       || netAi is MetroTrackBridgeAI);
             }
         }
 
@@ -179,6 +181,8 @@ namespace NetworkSkins.Net
                     return pedestrianBridgeAi.m_bridgePillarInfo;
                 case MonorailTrackAI monorailTrackAi:
                     return monorailTrackAi.m_bridgePillarInfo;
+                case MetroTrackBridgeAI metroTrackAi:
+                    return metroTrackAi.m_bridgePillarInfo;
                 default:
                     return null;
             }
@@ -202,6 +206,10 @@ namespace NetworkSkins.Net
             else if (netAi is MonorailTrackAI monorailTrackAi)
             {
                 monorailTrackAi.m_bridgePillarInfo = bridgePillarInfo;
+            } 
+            else if (netAi is MetroTrackBridgeAI metroTrackAi)
+            {
+                metroTrackAi.m_bridgePillarInfo = bridgePillarInfo;
             }
         }
 
@@ -283,6 +291,8 @@ namespace NetworkSkins.Net
                     return trainTrackBridgeAi.m_middlePillarInfo;
                 case MonorailTrackAI monorailTrackAi:
                     return monorailTrackAi.m_middlePillarInfo;
+                case MetroTrackBridgeAI metroTrackAi:
+                    return metroTrackAi.m_middlePillarInfo;
                 default:
                     return null;
             }
@@ -302,6 +312,9 @@ namespace NetworkSkins.Net
             else if (netAi is MonorailTrackAI monorailTrackAi)
             {
                 monorailTrackAi.m_middlePillarInfo = middlePillarInfo;
+            }
+            else if (netAi is MetroTrackBridgeAI metroTrackAi) {
+                metroTrackAi.m_middlePillarInfo = middlePillarInfo;
             }
         }
 
