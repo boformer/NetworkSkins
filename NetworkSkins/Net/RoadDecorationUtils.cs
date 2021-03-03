@@ -9,6 +9,7 @@ namespace NetworkSkins.Net
     {
         private static readonly string[] ArrowNames = new[]
         {
+            //Vanilla Arrows
             "Road Arrow F",
             "Road Arrow FR",
             "Road Arrow L",
@@ -96,8 +97,17 @@ namespace NetworkSkins.Net
             "2008960441.Spanish Arrow Left Right_Data",
             "2008960441.Spanish Arrow Right_Data",
 
+            //Swedish replacer Arrows
+            "2412512876.Swedish Arrow Right_Data" 
+            "2412512876.Swedish Arrow Left_Data" 
+            "2412512876.Swedish Arrow Forward_Data" 
+            "2412512876.Swedish Arrow Forward Left_Data" 
+            "2412512876.Swedish Arrow Forward Right_Data" 
+            "2412512876.Swedish Arrow Left Right_Data",
+            "2412512876.Swedish Arrow Forward Left Right_Data",	
+		
             //UK Road Project by Macwelshman
-			"1406118102.UKR-D ArF_Data",
+            "1406118102.UKR-D ArF_Data",
             "1406118102.UKR-D ArFL_Data",
             "1406118102.UKR-D ArFR_Data",
             "1406118102.UKR-D ArL_Data",
@@ -116,6 +126,7 @@ namespace NetworkSkins.Net
 
         private static readonly string[] SignNames = new[]
         {
+            //Vanilla Signs		
             "30 Speed Limit",
             "40 Speed Limit",
             "50 Speed Limit",
@@ -137,7 +148,7 @@ namespace NetworkSkins.Net
             "1263918586.AUS Speed Limit 100 km/h small_Data",
 
             //BIG Urban Roads signs by hockenheim95
-	        "2228643473.BIG Roads R2 R3-7L LeftLaneTurn_Data",
+            "2228643473.BIG Roads R2 R3-7L LeftLaneTurn_Data",
             "2228643473.BIG Roads R2 R3-7R RightLaneTurn_Data",
             "2228643473.BIG Roads R2 R3-9B 2Way LeftTurn_Data",
             "2228643473.BIG Roads R2 R5-1 Do Not Enter_Data",
@@ -150,7 +161,6 @@ namespace NetworkSkins.Net
             "2228643473.BIG Roads R2 R3-2 No Left Turn _Data",
 
             //Canadian (Ontario) Road Signs Pack by Nochin98
-
             "2287634130.100 KM/HR MAX SIGN_Data",
             "2287634130.60 KM/HR MAX SIGN_Data",
             "2287634130.50 KM/HR MAX SIGN_Data",
@@ -163,7 +173,7 @@ namespace NetworkSkins.Net
             "2287634130.NO LEFT TURN SIGN_Data",
             "2287634130.NO RIGHT TURN SIGN_Data",
 
-	        //French road signs by Raymond Pelletier
+            //French road signs by Raymond Pelletier
             "1073554884.French Road Sign - B14.30_Data",
             "1073554884.French Road Sign - B14.50_Data",
             "1073554884.French Road Sign - B14.50_Data",
@@ -175,7 +185,7 @@ namespace NetworkSkins.Net
             "1073554884.French Road Sign - B2a_Data",
             "1074496614.French Road Sign - C207_Data",
  
-	        //German sign pack for Highway/National Road/Road-work-sites and other random signs by UFF
+            //German sign pack for Highway/National Road/Road-work-sites and other random signs by UFF
             "1178771213.30km/h Höchstgeschwindigkeit_Data",
             "1178771213.50km/h Höchstgeschwindigkeit_Data",
             "1178771213.50km/h Höchstgeschwindigkeit_Data",
@@ -186,7 +196,7 @@ namespace NetworkSkins.Net
             "1178771213.Vorgeschriebene Fahrtrichtung GR_Data",
             "1178771213.AUTOBAHN 3Sp-2G,1R KP_Data",            
 
-	        //Italy road signs - PACK by Arnold J. Rimmer, Bsc. Ssc.
+            //Italy road signs - PACK by Arnold J. Rimmer, Bsc. Ssc.
             "1685731764.ITA Max speed 30_Data",
             "1685731764.ITA Max speed 50_Data",
             "1685731764.ITA Max speed 50_Data",
@@ -198,20 +208,20 @@ namespace NetworkSkins.Net
             "1685731764.ITA Drive straight or left_Data",
             "1685731764.ITA Drive straight or right_Data",
 
-	        //Latinoamerican Road Signs by zeldslayer
+            //Latinoamerican Road Signs by zeldslayer
             "1774368440.ZDS RD StopA_Data",
             "1774368440.ZDS RD NR_Data",
             "1774368440.ZDS RD NL_Data",
             "1774368440.ZDS RD StopB_Data",
 
-	        //Singapore Road Sign Pack V1: Speed Limit by [MY] H4F1Z
+            //Singapore Road Sign Pack V1: Speed Limit by [MY] H4F1Z
             "1799160248.SG Speed Limit 30_Data",
             "1799160248.SG Speed Limit 40_Data",
             "1799160248.SG Speed Limit 50_Data",
             "1799160248.SG Speed Limit 60_Data",
             "1799160248.SG Speed Limit 90_Data",
 
-	        //Swedish road signs pack by SvenBerlin
+            //Swedish road signs pack by SvenBerlin
             "2258591646.swedish road sign C31-3_Data",
             "2258591646.swedish road sign C31-4_Data",
             "2258591646.swedish road sign C31-5_Data",
@@ -222,7 +232,7 @@ namespace NetworkSkins.Net
             "2258591646.swedish road sign C25-2_Data",
             "2258591646.swedish road sign C25-1_Data",
 
-	        //Traffic Signs (Custom) by Ellysmere Haven
+            //Traffic Signs (Custom) by Ellysmere Haven
             "2013164837.30km/h Speed Limit_Data",
             "2013164837.40km/h Speed Limit_Data",
             "2013164837.50km/h Speed Limit_Data",
@@ -234,7 +244,7 @@ namespace NetworkSkins.Net
             "2013164837.No Left Turn_Data",
             "2013164837.Motorway Road_Data",
 	
-	        //UK Road Project: Essential Prop Pack by Macwelshman
+            //UK Road Project: Essential Prop Pack by Macwelshman
             "1719290627.UKR-MWS MW Start_Data",
             "1719290627.UKR-MWS MW End_Data",
             "1611965517.UKR-S No Stopping_Data",
@@ -261,7 +271,7 @@ namespace NetworkSkins.Net
             "1406118102.UKR-S NR_Data",
             "1406118102.UKR-S Tn_Data",
 							
-	        //UK Road Sign &amp; Street Furniture Pack by Sparky66
+            //UK Road Sign &amp; Street Furniture Pack by Sparky66
             "1293188397.UK Give Way Sign_Data",
             "1293188397.UK No Parking Sign_Data",
             "1293188397.UK No Right Turn Sign_Data",
@@ -276,7 +286,7 @@ namespace NetworkSkins.Net
             "2322292112.3L US CA I Highway Gantry Medium_Data",
             "2322292540.US CA I Highway Sign Entrance_Data",
 							
-	        //US DOT regulatory signs by Spence!
+            //US DOT regulatory signs by Spence!
             "1779508928.R2 R1-1 Stop Sign_Data",
             "1779508928.R2 R-3A No Parking Sign_Data",
             "1779508928.R2 R3-1 No Right Turn Sign_Data",
@@ -291,6 +301,7 @@ namespace NetworkSkins.Net
 
         private static readonly string[] DecorationNames = new[]
         {
+            //Vanilla Props
             "Electricity Box",
             "Fire Hydrant",
             "Info Terminal",
@@ -310,7 +321,7 @@ namespace NetworkSkins.Net
             "Plant Pot 03",
 
             //BIG Urban Roads Props + decals
-	        "2228643473.BIG Urban Roads Delineator_Data",
+            "2228643473.BIG Urban Roads Delineator_Data",
             "2228643473.BIG Urban Roads Tunnel Exit Door_Data",
             "2228643473.BIG Urban Roads Decal BUS_Data",
             "2228643473.BIG Urban Roads Decal ONLY_Data",
@@ -360,7 +371,7 @@ namespace NetworkSkins.Net
             "1919887701.Warning Light #01_Data",
 
             //UK Road Project by Macwelshman
-			"1611818494.UKR-D Parking Text (Disabled)_Data",
+            "1611818494.UKR-D Parking Text (Disabled)_Data",
             "1611818494.UKR-D Parking Text (Doctor)_Data",
             "1611818494.UKR-D Parking Text (Loading)_Data",
             "1611818494.UKR-D Parking Text (Taxis)_Data",
