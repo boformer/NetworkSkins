@@ -98,11 +98,11 @@ namespace NetworkSkins.Net
             "2008960441.Spanish Arrow Right_Data",
 
             //Swedish replacer Arrows
-            "2412512876.Swedish Arrow Right_Data" 
-            "2412512876.Swedish Arrow Left_Data" 
-            "2412512876.Swedish Arrow Forward_Data" 
-            "2412512876.Swedish Arrow Forward Left_Data" 
-            "2412512876.Swedish Arrow Forward Right_Data" 
+            "2412512876.Swedish Arrow Right_Data",
+            "2412512876.Swedish Arrow Left_Data",
+            "2412512876.Swedish Arrow Forward_Data",
+            "2412512876.Swedish Arrow Forward Left_Data",
+            "2412512876.Swedish Arrow Forward Right_Data",
             "2412512876.Swedish Arrow Left Right_Data",
             "2412512876.Swedish Arrow Forward Left Right_Data",	
 		
