@@ -28,6 +28,13 @@ namespace NetworkSkins.Net
             "774449380.Catenary Type PRR2B_Data",
             "774449380.Catenary Type JP2A_Data",
             "774449380.Catenary Type EXPO2A_Data",
+            "2444511901.Catenary Type NL2A_Data",
+            "2444511901.Catenary Type NL2B_Data",
+            "2444511901.Catenary Type DE2A_Data",
+            "2444511901.Catenary Type PRR2A_Data",
+            "2444511901.Catenary Type PRR2B_Data",
+            "2444511901.Catenary Type JP2A_Data",
+            "2444511901.Catenary Type EXPO2A_Data",            
         };
 
         private static readonly string[] SingleCatenaryNames = new[]
@@ -40,6 +47,13 @@ namespace NetworkSkins.Net
             "774449380.Catenary Type PRR 1A_Data",
             "774449380.Catenary Type JP1A_Data",
             "774449380.Catenary Type EXPO1A_Data",
+            "2444511901.Catenary Type NL1A_Data",
+            "2444511901.Catenary Type NL1B_Data",
+            "2444511901.Catenary Type DE1A_Data",
+            "2444511901.Catenary Type PRR 1A_Data",
+            "2444511901.Catenary Type PRR 1A_Data",
+            "2444511901.Catenary Type JP1A_Data",
+            "2444511901.Catenary Type EXPO1A_Data",            
         };
 
         private const string R69_DOUBLE_NORMAL = "cat2n";
@@ -180,6 +194,18 @@ namespace NetworkSkins.Net
                     laneProp.m_position.x = 2f;
                 }
             }
+            
+              // cylis's catenaries
+            else if (prop.name.StartsWith("2444511901"))
+            {
+                //laneProp.m_position.y = -0.15f;
+                laneProp.m_angle = 180f;
+
+                if(Array.IndexOf(SingleCatenaryNames, prop.name) != -1)
+                {
+                    laneProp.m_position.x = 2f;
+                }
+            }         
 
             // Ronyx Railway catenaries
             else if(ParseR69RailwayType(prop, out var type))
