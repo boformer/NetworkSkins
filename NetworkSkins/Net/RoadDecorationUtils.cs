@@ -19,6 +19,17 @@ namespace NetworkSkins.Net
             "Road Arrow R",
             "Tram Arrow",
 
+            //Another American Highways Arrows by zeldslayer
+            "2017154380.ZDS PM FLR HW_Data",
+            "2017154380.ZDS PM FL HW_Data",
+            "2017154380.ZDS PM FR HW_Data",
+            "2017154380.ZDS PM F HW_Data",
+            "2017154380.ZDS PM LR HW_Data",
+            "2017154380.ZDS PM L HW_Data",
+            "2017154380.ZDS PM R HW_Data",
+            "2017154380.ZDS PM ML-R HW_Data",
+            "2017154380.ZDS PM MR-L HW_Data",
+		
             //Australian replacer Arrows
             "2071057587.AU Arrow Right_Data",
             "2071057587.AU Arrow Left_Data",
@@ -319,7 +330,16 @@ namespace NetworkSkins.Net
             //Vanilla Props used on Parklife Pathes as Roads by Chamëleon
             "Plant Pot 02",
             "Plant Pot 03",
-
+		
+            //Another American Highways Decals and Props by zeldslayer
+            "2017154380.ZDS manhole 1_Data",
+            "2017154380.ZDS Manhole _Data",
+            "2017154380.ZDS PM ISA_Data",
+            "2017154380.ZDS PM BK_Data",
+            "2017154380.ZDS PM RR_Data",
+            "2035340479.PostA_Data",	
+            "2035340479.PostB_Data",
+	
             //BIG Urban Roads Props + decals
             "2228643473.BIG Urban Roads Delineator_Data",
             "2228643473.BIG Urban Roads Tunnel Exit Door_Data",
