@@ -390,6 +390,10 @@ namespace NetworkSkins.Net
             "1919886860.Striped Yellow Line - Decal_Data",
             "1919887701.Warning Light #01_Data",
 
+            //German Delineators by Olegson
+            "1832037749.German Delineator_Data",
+            "1849355863.German Junction Delineator_Data",
+
             //UK Road Project by Macwelshman
             "1611818494.UKR-D Parking Text (Disabled)_Data",
             "1611818494.UKR-D Parking Text (Doctor)_Data",
