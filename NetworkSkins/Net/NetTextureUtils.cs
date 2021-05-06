@@ -614,16 +614,17 @@ namespace NetworkSkins.Net
                     Texture2D texture = segment.m_material.GetTexture("_APRMap") as Texture2D;
                     if (texture != null)
                     {
-                        try
-                        {
-                            return HasMatchingPixels(texture.GetPixels(), predicate);
+                        try {
+                            if (HasMatchingPixels(texture.GetPixels(), predicate)) return true;
                         }
                         catch (UnityException) // texture not readable
                         {
                             Texture2D readableTexture = texture.MakeReadable();
-                            bool hasBluePixels = HasMatchingPixels(readableTexture.GetPixels(), predicate);
-                            Object.Destroy(readableTexture);
-                            return hasBluePixels;
+                            try {
+                                if (HasMatchingPixels(readableTexture.GetPixels(), predicate)) return true;
+                            } finally {
+                                Object.Destroy(readableTexture);
+                            }
                         }
                     }
                 }
