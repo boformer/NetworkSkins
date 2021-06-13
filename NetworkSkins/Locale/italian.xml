@@ -23,13 +23,13 @@
     <Translation ID="LABEL_HIDEBLACKLISTED" String="Nascondi gli elementi nella blacklist" />
     <Translation ID="LABEL_DISPLAYATSELECTED" String="Auto-scroll fino al selezionato" />
     <Translation ID="LABEL_NEW_SWATCH" String="Nuovo Colore" />
-    <Translation ID="LABEL_HIDE_NODE_MARKINGS" String="Hide Intersection Markings" />
-    <Translation ID="LABEL_HIDE_ROAD_ARROWS" String="Hide Road Arrows" />
-    <Translation ID="LABEL_HIDE_ROAD_SIGNS" String="Hide Road Signs" />
-    <Translation ID="LABEL_HIDE_ROAD_DECORATION" String="Hide Road Decoration" />
-    <Translation ID="LABEL_HIDE_TRANSPORT_STOPS" String="Hide Transport Stops" />
-    <Translation ID="LABEL_HIDE_TRAFFIC_LIGHTS" String="Hide Traffic Lights" />
-    <Translation ID="LABEL_HIDE_LEVEL_CROSSINGS" String="Hide Level Crossings" />
+    <Translation ID="LABEL_HIDE_NODE_MARKINGS" String="Nascondi contrassegni di intersezione" />
+    <Translation ID="LABEL_HIDE_ROAD_ARROWS" String="Nascondi le frecce di direzione di guida" />
+    <Translation ID="LABEL_HIDE_ROAD_SIGNS" String="Nascondi i segnali stradali" />
+    <Translation ID="LABEL_HIDE_ROAD_DECORATION" String="Nascondi decorazioni stradali" />
+    <Translation ID="LABEL_HIDE_TRANSPORT_STOPS" String="Nascondi le fermate" />
+    <Translation ID="LABEL_HIDE_TRAFFIC_LIGHTS" String="Nascondi i semafori" />
+    <Translation ID="LABEL_HIDE_LEVEL_CROSSINGS" String="Nascondi passaggi a livello" />
     <Translation ID="TOOLTIP_HIDEBLACKLISTED" String="Abilitare questa opzione per nascondere gli elementi nella blacklist dagli elenchi" />
     <Translation ID="TOOLTIP_GLOBAL_SELECTION_DATA" String="Abilita questa opzione per fare in modo che la mod ricordi le&#10;ultime skin utilizzate per ogni Network a livello globale, anziché per salvataggio" />
     <Translation ID="TOOLTIP_DISPLAYATSELECTED" String="Abilitare questa opzione per scorrere automaticamente all'elemento&#10;attualmente selezionato quando si apre un pannello" />
@@ -50,13 +50,13 @@
     <Translation ID="TOOLTIP_BUTTON_SAVE_MAXREACHED" String="Hai raggiunto la quantità massima di colori salvati" />
     <Translation ID="TOOLTIP_BUTTON_SAVE_COLOREXISTS" String="Il colore attualmente selezionato è già salvato" />
     <Translation ID="TOOLTIP_BUTTON_SAVE" String="Salva il colore corrente come preferito" />
-    <Translation ID="TOOLTIP_HIDE_NODE_MARKINGS" String="Hide markings such as pedestrian crossings and stop lines" />
-    <Translation ID="TOOLTIP_HIDE_ROAD_ARROWS" String="Hide driving direction arrows (rules stay active!)" />
-    <Translation ID="TOOLTIP_HIDE_ROAD_SIGNS" String="Hide traffic signs (e.g. speed limit)" />
-    <Translation ID="TOOLTIP_HIDE_ROAD_DECORATION" String="Hide decorations (e.g. electrical boxes or hydrants)" />
-    <Translation ID="TOOLTIP_HIDE_TRANSPORT_STOPS" String="Hide stops and signs for public transport (stops are still functional!)" />
-    <Translation ID="TOOLTIP_HIDE_TRAFFIC_LIGHTS" String="Hide traffic lights (lights are invisible but rules are active!)" />
-    <Translation ID="TOOLTIP_HIDE_LEVEL_CROSSINGS" String="Hide level crossings (barriers are invisible but rules are active!)" />
+    <Translation ID="TOOLTIP_HIDE_NODE_MARKINGS" String="Nascondi segnaletica come attraversamenti pedonali e linee di arresto" />
+    <Translation ID="TOOLTIP_HIDE_ROAD_ARROWS" String="Nascondi le frecce di direzione di guida (le regole rimangono attive!)" />
+    <Translation ID="TOOLTIP_HIDE_ROAD_SIGNS" String="Nascondi i segnali stradali (ad es. limite di velocità)" />
+    <Translation ID="TOOLTIP_HIDE_ROAD_DECORATION" String="Nascondi decorazioni (es. scatole elettriche o idranti)" />
+    <Translation ID="TOOLTIP_HIDE_TRANSPORT_STOPS" String="Nascondi le fermate e indicazioni per i mezzi pubblici (le fermate sono ancora funzionanti!)" />
+    <Translation ID="TOOLTIP_HIDE_TRAFFIC_LIGHTS" String="Nascondi i semafori (le luci sono invisibili ma le regole sono attive!)" />
+    <Translation ID="TOOLTIP_HIDE_LEVEL_CROSSINGS" String="Nascondi passaggi a livello (le barriere sono invisibili ma le regole sono attive!)" />
     <Translation ID="BUTTON_RESET" String="Reset" />
     <Translation ID="BUTTON_SAVE" String="Salva" />
     <Translation ID="TOOLTIP_BUTTON_DELETE" String="Cancella" />
