@@ -118,10 +118,31 @@ namespace NetworkSkins.Tool
                 menuTabstrip.ShowTab(menuTabstrip.tabs[menuTabstripIndex].name);
                 subMenuTabstrip.selectedIndex = subMenuTabstripIndex;
                 subMenuTabstrip.ShowTab(subMenuTabstrip.tabs[subMenuTabstripIndex].name);
-                networkButton.SimulateClick();
-                scrollablePanel.ScrollIntoView(networkButton);
+
+                // Clear filters
+                UIPanel filterPanel = scrollablePanel.parent.Find<UIPanel>("FilterPanel");
+                if (filterPanel != null)
+                {
+                    foreach (UIMultiStateButton c in filterPanel.GetComponentsInChildren<UIMultiStateButton>())
+                    {
+                        if (c.isVisible && c.activeStateIndex == 1)
+                        {
+                            c.activeStateIndex = 0;
+                        }
+                    }
+                }
+
+                StartCoroutine(DoClick(scrollablePanel, networkButton));
             }
             SimulationManager.instance.AddAction(() => EventNetInfoPipetted?.Invoke(info));
+        }
+
+        private IEnumerator<object> DoClick(UIScrollablePanel scrollablePanel, UIButton networkButton)
+        {
+            yield return new WaitForSeconds(0.02f);
+
+            networkButton.SimulateClick();
+            scrollablePanel.ScrollIntoView(networkButton);
         }
 
         private T FindComponentCached<T>(string name) where T : UIComponent {
