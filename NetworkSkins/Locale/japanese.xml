@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Language xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2009/XMLSchema/XMLSchema.xsd" UniqueName="ja" ReadableName="日本語">
+  <Translations>
+    <Translation ID="MOD_DESCRIPTION" String="道路や線路などのネットワークの外観を変更"/>
+    <Translation ID="LABEL_NONE" String="なし"/>
+    <Translation ID="LABEL_DEFAULT" String="デフォルト"/>
+    <Translation ID="LABEL_SEARCH" String="検索"/>
+    <Translation ID="LABEL_LEFTLANE" String="左レーン"/>
+    <Translation ID="LABEL_MIDDLELANE" String="中央レーン"/>
+    <Translation ID="LABEL_RIGHTLANE" String="右レーン"/>
+    <Translation ID="LABEL_PAVEMENT" String="舗装"/>
+    <Translation ID="LABEL_GRAVEL" String="砂利"/>
+    <Translation ID="LABEL_RUINED" String="荒れ地"/>
+    <Translation ID="LABEL_ELEVATED" String="高架"/>
+    <Translation ID="LABEL_ELEVATEDMIDDLE" String="高架の中間部"/>
+    <Translation ID="LABEL_BRIDGE" String="橋"/>
+    <Translation ID="LABEL_BRIDGEMIDDLE" String="橋の中間部"/>
+    <Translation ID="LABEL_DISTANCE" String="距離"/>
+    <Translation ID="LABEL_RED" String="R"/>
+    <Translation ID="LABEL_GREEN" String="G"/>
+    <Translation ID="LABEL_BLUE" String="B"/>
+    <Translation ID="LABEL_GLOBAL_SELECTION_DATA" String="アクティブな選択項目をグローバルで保存"/>
+    <Translation ID="LABEL_HIDEBLACKLISTED" String="ブラックリストのアイテムを隠す"/>
+    <Translation ID="LABEL_DISPLAYATSELECTED" String="選択した項目へ自動スクロール"/>
+    <Translation ID="LABEL_NEW_SWATCH" String="新規カラー"/>
+    <Translation ID="LABEL_HIDE_NODE_MARKINGS" String="交差点マークを隠す"/>
+    <Translation ID="LABEL_HIDE_ROAD_ARROWS" String="道路矢印を隠す"/>
+    <Translation ID="LABEL_HIDE_ROAD_SIGNS" String="道路標識を隠す"/>
+    <Translation ID="LABEL_HIDE_ROAD_DECORATION" String="道路装飾を隠す"/>
+    <Translation ID="LABEL_HIDE_TRANSPORT_STOPS" String="停留所を隠す"/>
+    <Translation ID="LABEL_HIDE_TRAFFIC_LIGHTS" String="信号機を隠す"/>
+    <Translation ID="LABEL_HIDE_LEVEL_CROSSINGS" String="踏切を隠す"/>
+    <Translation ID="TOOLTIP_HIDEBLACKLISTED" String="ブラックリストの項目を非表示にする&#10;その場合はオプションを有効化"/>
+    <Translation ID="TOOLTIP_GLOBAL_SELECTION_DATA" String="有効にすると最後に使用したスキンの設定を、&#10;セーブごとではなくグローバルで保存"/>
+    <Translation ID="TOOLTIP_DISPLAYATSELECTED" String="有効にするとパネル展開時に、&#10;現在選択されている項目へ自動スクロール"/>
+    <Translation ID="TOOLTIP_TREES" String="ツリー"/>
+    <Translation ID="TOOLTIP_LIGHTS" String="街灯"/>
+    <Translation ID="TOOLTIP_SURFACE" String="地表"/>
+    <Translation ID="TOOLTIP_PILLARS" String="橋脚"/>
+    <Translation ID="TOOLTIP_CATENARY" String="架線"/>
+    <Translation ID="TOOLTIP_COLOR" String="カラー"/>
+    <Translation ID="TOOLTIP_ROAD_DECORATION" String="道路の装飾"/>
+    <Translation ID="TOOLTIP_SETTINGS" String="設定"/>
+    <Translation ID="TOOLTIP_PIPETTE" String="スポイト: セグメントをクリック&#10;スキンのコピー＆ネットワークを選択"/>
+    <Translation ID="TOOLTIP_LOCK" String="ロックを有効にして、全てのレーンをまとめて変更"/>
+    <Translation ID="TOOLTIP_ADDFAVOURITE_ADDBLACKLIST" String="左クリックでお気に入りに追加、右クリックでブラックリストに追加"/>
+    <Translation ID="TOOLTIP_REMOVEFAVOURITE" String="左クリックでお気に入りから削除、右クリックでブラックリストに追加"/>
+    <Translation ID="TOOLTIP_REMOVEBLACKLIST" String="左クリックでお気に入りに追加、右クリックでブラックリストから削除"/>
+    <Translation ID="TOOLTIP_RESETCURRENT" String="選択したネットワークの設定を全てリセット"/>
+    <Translation ID="TOOLTIP_BUTTON_SAVE_MAXREACHED" String="保存可能なカラーの上限数に達しました"/>
+    <Translation ID="TOOLTIP_BUTTON_SAVE_COLOREXISTS" String="選択したカラーは既に保存済みです"/>
+    <Translation ID="TOOLTIP_BUTTON_SAVE" String="現在のカラーをお気に入りに保存"/>
+    <Translation ID="TOOLTIP_HIDE_NODE_MARKINGS" String="横断歩道や停止線などのマーキングを非表示"/>
+    <Translation ID="TOOLTIP_HIDE_ROAD_ARROWS" String="進行方向の矢印を非表示(交通ルールは有効です！)"/>
+    <Translation ID="TOOLTIP_HIDE_ROAD_SIGNS" String="道路標識を非表示(例: 制限速度など)"/>
+    <Translation ID="TOOLTIP_HIDE_ROAD_DECORATION" String="道路装飾を非表示(例: 電気ボックスや消火栓など)"/>
+    <Translation ID="TOOLTIP_HIDE_TRANSPORT_STOPS" String="公共交通機関の停留所や標識を非表示(停留所は機能します！)"/>
+    <Translation ID="TOOLTIP_HIDE_TRAFFIC_LIGHTS" String="信号機を非表示(交通ルールは有効です！)"/>
+    <Translation ID="TOOLTIP_HIDE_LEVEL_CROSSINGS" String="踏切を非表示(交通ルールは有効です！)"/>
+    <Translation ID="BUTTON_RESET" String="リセット"/>
+    <Translation ID="BUTTON_SAVE" String="保存"/>
+    <Translation ID="TOOLTIP_BUTTON_DELETE" String="削除"/>
+  </Translations>
+</Language>
