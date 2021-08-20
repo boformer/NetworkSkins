@@ -18,6 +18,10 @@ namespace NetworkSkins.Net
             "Tram Pole Center"
         };
 
+        private static readonly string[] QuadCatenaryNames = new string[] {
+            "4LaneRailwayPowerline"
+        };
+
         private static readonly string[] DoubleCatenaryNames = new[]
         {
             "RailwayPowerline",
@@ -56,12 +60,19 @@ namespace NetworkSkins.Net
             "2444511901.Catenary Type EXPO1A_Data",            
         };
 
+        private const string R69_QUAD_NORMAL = "cat4n";
+        private const string R69_QUAD_END = "cat4e";
+        private const string R69_QUAD_TUNNEL = "cat4t";
         private const string R69_DOUBLE_NORMAL = "cat2n";
         private const string R69_DOUBLE_END = "cat2e";
         private const string R69_DOUBLE_TUNNEL = "cat2t";
         private const string R69_SINGLE_NORMAL = "cat1n";
         private const string R69_SINGLE_END = "cat1e";
         private const string R69_SINGLE_TUNNEL = "cat1t";
+
+        private const string R69_QUAD_CANT = "cat4c";
+        private const string R69_DOUBLE_CANT = "cat2c";
+        private const string R69_SINGLE_CANT = "cat1c";
 
         public static PropInfo GetDefaultNormalCatenary(NetInfo prefab)
         {
@@ -70,19 +81,27 @@ namespace NetworkSkins.Net
 
         public static bool IsNormalCatenaryProp(PropInfo prop)
         {
-            return IsDoubleRailNormalCatenaryProp(prop) || IsSingleRailNormalCatenaryProp(prop) || IsTramPoleSideProp(prop) || IsTramPoleCenterProp(prop);
+            return IsQuadRailNormalCatenaryProp(prop) || IsDoubleRailNormalCatenaryProp(prop) || IsSingleRailNormalCatenaryProp(prop) || IsTramPoleSideProp(prop) || IsTramPoleCenterProp(prop);
+        }
+
+        public static bool IsQuadRailNormalCatenaryProp(PropInfo prop) {
+            if (prop == null) return false;
+            return Array.IndexOf(QuadCatenaryNames, prop.name) != -1 || ParseR69RailwayType(prop, out var type)
+                && (type == R69_QUAD_NORMAL || type == R69_QUAD_CANT);
         }
 
         public static bool IsDoubleRailNormalCatenaryProp(PropInfo prop)
         {
             if (prop == null) return false;
-            return Array.IndexOf(DoubleCatenaryNames, prop.name) != -1 || ParseR69RailwayType(prop, out var type) && type == R69_DOUBLE_NORMAL;
+            return Array.IndexOf(DoubleCatenaryNames, prop.name) != -1 || ParseR69RailwayType(prop, out var type) 
+                && (type == R69_DOUBLE_NORMAL || type == R69_DOUBLE_CANT);
         }
 
         public static bool IsSingleRailNormalCatenaryProp(PropInfo prop)
         {
             if (prop == null) return false;
-            return Array.IndexOf(SingleCatenaryNames, prop.name) != -1 || ParseR69RailwayType(prop, out var type) && type == R69_SINGLE_NORMAL;
+            return Array.IndexOf(SingleCatenaryNames, prop.name) != -1 || ParseR69RailwayType(prop, out var type) 
+                && (type == R69_SINGLE_NORMAL || type == R69_SINGLE_CANT);
         }
 
         public static bool IsTramPoleSideProp(PropInfo prop)
@@ -99,7 +118,12 @@ namespace NetworkSkins.Net
 
         public static bool IsEndCatenaryProp(PropInfo prop)
         {
-            return IsDoubleRailEndCatenaryProp(prop) || IsSingleRailEndCatenaryProp(prop);
+            return IsQuadRailEndCatenaryProp(prop) || IsDoubleRailEndCatenaryProp(prop) || IsSingleRailEndCatenaryProp(prop);
+        }
+
+        public static bool IsQuadRailEndCatenaryProp(PropInfo prop) {
+            if (prop == null) return false;
+            return ParseR69RailwayType(prop, out var type) && type == R69_QUAD_END;
         }
 
         public static bool IsDoubleRailEndCatenaryProp(PropInfo prop)
@@ -116,7 +140,12 @@ namespace NetworkSkins.Net
 
         public static bool IsTunnelCatenaryProp(PropInfo prop)
         {
-            return IsDoubleRailTunnelCatenaryProp(prop) || IsSingleRailTunnelCatenaryProp(prop);
+            return IsQuadRailTunnelCatenaryProp(prop) || IsDoubleRailTunnelCatenaryProp(prop) || IsSingleRailTunnelCatenaryProp(prop);
+        }
+
+        public static bool IsQuadRailTunnelCatenaryProp(PropInfo prop) {
+            if (prop == null) return false;
+            return ParseR69RailwayType(prop, out var type) && type == R69_QUAD_TUNNEL;
         }
 
         public static bool IsDoubleRailTunnelCatenaryProp(PropInfo prop)
@@ -135,7 +164,11 @@ namespace NetworkSkins.Net
         {
             if (ParseR69RailwayTag(prop, out var type, out var styleName, out var subStyleName, out var variationName))
             {
-                if(type == R69_DOUBLE_NORMAL)
+                if (type == R69_QUAD_NORMAL)
+                {
+                    return GetR69RailwayPropWithFallback(R69_QUAD_END, styleName, subStyleName, variationName) ?? prop;
+                }
+                else if (type == R69_DOUBLE_NORMAL)
                 {
                     return GetR69RailwayPropWithFallback(R69_DOUBLE_END, styleName, subStyleName, variationName) ?? prop;
                 }
@@ -152,7 +185,11 @@ namespace NetworkSkins.Net
         {
             if (ParseR69RailwayTag(prop, out var type, out var styleName, out var subStyleName, out var variationName))
             {
-                if (type == R69_DOUBLE_NORMAL)
+                if (type == R69_QUAD_NORMAL)
+                {
+                    return GetR69RailwayPropWithFallback(R69_QUAD_TUNNEL, styleName, subStyleName, variationName);
+                }
+                else if (type == R69_DOUBLE_NORMAL)
                 {
                     return GetR69RailwayPropWithFallback(R69_DOUBLE_TUNNEL, styleName, subStyleName, variationName);
                 }

@@ -108,7 +108,11 @@ namespace NetworkSkins.GUI.Catenaries
         {
             foreach(var prop in defaultCatenaries)
             {
-                if (CatenaryUtils.IsDoubleRailNormalCatenaryProp(prop))
+                if (CatenaryUtils.IsQuadRailNormalCatenaryProp(prop)) 
+                {
+                    return CatenaryType.TrainQuad;
+                } 
+                else if (CatenaryUtils.IsDoubleRailNormalCatenaryProp(prop))
                 {
                     return CatenaryType.TrainDouble;
                 }
@@ -150,6 +154,8 @@ namespace NetworkSkins.GUI.Catenaries
         private bool IsCatenaryProp(PropInfo prefab, CatenaryType type) {
             switch(type)
             {
+                case CatenaryType.TrainQuad:
+                    return CatenaryUtils.IsQuadRailNormalCatenaryProp(prefab);
                 case CatenaryType.TrainDouble:
                     return CatenaryUtils.IsDoubleRailNormalCatenaryProp(prefab);
                 case CatenaryType.TrainSingle:
@@ -197,6 +203,7 @@ namespace NetworkSkins.GUI.Catenaries
 
     public enum CatenaryType
     {
+        TrainQuad,
         TrainDouble,
         TrainSingle,
         TramPoleSide,
