@@ -393,6 +393,27 @@ namespace NetworkSkins.Net
             //German Delineators by Olegson
             "1832037749.German Delineator_Data",
             "1849355863.German Junction Delineator_Data",
+		
+	    //RWY2-USA Deco Lane Props
+	    "2487537755.r2-ident01nec_data",
+	    "2487537755.r2-ident01-4nec_data",
+	    "2487537755.r2-ident02-4us_data",
+	    "2487537755.r2-ident01us_data",
+	    "2487537755.r2-ident01-4us_data",
+	    "2487537755.r2-ident02us_data",
+	    "2487537755.r2-weldus_data",
+
+	    //RWY2-EUR Deco Lane Props
+	    "2518959391.r2-fencebeam_data",
+	    "2518959391.r2-ident01_data",
+	    "2518959391.r2-ident01-4_data",
+	    "2518959391.r2-ident02_data",
+	    "2518959391.r2-ident02-4_data",
+	    "2518959391.r2-weld_data",
+
+	    //RWY1 Deco Lane Props
+	    "1530376523.r69railway-fishplate_data",
+	    "1530376523.r69railway-fence-beam_data",
 
             //UK Road Project by Macwelshman
             "1611818494.UKR-D Parking Text (Disabled)_Data",
