@@ -2,7 +2,7 @@
     using ColossalFramework.IO;
     using System;
 
-    public interface NSImplementation {
+    public interface INSImplementation {
         int ID { get; }
 
         void Serialize(ICloneable data, DataSerializer s);
