@@ -44,6 +44,8 @@ namespace NetworkSkins.Skins
                     return CatenaryModifier.DeserializeImpl(s, prefabCollection, errors);
                 case NetworkSkinModifierType.RoadDecoration:
                     return RoadDecorationModifier.DeserializeImpl(s);
+                case NetworkSkinModifierType.Custom:
+                    return CustomDataCollectionModifier.DeserializeImpl(s);
                 default:
                     return null;
             }
@@ -59,6 +61,7 @@ namespace NetworkSkins.Skins
         Tree = 4,
         Pillar = 5,
         Catenary = 6,
-        RoadDecoration = 7
+        RoadDecoration = 7,
+        Custom = 20,
     }
 }

@@ -45,6 +45,8 @@ namespace NetworkSkins.Skins
 
         public bool m_nodeMarkingsHidden;
 
+        public CustomDataColloction m_CustomDatas;
+
         public int UseCount = 0;
 
         public NetworkSkin(NetInfo prefab, List<NetworkSkinModifier> modifiers)
@@ -82,6 +84,8 @@ namespace NetworkSkins.Skins
             m_clipTerrain = Prefab.m_clipTerrain;
             m_color = Prefab.m_color;
             m_nodeMarkingsHidden = false;
+
+            m_CustomDatas = new CustomDataColloction(Prefab);
 
             UpdateHasWires();
 
