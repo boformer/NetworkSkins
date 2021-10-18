@@ -2,37 +2,81 @@
     using ColossalFramework.IO;
     using NetworkSkins.API;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Xml.Serialization;
+    using System.Xml;
 
-    public class CustomDataColloction : DictionarySoft<int, ICloneable>, ICloneable {
-        CustomDataColloction() { }
+    public class CustomDataDTO : ICloneable {
+        public string ID;
+        public string Version;
+        public string Base64Data;
+        public CustomDataDTO Clone() => this.MemberwiseClone() as CustomDataDTO;
+        object ICloneable.Clone() => Clone();
 
-        public CustomDataColloction(NetInfo network) {
-            foreach(var impl in API.Instance.ImplementationWrappers) {
-                var value = impl.GetDefaultData(network);
-                if(value is not null)
-                    this[impl.ID] = value;
-            }
+        public override int GetHashCode() {
+            int hc = ID.GetHashCode();
+            hc = unchecked(hc * 314159 + Base64Data.GetHashCode());
+            return hc;
         }
+
+        public override bool Equals(object obj) {
+            return 
+                obj is CustomDataDTO dto && 
+                ID == dto.ID && 
+                Base64Data == dto.Base64Data;
+        }
+    }
+
+    public class CustomDataColloction : DictionarySoft<string, ICloneable>, ICloneable {
+        public CustomDataColloction() { }
+
+        //public CustomDataColloction(NetInfo network, bool segment) {
+        //    foreach(var impl in API.Instance.ImplementationWrappers) {
+        //        var value =
+        //            segment ?
+        //            impl.GetDefaultSegmentData(network) :
+        //            impl.GetDefaultNodeData(network);
+
+        //        if(value is not null)
+        //            this[impl.ID] = value;
+        //    }
+        //}
 
         #region serialization
-        public void Serialize(DataSerializer s) {
-            s.WriteInt32Array(Keys.ToArray());
+        public string Encode64() {
+            List<CustomDataDTO> dtos = new List<CustomDataDTO>(Count);
             foreach(var pair in this) {
-                var impl = API.Instance.GetImplementationWrapper(pair.Key);
-                var data = pair.Value;
-                impl.Serialize(data, s);
+                if(pair.Value is null) {
+                    continue;
+                } else if(pair.Value is CustomDataDTO dto) {
+                    // implementation is abscent so dto was not fully decoded.
+                    dtos.Add(dto);
+                } else {
+                    var impl = API.Instance.GetImplementationWrapper(pair.Key);
+                    dtos.Add(new CustomDataDTO {
+                        ID = impl.ID,
+                        Version = impl.Version.ToString(),
+                        Base64Data = impl.Encode64(pair.Value),
+                    });
+                }
             }
+            if(dtos.Count == 0)
+                return null;
+            else 
+                return XMLUtil.Serialize(dtos.ToArray());
         }
 
-        public static CustomDataColloction Deserialize(DataSerializer s) {
+        public static CustomDataColloction Decode64(string base64Data) {
             var ret = new CustomDataColloction();
-            var keys = s.ReadInt32Array();
-            foreach(int key in keys) {
-                var impl = API.Instance.GetImplementationWrapper(key);
-                if(impl != null) {
-                    var data = impl.Deserialize(s);
-                    ret[key] = data;
+            if(base64Data is not null) {
+                CustomDataDTO[] dtos = XMLUtil.Deserialize<CustomDataDTO[]>(base64Data);
+                foreach(var dto in dtos) {
+                    var impl = API.Instance.GetImplementationWrapper(dto.ID);
+                    ICloneable data =
+                        impl?.Decode64(dto.Base64Data, new Version(dto.Version))
+                        ?? dto;
+                    ret[dto.ID] = data;
                 }
             }
             return ret;

@@ -2,12 +2,6 @@
 using System;
 
 namespace NetworkSkins.Skins.Modifiers {
-    public interface ICustomData : ICloneable {
-        void Serialize(DataSerializer s);
-
-        //public static ICustomData Deserialize(DataSerializer s);
-    }
-
     public class CustomDataCollectionModifier : NetworkSkinModifier {
         public readonly CustomDataColloction Data;
 
@@ -21,10 +15,14 @@ namespace NetworkSkins.Skins.Modifiers {
         }
 
         #region Serialization
-        protected override void SerializeImpl(DataSerializer s) => Data.Serialize(s);
+        protected override void SerializeImpl(DataSerializer s) {
+            s.WriteUniqueString(Data.Encode64());
+        }
 
-        public static CustomDataCollectionModifier DeserializeImpl(DataSerializer s) =>
-            new CustomDataCollectionModifier(CustomDataColloction.Deserialize(s));
+        public static CustomDataCollectionModifier DeserializeImpl(DataSerializer s) {
+            var data = CustomDataColloction.Decode64(s.ReadUniqueString());
+            return new CustomDataCollectionModifier(data);
+        }
         #endregion
 
         #region Equality

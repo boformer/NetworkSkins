@@ -4,40 +4,39 @@
 
     public class NSImplementationWrapper {
         private static class Delegates {
-            public delegate void Serialize(object impl, ICloneable data, DataSerializer s);
-            public delegate ICloneable Deserialize(object impl, DataSerializer s);
-            public delegate ICloneable GetDefaultData(object impl, NetInfo network);
+            public delegate string Encode64(object impl, ICloneable data);
+            public delegate ICloneable Decode64(object impl, string base64Data, Version dataVersion);
             public delegate void OnPreNSLoaded(object impl);
             public delegate void OnPostNSLoaded(object impl);
-            public delegate int get_ID(object impl);
+            public delegate string get_ID(object impl);
+            public delegate Version get_Version(object impl);
         }
 
         public object Implemenation;
 
-        private Delegates.Serialize serialize_;
-        private Delegates.Deserialize deserialize_;
-        private Delegates.GetDefaultData getDefaultData_;
+        private Delegates.Encode64 encode64_;
+        private Delegates.Decode64 decode64_;
         private Delegates.OnPreNSLoaded onPreNSLoaded_;
         private Delegates.OnPostNSLoaded onPostNSLoaded_;
         private Delegates.get_ID get_ID_;
+        private Delegates.get_Version get_Version_;
 
         public NSImplementationWrapper(object impl) {
             Implemenation = impl;
             Type type = impl.GetType();
-            serialize_ = DelegateUtil.CreateDelegate<Delegates.Serialize>(type, true);
-            deserialize_ = DelegateUtil.CreateDelegate<Delegates.Deserialize>(type, true);
-            getDefaultData_ = DelegateUtil.CreateDelegate<Delegates.GetDefaultData>(type, true);
+            encode64_ = DelegateUtil.CreateDelegate<Delegates.Encode64>(type, true);
+            decode64_ = DelegateUtil.CreateDelegate<Delegates.Decode64>(type, true);
             onPreNSLoaded_ = DelegateUtil.CreateDelegate<Delegates.OnPreNSLoaded>(type, true);
             onPostNSLoaded_ = DelegateUtil.CreateDelegate<Delegates.OnPostNSLoaded>(type, true);
             get_ID_ = DelegateUtil.CreateDelegate<Delegates.get_ID>(type, true);
+            get_Version_ = DelegateUtil.CreateDelegate<Delegates.get_Version>(type, true);
         }
 
-
-        public int ID => get_ID_(Implemenation);
-        public void Serialize(ICloneable data, DataSerializer s) => serialize_(Implemenation, data, s);
-        public ICloneable Deserialize(DataSerializer s) => deserialize_(Implemenation, s);
+        public string ID => get_ID_(Implemenation);
+        public Version Version => get_Version_(Implemenation);
+        public string Encode64(ICloneable data) => encode64_(Implemenation, data);
+        public ICloneable Decode64(string base64Data, Version dataVersion) => decode64_(Implemenation, base64Data, dataVersion);
         public void OnPreNSLoaded() => onPreNSLoaded_(Implemenation);
         public void OnPostNSLoaded() => onPostNSLoaded_(Implemenation);
-        public ICloneable GetDefaultData(NetInfo network) => getDefaultData_(Implemenation, network);
     }
 }

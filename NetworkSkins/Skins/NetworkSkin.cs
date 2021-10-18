@@ -85,7 +85,7 @@ namespace NetworkSkins.Skins
             m_color = Prefab.m_color;
             m_nodeMarkingsHidden = false;
 
-            m_CustomDatas = new CustomDataColloction(Prefab);
+            m_CustomDatas = null;
 
             UpdateHasWires();
 
