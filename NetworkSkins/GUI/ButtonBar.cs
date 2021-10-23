@@ -3,6 +3,7 @@ using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.Locale;
 using NetworkSkins.TranslationFramework;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace NetworkSkins.GUI
@@ -52,6 +53,7 @@ namespace NetworkSkins.GUI
         private UIButton[] buttons;
 
         public override void OnDestroy() {
+            // TODO: this code is redundant because all events are automatically cleared by UIComponent.RemoveAllEventHandlers during destruction
             treesButton.eventClicked -= OnTreesButtonClicked;
             lightsButton.eventClicked -= OnLightsButtonClicked;
             surfacesButton.eventClicked -= OnSurfacesButtonClicked;
@@ -90,7 +92,8 @@ namespace NetworkSkins.GUI
             roadDecorationButton.isVisible = NetworkSkinPanelController.RoadDecoration.Enabled;
             foreach(var button in CustomButtons) {
                 var impl = button.objectUserData as NSImplementationWrapper;
-                button.isVisible = 
+                var controller = NetworkSkinPanelController.CustomPanelControllers[impl.ID];
+                button.isVisible = controller.Enabled;
             }
         }
 
@@ -166,6 +169,7 @@ namespace NetworkSkins.GUI
                 pipetteButton,
                 resetButton
             };
+            buttons = buttons.Concat(CustomButtons).ToArray();
         }
 
         private void OnTreesButtonVisibilityChanged(UIComponent component, bool value) {

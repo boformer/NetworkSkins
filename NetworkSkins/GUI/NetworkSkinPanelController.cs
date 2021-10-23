@@ -33,7 +33,7 @@ namespace NetworkSkins.GUI
 
         public StreetLightPanelController StreetLight;
 
-        public Dictionary<string, CustomPanelController> CustomPanelControllers = new Dictionary<string, CustomPanelController>();
+        public DictionarySoft<string, CustomPanelController> CustomPanelControllers = new DictionarySoft<string, CustomPanelController>();
 
         public bool TreesEnabled => LeftTree.Enabled || MiddleTree.Enabled || RighTree.Enabled;
         public LanePosition LanePosition { get; set; } = LanePosition.Left;
@@ -52,8 +52,6 @@ namespace NetworkSkins.GUI
         public CatenaryPanelController Catenary;
 
         public RoadDecorationPanelController RoadDecoration;
-
-        public Dictionary<string, CustomPanelController> CustomControllers;
 
         public NetInfo Prefab { get; private set; }
 
@@ -165,7 +163,7 @@ namespace NetworkSkins.GUI
             BridgeMiddlePillar.Reset();
             Catenary.Reset();
             RoadDecoration.Reset();
-            foreach(var controller in CustomControllers.Values)
+            foreach(var controller in CustomPanelControllers.Values)
                 controller?.Reset();
 
             _ignoreModifierEvents = false;
@@ -261,10 +259,9 @@ namespace NetworkSkins.GUI
             MiddleTree.OnPrefabWithModifiersSelected(prefab, modifiers);
             RighTree.OnPrefabWithModifiersSelected(prefab, modifiers);
 
-            foreach(var controller in CustomControllers.Values) {
+            foreach(var controller in CustomPanelControllers.Values) {
                 controller?.OnPrefabWithModifiersSelected(prefab, modifiers);
             }
-
 
             var elevatedPrefab = NetUtils.GetElevatedPrefab(prefab);
             ElevatedBridgePillar.OnPrefabWithModifiersSelected(elevatedPrefab, modifiers);
@@ -302,7 +299,7 @@ namespace NetworkSkins.GUI
             MiddleTree.OnPrefabChanged(prefab);
             RighTree.OnPrefabChanged(prefab);
 
-            foreach(var controller in CustomControllers.Values) {
+            foreach(var controller in CustomPanelControllers.Values) {
                 controller?.OnPrefabChanged(prefab);
             }
 

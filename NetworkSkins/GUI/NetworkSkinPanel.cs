@@ -29,7 +29,6 @@ namespace NetworkSkins.GUI
         private SettingsPanel settingsPanel;
         private UIPanel space;
         private PanelBase currentPanel;
-
         private Dictionary<string, CustomPanel> customPanels;
 
         public override void OnDestroy() {
