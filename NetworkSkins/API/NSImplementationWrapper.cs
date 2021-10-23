@@ -7,7 +7,7 @@
     public class NSImplementationWrapper : INSImplementation{
         private static class Delegates {
             public delegate int get_Index(object impl);
-            public delegate int set_Index(object impl, int value);
+            public delegate void set_Index(object impl, int value);
             public delegate string get_ID(object impl);
             public delegate void OnBeforeNSLoaded(object impl);
             public delegate void OnAfterNSLoaded(object impl);
@@ -24,10 +24,11 @@
             public delegate void RefreshUI(object impl, NetInfo netInfo);
 
             public delegate UITextureAtlas get_Enabled(object impl);
-            public delegate Dictionary<NetInfo, ICloneable> BuildCustomData(object impl);
-            public delegate void BuildWithData(object impl, ICloneable data);
+            public delegate void set_Prefab(object impl, NetInfo prefab);
+            public delegate Dictionary<NetInfo, ICloneable> LoadCustomData(object impl);
+            public delegate void LoadWithData(object impl, ICloneable data);
             public delegate void Reset(object impl);
-            public delegate void BuildActiveSelection(object impl);
+            public delegate void LoadActiveSelection(object impl);
         }
 
         public object Implemenation;
@@ -50,10 +51,12 @@
         private Delegates.RefreshUI refreshUI_;
 
         private Delegates.get_Enabled get_Enabled_;
-        private Delegates.BuildCustomData buildCustomData_;
-        private Delegates.BuildWithData buildWithData_;
+        private Delegates.set_Prefab set_Prefab_;
+        private Delegates.LoadCustomData loadCustomData_;
+        private Delegates.LoadWithData loadWithData_;
         private Delegates.Reset reset_;
-        private Delegates.BuildActiveSelection buildActiveSelection_;
+        private Delegates.LoadActiveSelection loadActiveSelection_;
+
 
         public NSImplementationWrapper(object impl) {
             Implemenation = impl;
@@ -77,10 +80,11 @@
             refreshUI_ = DelegateUtil.CreateDelegate<Delegates.RefreshUI>(type, true);
 
             get_Enabled_  = DelegateUtil.CreateDelegate<Delegates.get_Enabled>(type, true);
-            buildCustomData_ = DelegateUtil.CreateDelegate < Delegates.BuildCustomData> (type, true);
-            buildWithData_ = DelegateUtil.CreateDelegate < Delegates.BuildWithData> (type, true);
+            set_Prefab_ = DelegateUtil.CreateDelegate<Delegates.set_Prefab>(type, true);
+            loadCustomData_ = DelegateUtil.CreateDelegate < Delegates.LoadCustomData> (type, true);
+            loadWithData_ = DelegateUtil.CreateDelegate < Delegates.LoadWithData> (type, true);
             reset_ = DelegateUtil.CreateDelegate < Delegates.Reset> (type, true);
-            buildActiveSelection_ = DelegateUtil.CreateDelegate < Delegates.BuildActiveSelection> (type, true);
+            loadActiveSelection_ = DelegateUtil.CreateDelegate < Delegates.LoadActiveSelection> (type, true);
         }
 
         public int Index { 
@@ -120,11 +124,13 @@
 
         #region Controller
         public bool Enabled => get_Enabled_(Implemenation);
-
-        public Dictionary<NetInfo, ICloneable> BuildCustomData() => buildCustomData_(Implemenation);
-        public void BuildWithData(ICloneable data) => buildWithData_(Implemenation, data);
+        public NetInfo Prefab {
+            set => set_Prefab_(Implemenation, value);
+        }
+        public Dictionary<NetInfo, ICloneable> BuildCustomData() => loadCustomData_(Implemenation);
+        public void LoadWithData(ICloneable data) => loadWithData_(Implemenation, data);
         public void Reset() => reset_(Implemenation);
-        public void BuildActiveSelection() => buildActiveSelection_(Implemenation);
+        public void LoadActiveSelection() => loadActiveSelection_(Implemenation);
         #endregion
     }
 }

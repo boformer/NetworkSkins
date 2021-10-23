@@ -6,7 +6,7 @@ namespace NetworkSkins.GUI.Abstraction
 {
     public abstract class FeaturePanelControllerBase
     {
-        public NetInfo Prefab { get; private set; }
+        public virtual NetInfo Prefab { get; protected set; }
 
         /// <summary>
         /// The button for this feature should only be shown when this is true

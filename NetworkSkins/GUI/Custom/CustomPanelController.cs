@@ -9,6 +9,11 @@ using System.Linq;
 
 namespace NetworkSkins.GUI.Custom {
     public class CustomPanelController : FeaturePanelControllerBase {
+        public override NetInfo Prefab { 
+            get => base.Prefab; 
+            protected set => Implementation.Prefab = base.Prefab = value; 
+        }
+
         public readonly Helpers.INSImplementation Implementation;
 
         public CustomPanelController(NSImplementationWrapper impl) {
@@ -42,7 +47,7 @@ namespace NetworkSkins.GUI.Custom {
         protected override void BuildWithModifiers(List<NetworkSkinModifier> modifiers) {
             var modifer = modifiers?.OfType<CustomDataCollectionModifier>()?.FirstOrDefault();
             ICloneable data = modifer.Data[Implementation.ID];
-            Implementation.BuildWithData(data);
+            Implementation.LoadWithData(data);
         }
 
         #region Active Selection Data
@@ -55,7 +60,7 @@ namespace NetworkSkins.GUI.Custom {
             OnChanged();
         }
 
-        protected override void Build() => Implementation.BuildActiveSelection();
+        protected override void Build() => Implementation.LoadActiveSelection();
         #endregion
     }
 }
