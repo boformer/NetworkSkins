@@ -13,7 +13,5 @@
         public static void RegisterImplementation(INSImplementation impl) {
             NSAPI.Instance.AddImplementation(impl);
         }
-
-
     }
 }

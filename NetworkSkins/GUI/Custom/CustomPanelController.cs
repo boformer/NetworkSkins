@@ -9,13 +9,13 @@ using System.Linq;
 
 namespace NetworkSkins.GUI.Custom {
     public class CustomPanelController : FeaturePanelControllerBase {
-        public readonly NSImplementationWrapper ImplementationWrapper;
+        public readonly Helpers.INSImplementation Implementation;
 
-        public CustomPanelController(NSImplementationWrapper implementationWrapper) {
-            ImplementationWrapper = implementationWrapper;
+        public CustomPanelController(NSImplementationWrapper impl) {
+            Implementation = impl;
         }
 
-        public override bool Enabled => throw new NotImplementedException("api call"); // base.Enabled && ;
+        public override bool Enabled => base.Enabled && Implementation.Enabled;
 
 
         public Dictionary<NetInfo, CustomDataCollectionModifier> CustomDatas { get; private set; }
@@ -33,22 +33,16 @@ namespace NetworkSkins.GUI.Custom {
 
         private CustomDataCollectionModifier DataToCollection(ICloneable data) {
             var ret = new CustomDataCollection();
-            ret[ImplementationWrapper.ID] = data;
+            ret[Implementation.ID] = data;
             return new CustomDataCollectionModifier(ret);
         }
 
-
-        protected Dictionary<NetInfo, ICloneable> BuildCustomData() {
-            throw new NotImplementedException("API call");
-        }
+        protected Dictionary<NetInfo, ICloneable> BuildCustomData() => Implementation.BuildCustomData();
 
         protected override void BuildWithModifiers(List<NetworkSkinModifier> modifiers) {
-            ICloneable data = modifiers
-                ?.OfType<CustomDataCollectionModifier>()
-                ?.Select(item => item.Data[ImplementationWrapper.ID])
-                ?.FirstOrDefault();
-            throw new NotImplementedException("API call");
-
+            var modifer = modifiers?.OfType<CustomDataCollectionModifier>()?.FirstOrDefault();
+            ICloneable data = modifer.Data[Implementation.ID];
+            Implementation.BuildWithData(data);
         }
 
         #region Active Selection Data
@@ -56,14 +50,12 @@ namespace NetworkSkins.GUI.Custom {
         public override void Reset() {
             if(!Enabled) return;
 
-            throw new NotImplementedException("API call");
+            Implementation.Reset();
 
             OnChanged();
         }
 
-        protected override void Build() {
-            throw new NotImplementedException("API call");
-        }
+        protected override void Build() => Implementation.BuildActiveSelection();
         #endregion
     }
 }

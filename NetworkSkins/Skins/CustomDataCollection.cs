@@ -56,7 +56,7 @@
                     var impl = NSAPI.Instance.GetImplementationWrapper(pair.Key);
                     dtos.Add(new CustomDataDTO {
                         ID = impl.ID,
-                        Version = impl.Version.ToString(),
+                        Version = impl.DataVersion.ToString(),
                         Base64Data = impl.Encode64(pair.Value),
                     });
                 }

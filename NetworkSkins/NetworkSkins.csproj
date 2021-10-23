@@ -38,6 +38,9 @@
   <ItemGroup>
     <PackageReference Include="CitiesHarmony.API" Version="2.0.0" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NetworkSkins.Intreface\NetworkSkins.Intreface.csproj" />
+  </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebugType>none</DebugType>
     <DebugSymbols>false</DebugSymbols>

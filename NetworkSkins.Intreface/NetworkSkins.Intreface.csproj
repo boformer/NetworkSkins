@@ -1,12 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net35</TargetFramework>
-    <LangVersion>preview</LangVersion>
+    <Deterministic>false</Deterministic>
+    <Version>1.1.0.*</Version>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\NetworkSkins.Intreface\NetworkSkins.Intreface.csproj" />
-    <ProjectReference Include="..\NetworkSkins\NetworkSkins.csproj" />
-  </ItemGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
       <HintPath>C:\References\Assembly-CSharp.dll</HintPath>
