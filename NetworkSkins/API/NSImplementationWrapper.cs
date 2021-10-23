@@ -3,6 +3,8 @@
     using System;
     using NetworkSkins.Helpers;
     using System.Collections.Generic;
+    using UnityEngine;
+    using Object = UnityEngine.Object;
 
     public class NSImplementationWrapper : INSImplementation{
         private static class Delegates {
@@ -11,19 +13,18 @@
             public delegate string get_ID(object impl);
             public delegate void OnBeforeNSLoaded(object impl);
             public delegate void OnAfterNSLoaded(object impl);
-            public delegate void OnSkinApplied(object impl, object data, InstanceID instanceID);
+            public delegate void OnSkinApplied(object impl, ICloneable data, InstanceID instanceID);
             public delegate void OnNSDisabled(object impl);
 
             public delegate Version get_DataVersion(object impl);
             public delegate string Encode64(object impl, ICloneable data);
             public delegate ICloneable Decode64(object impl, string base64Data, Version dataVersion);
 
-            public delegate UITextureAtlas get_Atlas(object impl);
-            public delegate string get_BackGroundSprite(object impl);
+            public delegate Texture2D get_Icon(object impl);
             public delegate void BuildPanel(object impl, UIPanel panel);
-            public delegate void RefreshUI(object impl, NetInfo netInfo);
+            public delegate void RefreshUI(object impl);
 
-            public delegate UITextureAtlas get_Enabled(object impl);
+            public delegate bool get_Enabled(object impl);
             public delegate Dictionary<NetInfo, ICloneable> LoadCustomData(object impl);
             public delegate void LoadWithData(object impl, ICloneable data);
             public delegate void Reset(object impl);
@@ -44,8 +45,7 @@
         private Delegates.Encode64 encode64_;
         private Delegates.Decode64 decode64_;
 
-        private Delegates.get_Atlas get_Atlas_;
-        private Delegates.get_BackGroundSprite get_BackGroundSprite_;
+        private Delegates.get_Icon get_Icon_;
         private Delegates.BuildPanel buildPanel_;
         private Delegates.RefreshUI refreshUI_;
 
@@ -72,8 +72,7 @@
             encode64_ = DelegateUtil.CreateDelegate<Delegates.Encode64>(type, true);
             decode64_ = DelegateUtil.CreateDelegate<Delegates.Decode64>(type, true);
 
-            get_Atlas_ = DelegateUtil.CreateDelegate < Delegates.get_Atlas> (type, true);
-            get_BackGroundSprite_ = DelegateUtil.CreateDelegate < Delegates.get_BackGroundSprite> (type, true);
+            get_Icon_ = DelegateUtil.CreateDelegate < Delegates.get_Icon> (type, true);
             buildPanel_ = DelegateUtil.CreateDelegate < Delegates.BuildPanel> (type, true);
             refreshUI_ = DelegateUtil.CreateDelegate<Delegates.RefreshUI>(type, true);
 
@@ -92,7 +91,7 @@
         public string ID => get_ID_(Implemenation);
         public void OnBeforeNSLoaded() => onBeforeNSLoaded_(Implemenation);
         public void OnAfterNSLoaded() => onAfterNSLoaded_(Implemenation);
-        public void OnSkinApplied(object data, InstanceID instanceID) => onSkinApplied_(Implemenation, data, instanceID);
+        public void OnSkinApplied(ICloneable data, InstanceID instanceID) => onSkinApplied_(Implemenation, data, instanceID);
         public void OnNSDisabled() => onNSDisabled_(Implemenation);
 
         #region Persistency
@@ -113,10 +112,44 @@
         #endregion
 
         #region panel
-        public UITextureAtlas Atlas => get_Atlas_(Implemenation);
-        public string BackGroundSprite => get_BackGroundSprite_(Implemenation);
+        public Texture2D Icon => get_Icon_(Implemenation);
+
+        private UITextureAtlas CreateAtlas() {
+            UITextureAtlas nsAtlas = NetworkSkins.Resources.Atlas;
+            var hovered = TextureUtil.GetSpriteTexture(nsAtlas, "Hovered");
+            var pressed = TextureUtil.GetSpriteTexture(nsAtlas, "Pressed");
+            var disabeld = TextureUtil.GetSpriteTexture(nsAtlas, "Disabled");
+            var focused = TextureUtil.GetSpriteTexture(nsAtlas, "Focused");
+            var spriteNames = new [] { "Hovered", "Pressed", "Disabled", "Focused", "Icon" };
+            var textures = new[] { hovered, pressed, disabeld, focused, Icon };
+
+            Texture2D texture2D = new Texture2D(1, 1, TextureFormat.ARGB32, false);
+            Rect[] regions = texture2D.PackTextures(textures, padding: 2, maximumAtlasSize: 1024);
+
+            Material material = Object.Instantiate(UIView.GetAView().defaultAtlas.material);
+            material.mainTexture = texture2D;
+            UITextureAtlas textureAtlas = ScriptableObject.CreateInstance<UITextureAtlas>();
+            textureAtlas.material = material;
+            textureAtlas.name = "NSImplementation_" + ID;
+
+            for(int i = 0; i < spriteNames.Length; i++) {
+                UITextureAtlas.SpriteInfo item = new UITextureAtlas.SpriteInfo {
+                    name = spriteNames[i],
+                    texture = textures[i],
+                    region = regions[i],
+                };
+
+                textureAtlas.AddSprite(item);
+            }
+            return textureAtlas;
+
+        }
+
+        private UITextureAtlas atlas_;
+        public UITextureAtlas Atlas => atlas_ ??= CreateAtlas();
+
         public void BuildPanel(UIPanel panel) => buildPanel_(Implemenation,panel);
-        public void RefreshUI(NetInfo netInfo) => refreshUI_(Implemenation, netInfo);
+        public void RefreshUI() => refreshUI_(Implemenation);
         #endregion
 
         #region Controller

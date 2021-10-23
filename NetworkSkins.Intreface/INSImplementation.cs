@@ -2,6 +2,7 @@
     using ColossalFramework.UI;
     using System;
     using System.Collections.Generic;
+    using UnityEngine;
 
     /// <summary>
     /// Note: data should implement GetHash() and Equals()
@@ -12,7 +13,7 @@
         void OnBeforeNSLoaded();
         void OnAfterNSLoaded();
         void OnNSDisabled();
-        void OnSkinApplied(object data, InstanceID instanceID);
+        void OnSkinApplied(ICloneable data, InstanceID instanceID);
     }
 
     public interface INSPersistancy {
@@ -30,16 +31,8 @@
     }
 
     public interface INSGUUIImplementation {
-        /// <summary>
-        /// Atlas for button.
-        /// </summary>
-        UITextureAtlas Atlas { get; }
-        
-        /// <summary>
-        /// Sprite for the button.
-        /// </summary>
-        string BackGroundSprite { get; }
-        
+        Texture2D Icon { get; }
+
         /// <summary>
         /// Add UI elements to the panel using the data from your controller.
         /// </summary>
@@ -49,8 +42,7 @@
         /// <summary>
         /// Refresh the state of your UI elements using the values from your controller.
         /// </summary>
-        /// <param name="netInfo"></param>
-        void RefreshUI(NetInfo netInfo);
+        void RefreshUI();
     }
 
     /// <summary>
