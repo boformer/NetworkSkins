@@ -63,11 +63,6 @@
         bool Enabled { get; }
 
         /// <summary>
-        /// selected prefab
-        /// </summary>
-        NetInfo Prefab { set; }
-
-        /// <summary>
         /// Note: data should implement GetHash() and Equals()
         /// </summary>
         /// <returns>custom data for the selected prefab and/or its elevations. return null if there is no data or data is default.</returns>

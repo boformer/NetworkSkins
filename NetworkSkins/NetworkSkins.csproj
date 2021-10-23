@@ -7,6 +7,7 @@
     <AssemblyVersion>1.0.*</AssemblyVersion>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <LangVersion>preview</LangVersion>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
@@ -47,7 +48,7 @@
       <ModDirectory>$(LOCALAPPDATA)\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName)</ModDirectory>
     </PropertyGroup>
     <ItemGroup>
-      <ModFiles Include="$(TargetDir)**\*.*" />
+      <ModFiles Include="$(TargetDir)**\*.*" Exclude="$(TargetDir)\ref\*.*;$(TargetDir)**\*.pdb" />
     </ItemGroup>
     <RemoveDir Directories="$(ModDirectory)" />
     <Copy SourceFiles="@(ModFiles)" DestinationFolder="$(ModDirectory)\%(RecursiveDir)" />
