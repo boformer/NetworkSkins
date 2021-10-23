@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using ColossalFramework.IO;
 using ColossalFramework.UI;
+using NetworkSkins.API;
 using NetworkSkins.Legacy;
 using NetworkSkins.Net;
 using NetworkSkins.Persistence;
@@ -242,6 +243,8 @@ namespace NetworkSkins.Skins
             {
                 EventSegmentPlaced?.Invoke(skin);
             }
+
+            NSAPI.Instance.OnSkinApplied(skin.m_CustomDatas, new InstanceID { NetSegment = segment });
         }
 
         public void OnSegmentTransferData(ushort oldSegment, ushort newSegment)
@@ -251,6 +254,8 @@ namespace NetworkSkins.Skins
             SegmentSkins[newSegment] = oldSkin;
 
             UsageAdded(oldSkin);
+
+            NSAPI.Instance.OnSkinApplied(oldSkin.m_CustomDatas, new InstanceID { NetSegment = newSegment });
         }
 
         public void OnSegmentRelease(ushort segment)

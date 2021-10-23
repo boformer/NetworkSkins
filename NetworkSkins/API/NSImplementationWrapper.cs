@@ -114,9 +114,7 @@
         #region panel
         public UITextureAtlas Atlas => get_Atlas_(Implemenation);
         public string BackGroundSprite => get_BackGroundSprite_(Implemenation);
-
         public void BuildPanel(UIPanel panel) => buildPanel_(Implemenation,panel);
-
         public void RefreshUI(NetInfo netInfo) => refreshUI_(Implemenation, netInfo);
         #endregion
 

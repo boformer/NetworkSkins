@@ -1,10 +1,8 @@
 ﻿namespace NetworkSkins.API {
+    using NetworkSkins.Skins;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using NetworkSkins.Skins;
-    using ColossalFramework;
-    using UnityEngine.SceneManagement;
 
     public class NSAPI {
         public static NSAPI Instance;
@@ -13,7 +11,7 @@
 
         public static void Enable() {
             Instance = new NSAPI();
-            LoadingManager.instance.m_levelPreLoaded += Instance .OnLevelPreloaded;
+            LoadingManager.instance.m_levelPreLoaded += Instance.OnLevelPreloaded;
         }
 
         public void Disable() {
@@ -30,12 +28,19 @@
             }
         }
 
-        public int GetImplementationIndex(string implID) => 
+        internal void OnSkinApplied(CustomDataCollection skinCustomData, InstanceID instanceID) {
+            foreach(var impl in ImplementationWrappers) {
+                var data = skinCustomData[impl.Index];
+                impl.OnSkinApplied(data, instanceID);
+            }
+        }
+
+        public int GetImplementationIndex(string implID) =>
             ImplementationWrappers.FindIndex(item => item.ID == implID);
 
         public NSImplementationWrapper GetImplementationWrapper(string id) =>
             ImplementationWrappers.FirstOrDefault(item => item.ID == id);
-        
+
 
         public void AddImplementation(object impl) {
             if(!NetworkSkinsMod.InStartupMenu) {
@@ -59,10 +64,10 @@
 
         public object GetSegmentSkinData(string implID, ushort segmentID) =>
             NetworkSkinManager.SegmentSkins[segmentID].m_CustomDatas?[implID];
-        
+
 
         public object GetSegmentSkinData(int implIndex, ushort segmentID) =>
             NetworkSkinManager.SegmentSkins[segmentID].m_CustomDatas[implIndex];
-        
+
     }
 }
