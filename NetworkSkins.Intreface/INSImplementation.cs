@@ -5,8 +5,10 @@
 
     public interface INSImplementation : INSPersistancy, INSGUUIImplementation, INSControllerImpelementation {
         string ID { get; }
+        int Index { get; set; }
         void OnPreNSLoaded();
         void OnPostNSLoaded();
+        void OnNSDisabled();
         void OnSkinApplied(object data, InstanceID instanceID);
     }
 

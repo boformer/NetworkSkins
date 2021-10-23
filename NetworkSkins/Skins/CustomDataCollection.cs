@@ -28,8 +28,31 @@
         }
     }
 
-    public class CustomDataCollection : DictionarySoft<string, ICloneable>, ICloneable {
-        public CustomDataCollection() { }
+    public class CustomDataCollection : Dictionary<string, ICloneable>, ICloneable {
+        private readonly ICloneable[] datas_;
+        public CustomDataCollection() : base() {
+            datas_ = new ICloneable[NSAPI.Instance.ImplementationWrappers.Count];
+        }
+
+        public new ICloneable this[string key] {
+            get {
+                if(TryGetValue(key, out ICloneable ret))
+                    return ret;
+                return null;
+            }
+            set {
+                this[key] = value;
+                var index = NSAPI.Instance.GetImplementationIndex(key);
+                if(index >= 0)
+                    this[index] = value;
+            }
+        }
+
+        public ICloneable this[int index] {
+            get => datas_[index];
+            set => datas_[index] = value;
+        }
+
 
         //public CustomDataColloction(NetInfo network, bool segment) {
         //    foreach(var impl in API.Instance.ImplementationWrappers) {

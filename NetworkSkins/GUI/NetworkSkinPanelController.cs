@@ -33,7 +33,7 @@ namespace NetworkSkins.GUI
 
         public StreetLightPanelController StreetLight;
 
-        public DictionarySoft<string, CustomPanelController> CustomPanelControllers = new DictionarySoft<string, CustomPanelController>();
+        public Dictionary<string, CustomPanelController> CustomPanelControllers = new Dictionary<string, CustomPanelController>();
 
         public bool TreesEnabled => LeftTree.Enabled || MiddleTree.Enabled || RighTree.Enabled;
         public LanePosition LanePosition { get; set; } = LanePosition.Left;

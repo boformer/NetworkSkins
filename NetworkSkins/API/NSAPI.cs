@@ -12,24 +12,33 @@
         public int GetImplementationIndex(string implID) => 
             ImplementationWrappers.FindIndex(item => item.ID == implID);
 
+        public NSImplementationWrapper GetImplementationWrapper(string id) =>
+            ImplementationWrappers.FirstOrDefault(item => item.ID == id);
+        
+
         public void AddImplementation(object impl) {
-            ImplementationWrappers.Add(new NSImplementationWrapper(impl));
+            var wrapper = new NSImplementationWrapper(impl);
+            ImplementationWrappers.Add(wrapper);
+            int index = ImplementationWrappers.Count - 1;
+            wrapper.Index = index;
         }
+
         public bool RemoveImplementation(object impl) {
-            var item = ImplementationWrappers.FirstOrDefault(item => item.Implemenation == impl);
-            return ImplementationWrappers.Remove(item);
-        }
-        public NSImplementationWrapper GetImplementationWrapper(string id) {
-            return Instance.ImplementationWrappers.FirstOrDefault(item => item.ID == id);
-        }
-
-        public object GetSegmentSkinData(string implID, ushort segmentID) {
-            return NetworkSkinManager.SegmentSkins[segmentID].m_CustomDatas?[implID];
+            var wrapper = ImplementationWrappers.FirstOrDefault(item => item.Implemenation == impl);
+            if(wrapper != null) {
+                ImplementationWrappers[wrapper.Index] = null;
+                return true;
+            } else {
+                return false;
+            }
         }
 
-        public object GetSegmentSkinData(int implIndex, ushort segmentID) {
-            string implID = ImplementationWrappers[implIndex].ID;
-            return NetworkSkinManager.SegmentSkins[segmentID].m_CustomDatas?[implID];
-        }
+        public object GetSegmentSkinData(string implID, ushort segmentID) =>
+            NetworkSkinManager.SegmentSkins[segmentID].m_CustomDatas?[implID];
+        
+
+        public object GetSegmentSkinData(int implIndex, ushort segmentID) =>
+            NetworkSkinManager.SegmentSkins[segmentID].m_CustomDatas[implIndex];
+        
     }
 }
