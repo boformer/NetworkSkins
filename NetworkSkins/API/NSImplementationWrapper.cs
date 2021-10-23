@@ -24,7 +24,6 @@
             public delegate void RefreshUI(object impl, NetInfo netInfo);
 
             public delegate UITextureAtlas get_Enabled(object impl);
-            public delegate void set_Prefab(object impl, NetInfo prefab);
             public delegate Dictionary<NetInfo, ICloneable> LoadCustomData(object impl);
             public delegate void LoadWithData(object impl, ICloneable data);
             public delegate void Reset(object impl);
@@ -51,7 +50,6 @@
         private Delegates.RefreshUI refreshUI_;
 
         private Delegates.get_Enabled get_Enabled_;
-        private Delegates.set_Prefab set_Prefab_;
         private Delegates.LoadCustomData loadCustomData_;
         private Delegates.LoadWithData loadWithData_;
         private Delegates.Reset reset_;
@@ -80,7 +78,6 @@
             refreshUI_ = DelegateUtil.CreateDelegate<Delegates.RefreshUI>(type, true);
 
             get_Enabled_  = DelegateUtil.CreateDelegate<Delegates.get_Enabled>(type, true);
-            set_Prefab_ = DelegateUtil.CreateDelegate<Delegates.set_Prefab>(type, true);
             loadCustomData_ = DelegateUtil.CreateDelegate < Delegates.LoadCustomData> (type, true);
             loadWithData_ = DelegateUtil.CreateDelegate < Delegates.LoadWithData> (type, true);
             reset_ = DelegateUtil.CreateDelegate < Delegates.Reset> (type, true);
@@ -124,9 +121,6 @@
 
         #region Controller
         public bool Enabled => get_Enabled_(Implemenation);
-        public NetInfo Prefab {
-            set => set_Prefab_(Implemenation, value);
-        }
         public Dictionary<NetInfo, ICloneable> BuildCustomData() => loadCustomData_(Implemenation);
         public void LoadWithData(ICloneable data) => loadWithData_(Implemenation, data);
         public void Reset() => reset_(Implemenation);

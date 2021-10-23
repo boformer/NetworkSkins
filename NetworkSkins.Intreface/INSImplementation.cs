@@ -53,6 +53,9 @@
         void RefreshUI(NetInfo netInfo);
     }
 
+    /// <summary>
+    /// get selected prefab from NetTool.m_prefab
+    /// </summary>
     public interface INSControllerImpelementation {
         /// <summary>
         /// determine if the selected prefab is supported by your mod.

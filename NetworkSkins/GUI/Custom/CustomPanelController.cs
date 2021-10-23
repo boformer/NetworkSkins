@@ -9,11 +9,6 @@ using System.Linq;
 
 namespace NetworkSkins.GUI.Custom {
     public class CustomPanelController : FeaturePanelControllerBase {
-        public override NetInfo Prefab { 
-            get => base.Prefab; 
-            protected set => Implementation.Prefab = base.Prefab = value; 
-        }
-
         public readonly Helpers.INSImplementation Implementation;
 
         public CustomPanelController(NSImplementationWrapper impl) {
