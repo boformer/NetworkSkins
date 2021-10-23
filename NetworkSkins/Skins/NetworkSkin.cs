@@ -45,7 +45,7 @@ namespace NetworkSkins.Skins
 
         public bool m_nodeMarkingsHidden;
 
-        public CustomDataColloction m_CustomDatas;
+        public CustomDataCollection m_CustomDatas;
 
         public int UseCount = 0;
 

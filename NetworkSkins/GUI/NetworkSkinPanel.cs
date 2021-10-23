@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using ColossalFramework.UI;
+using NetworkSkins.API;
 using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.GUI.Catenaries;
 using NetworkSkins.GUI.Colors;
@@ -8,6 +10,7 @@ using NetworkSkins.GUI.Pillars;
 using NetworkSkins.GUI.RoadDecoration;
 using NetworkSkins.GUI.Surfaces;
 using NetworkSkins.GUI.Trees;
+using NetworkSkins.GUI.Custom;
 using NetworkSkins.Tool;
 using UnityEngine;
 
@@ -26,6 +29,9 @@ namespace NetworkSkins.GUI
         private SettingsPanel settingsPanel;
         private UIPanel space;
         private PanelBase currentPanel;
+
+        private Dictionary<string, CustomPanel> customPanels;
+
         public override void OnDestroy() {
             toolBar.EventDragEnd -= OnToolBarDragEnd;
             UnregisterEvents();
@@ -147,6 +153,14 @@ namespace NetworkSkins.GUI
             currentPanel = roadDecorationPanel;
         }
 
+        private void CreateCustomPanel(NSImplementationWrapper impl) {
+            var panel = AddUIComponent<CustomPanel>();
+            panel.Implementation = impl;
+            panel.Build(PanelType.None, new Layout(new Vector2(400.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
+            customPanels[impl.ID] = panel;
+            currentPanel = panel;
+        }
+
         private void CreateSettingsPanel() {
             settingsPanel = AddUIComponent<SettingsPanel>();
             settingsPanel.Build(PanelType.Settings, new Layout(new Vector2(228.6f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 0, "GenericPanel"));
@@ -179,6 +193,7 @@ namespace NetworkSkins.GUI
             toolBar.ButtonBar.EventExtrasClicked += OnExtrasClicked;
             toolBar.ButtonBar.EventPipetteClicked += OnPipetteClicked;
             toolBar.ButtonBar.EventResetClicked += OnResetClicked;
+            toolBar.ButtonBar.EventCustomClicked += OnCustomClicked;
         }
 
         private void RegisterVisibilityEvents() {
@@ -190,6 +205,7 @@ namespace NetworkSkins.GUI
             toolBar.ButtonBar.EventRoadDecorationVisibilityChanged += OnRoadDecorationVisibilityChanged;
             toolBar.ButtonBar.EventCatenaryVisibilityChanged += OnCatenaryVisibilityChanged;
             toolBar.ButtonBar.EventSettingsVisibilityChanged += OnSettingsVisibilityChanged;
+            toolBar.ButtonBar.EventCustomVisibilityChanged += OnCustomVisibilityChanged;
         }
 
         private void UnregisterClickEvents() {
@@ -203,6 +219,8 @@ namespace NetworkSkins.GUI
             toolBar.ButtonBar.EventExtrasClicked -= OnExtrasClicked;
             toolBar.ButtonBar.EventPipetteClicked -= OnPipetteClicked;
             toolBar.ButtonBar.EventResetClicked -= OnResetClicked;
+            toolBar.ButtonBar.EventCustomClicked -= OnCustomClicked;
+
         }
 
         private void UnregisterVisibilityEvents() {
@@ -214,6 +232,8 @@ namespace NetworkSkins.GUI
             toolBar.ButtonBar.EventRoadDecorationVisibilityChanged -= OnRoadDecorationVisibilityChanged;
             toolBar.ButtonBar.EventCatenaryVisibilityChanged -= OnCatenaryVisibilityChanged;
             toolBar.ButtonBar.EventSettingsVisibilityChanged -= OnSettingsVisibilityChanged;
+            toolBar.ButtonBar.EventCustomVisibilityChanged -= OnCustomVisibilityChanged;
+
         }
 
         private void OnSettingsVisibilityChanged(UIButton button, UIButton[] buttons, bool visible) {
@@ -254,6 +274,14 @@ namespace NetworkSkins.GUI
             if (!visible && pillarPanel != null) {
                 SetButtonUnfocused(button);
                 Destroy(pillarPanel.gameObject);
+            }
+            RefreshZOrder();
+        }
+        private void OnCustomVisibilityChanged(UIButton button, NSImplementationWrapper impl, UIButton[] buttons, bool visible) {
+            var panel = customPanels[impl.ID];
+            if(!visible && panel) {
+                SetButtonUnfocused(button);
+                Destroy(panel.gameObject);
             }
             RefreshZOrder();
         }
@@ -378,6 +406,19 @@ namespace NetworkSkins.GUI
                 RefreshButtons(button, buttons);
                 CloseAll();
                 CreateTreesPanel();
+            }
+            RefreshZOrder();
+        }
+
+        private void OnCustomClicked(UIButton button, NSImplementationWrapper impl, UIButton[] buttons) {
+            var panel = customPanels[impl.ID];
+            if(panel) {
+                SetButtonUnfocused(button);
+                Destroy(panel.gameObject);
+            } else {
+                RefreshButtons(button, buttons);
+                CloseAll();
+                CreateCustomPanel(impl);
             }
             RefreshZOrder();
         }

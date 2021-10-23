@@ -3,9 +3,9 @@ using System;
 
 namespace NetworkSkins.Skins.Modifiers {
     public class CustomDataCollectionModifier : NetworkSkinModifier {
-        public readonly CustomDataColloction Data;
+        public readonly CustomDataCollection Data;
 
-        public CustomDataCollectionModifier(CustomDataColloction data) : base(NetworkSkinModifierType.Custom) {
+        public CustomDataCollectionModifier(CustomDataCollection data) : base(NetworkSkinModifierType.Custom) {
             Data = data.Clone();
         }
 
@@ -20,7 +20,7 @@ namespace NetworkSkins.Skins.Modifiers {
         }
 
         public static CustomDataCollectionModifier DeserializeImpl(DataSerializer s) {
-            var data = CustomDataColloction.Decode64(s.ReadUniqueString());
+            var data = CustomDataCollection.Decode64(s.ReadUniqueString());
             return new CustomDataCollectionModifier(data);
         }
         #endregion

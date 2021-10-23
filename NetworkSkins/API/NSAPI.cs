@@ -4,8 +4,8 @@
     using System.Linq;
     using NetworkSkins.Skins;
 
-    public class API {
-        public static API Instance;
+    public class NSAPI {
+        public static NSAPI Instance;
 
         public List<NSImplementationWrapper> ImplementationWrappers = new List<NSImplementationWrapper>();
 

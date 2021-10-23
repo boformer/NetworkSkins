@@ -34,10 +34,17 @@ namespace NetworkSkins.GUI.Abstraction
             Layout.Apply(this);
         }
 
+        /// <summary>
+        /// Called when selected prefab changes or Refresh is called by child class.
+        /// </summary>
+        /// <param name="netInfo"></param>
         protected virtual void RefreshUI(NetInfo netInfo) {
 
         }
 
+        /// <summary>
+        /// call this to refresh panel
+        /// </summary>
         protected void Refresh() {
             RefreshUI(NetworkSkinPanelController.Prefab);
         }

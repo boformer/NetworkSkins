@@ -2,13 +2,17 @@
 using NetworkSkins.GUI.Abstraction;
 using NetworkSkins.Locale;
 using NetworkSkins.TranslationFramework;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace NetworkSkins.GUI
 {
+    using NetworkSkins.API;
+
     public class ButtonBar : PanelBase
     {
         public delegate void ButtonClickedEventHandler(UIButton focusedButton, UIButton[] buttons);
+        public delegate void CustomButtonClickedEventHandler(UIButton focusedButton, NSImplementationWrapper impl, UIButton[] buttons);
         public event ButtonClickedEventHandler EventTreesClicked;
         public event ButtonClickedEventHandler EventLightsClicked;
         public event ButtonClickedEventHandler EventSurfacesClicked;
@@ -19,8 +23,10 @@ namespace NetworkSkins.GUI
         public event ButtonClickedEventHandler EventPipetteClicked;
         public event ButtonClickedEventHandler EventRoadDecorationClicked;
         public event ButtonClickedEventHandler EventResetClicked;
+        public event CustomButtonClickedEventHandler EventCustomClicked;
 
         public delegate void ButtonVisibilityChangedEventHandler(UIButton focusedButton, UIButton[] buttons, bool visible);
+        public delegate void CustomButtonVisibilityChangedEventHandler(UIButton focusedButton, NSImplementationWrapper impl, UIButton[] buttons, bool visible);
         public event ButtonVisibilityChangedEventHandler EventTreesVisibilityChanged;
         public event ButtonVisibilityChangedEventHandler EventLightsVisibilityChanged;
         public event ButtonVisibilityChangedEventHandler EventSurfacesVisibilityChanged;
@@ -29,7 +35,8 @@ namespace NetworkSkins.GUI
         public event ButtonVisibilityChangedEventHandler EventColorVisibilityChanged;
         public event ButtonVisibilityChangedEventHandler EventRoadDecorationVisibilityChanged;
         public event ButtonVisibilityChangedEventHandler EventSettingsVisibilityChanged;
-        
+        public event CustomButtonVisibilityChangedEventHandler EventCustomVisibilityChanged;
+
         private UIButton treesButton;
         private UIButton lightsButton;
         private UIButton surfacesButton;
@@ -40,6 +47,7 @@ namespace NetworkSkins.GUI
         private UIButton settingsButton;
         private UIButton pipetteButton;
         private UIButton resetButton;
+        public  List<UIButton> CustomButtons;
 
         private UIButton[] buttons;
 
@@ -80,6 +88,10 @@ namespace NetworkSkins.GUI
             catenaryButton.isVisible = NetworkSkinPanelController.Catenary.Enabled;
             colorButton.isVisible = NetworkSkinPanelController.Color.Enabled;
             roadDecorationButton.isVisible = NetworkSkinPanelController.RoadDecoration.Enabled;
+            foreach(var button in CustomButtons) {
+                var impl = button.objectUserData as NSImplementationWrapper;
+                button.isVisible = 
+            }
         }
 
         private void CreateButtons() {
@@ -128,6 +140,15 @@ namespace NetworkSkins.GUI
 
             pipetteButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Pipette, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_PIPETTE));
             pipetteButton.eventClicked += OnPipetteButtonClicked;
+
+            CustomButtons = new List<UIButton>();
+            foreach(var impl in NSAPI.Instance.ImplementationWrappers) {
+                var button = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: impl.BackGroundSprite, atlas: impl.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_SETTINGS));
+                CustomButtons.Add(button);
+                button.objectUserData = impl;
+                button.eventClicked += OnCustomButtonClicked;
+                button.eventVisibilityChanged += OnCustomButtonVisibilityChanged;
+            }
 
             CreateButtonArray();
         }
@@ -179,6 +200,10 @@ namespace NetworkSkins.GUI
             EventSettingsVisibilityChanged?.Invoke(component as UIButton, buttons, value);
         }
 
+        private void OnCustomButtonVisibilityChanged(UIComponent component, bool value) {
+            EventCustomVisibilityChanged?.Invoke(component as UIButton, component.objectUserData as NSImplementationWrapper, buttons, value);
+        }
+
         private void OnTreesButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
             EventTreesClicked?.Invoke(component as UIButton, buttons);
             treesButton.RefreshTooltip();
@@ -226,6 +251,11 @@ namespace NetworkSkins.GUI
         private void OnResetButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
             EventResetClicked?.Invoke(component as UIButton, buttons);
             resetButton.RefreshTooltip();
+        }
+
+        private void OnCustomButtonClicked(UIComponent component, UIMouseEventParameter eventParam) {
+            EventCustomClicked?.Invoke(component as UIButton, component.objectUserData as NSImplementationWrapper, buttons);
+            component.RefreshTooltip();
         }
     }
 }

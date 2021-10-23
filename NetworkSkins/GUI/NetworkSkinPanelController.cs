@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NetworkSkins.GUI.Catenaries;
+using NetworkSkins.GUI.Custom;
 using NetworkSkins.GUI.Colors;
 using NetworkSkins.GUI.Lights;
 using NetworkSkins.GUI.Pillars;
@@ -15,6 +16,9 @@ using UnityEngine;
 
 namespace NetworkSkins.GUI
 {
+    using NetworkSkins.API;
+    using NetworkSkins.Skins.Modifiers;
+
     public class NetworkSkinPanelController : MonoBehaviour {
         public static NetworkSkinPanelController Instance;
 
@@ -28,6 +32,8 @@ namespace NetworkSkins.GUI
         public ColorPanelController Color;
 
         public StreetLightPanelController StreetLight;
+
+        public Dictionary<string, CustomPanelController> CustomPanelControllers = new Dictionary<string, CustomPanelController>();
 
         public bool TreesEnabled => LeftTree.Enabled || MiddleTree.Enabled || RighTree.Enabled;
         public LanePosition LanePosition { get; set; } = LanePosition.Left;
@@ -46,6 +52,8 @@ namespace NetworkSkins.GUI
         public CatenaryPanelController Catenary;
 
         public RoadDecorationPanelController RoadDecoration;
+
+        public Dictionary<string, CustomPanelController> CustomControllers;
 
         public NetInfo Prefab { get; private set; }
 
@@ -96,6 +104,12 @@ namespace NetworkSkins.GUI
 
             RoadDecoration = new RoadDecorationPanelController();
             RoadDecoration.EventModifiersChanged += OnModifiersChanged;
+
+            
+            foreach(var impl in NSAPI.Instance.ImplementationWrappers) {
+                var cpc = CustomPanelControllers[impl.ID] = new CustomPanelController(impl);
+                cpc.EventModifiersChanged += OnModifiersChanged;
+            }
 
             Tool = ToolsModifierControl.toolController.gameObject.AddComponent<PipetteTool>();
             Tool.EventNetInfoPipetted += OnNetInfoPipetted;
@@ -151,6 +165,8 @@ namespace NetworkSkins.GUI
             BridgeMiddlePillar.Reset();
             Catenary.Reset();
             RoadDecoration.Reset();
+            foreach(var controller in CustomControllers.Values)
+                controller?.Reset();
 
             _ignoreModifierEvents = false;
 
@@ -245,6 +261,11 @@ namespace NetworkSkins.GUI
             MiddleTree.OnPrefabWithModifiersSelected(prefab, modifiers);
             RighTree.OnPrefabWithModifiersSelected(prefab, modifiers);
 
+            foreach(var controller in CustomControllers.Values) {
+                controller?.OnPrefabWithModifiersSelected(prefab, modifiers);
+            }
+
+
             var elevatedPrefab = NetUtils.GetElevatedPrefab(prefab);
             ElevatedBridgePillar.OnPrefabWithModifiersSelected(elevatedPrefab, modifiers);
             ElevatedMiddlePillar.OnPrefabWithModifiersSelected(elevatedPrefab, modifiers);
@@ -280,7 +301,11 @@ namespace NetworkSkins.GUI
             LeftTree.OnPrefabChanged(prefab);
             MiddleTree.OnPrefabChanged(prefab);
             RighTree.OnPrefabChanged(prefab);
-            
+
+            foreach(var controller in CustomControllers.Values) {
+                controller?.OnPrefabChanged(prefab);
+            }
+
             var elevatedPrefab = NetUtils.GetElevatedPrefab(prefab);
             ElevatedBridgePillar.OnPrefabChanged(elevatedPrefab);
             ElevatedMiddlePillar.OnPrefabChanged(elevatedPrefab);
@@ -390,6 +415,10 @@ namespace NetworkSkins.GUI
 
             MergeModifiers(modifiers, RoadDecoration.Modifiers);
 
+            foreach(var cpc in CustomPanelControllers.Values) {
+                MergeCustom(modifiers, cpc.CustomDatas);
+            }
+
             //Debug.Log($"Built {modifiers.Values.Sum(p => p.Count)} modifiers for {modifiers.Count} prefabs.");
 
             NetworkSkinManager.instance.SetActiveModifiers(modifiers);
@@ -408,6 +437,26 @@ namespace NetworkSkins.GUI
                 {
                     mergedModifiers[pair.Key] = new List<NetworkSkinModifier>(pair.Value);
                 }
+            }
+        }
+
+        private static void MergeCustom(Dictionary<NetInfo, List<NetworkSkinModifier>> mergedModifiers,
+            Dictionary<NetInfo, CustomDataCollectionModifier> datas) {
+            foreach(var pair in datas) {
+                List<NetworkSkinModifier> prefabModifiers;
+                if(!mergedModifiers.TryGetValue(pair.Key, out prefabModifiers)) {
+                    prefabModifiers = mergedModifiers[pair.Key] = new List<NetworkSkinModifier>();
+                }
+
+                var customModifier = prefabModifiers.OfType<CustomDataCollectionModifier>().FirstOrDefault();
+                if(customModifier == null) {
+                    prefabModifiers.Add(pair.Value);
+                } else {
+                    foreach(var pair2 in pair.Value.Data) {
+                        customModifier.Data.Add(pair2.Key, pair2.Value);
+                    }
+                }
+
             }
         }
     }

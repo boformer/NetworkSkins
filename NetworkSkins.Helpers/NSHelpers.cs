@@ -7,11 +7,11 @@
 
     public static class NSHelpers {
         public static object GetSegmentSkinData(string dataID, ushort segmentID) {
-            return API.Instance.GetSegmentSkinData( dataID,segmentID);
+            return NSAPI.Instance.GetSegmentSkinData( dataID,segmentID);
         }
 
         public static void RegisterImplementation(INSImplementation impl) {
-            API.Instance.AddImplementation(impl);
+            NSAPI.Instance.AddImplementation(impl);
         }
 
 

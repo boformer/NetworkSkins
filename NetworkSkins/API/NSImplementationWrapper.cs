@@ -1,5 +1,6 @@
 ﻿namespace NetworkSkins.API {
     using ColossalFramework.IO;
+    using ColossalFramework.UI;
     using System;
 
     public class NSImplementationWrapper {
@@ -34,9 +35,23 @@
 
         public string ID => get_ID_(Implemenation);
         public Version Version => get_Version_(Implemenation);
-        public string Encode64(ICloneable data) => encode64_(Implemenation, data);
-        public ICloneable Decode64(string base64Data, Version dataVersion) => decode64_(Implemenation, base64Data, dataVersion);
+        public string Encode64(ICloneable data) {
+            if(data == null)
+                return null;
+            else
+                return encode64_(Implemenation, data);
+        }
+        public ICloneable Decode64(string base64Data, Version dataVersion) {
+            if(base64Data == null)
+                return null;
+            else
+                return decode64_(Implemenation, base64Data, dataVersion);
+        }
+
         public void OnPreNSLoaded() => onPreNSLoaded_(Implemenation);
         public void OnPostNSLoaded() => onPostNSLoaded_(Implemenation);
+
+        public UITextureAtlas Atlas => throw new NotImplementedException();
+        public string BackGroundSprite => throw new NotImplementedException();
     }
 }

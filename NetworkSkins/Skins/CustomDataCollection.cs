@@ -28,8 +28,8 @@
         }
     }
 
-    public class CustomDataColloction : DictionarySoft<string, ICloneable>, ICloneable {
-        public CustomDataColloction() { }
+    public class CustomDataCollection : DictionarySoft<string, ICloneable>, ICloneable {
+        public CustomDataCollection() { }
 
         //public CustomDataColloction(NetInfo network, bool segment) {
         //    foreach(var impl in API.Instance.ImplementationWrappers) {
@@ -53,7 +53,7 @@
                     // implementation is abscent so dto was not fully decoded.
                     dtos.Add(dto);
                 } else {
-                    var impl = API.Instance.GetImplementationWrapper(pair.Key);
+                    var impl = NSAPI.Instance.GetImplementationWrapper(pair.Key);
                     dtos.Add(new CustomDataDTO {
                         ID = impl.ID,
                         Version = impl.Version.ToString(),
@@ -67,12 +67,12 @@
                 return XMLUtil.Serialize(dtos.ToArray());
         }
 
-        public static CustomDataColloction Decode64(string base64Data) {
-            var ret = new CustomDataColloction();
+        public static CustomDataCollection Decode64(string base64Data) {
+            var ret = new CustomDataCollection();
             if(base64Data is not null) {
                 CustomDataDTO[] dtos = XMLUtil.Deserialize<CustomDataDTO[]>(base64Data);
                 foreach(var dto in dtos) {
-                    var impl = API.Instance.GetImplementationWrapper(dto.ID);
+                    var impl = NSAPI.Instance.GetImplementationWrapper(dto.ID);
                     ICloneable data =
                         impl?.Decode64(dto.Base64Data, new Version(dto.Version))
                         ?? dto;
@@ -84,13 +84,13 @@
         #endregion
 
         #region comparison
-        private bool Equals(CustomDataColloction rhs) {
+        private bool Equals(CustomDataCollection rhs) {
             var keys = Keys.Union(rhs.Keys);
             return keys.All(key => this[key].Equals(rhs[key]));
         }
 
         public override bool Equals(object obj) =>
-            obj is CustomDataColloction data && Equals(data);
+            obj is CustomDataCollection data && Equals(data);
 
 
         public override int GetHashCode() {
@@ -104,8 +104,8 @@
         }
         #endregion
 
-        public CustomDataColloction Clone() {
-            var ret = new CustomDataColloction();
+        public CustomDataCollection Clone() {
+            var ret = new CustomDataCollection();
             foreach(var pair in this) {
                 ret[pair.Key] = pair.Value?.Clone() as ICloneable;
             }
