@@ -61,7 +61,7 @@ namespace NetworkSkins.GUI.Colors
             {
                 if (modifier is ColorModifier colorModifier)
                 {
-                        (colorModifier.Color);
+                    OnColorUsed(colorModifier.Color);
                     break;
                 }
             }
