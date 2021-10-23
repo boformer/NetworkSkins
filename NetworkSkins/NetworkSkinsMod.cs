@@ -8,9 +8,12 @@ using NetworkSkins.Persistence;
 using NetworkSkins.Skins;
 using NetworkSkins.TranslationFramework;
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using static UnityEngine.Object;
+using NetworkSkins.API;
+using UnityEngine.SceneManagement;
 
 namespace NetworkSkins
 {
@@ -26,6 +29,9 @@ namespace NetworkSkins
 
         #region Lifecycle
         public static bool InGame => (ToolManager.instance.m_properties.m_mode == ItemClass.Availability.Game);
+        
+        internal static string[] StartupScenes = new[] { "IntroScreen", "IntroScreen2", "Startup", "MainMenu" };
+        internal static bool InStartupMenu => StartupScenes.Contains(SceneManager.GetActiveScene().name);
 
         public static UITextureAtlas defaultAtlas;
 
@@ -35,8 +41,11 @@ namespace NetworkSkins
 
             HarmonyHelper.DoOnHarmonyReady(NetworkSkinsPatcher.Install);
 
-            if (LoadingManager.exists && LoadingManager.instance.m_loadingComplete)
+            NSAPI.Enable();
+
+            if(LoadingManager.exists && LoadingManager.instance.m_loadingComplete)
             {
+                NSAPI.Instance.OnLevelPreloaded();
                 Install();
             }
         }
@@ -61,6 +70,8 @@ namespace NetworkSkins
 
         public void OnDisabled()
         {
+            NSAPI.Instance?.Disable();
+
             Uninstall();
 
             if (HarmonyHelper.IsHarmonyInstalled) NetworkSkinsPatcher.Uninstall();
@@ -81,6 +92,10 @@ namespace NetworkSkins
             PersistenceService.Instance = persistenceServiceGameObject.AddComponent<PersistenceService>();
             NetworkSkinPanelController.Instance = skinControllerGameObject.AddComponent<NetworkSkinPanelController>();
             NetworkSkinPanelController.Instance.EventToolStateChanged += OnNetToolStateChanged;
+
+            foreach(var impl in NSAPI.Instance.ImplementationWrappers) {
+                impl.OnAfterNSLoaded();
+            }
         }
 
         private void Uninstall()

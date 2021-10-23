@@ -2,7 +2,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
     using NetworkSkins.API;
     using ColossalFramework.Plugins;
 
@@ -41,13 +40,16 @@
         }
 
         public static object GetSegmentSkinData(this INSImplementation impl, ushort segmentID) {
-            return NSAPI.Instance.GetSegmentSkinData(impl.Index, segmentID);
+            return NSAPI.Instance.GetSegmentSkinData(implIndex: impl.Index, segmentID);
         }
 
-        public static void Register(this INSImplementation impl) =>
+        public static void Register(this INSImplementation impl) {
+            if(NSAPI.Instance == null)
+                throw new Exception("NS is not ready yet. Please use DoOnNSEnabled()");
             NSAPI.Instance.AddImplementation(impl);
+        }
 
         public static bool Remove(this INSImplementation impl) =>
-            NSAPI.Instance.RemoveImplementation(impl);
+            NSAPI.Instance?.RemoveImplementation(impl) ?? false;
     }
 }

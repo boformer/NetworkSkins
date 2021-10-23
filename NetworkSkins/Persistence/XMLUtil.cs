@@ -1,4 +1,4 @@
-﻿namespace NetworkSkins {
+﻿namespace NetworkSkins.Persistence {
     using System;
     using System.IO;
     using System.Xml.Serialization;

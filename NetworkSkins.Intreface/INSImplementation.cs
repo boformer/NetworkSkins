@@ -6,8 +6,8 @@
     public interface INSImplementation : INSPersistancy, INSGUUIImplementation, INSControllerImpelementation {
         string ID { get; }
         int Index { get; set; }
-        void OnPreNSLoaded();
-        void OnPostNSLoaded();
+        void OnBeforeNSLoaded();
+        void OnAfterNSLoaded();
         void OnNSDisabled();
         void OnSkinApplied(object data, InstanceID instanceID);
     }

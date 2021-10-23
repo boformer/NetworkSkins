@@ -9,8 +9,8 @@
             public delegate int get_Index(object impl);
             public delegate int set_Index(object impl, int value);
             public delegate string get_ID(object impl);
-            public delegate void OnPreNSLoaded(object impl);
-            public delegate void OnPostNSLoaded(object impl);
+            public delegate void OnBeforeNSLoaded(object impl);
+            public delegate void OnAfterNSLoaded(object impl);
             public delegate void OnSkinApplied(object impl, object data, InstanceID instanceID);
             public delegate void OnNSDisabled(object impl);
 
@@ -35,8 +35,8 @@
         private Delegates.get_Index get_Index_;
         private Delegates.set_Index set_Index_;
         private Delegates.get_ID get_ID_;
-        private Delegates.OnPreNSLoaded onPreNSLoaded_;
-        private Delegates.OnPostNSLoaded onPostNSLoaded_;
+        private Delegates.OnBeforeNSLoaded onBeforeNSLoaded_;
+        private Delegates.OnAfterNSLoaded onAfterNSLoaded_;
         private Delegates.OnSkinApplied onSkinApplied_;
         private Delegates.OnNSDisabled onNSDisabled_;
 
@@ -62,8 +62,8 @@
             get_Index_ = DelegateUtil.CreateDelegate<Delegates.get_Index>(type, true);
             set_Index_ = DelegateUtil.CreateDelegate<Delegates.set_Index>(type, true);
             get_ID_ = DelegateUtil.CreateDelegate<Delegates.get_ID>(type, true);
-            onPreNSLoaded_ = DelegateUtil.CreateDelegate<Delegates.OnPreNSLoaded>(type, true);
-            onPostNSLoaded_ = DelegateUtil.CreateDelegate<Delegates.OnPostNSLoaded>(type, true);
+            onBeforeNSLoaded_ = DelegateUtil.CreateDelegate<Delegates.OnBeforeNSLoaded>(type, true);
+            onAfterNSLoaded_ = DelegateUtil.CreateDelegate<Delegates.OnAfterNSLoaded>(type, true);
             onSkinApplied_ = DelegateUtil.CreateDelegate<Delegates.OnSkinApplied>(type, true);
             onNSDisabled_ = DelegateUtil.CreateDelegate<Delegates.OnNSDisabled>(type, true);
 
@@ -89,8 +89,8 @@
         }
 
         public string ID => get_ID_(Implemenation);
-        public void OnPreNSLoaded() => onPreNSLoaded_(Implemenation);
-        public void OnPostNSLoaded() => onPostNSLoaded_(Implemenation);
+        public void OnBeforeNSLoaded() => onBeforeNSLoaded_(Implemenation);
+        public void OnAfterNSLoaded() => onAfterNSLoaded_(Implemenation);
         public void OnSkinApplied(object data, InstanceID instanceID) => onSkinApplied_(Implemenation, data, instanceID);
         public void OnNSDisabled() => onNSDisabled_(Implemenation);
 

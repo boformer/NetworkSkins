@@ -33,13 +33,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="Skins\Modifiers\CustomModifier2.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="CitiesHarmony.API" Version="2.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NetworkSkins.Intreface\NetworkSkins.Intreface.csproj" />
+    <ProjectReference Include="..\NetworkSkins.Intreface\NetworkSkins.Implementation.csproj" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebugType>none</DebugType>

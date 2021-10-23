@@ -4,7 +4,7 @@
     <LangVersion>preview</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NetworkSkins.Intreface\NetworkSkins.Intreface.csproj" />
+    <ProjectReference Include="..\NetworkSkins.Intreface\NetworkSkins.Implementation.csproj" />
     <ProjectReference Include="..\NetworkSkins\NetworkSkins.csproj" />
   </ItemGroup>
   <ItemGroup>

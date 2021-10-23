@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Xml.Serialization;
     using System.Xml;
+    using NetworkSkins.Persistence;
 
     public class CustomDataDTO : ICloneable {
         public string ID;
