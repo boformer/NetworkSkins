@@ -122,10 +122,10 @@
         public const string ForegroundIconName = "Icon";
 
         private UITextureAtlas CreateAtlas() {
-            var normal = TextureUtil.GetSpriteTexture(Resources.Atlas, Resources.ButtonSmall);
-            var hovered = TextureUtil.GetSpriteTexture(Resources.Atlas, Resources.ButtonSmallHovered);
-            var pressed = TextureUtil.GetSpriteTexture(Resources.Atlas, Resources.ButtonSmallPressed);
-            var focused = TextureUtil.GetSpriteTexture(Resources.Atlas, Resources.ButtonSmallFocused);
+            var normal = Resources.GetTextureFromAssemblyManifest(Resources.ButtonSmall);
+            var hovered = Resources.GetTextureFromAssemblyManifest(Resources.ButtonSmallHovered);
+            var pressed = Resources.GetTextureFromAssemblyManifest(Resources.ButtonSmallPressed);
+            var focused = Resources.GetTextureFromAssemblyManifest(Resources.ButtonSmallFocused);
             var spriteNames = new [] { Resources.ButtonSmall, Resources.ButtonSmallHovered, Resources.ButtonSmallPressed, Resources.ButtonSmallFocused, ForegroundIconName };
             var textures = new[] { normal, hovered, pressed, focused, Icon };
 

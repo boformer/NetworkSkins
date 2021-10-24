@@ -68,10 +68,6 @@ namespace NetworkSkins
         private UITextureAtlas UITextureAtlas { get; set; }
 
         private readonly string[] _spriteNames = new string[] {
-            ButtonSmall,
-            ButtonSmallPressed,
-            ButtonSmallHovered,
-            ButtonSmallFocused,
             "Blacklisted",
             "DragHandle",
             "DragHandle",
@@ -161,8 +157,8 @@ namespace NetworkSkins
             UITextureAtlas = textureAtlas;
         }
 
-        private Texture2D GetTextureFromAssemblyManifest(string file) {
-            string path = string.Concat(GetType().Namespace, ".Resources.", file);
+        public static Texture2D GetTextureFromAssemblyManifest(string file) {
+            string path = "NetworkSkins.Resources." + file;
             Texture2D texture2D = new Texture2D(1, 1, TextureFormat.ARGB32, false);
             using (Stream manifestResourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(path)) {
                 byte[] array = new byte[manifestResourceStream.Length];
