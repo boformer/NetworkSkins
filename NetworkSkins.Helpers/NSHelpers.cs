@@ -4,6 +4,7 @@
     using System.Linq;
     using NetworkSkins.API;
     using ColossalFramework.Plugins;
+    using ColossalFramework.Threading;
 
     public static class NSHelpers {
         private static List<Action> pendingActions_;
@@ -18,20 +19,35 @@
          public static void DoOnNSEnabled(Action action) {
             if(action is null)
                 throw new ArgumentNullException("action");
-            SimulationManager.instance.m_ThreadingWrapper.QueueMainThread(() => {
-                if(IsNSEnabled()) {
-                    action();
-                } else {
-                    pendingActions_ ??= new List<Action>();
-                    pendingActions_.Add(action);
-                    PluginManager.instance.eventPluginsStateChanged -= OneventPluginsStateChanged;
-                    PluginManager.instance.eventPluginsStateChanged += OneventPluginsStateChanged;
-                }
-            });
+            if(Dispatcher.currentSafe == ThreadHelper.dispatcher) {
+                InvokeOrPostpone(action);
+            } else {
+                ThreadHelper.dispatcher.Dispatch(() => InvokeOrPostpone(action));
+            }
+        }
+
+        private static void InvokeOrPostpone(Action action) {
+            if(IsNSEnabled()) {
+                UnityEngine.Debug.Log("NSHelpers: NS is enabled. execute action.");
+                action();
+            } else {
+                UnityEngine.Debug.Log("NSHelpers: NS is abscent. postpone action.");
+                pendingActions_ ??= new List<Action>();
+                pendingActions_.Add(action);
+                PluginManager.instance.eventPluginsStateChanged -= OneventPluginsStateChanged;
+                PluginManager.instance.eventPluginsStateChanged += OneventPluginsStateChanged;
+                LoadingManager.instance.m_introLoaded -= OneventPluginsStateChanged;
+                LoadingManager.instance.m_introLoaded += OneventPluginsStateChanged;
+            }
         }
 
         private static void OneventPluginsStateChanged() {
+            UnityEngine.Debug.Log("NSHelpers.OneventPluginsStateChanged() called");
+            if(pendingActions_ == null) {
+                UnityEngine.Debug.Log("no pending actions");
+            }
             if(IsNSEnabled()) {
+                UnityEngine.Debug.Log("NS is enabled. execute pending actions ...");
                 foreach(var action in pendingActions_) {
                     action();
                 }

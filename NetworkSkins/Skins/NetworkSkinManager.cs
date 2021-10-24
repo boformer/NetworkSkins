@@ -244,7 +244,7 @@ namespace NetworkSkins.Skins
                 EventSegmentPlaced?.Invoke(skin);
             }
 
-            NSAPI.Instance.OnSkinApplied(skin.m_CustomDatas, new InstanceID { NetSegment = segment });
+            NSAPI.Instance.OnSkinApplied(skin?.m_CustomDatas, new InstanceID { NetSegment = segment });
         }
 
         public void OnSegmentTransferData(ushort oldSegment, ushort newSegment)

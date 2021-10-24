@@ -63,29 +63,28 @@
         public NSImplementationWrapper(object impl) {
             Implemenation = impl;
 
-            Type type = impl.GetType();
-            get_Index_ = DelegateUtil.CreateDelegate<Delegates.get_Index>(type, true);
-            set_Index_ = DelegateUtil.CreateDelegate<Delegates.set_Index>(type, true);
-            get_ID_ = DelegateUtil.CreateDelegate<Delegates.get_ID>(type, true);
-            onBeforeNSLoaded_ = DelegateUtil.CreateDelegate<Delegates.OnBeforeNSLoaded>(type, true);
-            onAfterNSLoaded_ = DelegateUtil.CreateDelegate<Delegates.OnAfterNSLoaded>(type, true);
-            onSkinApplied_ = DelegateUtil.CreateDelegate<Delegates.OnSkinApplied>(type, true);
-            onNSDisabled_ = DelegateUtil.CreateDelegate<Delegates.OnNSDisabled>(type, true);
+            get_Index_ = DelegateUtil.CreateClosedDelegate<Delegates.get_Index>(impl);
+            set_Index_ = DelegateUtil.CreateClosedDelegate<Delegates.set_Index>(impl);
+            get_ID_ = DelegateUtil.CreateClosedDelegate<Delegates.get_ID>(impl);
+            onBeforeNSLoaded_ = DelegateUtil.CreateClosedDelegate<Delegates.OnBeforeNSLoaded>(impl);
+            onAfterNSLoaded_ = DelegateUtil.CreateClosedDelegate<Delegates.OnAfterNSLoaded>(impl);
+            onSkinApplied_ = DelegateUtil.CreateClosedDelegate<Delegates.OnSkinApplied>(impl);
+            onNSDisabled_ = DelegateUtil.CreateClosedDelegate<Delegates.OnNSDisabled>(impl);
 
-            get_DataVersion_ = DelegateUtil.CreateDelegate<Delegates.get_DataVersion>(type, true);
-            encode64_ = DelegateUtil.CreateDelegate<Delegates.Encode64>(type, true);
-            decode64_ = DelegateUtil.CreateDelegate<Delegates.Decode64>(type, true);
+            get_DataVersion_ = DelegateUtil.CreateClosedDelegate<Delegates.get_DataVersion>(impl);
+            encode64_ = DelegateUtil.CreateClosedDelegate<Delegates.Encode64>(impl);
+            decode64_ = DelegateUtil.CreateClosedDelegate<Delegates.Decode64>(impl);
 
-            get_Icon_ = DelegateUtil.CreateDelegate<Delegates.get_Icon>(type, true);
-            get_Tooltip_ = DelegateUtil.CreateDelegate<Delegates.get_Tooltip>(type, true);
-            buildPanel_ = DelegateUtil.CreateDelegate < Delegates.BuildPanel> (type, true);
-            refreshUI_ = DelegateUtil.CreateDelegate<Delegates.RefreshUI>(type, true);
+            get_Icon_ = DelegateUtil.CreateClosedDelegate<Delegates.get_Icon>(impl);
+            get_Tooltip_ = DelegateUtil.CreateClosedDelegate<Delegates.get_Tooltip>(impl);
+            buildPanel_ = DelegateUtil.CreateClosedDelegate < Delegates.BuildPanel> (impl);
+            refreshUI_ = DelegateUtil.CreateClosedDelegate<Delegates.RefreshUI>(impl);
 
-            get_Enabled_  = DelegateUtil.CreateDelegate<Delegates.get_Enabled>(type, true);
-            loadCustomData_ = DelegateUtil.CreateDelegate < Delegates.LoadCustomData> (type, true);
-            loadWithData_ = DelegateUtil.CreateDelegate < Delegates.LoadWithData> (type, true);
-            reset_ = DelegateUtil.CreateDelegate < Delegates.Reset> (type, true);
-            loadActiveSelection_ = DelegateUtil.CreateDelegate < Delegates.LoadActiveSelection> (type, true);
+            get_Enabled_  = DelegateUtil.CreateClosedDelegate<Delegates.get_Enabled>(impl);
+            loadCustomData_ = DelegateUtil.CreateClosedDelegate < Delegates.LoadCustomData> (impl);
+            loadWithData_ = DelegateUtil.CreateClosedDelegate < Delegates.LoadWithData> (impl);
+            reset_ = DelegateUtil.CreateClosedDelegate < Delegates.Reset> (impl);
+            loadActiveSelection_ = DelegateUtil.CreateClosedDelegate < Delegates.LoadActiveSelection>(impl);
         }
 
         public int Index { 
