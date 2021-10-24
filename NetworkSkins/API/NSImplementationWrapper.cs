@@ -114,6 +114,8 @@
         #region panel
         public Texture2D Icon => get_Icon_(Implemenation);
 
+        public const string ICON = "Icon";
+
         private UITextureAtlas CreateAtlas() {
             UITextureAtlas nsAtlas = NetworkSkins.Resources.Atlas;
             var hovered = TextureUtil.GetSpriteTexture(nsAtlas, "Hovered");

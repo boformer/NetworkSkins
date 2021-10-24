@@ -146,7 +146,7 @@ namespace NetworkSkins.GUI
 
             CustomButtons = new List<UIButton>();
             foreach(var impl in NSAPI.Instance.ImplementationWrappers) {
-                var button = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: impl.BackGroundSprite, atlas: impl.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_SETTINGS));
+                var button = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: NSImplementationWrapper.ICON, atlas: impl.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_SETTINGS));
                 CustomButtons.Add(button);
                 button.objectUserData = impl;
                 button.eventClicked += OnCustomButtonClicked;

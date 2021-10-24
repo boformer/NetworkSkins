@@ -7,6 +7,7 @@
     using System.Xml.Serialization;
     using System.Xml;
     using NetworkSkins.Persistence;
+    using UnityEngine;
 
     public class CustomDataDTO : ICloneable {
         public string ID;
@@ -30,7 +31,7 @@
     }
 
     public class CustomDataCollection : Dictionary<string, ICloneable>, ICloneable {
-        private readonly ICloneable[] datas_;
+        private ICloneable[] datas_;
         public CustomDataCollection() : base() {
             datas_ = new ICloneable[NSAPI.Instance.ImplementationWrappers.Count];
         }
@@ -50,10 +51,30 @@
         }
 
         public ICloneable this[int index] {
-            get => datas_[index];
-            set => datas_[index] = value;
+            get {
+                EnsureIndex(index);
+                return datas_[index];
+            }
+            set {
+                EnsureIndex(index);
+                datas_[index] = value;
+            }
         }
 
+        private void EnsureIndex(int index) {
+            if(index < datas_.Length)
+                return;
+            
+            int count = NSAPI.Instance.ImplementationWrappers.Count;
+            if(index >= count) {
+                Debug.LogWarning($"Warning: expected index < NSAPI.Instance.ImplementationWrappers.Count. But Index={index} Count={count}");
+                count = index + 1;
+            }
+
+            var newDatas = new ICloneable[count];
+            Array.Copy(datas_, newDatas, datas_.Length);
+            datas_ = newDatas;
+        }
 
         //public CustomDataColloction(NetInfo network, bool segment) {
         //    foreach(var impl in API.Instance.ImplementationWrappers) {
