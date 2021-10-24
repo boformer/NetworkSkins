@@ -109,16 +109,26 @@
         #region Persistency
         public Version DataVersion => get_DataVersion_();
         public string Encode64(ICloneable data) {
-            if(data == null)
+            try {
+                if(data == null)
+                    return null;
+                else
+                    return encode64_(data);
+            } catch(Exception ex) {
+                Debug.LogException(ex);
                 return null;
-            else
-                return encode64_(data);
+            }
         }
-        public ICloneable Decode64(string base64Data, Version dataVersion) {
-            if(base64Data == null)
+    public ICloneable Decode64(string base64Data, Version dataVersion) {
+            try {
+                if(base64Data == null)
+                    return null;
+                else
+                    return decode64_(base64Data, dataVersion);
+            } catch(Exception ex) {
+                Debug.LogException(ex);
                 return null;
-            else
-                return decode64_(base64Data, dataVersion);
+            }
         }
 
         #endregion
@@ -169,16 +179,43 @@
 
         public string Tooltip => get_Tooltip_();
 
-        public void BuildPanel(UIPanel panel) => buildPanel_(panel);
-        public void RefreshUI() => refreshUI_();
+        public void BuildPanel(UIPanel panel) {
+            try {
+                buildPanel_(panel);
+            } catch(Exception ex) { Debug.LogException(ex); }
+        }        public void RefreshUI() {
+            try {
+                refreshUI_();
+            } catch(Exception ex) {
+                Debug.LogException(ex);
+            }
+        }
         #endregion
 
         #region Controller
         public bool Enabled => get_Enabled_();
-        public Dictionary<NetInfo, ICloneable> BuildCustomData() => buildCustomData_();
-        public void LoadWithData(ICloneable data) => loadWithData_(data);
-        public void Reset() => reset_();
-        public void LoadActiveSelection() => loadActiveSelection_();
+        public Dictionary<NetInfo, ICloneable> BuildCustomData() {
+            try {
+                return buildCustomData_();
+            } catch(Exception ex) { Debug.LogException(ex); }
+            return null;
+        }
+        public void LoadWithData(ICloneable data) {
+            try {
+                loadWithData_(data);
+            } catch(Exception ex) { Debug.LogException(ex); }
+        }
+        public void Reset() {
+            try {
+                reset_();
+            } catch(Exception ex) { Debug.LogException(ex); }
+        }
+
+        public void LoadActiveSelection() {
+            try {
+                loadActiveSelection_();
+            } catch(Exception ex) { Debug.LogException(ex); }
+        }
         #endregion
     }
 }

@@ -41,7 +41,7 @@ namespace NetworkSkins.GUI.Custom {
 
         protected override void BuildWithModifiers(List<NetworkSkinModifier> modifiers) {
             var modifer = modifiers?.OfType<CustomDataCollectionModifier>()?.FirstOrDefault();
-            ICloneable data = modifer.Data[Implementation.ID];
+            ICloneable data = modifer?.Data?[Implementation.ID];
             Implementation.LoadWithData(data);
         }
 

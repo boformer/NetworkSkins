@@ -9,6 +9,7 @@ using UnityEngine;
 namespace NetworkSkins.GUI
 {
     using NetworkSkins.API;
+    using System;
 
     public class ButtonBar : PanelBase
     {
@@ -83,17 +84,21 @@ namespace NetworkSkins.GUI
         }
 
         protected override void RefreshUI(NetInfo netInfo) {
-            treesButton.isVisible = NetworkSkinPanelController.TreesEnabled;
-            lightsButton.isVisible = NetworkSkinPanelController.StreetLight.Enabled;
-            surfacesButton.isVisible = NetworkSkinPanelController.TerrainSurface.Enabled;
-            pillarsButton.isVisible = NetworkSkinPanelController.PillarsEnabled;
-            catenaryButton.isVisible = NetworkSkinPanelController.Catenary.Enabled;
-            colorButton.isVisible = NetworkSkinPanelController.Color.Enabled;
-            roadDecorationButton.isVisible = NetworkSkinPanelController.RoadDecoration.Enabled;
-            foreach(var button in CustomButtons) {
-                var impl = button.objectUserData as NSImplementationWrapper;
-                var controller = NetworkSkinPanelController.CustomPanelControllers[impl.ID];
-                button.isVisible = controller.Enabled;
+            try {
+                treesButton.isVisible = NetworkSkinPanelController.TreesEnabled;
+                lightsButton.isVisible = NetworkSkinPanelController.StreetLight.Enabled;
+                surfacesButton.isVisible = NetworkSkinPanelController.TerrainSurface.Enabled;
+                pillarsButton.isVisible = NetworkSkinPanelController.PillarsEnabled;
+                catenaryButton.isVisible = NetworkSkinPanelController.Catenary.Enabled;
+                colorButton.isVisible = NetworkSkinPanelController.Color.Enabled;
+                roadDecorationButton.isVisible = NetworkSkinPanelController.RoadDecoration.Enabled;
+                foreach(var button in CustomButtons) {
+                    var impl = button.objectUserData as NSImplementationWrapper;
+                    var controller = NetworkSkinPanelController.CustomPanelControllers[impl.ID];
+                    button.isVisible = controller.Enabled;
+                }
+            } catch(Exception ex) {
+                Debug.LogException(ex);
             }
         }
 

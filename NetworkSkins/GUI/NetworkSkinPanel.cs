@@ -29,7 +29,7 @@ namespace NetworkSkins.GUI
         private SettingsPanel settingsPanel;
         private UIPanel space;
         private PanelBase currentPanel;
-        private Dictionary<string, CustomPanel> customPanels;
+        private Dictionary<string, CustomPanel> customPanels_ = new Dictionary<string, CustomPanel>();
 
         public override void OnDestroy() {
             toolBar.EventDragEnd -= OnToolBarDragEnd;
@@ -160,7 +160,7 @@ namespace NetworkSkins.GUI
             var panel = AddUIComponent<CustomPanel>();
             panel.Implementation = impl;
             panel.Build(PanelType.None, new Layout(new Vector2(400.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
-            customPanels[impl.ID] = panel;
+            customPanels_[impl.ID] = panel;
             currentPanel = panel;
         }
 
@@ -281,12 +281,17 @@ namespace NetworkSkins.GUI
             RefreshZOrder();
         }
         private void OnCustomVisibilityChanged(UIButton button, NSImplementationWrapper impl, UIButton[] buttons, bool visible) {
-            var panel = customPanels[impl.ID];
-            if(!visible && panel) {
-                SetButtonUnfocused(button);
-                Destroy(panel.gameObject);
+            try {
+
+                customPanels_.TryGetValue(impl.ID, out var panel);
+                if(!visible && panel) {
+                    SetButtonUnfocused(button);
+                    Destroy(panel.gameObject);
+                }
+                RefreshZOrder();
+            } catch(Exception ex) {
+                Debug.LogException(ex);
             }
-            RefreshZOrder();
         }
 
         private void OnSurfacesVisibilityChanged(UIButton button, UIButton[] buttons, bool visible) {
@@ -414,16 +419,20 @@ namespace NetworkSkins.GUI
         }
 
         private void OnCustomClicked(UIButton button, NSImplementationWrapper impl, UIButton[] buttons) {
-            var panel = customPanels[impl.ID];
-            if(panel) {
-                SetButtonUnfocused(button);
-                Destroy(panel.gameObject);
-            } else {
-                RefreshButtons(button, buttons);
-                CloseAll();
-                CreateCustomPanel(impl);
+            try {
+                customPanels_.TryGetValue(impl.ID, out var panel);
+                if(panel) {
+                    SetButtonUnfocused(button);
+                    Destroy(panel.gameObject);
+                } else {
+                    RefreshButtons(button, buttons);
+                    CloseAll();
+                    CreateCustomPanel(impl);
+                }
+                RefreshZOrder();
+            } catch(Exception ex) {
+                Debug.LogException(ex);
             }
-            RefreshZOrder();
         }
 
         private void OnPipetteClicked(UIButton button, UIButton[] buttons) {
