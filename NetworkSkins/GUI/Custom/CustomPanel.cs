@@ -10,6 +10,6 @@ namespace NetworkSkins.GUI.Custom {
             autoFitChildrenHorizontally = true;
         }
 
-        protected override void RefreshUI(NetInfo netInfo) => Implementation.RefreshUI(netInfo);
+        protected override void RefreshUI(NetInfo netInfo) => Implementation.RefreshUI();
     }
 }

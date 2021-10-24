@@ -5,6 +5,7 @@
     using System.Collections.Generic;
     using UnityEngine;
     using Object = UnityEngine.Object;
+    using Resources = NetworkSkins.Resources;
 
     public class NSImplementationWrapper : INSImplementation{
         private static class Delegates {
@@ -21,6 +22,8 @@
             public delegate ICloneable Decode64(object impl, string base64Data, Version dataVersion);
 
             public delegate Texture2D get_Icon(object impl);
+            public delegate string get_Tooltip(object impl);
+
             public delegate void BuildPanel(object impl, UIPanel panel);
             public delegate void RefreshUI(object impl);
 
@@ -46,6 +49,7 @@
         private Delegates.Decode64 decode64_;
 
         private Delegates.get_Icon get_Icon_;
+        private Delegates.get_Tooltip get_Tooltip_;
         private Delegates.BuildPanel buildPanel_;
         private Delegates.RefreshUI refreshUI_;
 
@@ -72,7 +76,8 @@
             encode64_ = DelegateUtil.CreateDelegate<Delegates.Encode64>(type, true);
             decode64_ = DelegateUtil.CreateDelegate<Delegates.Decode64>(type, true);
 
-            get_Icon_ = DelegateUtil.CreateDelegate < Delegates.get_Icon> (type, true);
+            get_Icon_ = DelegateUtil.CreateDelegate<Delegates.get_Icon>(type, true);
+            get_Tooltip_ = DelegateUtil.CreateDelegate<Delegates.get_Tooltip>(type, true);
             buildPanel_ = DelegateUtil.CreateDelegate < Delegates.BuildPanel> (type, true);
             refreshUI_ = DelegateUtil.CreateDelegate<Delegates.RefreshUI>(type, true);
 
@@ -114,16 +119,15 @@
         #region panel
         public Texture2D Icon => get_Icon_(Implemenation);
 
-        public const string ICON = "Icon";
+        public const string ForegroundIconName = "Icon";
 
         private UITextureAtlas CreateAtlas() {
-            UITextureAtlas nsAtlas = NetworkSkins.Resources.Atlas;
-            var hovered = TextureUtil.GetSpriteTexture(nsAtlas, "Hovered");
-            var pressed = TextureUtil.GetSpriteTexture(nsAtlas, "Pressed");
-            var disabeld = TextureUtil.GetSpriteTexture(nsAtlas, "Disabled");
-            var focused = TextureUtil.GetSpriteTexture(nsAtlas, "Focused");
-            var spriteNames = new [] { "Hovered", "Pressed", "Disabled", "Focused", "Icon" };
-            var textures = new[] { hovered, pressed, disabeld, focused, Icon };
+            var normal = TextureUtil.GetSpriteTexture(Resources.Atlas, Resources.ButtonSmall);
+            var hovered = TextureUtil.GetSpriteTexture(Resources.Atlas, Resources.ButtonSmallHovered);
+            var pressed = TextureUtil.GetSpriteTexture(Resources.Atlas, Resources.ButtonSmallPressed);
+            var focused = TextureUtil.GetSpriteTexture(Resources.Atlas, Resources.ButtonSmallFocused);
+            var spriteNames = new [] { Resources.ButtonSmall, Resources.ButtonSmallHovered, Resources.ButtonSmallPressed, Resources.ButtonSmallFocused, ForegroundIconName };
+            var textures = new[] { normal, hovered, pressed, focused, Icon };
 
             Texture2D texture2D = new Texture2D(1, 1, TextureFormat.ARGB32, false);
             Rect[] regions = texture2D.PackTextures(textures, padding: 2, maximumAtlasSize: 1024);
@@ -143,12 +147,14 @@
 
                 textureAtlas.AddSprite(item);
             }
-            return textureAtlas;
 
+            return textureAtlas;
         }
 
         private UITextureAtlas atlas_;
         public UITextureAtlas Atlas => atlas_ ??= CreateAtlas();
+
+        public string Tooltip => get_Tooltip_(Implemenation);
 
         public void BuildPanel(UIPanel panel) => buildPanel_(Implemenation,panel);
         public void RefreshUI() => refreshUI_(Implemenation);

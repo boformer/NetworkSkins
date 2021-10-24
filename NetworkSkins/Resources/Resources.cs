@@ -11,6 +11,10 @@ namespace NetworkSkins
 
         public static UITextureAtlas DefaultAtlas => NetworkSkinsMod.defaultAtlas;
 
+        public const string ButtonSmall = "ButtonSmall";
+        public const string ButtonSmallPressed = "ButtonSmallPressed";
+        public const string ButtonSmallHovered = "ButtonSmallHovered";
+        public const string ButtonSmallFocused = "ButtonSmallFocused";
         public static string Blacklisted = "Blacklisted";
         public static string DragHandle =       "DragHandle";
         public static string Star =             "Star";
@@ -64,6 +68,10 @@ namespace NetworkSkins
         private UITextureAtlas UITextureAtlas { get; set; }
 
         private readonly string[] _spriteNames = new string[] {
+            ButtonSmall,
+            ButtonSmallPressed,
+            ButtonSmallHovered,
+            ButtonSmallFocused,
             "Blacklisted",
             "DragHandle",
             "DragHandle",

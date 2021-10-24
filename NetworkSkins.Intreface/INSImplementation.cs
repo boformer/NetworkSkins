@@ -31,7 +31,15 @@
     }
 
     public interface INSGUUIImplementation {
+        /// <summary>
+        /// button Icon
+        /// </summary>
         Texture2D Icon { get; }
+
+        /// <summary>
+        /// button tooltip
+        /// </summary>
+        string Tooltip { get; }
 
         /// <summary>
         /// Add UI elements to the panel using the data from your controller.
