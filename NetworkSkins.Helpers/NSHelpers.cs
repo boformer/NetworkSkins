@@ -16,7 +16,7 @@
 
         public static bool IsNSEnabled() => GetNS()?.isEnabled ?? false;
 
-         public static void DoOnNSEnabled(Action action) {
+        public static void DoOnNSEnabled(Action action) {
             if(action is null)
                 throw new ArgumentNullException("action");
             if(Dispatcher.currentSafe == ThreadHelper.dispatcher) {
@@ -58,6 +58,12 @@
         public static object GetSegmentSkinData(this INSImplementation impl, ushort segmentID) {
             return NSAPI.Instance.GetSegmentSkinData(implIndex: impl.Index, segmentID);
         }
+
+        /// <summary>
+        /// If user changed skin data using UI call this to rebuild skin.
+        /// </summary>
+        public static void OnControllerChanged(this INSImplementation impl) =>
+            NSAPI.Instance.OnControllerChanged(impl.ID);
 
         public static void Register(this INSImplementation impl) {
             if(NSAPI.Instance == null)

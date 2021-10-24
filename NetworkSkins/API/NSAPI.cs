@@ -1,6 +1,7 @@
 ﻿namespace NetworkSkins.API {
     using ColossalFramework.UI;
     using NetworkSkins.Skins;
+    using NetworkSkins.GUI;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -77,5 +78,9 @@
         public object GetSegmentSkinData(int implIndex, ushort segmentID) =>
             NetworkSkinManager.SegmentSkins[segmentID].m_CustomDatas[implIndex];
 
+        public void OnControllerChanged(string implID) {
+            var panel = NetworkSkinPanelController.Instance.CustomPanelControllers[implID];
+            panel.Changed();
+        }
     }
 }

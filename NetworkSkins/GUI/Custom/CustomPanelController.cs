@@ -17,7 +17,6 @@ namespace NetworkSkins.GUI.Custom {
 
         public override bool Enabled => base.Enabled && Implementation.Enabled;
 
-
         public Dictionary<NetInfo, CustomDataCollectionModifier> CustomDatas { get; private set; }
         protected override void OnChanged() {
             if(Enabled && Prefab != null) {
@@ -30,6 +29,7 @@ namespace NetworkSkins.GUI.Custom {
 
             base.OnChanged();
         }
+        public void Changed() => OnChanged();
 
         private CustomDataCollectionModifier DataToCollection(ICloneable data) {
             var ret = new CustomDataCollection();
