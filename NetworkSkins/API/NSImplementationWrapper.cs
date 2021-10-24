@@ -122,33 +122,38 @@
         public const string ForegroundIconName = "Icon";
 
         private UITextureAtlas CreateAtlas() {
-            var normal = Resources.GetTextureFromAssemblyManifest(Resources.ButtonSmall);
-            var hovered = Resources.GetTextureFromAssemblyManifest(Resources.ButtonSmallHovered);
-            var pressed = Resources.GetTextureFromAssemblyManifest(Resources.ButtonSmallPressed);
-            var focused = Resources.GetTextureFromAssemblyManifest(Resources.ButtonSmallFocused);
-            var spriteNames = new [] { Resources.ButtonSmall, Resources.ButtonSmallHovered, Resources.ButtonSmallPressed, Resources.ButtonSmallFocused, ForegroundIconName };
-            var textures = new[] { normal, hovered, pressed, focused, Icon };
+            try {
+                var normal = Resources.GetTextureFromAssemblyManifest(Resources.ButtonSmall);
+                var hovered = Resources.GetTextureFromAssemblyManifest(Resources.ButtonSmallHovered);
+                var pressed = Resources.GetTextureFromAssemblyManifest(Resources.ButtonSmallPressed);
+                var focused = Resources.GetTextureFromAssemblyManifest(Resources.ButtonSmallFocused);
+                var spriteNames = new[] { Resources.ButtonSmall, Resources.ButtonSmallHovered, Resources.ButtonSmallPressed, Resources.ButtonSmallFocused, ForegroundIconName };
+                var textures = new[] { normal, hovered, pressed, focused, Icon };
 
-            Texture2D texture2D = new Texture2D(1, 1, TextureFormat.ARGB32, false);
-            Rect[] regions = texture2D.PackTextures(textures, padding: 2, maximumAtlasSize: 1024);
+                Texture2D texture2D = new Texture2D(1, 1, TextureFormat.ARGB32, false);
+                Rect[] regions = texture2D.PackTextures(textures, padding: 2, maximumAtlasSize: 1024);
 
-            Material material = Object.Instantiate(UIView.GetAView().defaultAtlas.material);
-            material.mainTexture = texture2D;
-            UITextureAtlas textureAtlas = ScriptableObject.CreateInstance<UITextureAtlas>();
-            textureAtlas.material = material;
-            textureAtlas.name = "NSImplementation_" + ID;
+                Material material = Object.Instantiate(UIView.GetAView().defaultAtlas.material);
+                material.mainTexture = texture2D;
+                UITextureAtlas textureAtlas = ScriptableObject.CreateInstance<UITextureAtlas>();
+                textureAtlas.material = material;
+                textureAtlas.name = "NSImplementation_" + ID;
 
-            for(int i = 0; i < spriteNames.Length; i++) {
-                UITextureAtlas.SpriteInfo item = new UITextureAtlas.SpriteInfo {
-                    name = spriteNames[i],
-                    texture = textures[i],
-                    region = regions[i],
-                };
+                for(int i = 0; i < spriteNames.Length; i++) {
+                    UITextureAtlas.SpriteInfo item = new UITextureAtlas.SpriteInfo {
+                        name = spriteNames[i],
+                        texture = textures[i],
+                        region = regions[i],
+                    };
 
-                textureAtlas.AddSprite(item);
+                    textureAtlas.AddSprite(item);
+                }
+
+                return textureAtlas;
+            } catch (Exception ex) {
+                Debug.LogException(ex);
+                return null;
             }
-
-            return textureAtlas;
         }
 
         private UITextureAtlas atlas_;
