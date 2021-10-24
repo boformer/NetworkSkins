@@ -7,31 +7,33 @@
     using Object = UnityEngine.Object;
     using Resources = NetworkSkins.Resources;
 
-    public class NSImplementationWrapper : INSImplementation{
+    public class NSImplementationWrapper : INSImplementation {
+        static void LogCalled() => Debug.Log("[NS LogCalled]" + Environment.StackTrace);
+
         private static class Delegates {
-            public delegate int get_Index(object impl);
-            public delegate void set_Index(object impl, int value);
-            public delegate string get_ID(object impl);
-            public delegate void OnBeforeNSLoaded(object impl);
-            public delegate void OnAfterNSLoaded(object impl);
-            public delegate void OnSkinApplied(object impl, ICloneable data, InstanceID instanceID);
-            public delegate void OnNSDisabled(object impl);
+            public delegate int get_Index();
+            public delegate void set_Index(int value);
+            public delegate string get_ID();
+            public delegate void OnBeforeNSLoaded();
+            public delegate void OnAfterNSLoaded();
+            public delegate void OnSkinApplied(ICloneable data, InstanceID instanceID);
+            public delegate void OnNSDisabled();
 
-            public delegate Version get_DataVersion(object impl);
-            public delegate string Encode64(object impl, ICloneable data);
-            public delegate ICloneable Decode64(object impl, string base64Data, Version dataVersion);
+            public delegate Version get_DataVersion();
+            public delegate string Encode64(ICloneable data);
+            public delegate ICloneable Decode64(string base64Data, Version dataVersion);
 
-            public delegate Texture2D get_Icon(object impl);
-            public delegate string get_Tooltip(object impl);
+            public delegate Texture2D get_Icon();
+            public delegate string get_Tooltip();
 
-            public delegate void BuildPanel(object impl, UIPanel panel);
-            public delegate void RefreshUI(object impl);
+            public delegate void BuildPanel(UIPanel panel);
+            public delegate void RefreshUI();
 
-            public delegate bool get_Enabled(object impl);
-            public delegate Dictionary<NetInfo, ICloneable> LoadCustomData(object impl);
-            public delegate void LoadWithData(object impl, ICloneable data);
-            public delegate void Reset(object impl);
-            public delegate void LoadActiveSelection(object impl);
+            public delegate bool get_Enabled();
+            public delegate Dictionary<NetInfo, ICloneable> LoadCustomData();
+            public delegate void LoadWithData(ICloneable data);
+            public delegate void Reset();
+            public delegate void LoadActiveSelection();
         }
 
         public object Implemenation;
@@ -61,6 +63,7 @@
 
 
         public NSImplementationWrapper(object impl) {
+            LogCalled();
             Implemenation = impl;
 
             get_Index_ = DelegateUtil.CreateClosedDelegate<Delegates.get_Index>(impl);
@@ -77,50 +80,56 @@
 
             get_Icon_ = DelegateUtil.CreateClosedDelegate<Delegates.get_Icon>(impl);
             get_Tooltip_ = DelegateUtil.CreateClosedDelegate<Delegates.get_Tooltip>(impl);
-            buildPanel_ = DelegateUtil.CreateClosedDelegate < Delegates.BuildPanel> (impl);
+            buildPanel_ = DelegateUtil.CreateClosedDelegate<Delegates.BuildPanel>(impl);
             refreshUI_ = DelegateUtil.CreateClosedDelegate<Delegates.RefreshUI>(impl);
 
-            get_Enabled_  = DelegateUtil.CreateClosedDelegate<Delegates.get_Enabled>(impl);
-            loadCustomData_ = DelegateUtil.CreateClosedDelegate < Delegates.LoadCustomData> (impl);
-            loadWithData_ = DelegateUtil.CreateClosedDelegate < Delegates.LoadWithData> (impl);
-            reset_ = DelegateUtil.CreateClosedDelegate < Delegates.Reset> (impl);
-            loadActiveSelection_ = DelegateUtil.CreateClosedDelegate < Delegates.LoadActiveSelection>(impl);
+            get_Enabled_ = DelegateUtil.CreateClosedDelegate<Delegates.get_Enabled>(impl);
+            loadCustomData_ = DelegateUtil.CreateClosedDelegate<Delegates.LoadCustomData>(impl);
+            loadWithData_ = DelegateUtil.CreateClosedDelegate<Delegates.LoadWithData>(impl);
+            reset_ = DelegateUtil.CreateClosedDelegate<Delegates.Reset>(impl);
+            loadActiveSelection_ = DelegateUtil.CreateClosedDelegate<Delegates.LoadActiveSelection>(impl);
         }
 
-        public int Index { 
-            get => get_Index_(Implemenation);
-            set => set_Index_(Implemenation, value);
+        public int Index {
+            get => get_Index_();
+            set => set_Index_(value);
         }
 
-        public string ID => get_ID_(Implemenation);
-        public void OnBeforeNSLoaded() => onBeforeNSLoaded_(Implemenation);
-        public void OnAfterNSLoaded() => onAfterNSLoaded_(Implemenation);
-        public void OnSkinApplied(ICloneable data, InstanceID instanceID) => onSkinApplied_(Implemenation, data, instanceID);
-        public void OnNSDisabled() => onNSDisabled_(Implemenation);
+        public string ID {
+            get {
+                LogCalled();
+                return get_ID_();
+            }
+        }
+        public void OnBeforeNSLoaded() => onBeforeNSLoaded_();
+        public void OnAfterNSLoaded() => onAfterNSLoaded_();
+        public void OnSkinApplied(ICloneable data, InstanceID instanceID) => onSkinApplied_(data, instanceID);
+        public void OnNSDisabled() => onNSDisabled_();
 
         #region Persistency
-        public Version DataVersion => get_DataVersion_(Implemenation);
+        public Version DataVersion => get_DataVersion_();
         public string Encode64(ICloneable data) {
             if(data == null)
                 return null;
             else
-                return encode64_(Implemenation, data);
+                return encode64_(data);
         }
         public ICloneable Decode64(string base64Data, Version dataVersion) {
             if(base64Data == null)
                 return null;
             else
-                return decode64_(Implemenation, base64Data, dataVersion);
+                return decode64_(base64Data, dataVersion);
         }
 
         #endregion
 
         #region panel
-        public Texture2D Icon => get_Icon_(Implemenation);
+        public Texture2D Icon => get_Icon_();
 
         public const string ForegroundIconName = "Icon";
 
         private UITextureAtlas CreateAtlas() {
+            LogCalled();
             try {
                 var normal = Resources.GetTextureFromAssemblyManifest(Resources.ButtonSmall);
                 var hovered = Resources.GetTextureFromAssemblyManifest(Resources.ButtonSmallHovered);
@@ -149,7 +158,7 @@
                 }
 
                 return textureAtlas;
-            } catch (Exception ex) {
+            } catch(Exception ex) {
                 Debug.LogException(ex);
                 return null;
             }
@@ -158,18 +167,18 @@
         private UITextureAtlas atlas_;
         public UITextureAtlas Atlas => atlas_ ??= CreateAtlas();
 
-        public string Tooltip => get_Tooltip_(Implemenation);
+        public string Tooltip => get_Tooltip_();
 
-        public void BuildPanel(UIPanel panel) => buildPanel_(Implemenation,panel);
-        public void RefreshUI() => refreshUI_(Implemenation);
+        public void BuildPanel(UIPanel panel) => buildPanel_(panel);
+        public void RefreshUI() => refreshUI_();
         #endregion
 
         #region Controller
-        public bool Enabled => get_Enabled_(Implemenation);
-        public Dictionary<NetInfo, ICloneable> BuildCustomData() => loadCustomData_(Implemenation);
-        public void LoadWithData(ICloneable data) => loadWithData_(Implemenation, data);
-        public void Reset() => reset_(Implemenation);
-        public void LoadActiveSelection() => loadActiveSelection_(Implemenation);
+        public bool Enabled => get_Enabled_();
+        public Dictionary<NetInfo, ICloneable> BuildCustomData() => loadCustomData_();
+        public void LoadWithData(ICloneable data) => loadWithData_(data);
+        public void Reset() => reset_();
+        public void LoadActiveSelection() => loadActiveSelection_();
         #endregion
     }
 }

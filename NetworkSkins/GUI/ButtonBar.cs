@@ -98,6 +98,7 @@ namespace NetworkSkins.GUI
         }
 
         private void CreateButtons() {
+            Debug.Log("ButtonBar.CreateButtons() called");
             Vector2 buttonSize = new Vector2(Layout.Size.x - Layout.Spacing * 2, Layout.Size.x - Layout.Spacing * 2);
 
             surfacesButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Surface, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_SURFACE));
@@ -145,7 +146,7 @@ namespace NetworkSkins.GUI
             pipetteButton.eventClicked += OnPipetteButtonClicked;
 
             CustomButtons = new List<UIButton>();
-            foreach(var impl in NSAPI.Instance.ImplementationWrappers) {
+            foreach(var impl in NSAPI.Instance.ActiveImplementationWrappers) {
                 var button = UIUtil.CreateButton(
                     size: buttonSize, 
                     parentComponent: this, 
@@ -161,6 +162,7 @@ namespace NetworkSkins.GUI
             }
 
             CreateButtonArray();
+            Debug.Log("ButtonBar.CreateButtons() succeeded");
         }
 
         private void CreateButtonArray() {

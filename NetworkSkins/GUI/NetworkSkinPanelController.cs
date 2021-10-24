@@ -104,7 +104,7 @@ namespace NetworkSkins.GUI
             RoadDecoration.EventModifiersChanged += OnModifiersChanged;
 
             
-            foreach(var impl in NSAPI.Instance.ImplementationWrappers) {
+            foreach(var impl in NSAPI.Instance.ActiveImplementationWrappers) {
                 var cpc = CustomPanelControllers[impl.ID] = new CustomPanelController(impl);
                 cpc.EventModifiersChanged += OnModifiersChanged;
             }

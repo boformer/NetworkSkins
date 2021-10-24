@@ -38,16 +38,20 @@ namespace NetworkSkins.GUI
         }
 
         public override void Start() {
-            base.Start();
-            Build(PanelType.None, new Layout(new Vector2(0.0f, 234.0f), true, LayoutDirection.Horizontal, LayoutStart.BottomRight, 0));
-            color = GUIColor;
-            CreateToolBar();
+            try {
+                base.Start();
+                Build(PanelType.None, new Layout(new Vector2(0.0f, 234.0f), true, LayoutDirection.Horizontal, LayoutStart.BottomRight, 0));
+                color = GUIColor;
+                CreateToolBar();
 
-            relativePosition = Persistence.GetToolbarPosition() ?? CalculateDefaultToolbarPosition();
-            EnsureToolbarOnScreen();
+                relativePosition = Persistence.GetToolbarPosition() ?? CalculateDefaultToolbarPosition();
+                EnsureToolbarOnScreen();
 
-            RefreshZOrder();
-            RegisterEvents();
+                RefreshZOrder();
+                RegisterEvents();
+            } catch(Exception ex) {
+                Debug.LogException(ex);
+            }
         }
 
         private static Vector2 CalculateDefaultToolbarPosition()

@@ -93,7 +93,7 @@ namespace NetworkSkins
             NetworkSkinPanelController.Instance = skinControllerGameObject.AddComponent<NetworkSkinPanelController>();
             NetworkSkinPanelController.Instance.EventToolStateChanged += OnNetToolStateChanged;
 
-            foreach(var impl in NSAPI.Instance.ImplementationWrappers) {
+            foreach(var impl in NSAPI.Instance.ActiveImplementationWrappers) {
                 impl.OnAfterNSLoaded();
             }
         }
