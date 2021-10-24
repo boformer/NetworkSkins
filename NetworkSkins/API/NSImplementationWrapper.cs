@@ -131,10 +131,10 @@
         private UITextureAtlas CreateAtlas() {
             LogCalled();
             try {
-                var normal = Resources.GetTextureFromAssemblyManifest(Resources.ButtonSmall);
-                var hovered = Resources.GetTextureFromAssemblyManifest(Resources.ButtonSmallHovered);
-                var pressed = Resources.GetTextureFromAssemblyManifest(Resources.ButtonSmallPressed);
-                var focused = Resources.GetTextureFromAssemblyManifest(Resources.ButtonSmallFocused);
+                var normal = Resources.GetTextureFromAssemblyManifest(Resources.ButtonSmall + ".png");
+                var hovered = Resources.GetTextureFromAssemblyManifest(Resources.ButtonSmallHovered + ".png");
+                var pressed = Resources.GetTextureFromAssemblyManifest(Resources.ButtonSmallPressed + ".png");
+                var focused = Resources.GetTextureFromAssemblyManifest(Resources.ButtonSmallFocused + ".png");
                 var spriteNames = new[] { Resources.ButtonSmall, Resources.ButtonSmallHovered, Resources.ButtonSmallPressed, Resources.ButtonSmallFocused, ForegroundIconName };
                 var textures = new[] { normal, hovered, pressed, focused, Icon };
 
