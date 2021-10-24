@@ -12,7 +12,17 @@
         int Index { get; set; }
         void OnBeforeNSLoaded();
         void OnAfterNSLoaded();
+
+        /// <summary>
+        /// NS has been disabled.
+        /// stop using your implementations.
+        /// call DoOnNSEnabled to install your implementation if/when NS is enabled again.
+        /// </summary>
         void OnNSDisabled();
+
+        /// <summary>
+        /// new segment is placed or skin data transfered from one segment to another.
+        /// </summary>
         void OnSkinApplied(ICloneable data, InstanceID instanceID);
     }
 
