@@ -38,12 +38,12 @@
 
         public new ICloneable this[string key] {
             get {
-                if(TryGetValue(key, out ICloneable ret))
+                if(base.TryGetValue(key, out ICloneable ret))
                     return ret;
                 return null;
             }
             set {
-                this[key] = value;
+                base[key] = value;
                 var index = NSAPI.Instance.GetImplementationIndex(key);
                 if(index >= 0)
                     this[index] = value;
