@@ -30,7 +30,7 @@
             public delegate void RefreshUI();
 
             public delegate bool get_Enabled();
-            public delegate Dictionary<NetInfo, ICloneable> LoadCustomData();
+            public delegate Dictionary<NetInfo, ICloneable> BuildCustomData();
             public delegate void LoadWithData(ICloneable data);
             public delegate void Reset();
             public delegate void LoadActiveSelection();
@@ -56,7 +56,7 @@
         private Delegates.RefreshUI refreshUI_;
 
         private Delegates.get_Enabled get_Enabled_;
-        private Delegates.LoadCustomData loadCustomData_;
+        private Delegates.BuildCustomData buildCustomData_;
         private Delegates.LoadWithData loadWithData_;
         private Delegates.Reset reset_;
         private Delegates.LoadActiveSelection loadActiveSelection_;
@@ -84,7 +84,7 @@
             refreshUI_ = DelegateUtil.CreateClosedDelegate<Delegates.RefreshUI>(impl);
 
             get_Enabled_ = DelegateUtil.CreateClosedDelegate<Delegates.get_Enabled>(impl);
-            loadCustomData_ = DelegateUtil.CreateClosedDelegate<Delegates.LoadCustomData>(impl);
+            buildCustomData_ = DelegateUtil.CreateClosedDelegate<Delegates.BuildCustomData>(impl);
             loadWithData_ = DelegateUtil.CreateClosedDelegate<Delegates.LoadWithData>(impl);
             reset_ = DelegateUtil.CreateClosedDelegate<Delegates.Reset>(impl);
             loadActiveSelection_ = DelegateUtil.CreateClosedDelegate<Delegates.LoadActiveSelection>(impl);
@@ -175,7 +175,7 @@
 
         #region Controller
         public bool Enabled => get_Enabled_();
-        public Dictionary<NetInfo, ICloneable> BuildCustomData() => loadCustomData_();
+        public Dictionary<NetInfo, ICloneable> BuildCustomData() => buildCustomData_();
         public void LoadWithData(ICloneable data) => loadWithData_(data);
         public void Reset() => reset_();
         public void LoadActiveSelection() => loadActiveSelection_();

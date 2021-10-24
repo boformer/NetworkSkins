@@ -34,9 +34,7 @@
 
         internal void OnSkinApplied(CustomDataCollection skinCustomData, InstanceID instanceID) {
             foreach(var impl in ActiveImplementationWrappers) {
-                if(impl == null)
-                    return;
-                var data = skinCustomData[impl.Index];
+                var data = skinCustomData?[impl.Index];
                 impl.OnSkinApplied(data, instanceID);
             }
         }
@@ -49,9 +47,6 @@
 
 
         public void AddImplementation(object impl) {
-            if(!NetworkSkinsMod.InStartupMenu) {
-                throw new Exception("Implementations should be registered before loading game");
-            }
             var wrapper = new NSImplementationWrapper(impl);
             if(wrapper.ID == null || wrapper.ID == "" || ActiveImplementationWrappers.Any(wrapper2 => wrapper2.ID == wrapper.ID)) {
                 var ex = new Exception("Implementation ID must be a unique string. got " + wrapper.ID);

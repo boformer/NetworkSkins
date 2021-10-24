@@ -1,7 +1,9 @@
 ﻿using ColossalFramework.UI;
+using System;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace NetworkSkins
 {
@@ -158,16 +160,21 @@ namespace NetworkSkins
         }
 
         public static Texture2D GetTextureFromAssemblyManifest(string file) {
-            string path = "NetworkSkins.Resources." + file;
-            Texture2D texture2D = new Texture2D(1, 1, TextureFormat.ARGB32, false);
-            using (Stream manifestResourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(path)) {
-                byte[] array = new byte[manifestResourceStream.Length];
-                manifestResourceStream.Read(array, 0, array.Length);
-                texture2D.LoadImage(array);
+            try {
+                string path = "NetworkSkins.Resources." + file;
+                Texture2D texture2D = new Texture2D(1, 1, TextureFormat.ARGB32, false);
+                using(Stream manifestResourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(path)) {
+                    byte[] array = new byte[manifestResourceStream.Length];
+                    manifestResourceStream.Read(array, 0, array.Length);
+                    texture2D.LoadImage(array);
+                }
+                texture2D.wrapMode = TextureWrapMode.Clamp;
+                texture2D.Apply();
+                return texture2D;
+            } catch(Exception ex) {
+                Debug.LogException(new Exception($"GetTextureFromAssemblyManifest('{file}') failed!", ex));
+                return null;
             }
-            texture2D.wrapMode = TextureWrapMode.Clamp;
-            texture2D.Apply();
-            return texture2D;
         }
     }
 }

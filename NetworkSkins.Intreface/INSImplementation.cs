@@ -42,7 +42,7 @@
 
     public interface INSGUUIImplementation {
         /// <summary>
-        /// button Icon
+        /// 30x30 foreground texture for button.
         /// </summary>
         Texture2D Icon { get; }
 
