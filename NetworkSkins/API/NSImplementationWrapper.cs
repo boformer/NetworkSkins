@@ -13,8 +13,6 @@
         : Helpers.INSImplementation 
 #endif
         {
-        static void LogCalled() => Debug.Log("[NS LogCalled]" + Environment.StackTrace);
-
         private static class Delegates {
             public delegate int get_Index();
             public delegate void set_Index(int value);
@@ -68,7 +66,6 @@
 
 
         public NSImplementationWrapper(object impl) {
-            LogCalled();
             Implemenation = impl;
 
             get_Index_ = DelegateUtil.CreateClosedDelegate<Delegates.get_Index>(impl);
@@ -100,12 +97,8 @@
             set => set_Index_(value);
         }
 
-        public string ID {
-            get {
-                LogCalled();
-                return get_ID_();
-            }
-        }
+        public string ID => get_ID_();
+
         public void OnBeforeNSLoaded() => onBeforeNSLoaded_();
         public void OnAfterNSLoaded() => onAfterNSLoaded_();
         public void OnSkinApplied(ICloneable data, InstanceID instanceID) => onSkinApplied_(data, instanceID);
@@ -144,7 +137,6 @@
         public const string ForegroundIconName = "Icon";
 
         private UITextureAtlas CreateAtlas() {
-            LogCalled();
             try {
                 var normal = Resources.GetTextureFromAssemblyManifest(Resources.ButtonSmall + ".png");
                 var hovered = Resources.GetTextureFromAssemblyManifest(Resources.ButtonSmallHovered + ".png");

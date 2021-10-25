@@ -189,7 +189,7 @@ namespace NetworkSkins.Skins
             {
                 if (skin.UseCount <= 0)
                 {
-                    Debug.Log($"Destroying unused skin {skin}");
+                    Debug.Log($"NS: Destroying unused skin {skin}");
                     skin.Destroy();
                 }
             }

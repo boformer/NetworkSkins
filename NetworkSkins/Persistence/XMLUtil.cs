@@ -33,8 +33,7 @@
                     return Deserialize<T>(reader);
                 }
             } catch(Exception ex) {
-                Debug.Log("data=" + data);
-                Debug.LogException(ex);
+                Debug.LogException(new Exception("data=" +data, ex));
                 return default;
             }
         }

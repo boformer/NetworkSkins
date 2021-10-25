@@ -29,10 +29,8 @@
 
         private static void InvokeOrPostpone(Action action) {
             if(IsNSEnabled()) {
-                UnityEngine.Debug.Log("NSHelpers: NS is enabled. execute action.");
                 action();
             } else {
-                UnityEngine.Debug.Log("NSHelpers: NS is abscent. postpone action.");
                 pendingActions_ ??= new List<Action>();
                 pendingActions_.Add(action);
                 PluginManager.instance.eventPluginsStateChanged -= OneventPluginsStateChanged;
@@ -43,12 +41,8 @@
         }
 
         private static void OneventPluginsStateChanged() {
-            UnityEngine.Debug.Log("NSHelpers.OneventPluginsStateChanged() called");
-            if(pendingActions_ == null) {
-                UnityEngine.Debug.Log("no pending actions");
-            }
-            if(IsNSEnabled()) {
-                UnityEngine.Debug.Log("NS is enabled. execute pending actions ...");
+            if(pendingActions_ != null && IsNSEnabled()) {
+                UnityEngine.Debug.Log("NS is enabled. Execute pending actions ...");
                 foreach(var action in pendingActions_) {
                     action();
                 }

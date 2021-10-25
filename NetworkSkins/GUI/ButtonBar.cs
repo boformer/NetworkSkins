@@ -103,7 +103,6 @@ namespace NetworkSkins.GUI
         }
 
         private void CreateButtons() {
-            Debug.Log("ButtonBar.CreateButtons() called");
             Vector2 buttonSize = new Vector2(Layout.Size.x - Layout.Spacing * 2, Layout.Size.x - Layout.Spacing * 2);
 
             surfacesButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Surface, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_SURFACE));
@@ -167,7 +166,6 @@ namespace NetworkSkins.GUI
             }
 
             CreateButtonArray();
-            Debug.Log("ButtonBar.CreateButtons() succeeded");
         }
 
         private void CreateButtonArray() {
