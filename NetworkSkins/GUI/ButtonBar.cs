@@ -79,7 +79,7 @@ namespace NetworkSkins.GUI
             base.Build(panelType, layout);
             CreateButtons();
             UIPanel space = AddUIComponent<UIPanel>();
-            space.size = new Vector2(width, 0.1f);
+            space.size = new Vector2(width, 1);
             Refresh();
         }
 

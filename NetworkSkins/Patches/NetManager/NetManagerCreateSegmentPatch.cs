@@ -94,6 +94,15 @@ namespace NetworkSkins.Patches.NetManager
                     }
                 }
             }
+
+            //Upgrade Untouchable mod support
+            if(caller3.DeclaringType?.Name== "UpgradeUntouchableTool" && caller3.Name == "CreateNodeImpl")
+            {
+                if (__result)
+                {
+                    NetworkSkinManager.instance.OnSegmentPlaced(segment);
+                }
+            }
         }
 
         public static bool IsNameMatching(string methodName, string name) {
