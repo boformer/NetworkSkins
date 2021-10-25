@@ -159,7 +159,7 @@ namespace NetworkSkins.GUI
         private void CreateCustomPanel(NSImplementationWrapper impl) {
             var panel = AddUIComponent<CustomPanel>();
             panel.Implementation = impl;
-            panel.Build(PanelType.None, new Layout(new Vector2(400.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
+            panel.Build(PanelType.None, new Layout(new Vector2(1, 1), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 5, "GenericPanel"));
             customPanels_[impl.ID] = panel;
             currentPanel = panel;
         }

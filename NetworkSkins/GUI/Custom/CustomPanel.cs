@@ -9,7 +9,6 @@ namespace NetworkSkins.GUI.Custom {
             color = GUIColor;
             base.Build(panelType, layout);
             autoFitChildrenHorizontally = true;
-            UIUtil.CreateSpace(width + 5, 5, this);
         }
 
         protected override void RefreshUI(NetInfo netInfo) => Implementation.RefreshUI();
