@@ -8,6 +8,8 @@
 
     public class NSImplementationWrapper
 #if DEBUG
+    // include INSImplementation in debug build to test that all the delegates have the correct types.
+    // exclude INSImplementation in release build to avoid having two versions of it in two assemblies making it easier for others to use NS helpers
         : Helpers.INSImplementation 
 #endif
         {
