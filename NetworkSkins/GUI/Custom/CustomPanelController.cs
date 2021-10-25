@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace NetworkSkins.GUI.Custom {
     public class CustomPanelController : FeaturePanelControllerBase {
-        public readonly Helpers.INSImplementation Implementation;
+        public readonly NSImplementationWrapper Implementation;
 
         public CustomPanelController(NSImplementationWrapper impl) {
             Implementation = impl;

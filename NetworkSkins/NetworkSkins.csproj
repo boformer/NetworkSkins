@@ -34,7 +34,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\NetworkSkins.Helpers\INSImplementation.cs" Link="API\INSImplementation.cs" />
+    <Compile Condition="'$(Configuration)'=='Debug'" Include="..\NetworkSkins.Helpers\INSImplementation.cs" Link="API\INSImplementation.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CitiesHarmony.API" Version="2.0.0" />

@@ -1,13 +1,16 @@
 ﻿namespace NetworkSkins.API {
     using ColossalFramework.UI;
     using System;
-    using NetworkSkins.Helpers;
     using System.Collections.Generic;
     using UnityEngine;
     using Object = UnityEngine.Object;
     using Resources = NetworkSkins.Resources;
 
-    public class NSImplementationWrapper : INSImplementation {
+    public class NSImplementationWrapper
+#if DEBUG
+        : Helpers.INSImplementation 
+#endif
+        {
         static void LogCalled() => Debug.Log("[NS LogCalled]" + Environment.StackTrace);
 
         private static class Delegates {
@@ -106,7 +109,7 @@
         public void OnSkinApplied(ICloneable data, InstanceID instanceID) => onSkinApplied_(data, instanceID);
         public void OnNSDisabled() => onNSDisabled_();
 
-        #region Persistency
+#region Persistency
         public Version DataVersion => get_DataVersion_();
         public string Encode64(ICloneable data) {
             try {
@@ -131,9 +134,9 @@
             }
         }
 
-        #endregion
+#endregion
 
-        #region panel
+#region panel
         public Texture2D Icon => get_Icon_();
 
         public const string ForegroundIconName = "Icon";
@@ -183,16 +186,18 @@
             try {
                 buildPanel_(panel);
             } catch(Exception ex) { Debug.LogException(ex); }
-        }        public void RefreshUI() {
+        }
+
+        public void RefreshUI() {
             try {
                 refreshUI_();
             } catch(Exception ex) {
                 Debug.LogException(ex);
             }
         }
-        #endregion
+#endregion
 
-        #region Controller
+#region Controller
         public bool Enabled => get_Enabled_();
         public Dictionary<NetInfo, ICloneable> BuildCustomData() {
             try {
@@ -216,6 +221,6 @@
                 loadActiveSelection_();
             } catch(Exception ex) { Debug.LogException(ex); }
         }
-        #endregion
+#endregion
     }
 }
