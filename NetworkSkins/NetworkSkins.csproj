@@ -36,6 +36,9 @@
   <ItemGroup>
     <PackageReference Include="CitiesHarmony.API" Version="2.0.0" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NetworkSkins.Intreface\NetworkSkins.Implementation.csproj" />
+  </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebugType>none</DebugType>
     <DebugSymbols>false</DebugSymbols>
@@ -50,5 +53,4 @@
     <RemoveDir Directories="$(ModDirectory)" />
     <Copy SourceFiles="@(ModFiles)" DestinationFolder="$(ModDirectory)\%(RecursiveDir)" />
   </Target>
-  <Import Project="..\NetworkSkins.Helpers\NetworkSkins.Helpers.projitems" Label="Shared" />
 </Project>

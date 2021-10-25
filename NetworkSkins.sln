@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetworkSkins", "NetworkSkins\NetworkSkins.csproj", "{D292985E-EF20-44F2-A8C8-A0FAE0D4EAE6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B1B0C514-3AD2-4428-B232-D5FAF2934795} = {B1B0C514-3AD2-4428-B232-D5FAF2934795}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetworkSkins.Tests", "NetworkSkins.Tests\NetworkSkins.Tests.csproj", "{A2C459E5-4E15-4A55-B67B-4E1ECDC3C734}"
 EndProject
@@ -13,13 +16,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "NetworkSkins.Helpers", "NetworkSkins.Helpers\NetworkSkins.Helpers.shproj", "{0CD23759-B535-4C44-B174-A5CD863C5B76}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetworkSkins.Helpers", "NetworkSkins.Helpers\NetworkSkins.Helpers.csproj", "{148C6B13-6FAA-4059-9F14-98805FEE1084}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetworkSkins.Implementation", "NetworkSkins.Intreface\NetworkSkins.Implementation.csproj", "{B1B0C514-3AD2-4428-B232-D5FAF2934795}"
 EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		NetworkSkins.Helpers\NetworkSkins.Helpers.projitems*{0cd23759-b535-4c44-b174-a5cd863c5b76}*SharedItemsImports = 13
-		NetworkSkins.Helpers\NetworkSkins.Helpers.projitems*{d292985e-ef20-44f2-a8c8-a0fae0d4eae6}*SharedItemsImports = 5
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -33,6 +34,14 @@ Global
 		{A2C459E5-4E15-4A55-B67B-4E1ECDC3C734}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2C459E5-4E15-4A55-B67B-4E1ECDC3C734}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2C459E5-4E15-4A55-B67B-4E1ECDC3C734}.Release|Any CPU.Build.0 = Release|Any CPU
+		{148C6B13-6FAA-4059-9F14-98805FEE1084}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{148C6B13-6FAA-4059-9F14-98805FEE1084}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{148C6B13-6FAA-4059-9F14-98805FEE1084}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{148C6B13-6FAA-4059-9F14-98805FEE1084}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1B0C514-3AD2-4428-B232-D5FAF2934795}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1B0C514-3AD2-4428-B232-D5FAF2934795}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1B0C514-3AD2-4428-B232-D5FAF2934795}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1B0C514-3AD2-4428-B232-D5FAF2934795}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
