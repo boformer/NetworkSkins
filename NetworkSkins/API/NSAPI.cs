@@ -71,12 +71,11 @@
             }
         }
 
-        public object GetSegmentSkinData(string implID, ushort segmentID) =>
-            NetworkSkinManager.SegmentSkins[segmentID].m_CustomDatas?[implID];
-
-
         public object GetSegmentSkinData(int implIndex, ushort segmentID) =>
             NetworkSkinManager.SegmentSkins[segmentID].m_CustomDatas[implIndex];
+
+        public object GetNodeSkinData(int implIndex, ushort nodeID) =>
+            NetworkSkinManager.NodeSkins[nodeID].m_CustomDatas[implIndex];
 
         public void OnControllerChanged(string implID) {
             var panel = NetworkSkinPanelController.Instance.CustomPanelControllers[implID];

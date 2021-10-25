@@ -76,18 +76,6 @@
             datas_ = newDatas;
         }
 
-        //public CustomDataColloction(NetInfo network, bool segment) {
-        //    foreach(var impl in API.Instance.ImplementationWrappers) {
-        //        var value =
-        //            segment ?
-        //            impl.GetDefaultSegmentData(network) :
-        //            impl.GetDefaultNodeData(network);
-
-        //        if(value is not null)
-        //            this[impl.ID] = value;
-        //    }
-        //}
-
         #region serialization
         public string Encode64() {
             List<CustomDataDTO> dtos = new List<CustomDataDTO>(Count);

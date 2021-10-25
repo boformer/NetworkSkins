@@ -278,6 +278,8 @@ namespace NetworkSkins.Skins
             {
                 NetManager.instance.UpdateNodeColors(node);
             }
+            
+            NSAPI.Instance.OnSkinApplied(skin?.m_CustomDatas, new InstanceID { NetNode = node });
 
             UsageAdded(skin);
             UsageRemoved(previousSkin);

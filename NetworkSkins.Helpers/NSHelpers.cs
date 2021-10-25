@@ -54,6 +54,10 @@
             return NSAPI.Instance.GetSegmentSkinData(implIndex: impl.Index, segmentID);
         }
 
+        public static object GetNodeSkinData(this INSImplementation impl, ushort nodeID) {
+            return NSAPI.Instance.GetNodeSkinData(implIndex: impl.Index, nodeID);
+        }
+
         /// <summary>
         /// If user changed skin data using UI call this to rebuild skin.
         /// </summary>
