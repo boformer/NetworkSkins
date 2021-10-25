@@ -53,7 +53,7 @@ namespace NetworkSkins.GUI
 
         private void EnsureToolbarOnScreen()
         {
-            Vector2 screenRes = UIView.GetAView().GetScreenResolution();
+            Vector2 screenRes = GetUIView().GetScreenResolution();
             if(relativePosition.x < 0f || relativePosition.x > screenRes.x || relativePosition.y < 0f || relativePosition.y > screenRes.y)
             {
                 relativePosition = CalculateDefaultToolbarPosition();
@@ -62,7 +62,7 @@ namespace NetworkSkins.GUI
 
         public override void Update() {
             base.Update();
-            Vector2 screenRes = UIView.GetAView().GetScreenResolution();
+            Vector2 screenRes = GetUIView().GetScreenResolution();
 
             if ((autoLayoutStart == LayoutStart.TopLeft  || autoLayoutStart == LayoutStart.BottomLeft) && relativePosition.x > screenRes.x / 2.0f) {
                 autoLayoutStart = autoLayoutStart == LayoutStart.TopLeft ? LayoutStart.TopRight : LayoutStart.BottomRight;
