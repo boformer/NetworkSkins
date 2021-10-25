@@ -34,10 +34,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CitiesHarmony.API" Version="2.0.0" />
+    <Compile Include="..\NetworkSkins.Helpers\INSImplementation.cs" Link="API\INSImplementation.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NetworkSkins.Intreface\NetworkSkins.Implementation.csproj" />
+    <PackageReference Include="CitiesHarmony.API" Version="2.0.0" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebugType>none</DebugType>

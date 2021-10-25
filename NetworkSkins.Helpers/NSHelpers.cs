@@ -1,8 +1,9 @@
 ﻿namespace NetworkSkins.Helpers {
+    extern alias NS;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using NetworkSkins.API;
+    using NS.NetworkSkins.API;
     using ColossalFramework.Plugins;
     using ColossalFramework.Threading;
 

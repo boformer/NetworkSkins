@@ -7,7 +7,7 @@
     /// <summary>
     /// Note: data should implement GetHash() and Equals()
     /// </summary>
-    public interface INSImplementation : INSPersistancy, INSGUUIImplementation, INSControllerImpelementation {
+    public interface INSImplementation : INSPersistancy, INSGUI, INSController {
         string ID { get; }
         int Index { get; set; }
         void OnBeforeNSLoaded();
@@ -40,7 +40,7 @@
         ICloneable Decode64(string base64Data, Version dataVersion);
     }
 
-    public interface INSGUUIImplementation {
+    public interface INSGUI {
         /// <summary>
         /// 30x30 foreground texture for button.
         /// </summary>
@@ -66,7 +66,7 @@
     /// <summary>
     /// get selected prefab from NetTool.m_prefab
     /// </summary>
-    public interface INSControllerImpelementation {
+    public interface INSController {
         /// <summary>
         /// determine if the selected prefab is supported by your mod.
         /// </summary>
