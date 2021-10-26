@@ -213,5 +213,17 @@ namespace NetworkSkins.Net
             }
             return info;
         }
+
+        public static ref NetNode ToNode(this ushort nodeID) => ref NetManager.instance.m_nodes.m_buffer[nodeID];
+
+        public static ushort GetFirstSegment(this ref NetNode node) {
+            ushort ret = 0;
+            for(int i = 0; i < 8; ++i) {
+                ret = node.GetSegment(i);
+                if(ret > 0)
+                    break;
+            }
+            return ret;
+        }
     }
 }
