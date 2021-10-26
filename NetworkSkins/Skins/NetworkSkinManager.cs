@@ -244,6 +244,8 @@ namespace NetworkSkins.Skins
                 EventSegmentPlaced?.Invoke(skin);
             }
 
+            if(NSAPI.Instance is null)
+                throw new Exception("NSAPI.Instance is null");
             NSAPI.Instance.OnSkinApplied(skin?.m_CustomDatas, new InstanceID { NetSegment = segment });
         }
 
@@ -255,7 +257,7 @@ namespace NetworkSkins.Skins
 
             UsageAdded(oldSkin);
 
-            NSAPI.Instance.OnSkinApplied(oldSkin.m_CustomDatas, new InstanceID { NetSegment = newSegment });
+            NSAPI.Instance.OnSkinApplied(oldSkin?.m_CustomDatas, new InstanceID { NetSegment = newSegment });
         }
 
         public void OnSegmentRelease(ushort segment)
