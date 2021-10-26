@@ -225,5 +225,8 @@ namespace NetworkSkins.Net
             }
             return ret;
         }
+
+        internal static bool InSimulationThread() =>
+            System.Threading.Thread.CurrentThread == SimulationManager.instance.m_simulationThread;
     }
 }

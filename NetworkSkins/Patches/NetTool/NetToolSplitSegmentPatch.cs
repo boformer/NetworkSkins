@@ -8,14 +8,14 @@ namespace NetworkSkins.Patches.NetTool {
         internal static bool CopySkin { get; private set; }
 
         public static void Prefix(ushort segment) {
-            if(NSUtil.InSimulationThread()) {
+            if(Net.NetUtils.InSimulationThread()) {
                 Skin = NetworkSkinManager.instance.CopySegmentSkin(segment);
                 CopySkin = true;
             }
         }
 
         public static void Postfix() {
-            if(NSUtil.InSimulationThread()) {
+            if(Net.NetUtils.InSimulationThread()) {
                 if(CopySkin) {
                     NetworkSkinManager.instance.UsageRemoved(Skin);
                     Skin = null;

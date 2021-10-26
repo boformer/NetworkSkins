@@ -17,12 +17,12 @@ namespace NetworkSkins.Patches.NetTool {
 
         public static bool Called = false;
         static void Prefix() {
-            if(NSUtil.InSimulationThread())
+            if(Net.NetUtils.InSimulationThread())
                 Called = true;
         }
 
         static void Postfix() {
-            if(NSUtil.InSimulationThread())
+            if(Net.NetUtils.InSimulationThread())
                 Called = false;
         }
     }

@@ -11,7 +11,7 @@ namespace NetworkSkins.Patches.NetManager
     public static class NetManagerCreateSegmentPatch
     {
         public static void Postfix(ref ushort segment, bool __result) {
-            if(!__result || !NSUtil.InSimulationThread()) {
+            if(!__result || !Net.NetUtils.InSimulationThread()) {
                 return;
             }
 

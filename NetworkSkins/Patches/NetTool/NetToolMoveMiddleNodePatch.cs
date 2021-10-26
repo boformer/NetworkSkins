@@ -10,7 +10,7 @@ namespace NetworkSkins.Patches.NetTool {
 
         public static void Prefix(ref ushort node) // TODO remove ref when in lates harmony.
         {
-            if(NSUtil.InSimulationThread()) {
+            if(NetUtils.InSimulationThread()) {
                 ushort segment = node.ToNode().GetFirstSegment();
                 Skin = NetworkSkinManager.instance.CopySegmentSkin(segment);
                 CopySkin = true;
@@ -18,7 +18,7 @@ namespace NetworkSkins.Patches.NetTool {
         }
 
         public static void Postfix() {
-            if(NSUtil.InSimulationThread()) {
+            if(NetUtils.InSimulationThread()) {
                 if(CopySkin) {
                     NetworkSkinManager.instance.UsageRemoved(Skin);
                     Skin = null;

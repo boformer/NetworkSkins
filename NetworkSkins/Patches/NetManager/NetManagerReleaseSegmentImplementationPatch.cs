@@ -14,7 +14,7 @@ namespace NetworkSkins.Patches.NetManager {
             typeof(global::NetManager).GetMethod<ReleaseSegmentImplementation>();
 
         public static void Prefix(ushort segment) {
-            if(NSUtil.InSimulationThread()) {
+            if(Net.NetUtils.InSimulationThread()) {
                 NetworkSkinManager.instance.OnSegmentRelease(segment);
             }
         }
