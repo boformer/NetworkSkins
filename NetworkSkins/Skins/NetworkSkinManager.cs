@@ -275,7 +275,7 @@ namespace NetworkSkins.Skins
             {
                 NetManager.instance.UpdateNodeColors(node);
             }
-            
+
             UsageAdded(skin);
             UsageRemoved(previousSkin);
         }
