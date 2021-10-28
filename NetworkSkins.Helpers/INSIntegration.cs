@@ -99,6 +99,7 @@ namespace NetworkSkins.API {
 
         /// <summary>
         /// Save active skin data for the prefab to ActiveSelectionData.
+        /// Note: This is caleld After <see cref="Reset"/>, <see cref="BuildWitData"/>, and <see cref="API.NSAPI.OnControllerChanged(string)"/>.
         /// </summary>
         void SaveActiveSelection();
     }
