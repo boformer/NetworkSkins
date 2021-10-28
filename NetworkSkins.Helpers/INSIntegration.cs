@@ -1,4 +1,8 @@
-﻿namespace NetworkSkins.Helpers {
+﻿#if NS_HELPERS
+namespace NetworkSkins.Helpers {
+#else
+namespace NetworkSkins.API {
+#endif
     using ColossalFramework.UI;
     using System;
     using System.Collections.Generic;
@@ -7,7 +11,7 @@
     /// <summary>
     /// Note: data should implement GetHash() and Equals()
     /// </summary>
-    public interface INSImplementation : INSPersistancy, INSGUI, INSController {
+    public interface INSIntegration : INSPersistancy, INSGUI, INSController {
         string ID { get; }
         int Index { get; set; }
         void OnBeforeNSLoaded();
@@ -79,6 +83,11 @@
         Dictionary<NetInfo, ICloneable> BuildCustomData();
 
         /// <summary>
+        /// user pressed reset button for the active skin. clear data from ActiveSelectionData for the selected prefab.
+        /// </summary>
+        void Reset();
+
+        /// <summary>
         /// User used pipet tool to select an skin. load data and then save to ActiveSelectionData for the selected prefab
         /// </summary>
         void LoadWithData(ICloneable data);
@@ -89,8 +98,8 @@
         void LoadActiveSelection();
 
         /// <summary>
-        /// user pressed reset button for the active skin. clear data from ActiveSelectionData for the selected prefab.
+        /// Save active skin data for the prefab to ActiveSelectionData.
         /// </summary>
-        void Reset();
+        void SaveActiveSelection();
     }
 }

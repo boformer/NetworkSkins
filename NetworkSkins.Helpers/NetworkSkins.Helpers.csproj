@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net35</TargetFramework>
     <LangVersion>preview</LangVersion>
+    <DefineConstants>NS_HELPERS</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetworkSkins\NetworkSkins.csproj">

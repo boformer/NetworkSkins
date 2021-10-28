@@ -6,13 +6,7 @@
     using Object = UnityEngine.Object;
     using Resources = NetworkSkins.Resources;
 
-    public class NSImplementationWrapper
-#if DEBUG
-    // include INSImplementation in debug build to test that all the delegates have the correct types.
-    // exclude INSImplementation in release build to avoid having two versions of it in two assemblies making it easier for others to use NS helpers
-        : Helpers.INSImplementation 
-#endif
-        {
+    public class NSImplementationWrapper: INSIntegration {
         private static class Delegates {
             public delegate int get_Index();
             public delegate void set_Index(int value);
@@ -37,6 +31,7 @@
             public delegate void LoadWithData(ICloneable data);
             public delegate void Reset();
             public delegate void LoadActiveSelection();
+            public delegate void SaveActiveSelection();
         }
 
         public object Implemenation;
@@ -63,6 +58,7 @@
         private Delegates.LoadWithData loadWithData_;
         private Delegates.Reset reset_;
         private Delegates.LoadActiveSelection loadActiveSelection_;
+        private Delegates.SaveActiveSelection saveActiveSelection_;
 
 
         public NSImplementationWrapper(object impl) {
@@ -90,6 +86,7 @@
             loadWithData_ = DelegateUtil.CreateClosedDelegate<Delegates.LoadWithData>(impl);
             reset_ = DelegateUtil.CreateClosedDelegate<Delegates.Reset>(impl);
             loadActiveSelection_ = DelegateUtil.CreateClosedDelegate<Delegates.LoadActiveSelection>(impl);
+            saveActiveSelection_ = DelegateUtil.CreateClosedDelegate<Delegates.SaveActiveSelection>(impl);
         }
 
         public int Index {
@@ -199,22 +196,30 @@
             } catch(Exception ex) { Debug.LogException(ex); }
             return null;
         }
-        public void LoadWithData(ICloneable data) {
-            try {
-                loadWithData_(data);
-            } catch(Exception ex) { Debug.LogException(ex); }
-        }
+
         public void Reset() {
             try {
                 reset_();
             } catch(Exception ex) { Debug.LogException(ex); }
         }
 
+        public void LoadWithData(ICloneable data) {
+            try {
+                loadWithData_(data);
+            } catch(Exception ex) { Debug.LogException(ex); }
+        }
+        
         public void LoadActiveSelection() {
             try {
                 loadActiveSelection_();
             } catch(Exception ex) { Debug.LogException(ex); }
         }
-#endregion
+
+        public void SaveActiveSelection() {
+            try {
+                saveActiveSelection_();
+            } catch(Exception ex) { Debug.LogException(ex); }
+        }
+        #endregion
     }
 }

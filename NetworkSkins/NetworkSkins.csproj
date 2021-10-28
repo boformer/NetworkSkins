@@ -4,7 +4,7 @@
     <TargetFramework>net35</TargetFramework>
     <Deterministic>false</Deterministic>
     <AssemblyTitle>NetworkSkins</AssemblyTitle>
-    <AssemblyVersion>1.0.*</AssemblyVersion>
+    <AssemblyVersion>2.1.*</AssemblyVersion>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <LangVersion>preview</LangVersion>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
@@ -34,7 +34,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Condition="'$(Configuration)'=='Debug'" Include="..\NetworkSkins.Helpers\INSImplementation.cs" Link="API\INSImplementation.cs" />
+    <Compile Include="..\NetworkSkins.Helpers\INSIntegration.cs" Link="API\INSIntegration.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CitiesHarmony.API" Version="2.0.0" />

@@ -10,13 +10,30 @@
     public static class NSHelpers {
         private static List<Action> pendingActions_;
 
-        public static PluginManager.PluginInfo GetNS() {
-            return PluginManager.instance.GetPluginsInfo()
-                .FirstOrDefault(p => p.userModInstance.GetType().Name == "NetworkSkinsMod");
+        /// <summary>
+        /// get NS (a version that supports <see cref="INSIntegration>"/> pluging.
+        /// </summary>
+        public static PluginManager.PluginInfo GetSupportedNS() {
+            return PluginManager.instance.GetPluginsInfo().FirstOrDefault(IsSupportedNS);
         }
 
-        public static bool IsNSEnabled() => GetNS()?.isEnabled ?? false;
+        static bool IsSupportedNS(PluginManager.PluginInfo p) {
+            if(p == null)
+                return false;
+            Type type = p.userModInstance.GetType();
+            string name = type.Name;
+            Version version = type.Assembly.GetName().Version;
+            return name == "NetworkSkinsMod" && version >= new Version(2,1,0);
+        }
 
+        /// <returns><c>true</c> if NS (a version that supports <see cref="INSIntegration>"/> is enabled</returns>
+        public static bool IsNSEnabled() => GetSupportedNS()?.isEnabled ?? false;
+
+
+        /// <summary>
+        /// performs the given action once NS (a version that supports <see cref="INSIntegration>"/> is enabled
+        /// use this in OnEnabled in your mod to regisrter your Implementation of INSIntegration
+        /// </summary>
         public static void DoOnNSEnabled(Action action) {
             if(action is null)
                 throw new ArgumentNullException("action");
@@ -50,27 +67,27 @@
             }
         }
 
-        public static object GetSegmentSkinData(this INSImplementation impl, ushort segmentID) {
+        public static object GetSegmentSkinData(this INSIntegration impl, ushort segmentID) {
             return NSAPI.Instance.GetSegmentSkinData(implIndex: impl.Index, segmentID);
         }
 
-        public static object GetNodeSkinData(this INSImplementation impl, ushort nodeID) {
+        public static object GetNodeSkinData(this INSIntegration impl, ushort nodeID) {
             return NSAPI.Instance.GetNodeSkinData(implIndex: impl.Index, nodeID);
         }
 
         /// <summary>
         /// If user changed skin data using UI call this to rebuild skin.
         /// </summary>
-        public static void OnControllerChanged(this INSImplementation impl) =>
+        public static void OnControllerChanged(this INSIntegration impl) =>
             NSAPI.Instance.OnControllerChanged(impl.ID);
 
-        public static void Register(this INSImplementation impl) {
+        public static void Register(this INSIntegration impl) {
             if(NSAPI.Instance == null)
                 throw new Exception("NS is not ready yet. Please use DoOnNSEnabled()");
             NSAPI.Instance.AddImplementation(impl);
         }
 
-        public static bool Remove(this INSImplementation impl) =>
+        public static bool Remove(this INSIntegration impl) =>
             NSAPI.Instance?.RemoveImplementation(impl) ?? false;
     }
 }

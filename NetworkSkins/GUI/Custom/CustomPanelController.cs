@@ -27,6 +27,8 @@ namespace NetworkSkins.GUI.Custom {
                 CustomDatas = new Dictionary<NetInfo, CustomDataCollectionModifier>();
             }
 
+            Implementation.SaveActiveSelection();
+            
             base.OnChanged();
         }
         public void Changed() => OnChanged();
@@ -43,6 +45,7 @@ namespace NetworkSkins.GUI.Custom {
             var modifer = modifiers?.OfType<CustomDataCollectionModifier>()?.FirstOrDefault();
             ICloneable data = modifer?.Data?[Implementation.ID];
             Implementation.LoadWithData(data);
+            Implementation.SaveActiveSelection();
         }
 
         #region Active Selection Data
