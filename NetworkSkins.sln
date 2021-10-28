@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetworkSkins.Helpers", "NetworkSkins.Helpers\NetworkSkins.Helpers.csproj", "{148C6B13-6FAA-4059-9F14-98805FEE1084}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NS.Helpers", "NetworkSkins.Helpers\NS.Helpers.csproj", "{148C6B13-6FAA-4059-9F14-98805FEE1084}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
