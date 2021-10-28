@@ -23,7 +23,7 @@
             Type type = p.userModInstance.GetType();
             string name = type.Name;
             Version version = type.Assembly.GetName().Version;
-            return name == "NetworkSkinsMod" && version >= new Version(2,1,0);
+            return name == "NetworkSkinsMod" && version >= new Version(1,1,0);
         }
 
         /// <returns><c>true</c> if NS (a version that supports <see cref="INSIntegration>"/> is enabled</returns>

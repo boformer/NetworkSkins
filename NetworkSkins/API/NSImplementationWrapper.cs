@@ -101,7 +101,7 @@
         public void OnSkinApplied(ICloneable data, InstanceID instanceID) => onSkinApplied_(data, instanceID);
         public void OnNSDisabled() => onNSDisabled_();
 
-#region Persistency
+        #region Persistency
         public Version DataVersion => get_DataVersion_();
         public string Encode64(ICloneable data) {
             try {
@@ -114,7 +114,7 @@
                 return null;
             }
         }
-    public ICloneable Decode64(string base64Data, Version dataVersion) {
+        public ICloneable Decode64(string base64Data, Version dataVersion) {
             try {
                 if(base64Data == null)
                     return null;
@@ -126,9 +126,9 @@
             }
         }
 
-#endregion
+        #endregion
 
-#region panel
+        #region panel
         public Texture2D Icon => get_Icon_();
 
         public const string ForegroundIconName = "Icon";
@@ -186,9 +186,9 @@
                 Debug.LogException(ex);
             }
         }
-#endregion
+        #endregion
 
-#region Controller
+        #region Controller
         public bool Enabled => get_Enabled_();
         public Dictionary<NetInfo, ICloneable> BuildCustomData() {
             try {
