@@ -11,7 +11,7 @@
         private static List<Action> pendingActions_;
 
         /// <summary>
-        /// get NS (a version that supports <see cref="INSIntegration>"/> pluging.
+        /// get NS (a version that supports <see cref="INSIntegration>"/> plug-in.
         /// </summary>
         public static PluginManager.PluginInfo GetSupportedNS() {
             return PluginManager.instance.GetPluginsInfo().FirstOrDefault(IsSupportedNS);
@@ -32,7 +32,7 @@
 
         /// <summary>
         /// performs the given action once NS (a version that supports <see cref="INSIntegration>"/> is enabled
-        /// use this in OnEnabled in your mod to regisrter your Implementation of INSIntegration
+        /// use this in OnEnabled in your mod to register your Implementation of INSIntegration
         /// </summary>
         public static void DoOnNSEnabled(Action action) {
             if(action is null)
