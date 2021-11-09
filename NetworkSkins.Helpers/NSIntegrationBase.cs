@@ -1,18 +1,34 @@
 ﻿namespace NetworkSkins.Helpers {
+    using ColossalFramework.Plugins;
     using ColossalFramework.UI;
+    using ICities;
     using System;
+    using System.Linq;
     using System.Collections.Generic;
     using UnityEngine;
 
-    public abstract class NSIntegrationBase<T> : INSIntegration where T : class, new() {
+    public abstract class NSIntegrationBase<TIntegration, TMod> : INSIntegration 
+        where TIntegration : class, INSIntegration, new()
+        where TMod : IUserMod 
+    {
         #region life cycle
-        public static T Instace { get; private set; }
-        
-        private static void Create() => Instace = new T();
-        
+        public static TIntegration Instace { get; private set; }
+
+        private static void Create() {
+            if(Instace != null)
+                return; // already created (might happen if user enables and disables the mod multiple times)
+
+            var plugin = PluginManager.instance.GetPluginsInfo().FirstOrDefault(p => p.userModInstance is TMod);
+            if(plugin.isEnabled /* just in case user disabled mod and then enabled NS */) {
+                Instace = new TIntegration();
+                Instace.Register();
+            }
+        }
+
         /// <summary>Call when your mod is enabled</summary>
         public static void Install() => NSHelpers.DoOnNSEnabled(Create);
         
+
         /// <summary>Call when your mod is disabled</summary>
         public void Uninstall() {
             this.Remove();
