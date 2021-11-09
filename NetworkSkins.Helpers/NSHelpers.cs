@@ -1,14 +1,13 @@
 ﻿namespace NetworkSkins.Helpers {
     extern alias NS;
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using NS.NetworkSkins.API;
     using ColossalFramework.Plugins;
     using ColossalFramework.Threading;
 
     public static class NSHelpers {
-        private static List<Action> pendingActions_;
+        public static event Action EventNSInstalled;
 
         /// <summary>
         /// get NS (a version that supports <see cref="INSIntegration>"/> plug-in.
@@ -48,8 +47,7 @@
             if(IsNSEnabled()) {
                 action();
             } else {
-                pendingActions_ ??= new List<Action>();
-                pendingActions_.Add(action);
+                EventNSInstalled += action;
                 PluginManager.instance.eventPluginsStateChanged -= OneventPluginsStateChanged;
                 PluginManager.instance.eventPluginsStateChanged += OneventPluginsStateChanged;
                 LoadingManager.instance.m_introLoaded -= OneventPluginsStateChanged;
@@ -58,12 +56,10 @@
         }
 
         private static void OneventPluginsStateChanged() {
-            if(pendingActions_ != null && IsNSEnabled()) {
+            if(EventNSInstalled != null && IsNSEnabled()) {
                 UnityEngine.Debug.Log("NS is enabled. Execute pending actions ...");
-                foreach(var action in pendingActions_) {
-                    action();
-                }
-                pendingActions_ = null;
+                EventNSInstalled?.Invoke();
+                EventNSInstalled = null;
             }
         }
 

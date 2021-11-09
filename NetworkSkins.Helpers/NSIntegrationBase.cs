@@ -7,31 +7,24 @@
     using System.Collections.Generic;
     using UnityEngine;
 
-    public abstract class NSIntegrationBase<TIntegration, TMod> : INSIntegration 
+    public abstract class NSIntegrationBase<TIntegration> : INSIntegration 
         where TIntegration : class, INSIntegration, new()
-        where TMod : IUserMod 
     {
         #region life cycle
         public static TIntegration Instace { get; private set; }
 
         private static void Create() {
-            if(Instace != null)
-                return; // already created (might happen if user enables and disables the mod multiple times)
-
-            var plugin = PluginManager.instance.GetPluginsInfo().FirstOrDefault(p => p.userModInstance is TMod);
-            if(plugin.isEnabled /* just in case user disabled mod and then enabled NS */) {
-                Instace = new TIntegration();
-                Instace.Register();
-            }
+            Instace ??= new TIntegration();
+            Instace.Register();
         }
 
         /// <summary>Call when your mod is enabled</summary>
         public static void Install() => NSHelpers.DoOnNSEnabled(Create);
-        
 
         /// <summary>Call when your mod is disabled</summary>
-        public void Uninstall() {
-            this.Remove();
+        public static void Uninstall() {
+            NSHelpers.EventNSInstalled -= Create;
+            Instace?.Remove();
             Instace = null;
         }
 
