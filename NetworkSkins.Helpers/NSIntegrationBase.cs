@@ -11,11 +11,11 @@
         where TIntegration : class, INSIntegration, new()
     {
         #region life cycle
-        public static TIntegration Instace { get; private set; }
+        public static TIntegration Instance { get; private set; }
 
         private static void Create() {
-            Instace ??= new TIntegration();
-            Instace.Register();
+            Instance ??= new TIntegration();
+            Instance.Register();
         }
 
         /// <summary>Call when your mod is enabled</summary>
@@ -24,8 +24,8 @@
         /// <summary>Call when your mod is disabled</summary>
         public static void Uninstall() {
             NSHelpers.EventNSInstalled -= Create;
-            Instace?.Remove();
-            Instace = null;
+            Instance?.Remove();
+            Instance = null;
         }
 
         public virtual void OnNSDisabled() => Install(); // install again if/when NS is enabled again.
