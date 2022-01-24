@@ -24,7 +24,7 @@
         /// <param name="type">the class/type where the method is delcared</param>
         /// <param name="name">the name of the method</param>
         internal static MethodInfo GetMethod<TDelegate>(this Type type, string name = null) where TDelegate : Delegate {
-            name ??= typeof(TDelegate).Name;
+            if (name == null) name = typeof(TDelegate).Name;
             var ret = type.GetMethod(
                 name,
                 HarmonyLib.AccessTools.all,
