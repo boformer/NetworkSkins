@@ -244,13 +244,15 @@ namespace NetworkSkins.Skins
             }
         }
 
-        public void OnSegmentTransferData(ushort oldSegment, ushort newSegment)
-        {
-            var oldSkin = SegmentSkins[oldSegment];
+        public NetworkSkin CopySegmentSkin(ushort segment) {
+            var skin = SegmentSkins[segment];
+            UsageAdded(skin);
+            return skin;
+        }
 
-            SegmentSkins[newSegment] = oldSkin;
-
-            UsageAdded(oldSkin);
+        public void PasteSegmentSkin(ushort segment, NetworkSkin skin) {
+            UsageAdded(skin);
+            SegmentSkins[segment] = skin;
         }
 
         public void OnSegmentRelease(ushort segment)
@@ -286,9 +288,9 @@ namespace NetworkSkins.Skins
             UsageRemoved(skin);
         }
         #endregion
-        
+
         #region Usage Tracking
-        private void UsageAdded(NetworkSkin skin, int count = 1)
+        public void UsageAdded(NetworkSkin skin, int count = 1)
         {
             if (skin == null) return;
 
@@ -300,7 +302,7 @@ namespace NetworkSkins.Skins
             skin.UseCount += count;
         }
 
-        private void UsageRemoved(NetworkSkin skin)
+        public void UsageRemoved(NetworkSkin skin)
         {
             if (skin == null) return;
 
