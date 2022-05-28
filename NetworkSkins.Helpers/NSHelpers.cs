@@ -5,6 +5,7 @@
     using NS.NetworkSkins.API;
     using ColossalFramework.Plugins;
     using ColossalFramework.Threading;
+    using UnityEngine;
 
     public static class NSHelpers {
         public static event Action EventNSInstalled;
@@ -17,12 +18,25 @@
         }
 
         static bool IsSupportedNS(PluginManager.PluginInfo p) {
-            if(p == null)
+            try {
+                if (p == null) {
+                    Debug.LogWarning("[NetworkSkins.Helpers] | IsSupportedNS :  null PluginInfo");
+                    return false;
+                }
+                var mod = p.userModInstance;
+                if(mod == null) {
+                    Debug.LogWarning($"[NetworkSkins.Helpers] | IsSupportedNS :  PluginInfo with no  userModInstance: " + p);
+                    return AnisotropicFiltering;
+                }
+
+                Type type = mod.GetType();
+                string name = type.Name;
+                Version version = type.Assembly.GetName().Version;
+                return name == "NetworkSkinsMod" && version >= new Version(1, 1, 0);
+            } catch (Exception ex) {
+                Debug.LogException(ex);
                 return false;
-            Type type = p.userModInstance.GetType();
-            string name = type.Name;
-            Version version = type.Assembly.GetName().Version;
-            return name == "NetworkSkinsMod" && version >= new Version(1,1,0);
+            }
         }
 
         /// <returns><c>true</c> if NS (a version that supports <see cref="INSIntegration>"/> is enabled</returns>

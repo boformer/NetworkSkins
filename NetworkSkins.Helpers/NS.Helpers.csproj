@@ -4,6 +4,7 @@
     <LangVersion>preview</LangVersion>
     <DefineConstants>NS_HELPERS</DefineConstants>
     <RootNamespace>NetworkSkins.Helpers</RootNamespace>
+    <Version>2.0.0.1</Version>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetworkSkins\NetworkSkins.csproj">
