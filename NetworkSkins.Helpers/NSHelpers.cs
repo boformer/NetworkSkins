@@ -26,7 +26,7 @@
                 var mod = p.userModInstance;
                 if(mod == null) {
                     Debug.LogWarning($"[NetworkSkins.Helpers] | IsSupportedNS :  PluginInfo with no  userModInstance: " + p);
-                    return AnisotropicFiltering;
+                    return false;
                 }
 
                 Type type = mod.GetType();
