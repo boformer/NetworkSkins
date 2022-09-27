@@ -20,8 +20,9 @@
         /// <summary>
         /// Gets directly declared method based on a delegate that has
         /// the same name as the target method
+        /// for instance methods: the delegate should exclude the instance argument.
         /// </summary>
-        /// <param name="type">the class/type where the method is delcared</param>
+        /// <param name="type">the class/type where the method is declared</param>
         /// <param name="name">the name of the method</param>
         internal static MethodInfo GetMethod<TDelegate>(this Type type, string name = null) where TDelegate : Delegate {
             name ??= typeof(TDelegate).Name;
@@ -40,7 +41,7 @@
         /// creates a closed instance delegate.
         /// </summary>
         /// <typeparam name="TDelegate">a delegate with all the parameters and the return type but without the instance argument</typeparam>
-        /// <param name="instance">target instace for the delegate to close on</param>
+        /// <param name="instance">target instance for the delegate to close on</param>
         /// <param name="name">method name or null to use delegate type as name</param>
         /// <returns>a delegate that can be called without the need to provide instance argument.</returns>
         internal static TDelegate CreateClosedDelegate<TDelegate>(object instance, string name = null) where TDelegate : Delegate {
