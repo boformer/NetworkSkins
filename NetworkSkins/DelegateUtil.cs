@@ -6,7 +6,7 @@
 
     internal static class DelegateUtil {
         /// <typeparam name="TDelegate">delegate type</typeparam>
-        /// <returns>Type[] represeting arguments of the delegate.</returns>
+        /// <returns>Type[] representing arguments of the delegate.</returns>
         internal static Type[] GetParameterTypes<TDelegate>()
             where TDelegate : Delegate {
             var parameters = typeof(TDelegate)
@@ -23,7 +23,7 @@
         /// </summary>
         /// <param name="type">the class/type where the method is delcared</param>
         /// <param name="name">the name of the method</param>
-        internal static MethodInfo GetMethod<TDelegate>(this Type type, string name = null) where TDelegate : Delegate {
+        internal static MethodBase GetMethod<TDelegate>(this Type type, string name = null) where TDelegate : Delegate {
             name ??= typeof(TDelegate).Name;
             var ret = type.GetMethod(
                 name,
