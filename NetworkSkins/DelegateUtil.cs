@@ -23,7 +23,7 @@
         /// </summary>
         /// <param name="type">the class/type where the method is delcared</param>
         /// <param name="name">the name of the method</param>
-        internal static MethodBase GetMethod<TDelegate>(this Type type, string name = null) where TDelegate : Delegate {
+        internal static MethodInfo GetMethod<TDelegate>(this Type type, string name = null) where TDelegate : Delegate {
             name ??= typeof(TDelegate).Name;
             var ret = type.GetMethod(
                 name,
@@ -46,7 +46,7 @@
         internal static TDelegate CreateClosedDelegate<TDelegate>(object instance, string name = null) where TDelegate : Delegate {
             try {
                 var type = instance.GetType();
-                MethodInfo method = type.GetMethod<TDelegate>(name) as MethodInfo;
+                MethodInfo method = type.GetMethod<TDelegate>(name);
                 if(method == null) return null;
                 return (TDelegate)Delegate.CreateDelegate(type: typeof(TDelegate), firstArgument: instance, method: method);
             } catch(Exception ex) {
