@@ -46,7 +46,7 @@
         internal static TDelegate CreateClosedDelegate<TDelegate>(object instance, string name = null) where TDelegate : Delegate {
             try {
                 var type = instance.GetType();
-                var method = type.GetMethod<TDelegate>(name);
+                MethodInfo method = type.GetMethod<TDelegate>(name) as MethodInfo;
                 if(method == null) return null;
                 return (TDelegate)Delegate.CreateDelegate(type: typeof(TDelegate), firstArgument: instance, method: method);
             } catch(Exception ex) {
