@@ -1,7 +1,7 @@
 ﻿using NetworkSkins.Skins;
 using UnityEngine;
 
-namespace NetworkSkins.Patches.NetNode
+namespace NetworkSkins.Patches._NetNode
 {
     /// <summary>
     /// Common patch logic for NetNode.RenderInstance, NetNode.CalculateGroupData and NetNode.PopulateGroupData

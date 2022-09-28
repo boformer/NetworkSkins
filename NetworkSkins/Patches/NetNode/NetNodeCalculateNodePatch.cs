@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
 using NetworkSkins.Skins;
 
-namespace NetworkSkins.Patches.NetNode
+namespace NetworkSkins.Patches._NetNode
 {
     /// <summary>
     /// CalculateNode is called after a node was created or when a segment connected to the node was added, removed or updated.
