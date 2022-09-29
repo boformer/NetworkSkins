@@ -16,7 +16,7 @@ namespace NetworkSkins.Patches
             return segmentColor;
         }
 
-        public static Color GetNodeColor(NetAI netAI, ushort nodeID, ref global::NetNode data, InfoManager.InfoMode infoMode)
+        public static Color GetNodeColor(NetAI netAI, ushort nodeID, ref NetNode data, InfoManager.InfoMode infoMode)
         {
             var patcherState = Apply(netAI.m_info, NetworkSkinManager.NodeSkins[nodeID]);
             var segmentColor = netAI.GetColor(nodeID, ref data, infoMode);

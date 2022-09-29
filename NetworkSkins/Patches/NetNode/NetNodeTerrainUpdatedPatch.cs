@@ -5,7 +5,7 @@ using HarmonyLib;
 using NetworkSkins.Skins;
 using UnityEngine;
 
-namespace NetworkSkins.Patches.NetNode
+namespace NetworkSkins.Patches._NetNode
 {
     /// <summary>
     /// Used by terrain surface.

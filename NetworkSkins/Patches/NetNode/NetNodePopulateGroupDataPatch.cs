@@ -5,7 +5,7 @@ using System.Reflection.Emit;
 using HarmonyLib;
 using UnityEngine;
 
-namespace NetworkSkins.Patches.NetNode
+namespace NetworkSkins.Patches._NetNode
 {
     /// <summary>
     /// Used by wires (LODs)
