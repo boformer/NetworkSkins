@@ -84,10 +84,10 @@ namespace NetworkSkins.Patches._NetNode
                     )
                 {
                     TranspilerUtils.LogDebug("Found NetInfo netInfo2 = (num14 > num13 >> 1) ? netInfo : info4;");
-                    num14LocalVarLdLoc = TranspilerUtils.BuildLdLocFromLdLoc(codes[index - 3]);
-                    num13LocalVarLdLoc = TranspilerUtils.BuildLdLocFromLdLoc(codes[index - 2]);
-                    info4LocalVarLdLoc = TranspilerUtils.BuildLdLocFromLdLoc(codes[index + 2]); // 40
-                    var netInfoLocalVarLdLoc = TranspilerUtils.BuildLdLocFromLdLoc(codes[index + 4]); // 48
+                    num14LocalVarLdLoc = codes[index - 3].Clone();
+                    num13LocalVarLdLoc = codes[index - 2].Clone();
+                    info4LocalVarLdLoc = codes[index + 2].Clone(); // 40
+                    var netInfoLocalVarLdLoc = codes[index + 4].Clone(); // 48
                     netInfo2LocalVarLdLoc = TranspilerUtils.BuildLdLocFromStLoc(codes[index + 5]); // 75
 
                     var findIndex = 0;
@@ -310,7 +310,7 @@ namespace NetworkSkins.Patches._NetNode
                     if (TranspilerUtils.IsLdLoc(codes[index - 6]))
                     {
                         TranspilerUtils.LogDebug("Found segment7");
-                        return TranspilerUtils.BuildLdLocFromLdLoc(codes[index - 6]);
+                        return codes[index - 6].Clone();
                     }
                 }
             }
@@ -350,7 +350,7 @@ namespace NetworkSkins.Patches._NetNode
                     if (TranspilerUtils.IsLdLoc(codes[index - 6]))
                     {
                         TranspilerUtils.LogDebug("Found num6");
-                        return TranspilerUtils.BuildLdLocFromLdLoc(codes[index - 6]);
+                        return codes[index - 6].Clone();
                     }
                 }
             }

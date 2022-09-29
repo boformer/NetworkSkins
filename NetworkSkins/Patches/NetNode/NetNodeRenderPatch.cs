@@ -23,7 +23,7 @@ namespace NetworkSkins.Patches._NetNode
         /// will use the n-th previous call to GetSegment() to determine segmentID.
         /// </param>
         public static void PatchCheckFlags(
-            List<CodeInstruction> codes, MethodBase method, int occuranceCheckFlags) {
+            List<CodeInstruction> codes, MethodBase method, int occuranceCheckFlags, int counterGetSegment) {
             try {
                 var iCheckFlags = codes.Search(c => c.Calls(mCheckFlags), count: occuranceCheckFlags);
                 int iLdNodeInfo = codes.Search(
@@ -31,8 +31,8 @@ namespace NetworkSkins.Patches._NetNode
                     startIndex: iCheckFlags, count: -1);
 
                 CodeInstruction ldNodeInfo = codes[iLdNodeInfo].Clone();
-                CodeInstruction ldSegmentID = BuildSegmentLDLocFromPrevSTLoc(codes, iCheckFlags, 2);
-                CodeInstruction ldSegmentID2 = BuildSegmentLDLocFromPrevSTLoc(codes, iCheckFlags, 1);
+                CodeInstruction ldSegmentID = BuildSegmentLDLocFromPrevSTLoc(codes, iCheckFlags, counterGetSegment);
+                CodeInstruction ldSegmentID2 = BuildSegmentLDLocFromPrevSTLoc(codes, iCheckFlags, counterGetSegment-1);
                 var callShouldRender = typeof(NetNodeRenderPatch).Method(nameof(ShouldRender));
 
                 var newCodes = new[]{

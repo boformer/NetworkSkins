@@ -2,6 +2,7 @@ namespace NetworkSkins.Patches {
     using HarmonyLib;
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
     using System.Reflection.Emit;
@@ -20,8 +21,6 @@ namespace NetworkSkins.Patches {
     public delegate bool CodesPredicate(List<CodeInstruction> codes, int index);
 
     public static class TranspilerUtils {
-
-
         public const BindingFlags ALL = BindingFlags.Public
             | BindingFlags.NonPublic
             | BindingFlags.Instance
@@ -35,7 +34,8 @@ namespace NetworkSkins.Patches {
 
         public static bool VERBOSE = false;
 
-        public static void Log(string m) => UnityEngine.Debug.Log(m);
+        [Conditional("DEBUG")]
+        public static void LogDebug(string m) => UnityEngine.Debug.Log(m);
 
         /// <summary>
         /// like DeclaredMethod but throws suitable exception if method not found.
@@ -223,7 +223,7 @@ namespace NetworkSkins.Patches {
                 throw new InstructionNotFoundException($"count: found={n} requested={count}");
             } else {
                 if (VERBOSE)
-                    Log("Did not found instruction[s].\n" + Environment.StackTrace);
+                    LogDebug("Did not found instruction[s].\n" + Environment.StackTrace);
                 return -1;
             }
         }
@@ -248,14 +248,14 @@ namespace NetworkSkins.Patches {
                 if (code == null)
                     throw new Exception("Bad Instructions:\n" + insertion.IL2STR());
             if (VERBOSE)
-                Log($"replacing <{codes[index]}>\nInsert between: <{codes[index - 1]}>  and  <{codes[index + 1]}>");
+                LogDebug($"replacing <{codes[index]}>\nInsert between: <{codes[index - 1]}>  and  <{codes[index + 1]}>");
 
             MoveLabels(codes[index], insertion[0]);
             codes.RemoveAt(index);
             codes.InsertRange(index, insertion);
 
             if (VERBOSE) {
-                Log("Replacing with\n" + insertion.IL2STR());
+                LogDebug("Replacing with\n" + insertion.IL2STR());
                 string message = "PEEK\n";
                 for (int i = index - PeekBefore; i <= index + PeekAfter && i < codes.Count; ++i) {
                     if (i == index)
@@ -264,7 +264,7 @@ namespace NetworkSkins.Patches {
                     if (i == index + insertion.Length - 1)
                         message += " *** REPLACEMENT END ***\n";
                 }
-                Log(message);
+                LogDebug(message);
             }
         }
 
@@ -273,13 +273,13 @@ namespace NetworkSkins.Patches {
                 if (code == null)
                     throw new Exception("Bad Instructions:\n" + insertion.IL2STR());
             if (VERBOSE)
-                Log($"Insert point:\n between: <{codes[index - 1]}>  and  <{codes[index]}>");
+                LogDebug($"Insert point:\n between: <{codes[index - 1]}>  and  <{codes[index]}>");
 
             MoveLabels(codes[index], insertion[0]);
             codes.InsertRange(index, insertion);
 
             if (VERBOSE) {
-                Log("Insertion is:\n" + insertion.IL2STR());
+                LogDebug("Insertion is:\n" + insertion.IL2STR());
                 string message = "PEEK\n";
                 for(int i=index-PeekBefore; i <= index + PeekAfter && i<codes.Count; ++i) {
                     if (i == index)
@@ -288,7 +288,7 @@ namespace NetworkSkins.Patches {
                     if (i == index + insertion.Length - 1)
                         message += " *** INJECTION END ***\n";
                 }
-                Log(message);
+                LogDebug(message);
             }
         }
     }

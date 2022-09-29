@@ -20,8 +20,8 @@ namespace NetworkSkins.Patches._NetNode
         {
             try {
                 var codes = instructions.ToList();
-                NetNodeRenderPatch.PatchCheckFlags(codes, original, occuranceCheckFlags: 1); //DC
-                NetNodeRenderPatch.PatchCheckFlags(codes, original, occuranceCheckFlags: 4); // DC bend
+                NetNodeRenderPatch.PatchCheckFlags(codes, original, occuranceCheckFlags: 1, 2); //DC
+                NetNodeRenderPatch.PatchCheckFlags(codes, original, occuranceCheckFlags: 4, 2); // DC bend
                 return codes;
             } catch (Exception ex) {
                 Debug.LogException(ex);
