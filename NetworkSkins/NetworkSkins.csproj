@@ -6,6 +6,7 @@
     <AssemblyTitle>NetworkSkins</AssemblyTitle>
     <AssemblyVersion>1.0.*</AssemblyVersion>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
