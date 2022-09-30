@@ -6,7 +6,7 @@ using System.Reflection;
 using System;
 using UnityEngine;
 
-namespace NetworkSkins.Patches._NetNode
+namespace NetworkSkins.Patches._NetNode.Wires
 {
     /// <summary>
     /// Common patch logic for NetNode.RenderInstance, NetNode.CalculateGroupData and NetNode.PopulateGroupData
@@ -23,8 +23,10 @@ namespace NetworkSkins.Patches._NetNode
         /// will use the n-th previous call to GetSegment() to determine segmentID.
         /// </param>
         public static void PatchCheckFlags(
-            List<CodeInstruction> codes, MethodBase method, int occuranceCheckFlags, int counterGetSegment) {
-            try {
+            List<CodeInstruction> codes, MethodBase method, int occuranceCheckFlags, int counterGetSegment)
+        {
+            try
+            {
                 var iCheckFlags = codes.Search(c => c.Calls(mCheckFlags), count: occuranceCheckFlags);
                 int iLdNodeInfo = codes.Search(
                     _c => _c.IsLdLoc(typeof(NetInfo.Node), method),
@@ -32,7 +34,7 @@ namespace NetworkSkins.Patches._NetNode
 
                 CodeInstruction ldNodeInfo = codes[iLdNodeInfo].Clone();
                 CodeInstruction ldSegmentID = BuildSegmentLDLocFromPrevSTLoc(codes, iCheckFlags, counterGetSegment);
-                CodeInstruction ldSegmentID2 = BuildSegmentLDLocFromPrevSTLoc(codes, iCheckFlags, counterGetSegment-1);
+                CodeInstruction ldSegmentID2 = BuildSegmentLDLocFromPrevSTLoc(codes, iCheckFlags, counterGetSegment - 1);
                 var callShouldRender = typeof(NetNodeRenderPatch).Method(nameof(ShouldRender));
 
                 var newCodes = new[]{
@@ -43,14 +45,17 @@ namespace NetworkSkins.Patches._NetNode
                     new CodeInstruction(OpCodes.And),
                 };
                 codes.InsertInstructions(iCheckFlags + 1, newCodes, moveLabels: true);// insert our check after checkflags
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Debug.LogException(ex);
                 throw ex;
             }
         }
 
         public static CodeInstruction BuildSegmentLDLocFromPrevSTLoc(
-            List<CodeInstruction> codes, int index, int counter = 1) {
+            List<CodeInstruction> codes, int index, int counter = 1)
+        {
             index = codes.Search(c => c.Calls(mGetSegment), startIndex: index, count: counter * -1);
             index = codes.Search(c => c.IsStloc(), startIndex: index);
             return codes[index].BuildLdLocFromStLoc();
