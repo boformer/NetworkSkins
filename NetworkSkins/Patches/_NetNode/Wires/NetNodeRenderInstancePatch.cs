@@ -12,8 +12,8 @@ namespace NetworkSkins.Patches._NetNode.Wires {
 
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, MethodBase original) {
             var codes = instructions.ToList();
-            NetNodeRenderPatch.PatchCheckFlags(codes, original, occuranceCheckFlags: 1, 2); //DC
-            NetNodeRenderPatch.PatchCheckFlags(codes, original, occuranceCheckFlags: 4, 2); // DC bend
+            NetNodeRenderPatch.ApplyPach(codes, original, occuranceCheckFlags: 1, 2); //DC
+            NetNodeRenderPatch.ApplyPach(codes, original, occuranceCheckFlags: 4, 2); // DC bend
             return codes;
         }
     }

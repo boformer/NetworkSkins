@@ -24,7 +24,7 @@ namespace NetworkSkins.Patches._NetNode.Wires
         /// if set to 0, segmentID is auto-calculated (only for end ndoes and DC bend nodes)
         /// if set to n > 0, will use the n-th previous call to GetSegment() to determine segmentID.
         /// </param>
-        public static void PatchCheckFlags(
+        public static void ApplyPach(
             List<CodeInstruction> codes, MethodBase method, int occuranceCheckFlags, int counterGetSegment)
         {
             try
@@ -91,17 +91,17 @@ namespace NetworkSkins.Patches._NetNode.Wires
             ref NetNode node = ref nodeID.ToNode();
             segmentID1 = 0;
             segmentID2 = 0;
-            int segmentIndex = 0;
-            for (; segmentIndex < 8; segmentIndex++) {
+            int segmentIndex;
+            for (segmentIndex = 0; segmentIndex < 8; segmentIndex++) {
                 ushort segmentID = node.GetSegment(segmentIndex);
                 if (segmentID != 0) {
                     segmentID1 = segmentID;
                     break;
                 }
             }
-            for (; segmentIndex < 8; segmentIndex++) {
+            for (segmentIndex++; segmentIndex < 8; segmentIndex++) {
                 ushort segmentID = node.GetSegment(segmentIndex);
-                if (segmentID != 0 && segmentID != segmentID1) {
+                if (segmentID != 0) {
                     segmentID2 = segmentID;
                     break;
                 }
