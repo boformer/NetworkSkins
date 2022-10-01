@@ -10,6 +10,12 @@
     public class NSAPI {
         public static NSAPI Instance;
 
+        /// <summary>hot reload</summary>
+        public event Action<NSImplementationWrapper> EventImplementationAdded;
+
+        /// <summary>hot unload</summary>
+        public event Action<NSImplementationWrapper> EventImplementationRemoving;
+
         public List<NSImplementationWrapper> ImplementationWrappers = new List<NSImplementationWrapper>();
         public IEnumerable<NSImplementationWrapper> ActiveImplementationWrappers =>
             ImplementationWrappers.OfType<NSImplementationWrapper>(); // get rid of nulls
@@ -57,16 +63,19 @@
             }
 
             ImplementationWrappers.Add(wrapper);
-            int index = ImplementationWrappers.Count - 1;
-            wrapper.Index = index;
+            EventImplementationAdded?.Invoke(wrapper);
+            wrapper.Index = ImplementationWrappers.Count -1;
         }
 
         public bool RemoveImplementation(object impl) {
             var wrapper = ActiveImplementationWrappers.FirstOrDefault(item => item.Implemenation == impl);
-            if(wrapper != null) {
+            if (wrapper != null) {
+                Debug.Log($"RemoveImplementation(): removing {impl} with id:{wrapper.ID} index:{wrapper.Index}");
+                EventImplementationRemoving?.Invoke(wrapper);
                 ImplementationWrappers[wrapper.Index] = null;
                 return true;
             } else {
+                Debug.Log($"RemoveImplementation() failed to remove " + impl);
                 return false;
             }
         }

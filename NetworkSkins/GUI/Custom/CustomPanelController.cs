@@ -24,7 +24,7 @@ namespace NetworkSkins.GUI.Custom {
                     keySelector: pair => pair.Key,
                     elementSelector: pair => DataToCollection(pair.Value));
             } else {
-                CustomDatas = new Dictionary<NetInfo, CustomDataCollectionModifier>();
+                CustomDatas = new ();
             }
 
             Implementation.SaveActiveSelection();
