@@ -56,17 +56,27 @@
                 throw ex;
             }
 
+            // fill in the last null (hotreload fix)
+            for (int i = 0; i < ImplementationWrappers.Count; i++) {
+                if (ImplementationWrappers[i] == null) {
+                    ImplementationWrappers[i] = wrapper;
+                    wrapper.Index = i;
+                    return;
+                }
+            }
+
             ImplementationWrappers.Add(wrapper);
-            int index = ImplementationWrappers.Count - 1;
-            wrapper.Index = index;
+            wrapper.Index = ImplementationWrappers.Count -1;
         }
 
         public bool RemoveImplementation(object impl) {
             var wrapper = ActiveImplementationWrappers.FirstOrDefault(item => item.Implemenation == impl);
-            if(wrapper != null) {
+            if (wrapper != null) {
+                Debug.Log($"RemoveImplementation(): removing {impl} with id:{wrapper.ID} index:{wrapper.Index}");
                 ImplementationWrappers[wrapper.Index] = null;
                 return true;
             } else {
+                Debug.Log($"RemoveImplementation() failed to remove " + impl);
                 return false;
             }
         }
