@@ -13,6 +13,7 @@ using NetworkSkins.GUI.Trees;
 using NetworkSkins.GUI.Custom;
 using NetworkSkins.Tool;
 using UnityEngine;
+using System.Linq;
 
 namespace NetworkSkins.GUI
 {
@@ -421,7 +422,7 @@ namespace NetworkSkins.GUI
         private void OnCustomClicked(UIButton button, NSImplementationWrapper impl, UIButton[] buttons) {
             try {
                 customPanels_.TryGetValue(impl.ID, out var panel);
-                if(panel) {
+                if(panel != null) {
                     SetButtonUnfocused(button);
                     Destroy(panel.gameObject);
                 } else {
@@ -467,6 +468,13 @@ namespace NetworkSkins.GUI
             }
             if (settingsPanel != null) {
                 Destroy(settingsPanel.gameObject);
+            }
+            if (customPanels_ != null) {
+                foreach(var panel in customPanels_.Values) {
+                    if (panel != null) {
+                        Destroy(panel.gameObject);
+                    }
+                }
             }
         }
 
