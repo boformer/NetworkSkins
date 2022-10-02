@@ -198,6 +198,8 @@ namespace NetworkSkins.GUI
             toolBar.ButtonBar.EventPipetteClicked += OnPipetteClicked;
             toolBar.ButtonBar.EventResetClicked += OnResetClicked;
             toolBar.ButtonBar.EventCustomClicked += OnCustomClicked;
+            NSAPI.Instance.EventImplementationRemoving += OnImplementationRemoving;
+            NSAPI.Instance.EventImplementationRemoving += OnImplementationAdded;
         }
 
         private void RegisterVisibilityEvents() {
@@ -210,6 +212,8 @@ namespace NetworkSkins.GUI
             toolBar.ButtonBar.EventCatenaryVisibilityChanged += OnCatenaryVisibilityChanged;
             toolBar.ButtonBar.EventSettingsVisibilityChanged += OnSettingsVisibilityChanged;
             toolBar.ButtonBar.EventCustomVisibilityChanged += OnCustomVisibilityChanged;
+            NSAPI.Instance.EventImplementationRemoving -= OnImplementationAdded;
+            NSAPI.Instance.EventImplementationRemoving -= OnImplementationRemoving;
         }
 
         private void UnregisterClickEvents() {
@@ -288,6 +292,7 @@ namespace NetworkSkins.GUI
                 if(!visible && panel) {
                     SetButtonUnfocused(button);
                     Destroy(panel.gameObject);
+                    customPanels_.Remove(impl.ID);
                 }
                 RefreshZOrder();
             } catch(Exception ex) {
@@ -425,6 +430,7 @@ namespace NetworkSkins.GUI
                 if(panel != null) {
                     SetButtonUnfocused(button);
                     Destroy(panel.gameObject);
+                    customPanels_.Remove(impl.ID);
                 } else {
                     RefreshButtons(button, buttons);
                     CloseAll();
@@ -475,6 +481,7 @@ namespace NetworkSkins.GUI
                         Destroy(panel.gameObject);
                     }
                 }
+                customPanels_.Clear();
             }
         }
 
@@ -496,6 +503,15 @@ namespace NetworkSkins.GUI
                 button.normalBgSprite = button.focusedBgSprite = button.normalBgSprite.Replace("Focused", "");
                 button.hoveredBgSprite = button.hoveredBgSprite.Replace("Focused", "Hovered");
             }
+        }
+
+        public void OnImplementationRemoving(NSImplementationWrapper impl) {
+            CloseAll();
+            toolBar.ButtonBar.RemoveCustomButton(impl.ID);
+        }
+        public void OnImplementationAdded(NSImplementationWrapper impl) {
+            CloseAll();
+            toolBar.ButtonBar.AddCustomButton(impl);
         }
     }
 }

@@ -105,12 +105,23 @@ namespace NetworkSkins.GUI
 
             
             foreach(var impl in NSAPI.Instance.ActiveImplementationWrappers) {
-                var cpc = CustomPanelControllers[impl.ID] = new CustomPanelController(impl);
-                cpc.EventModifiersChanged += OnModifiersChanged;
+                AddCustomController(impl);
             }
+
+            NSAPI.Instance.EventImplementationAdded += AddCustomController;
+            NSAPI.Instance.EventImplementationRemoving += OnImplementationRemoving;
 
             Tool = ToolsModifierControl.toolController.gameObject.AddComponent<PipetteTool>();
             Tool.EventNetInfoPipetted += OnNetInfoPipetted;
+        }
+
+        private void AddCustomController(NSImplementationWrapper impl) {
+            var cpc = CustomPanelControllers[impl.ID] = new CustomPanelController(impl);
+            cpc.EventModifiersChanged += OnModifiersChanged;
+        }
+
+        private void OnImplementationRemoving(NSImplementationWrapper impl) {
+            CustomPanelControllers.Remove(impl.ID);
         }
 
         private void OnNetInfoPipetted(NetInfo info) {

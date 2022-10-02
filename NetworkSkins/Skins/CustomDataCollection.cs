@@ -1,11 +1,9 @@
 ﻿namespace NetworkSkins.Skins {
-    using ColossalFramework.IO;
     using NetworkSkins.API;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Xml.Serialization;
-    using System.Xml;
+
     using NetworkSkins.Persistence;
     using UnityEngine;
 
@@ -32,8 +30,14 @@
 
     public class CustomDataCollection : Dictionary<string, ICloneable>, ICloneable {
         private ICloneable[] datas_;
-        public CustomDataCollection() : base() {
+        public CustomDataCollection() {
             datas_ = new ICloneable[NSAPI.Instance.ImplementationWrappers.Count];
+            NSAPI.Instance.EventImplementationAdded += OnImplementationAdded;
+            NSAPI.Instance.EventImplementationRemoving += OnImplementationRemoving;
+        }
+        ~CustomDataCollection() {
+            NSAPI.Instance.EventImplementationAdded -= OnImplementationAdded;
+            NSAPI.Instance.EventImplementationRemoving -= OnImplementationRemoving;
         }
 
         public new ICloneable this[string key] {
@@ -45,8 +49,10 @@
             set {
                 base[key] = value;
                 var index = NSAPI.Instance.GetImplementationIndex(key);
-                if(index >= 0)
-                    this[index] = value;
+                if (index >= 0) {
+                    EnsureIndex(index);
+                    datas_[index] = value;
+                }
             }
         }
 
@@ -55,25 +61,45 @@
                 EnsureIndex(index);
                 return datas_[index];
             }
-            set {
-                EnsureIndex(index);
-                datas_[index] = value;
-            }
         }
 
-        private void EnsureIndex(int index) {
+        private void EnsureIndex(int index, bool silent = false) {
             if(index < datas_.Length)
                 return;
             
             int count = NSAPI.Instance.ImplementationWrappers.Count;
             if(index >= count) {
-                Debug.LogWarning($"Warning: expected index < NSAPI.Instance.ImplementationWrappers.Count. But Index={index} Count={count}");
+                if (!silent) {
+                    Debug.LogWarning($"Warning: expected index < NSAPI.Instance.ImplementationWrappers.Count. But Index={index} Count={count}");
+                }
                 count = index + 1;
             }
 
             var newDatas = new ICloneable[count];
             Array.Copy(datas_, newDatas, datas_.Length);
             datas_ = newDatas;
+        }
+
+        private void OnImplementationRemoving(NSImplementationWrapper impl) {
+            var data = this[impl.ID];
+            if (data is not CustomDataDTO) {
+                var dto = new CustomDataDTO {
+                    ID = impl.ID,
+                    Version = impl.DataVersion.ToString(),
+                    Base64Data = impl.Encode64(data),
+                };
+                this[impl.ID] = dto;
+            }
+        }
+
+        private void OnImplementationAdded(NSImplementationWrapper impl) {
+            if (this.TryGetValue(impl.ID, out ICloneable data) && data is CustomDataDTO dto) {
+                if (impl.ID != dto.ID) {
+                    Debug.LogError($"ids do not match: impl.ID={impl.ID} while dto.ID:{dto.ID}");
+                    return;
+                }
+                this[impl.ID] = impl.Decode64(dto.Base64Data, new Version(dto.Version));
+            }
         }
 
         #region serialization
@@ -106,9 +132,9 @@
                 CustomDataDTO[] dtos = XMLUtil.Deserialize<CustomDataDTO[]>(base64Data);
                 foreach(var dto in dtos) {
                     var impl = NSAPI.Instance.GetImplementationWrapper(dto.ID);
-                    ICloneable data =
-                        impl?.Decode64(dto.Base64Data, new Version(dto.Version))
-                        ?? dto;
+                    ICloneable data = impl != null
+                        ? impl.Decode64(dto.Base64Data, new Version(dto.Version))
+                        : dto;
                     ret[dto.ID] = data;
                 }
             }

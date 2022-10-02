@@ -53,6 +53,8 @@ namespace NetworkSkins.GUI
 
         private UIButton[] buttons;
 
+        private Vector2 ButtonSize => new Vector2(Layout.Size.x - Layout.Spacing * 2, Layout.Size.x - Layout.Spacing * 2);
+
         public override void OnDestroy() {
             // TODO: this code is redundant because all events are automatically cleared by UIComponent.RemoveAllEventHandlers during destruction
             treesButton.eventClicked -= OnTreesButtonClicked;
@@ -83,6 +85,29 @@ namespace NetworkSkins.GUI
             Refresh();
         }
 
+        public void RemoveCustomButton(string id) {
+            var button = CustomButtons.Find(button => button.objectUserData is NSImplementationWrapper wrapper && wrapper.ID == id);
+            if (button != null) {
+                Destroy(button.gameObject);
+                CustomButtons.Remove(button);
+            }
+        }
+
+        public void AddCustomButton(NSImplementationWrapper impl) {
+            var button = UIUtil.CreateButton(
+                size: ButtonSize,
+                parentComponent: this,
+                foregroundSprite: NSImplementationWrapper.ForegroundIconName,
+                backgroundSprite: Resources.ButtonSmall,
+                atlas: impl.Atlas,
+                isFocusable: true,
+                tooltip: impl.Tooltip);
+            CustomButtons.Add(button);
+            button.objectUserData = impl;
+            button.eventClicked += OnCustomButtonClicked;
+            button.eventVisibilityChanged += OnCustomButtonVisibilityChanged;
+        }
+
         protected override void RefreshUI(NetInfo netInfo) {
             try {
                 treesButton.isVisible = NetworkSkinPanelController.TreesEnabled;
@@ -103,7 +128,7 @@ namespace NetworkSkins.GUI
         }
 
         private void CreateButtons() {
-            Vector2 buttonSize = new Vector2(Layout.Size.x - Layout.Spacing * 2, Layout.Size.x - Layout.Spacing * 2);
+            Vector2 buttonSize = ButtonSize;
 
             surfacesButton = UIUtil.CreateButton(buttonSize, parentComponent: this, backgroundSprite: Resources.Surface, atlas: Resources.Atlas, isFocusable: true, tooltip: Translation.Instance.GetTranslation(TranslationID.TOOLTIP_SURFACE));
             surfacesButton.eventClicked += OnSurfacesButtonClicked;
@@ -151,18 +176,7 @@ namespace NetworkSkins.GUI
 
             CustomButtons = new List<UIButton>();
             foreach(var impl in NSAPI.Instance.ActiveImplementationWrappers) {
-                var button = UIUtil.CreateButton(
-                    size: buttonSize, 
-                    parentComponent: this, 
-                    foregroundSprite: NSImplementationWrapper.ForegroundIconName, 
-                    backgroundSprite:Resources.ButtonSmall, 
-                    atlas: impl.Atlas, 
-                    isFocusable: true, 
-                    tooltip: impl.Tooltip);
-                CustomButtons.Add(button);
-                button.objectUserData = impl;
-                button.eventClicked += OnCustomButtonClicked;
-                button.eventVisibilityChanged += OnCustomButtonVisibilityChanged;
+                AddCustomButton(impl);
             }
 
             CreateButtonArray();
