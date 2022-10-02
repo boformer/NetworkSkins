@@ -98,7 +98,7 @@
                     Debug.LogError($"ids do not match: impl.ID={impl.ID} while dto.ID:{dto.ID}");
                     return;
                 }
-                this[impl.ID] = impl.Decode64(dto.Base64Data, new Version(dto.Version));
+                data = this[impl.ID] = impl.Decode64(dto.Base64Data, new Version(dto.Version));
             }
         }
 
