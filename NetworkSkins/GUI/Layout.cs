@@ -1,5 +1,7 @@
 ﻿using ColossalFramework.UI;
 using NetworkSkins.GUI.Abstraction;
+using System;
+using System.Drawing;
 using UnityEngine;
 
 namespace NetworkSkins.GUI
@@ -12,7 +14,19 @@ namespace NetworkSkins.GUI
         public int Spacing { get; set; }
         public string BackgroundSprite { get; set; }
 
+        private static void AssertUint(float f) {
+            try {
+                if (f != Mathf.RoundToInt(f) || f < 0) {
+                    throw new Exception($"{f} must be positive integer");
+                }
+            } catch (Exception ex) {
+                Debug.LogException(ex);
+            }
+        }
+
         public Layout(Vector2 size, bool autoLayout, LayoutDirection autoLayoutDirection, LayoutStart autoLayoutStart, int spacing, string backgroundSprite = "") {
+            AssertUint(size.x);
+            AssertUint(size.y);
             Size = size;
             AutoLayout = autoLayout;
             AutoLayoutDirection = autoLayoutDirection;
