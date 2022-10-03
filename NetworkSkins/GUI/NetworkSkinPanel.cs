@@ -153,7 +153,7 @@ namespace NetworkSkins.GUI
         private void CreateRoadDecorationPanel()
         {
             roadDecorationPanel = AddUIComponent<RoadDecorationPanel>();
-            roadDecorationPanel.Build(PanelType.RoadDecoration, new Layout(new Vector2(228.6f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 0, "GenericPanel"));
+            roadDecorationPanel.Build(PanelType.RoadDecoration, new Layout(new Vector2(229.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 0, "GenericPanel"));
             currentPanel = roadDecorationPanel;
         }
 
@@ -167,7 +167,7 @@ namespace NetworkSkins.GUI
 
         private void CreateSettingsPanel() {
             settingsPanel = AddUIComponent<SettingsPanel>();
-            settingsPanel.Build(PanelType.Settings, new Layout(new Vector2(228.6f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 0, "GenericPanel"));
+            settingsPanel.Build(PanelType.Settings, new Layout(new Vector2(229.0f, 0.0f), true, LayoutDirection.Vertical, LayoutStart.TopLeft, 0, "GenericPanel"));
             currentPanel = settingsPanel;
         }
 

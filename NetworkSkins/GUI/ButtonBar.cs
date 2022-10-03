@@ -110,6 +110,7 @@ namespace NetworkSkins.GUI
 
         protected override void RefreshUI(NetInfo netInfo) {
             try {
+                this.enabled = false; // work around: avoid long layout processing time
                 treesButton.isVisible = NetworkSkinPanelController.TreesEnabled;
                 lightsButton.isVisible = NetworkSkinPanelController.StreetLight.Enabled;
                 surfacesButton.isVisible = NetworkSkinPanelController.TerrainSurface.Enabled;
@@ -124,6 +125,8 @@ namespace NetworkSkins.GUI
                 }
             } catch(Exception ex) {
                 Debug.LogException(ex);
+            } finally {
+                this.enabled = true;
             }
         }
 
