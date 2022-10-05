@@ -9,7 +9,6 @@
     {
         #region life cycle
         public static NSIntegrationBase<TIntegration> Instance { get; private set; }
-        public INSAPI API { get; private set; }
 
         private static void Create() {
             Instance ??= new TIntegration() as NSIntegrationBase<TIntegration>;
@@ -33,6 +32,16 @@
         
         public virtual void OnAfterNSLoaded() { }
         #endregion life cycle
+
+        #region API
+        public INSAPI API { get; private set; }
+        public void AddImplementation() => API.AddImplementation(this);
+        public bool RemoveImplementation() => API.RemoveImplementation(this);
+        public object GetSegmentSkinData(ushort segmentID) => API.GetSegmentSkinData(Index, segmentID);
+        public object GetNodeSkinData(ushort nodeID) => API.GetNodeSkinData(Index, nodeID);
+        public void OnControllerChanged() => API.OnControllerChanged(ID);
+        #endregion
+
 
         public abstract string ID { get; }
         public abstract int Index { get; set; }
