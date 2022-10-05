@@ -1,9 +1,6 @@
 ﻿namespace NetworkSkins.Helpers {
-    using ColossalFramework.Plugins;
     using ColossalFramework.UI;
-    using ICities;
     using System;
-    using System.Linq;
     using System.Collections.Generic;
     using UnityEngine;
 
