@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="..\NetworkSkins.Helpers\INSAPI.cs" Link="API\INSAPI.cs" />
     <Compile Include="..\NetworkSkins.Helpers\INSIntegration.cs" Link="API\INSIntegration.cs" />
+    <Compile Include="..\NetworkSkins.Helpers\IPersistency.cs" Link="API\IPersistency.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CitiesHarmony.API" Version="2.0.0" />

@@ -86,5 +86,12 @@
             var asm = GetSupportedNS()?.userModInstance?.GetType()?.Assembly;
             return asm?.GetType("NetworkSkins.API.NSAPI", throwOnError: false);
         }
+
+        public static object GetPersistency() {
+            object nsapi = GetNSAPI();
+            return nsapi.GetType()
+            .GetProperty("Persistency")
+            .GetValue(nsapi, null);
+        }
     }
 }

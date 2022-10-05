@@ -5,7 +5,7 @@
     using UnityEngine;
 
     public class NSAPIWrapper : INSAPI {
-        public object NSAPI;
+        public object NSAPI { get; private set; }
         private static class Delegates {
             public delegate void AddImplementation(object impl);
             public delegate bool RemoveImplementation(object impl);
@@ -14,22 +14,19 @@
             public delegate void OnControllerChanged(string implID);
         }
 
-        public object Instance { get; private set; }
-
         private readonly Delegates.AddImplementation addImplementation_;
         private readonly Delegates.RemoveImplementation removeImplementation_;
         private readonly Delegates.GetSegmentSkinData getSegmentSkinData_;
         private readonly Delegates.GetNodeSkinData getNodeSkinData_;
         private readonly Delegates.OnControllerChanged onControllerChanged_;
 
-        public NSAPIWrapper(object instance) {
-            Instance = instance;
-
-            addImplementation_ = DelegateUtil.CreateClosedDelegate<Delegates.AddImplementation>(instance);
-            removeImplementation_ = DelegateUtil.CreateClosedDelegate<Delegates.RemoveImplementation>(instance);
-            getSegmentSkinData_ = DelegateUtil.CreateClosedDelegate<Delegates.GetSegmentSkinData>(instance);
-            getNodeSkinData_ = DelegateUtil.CreateClosedDelegate<Delegates.GetNodeSkinData>(instance);
-            onControllerChanged_ = DelegateUtil.CreateClosedDelegate<Delegates.OnControllerChanged>(instance);
+        public NSAPIWrapper(object nsapi) {
+            NSAPI = nsapi;
+            addImplementation_ = DelegateUtil.CreateClosedDelegate<Delegates.AddImplementation>(nsapi);
+            removeImplementation_ = DelegateUtil.CreateClosedDelegate<Delegates.RemoveImplementation>(nsapi);
+            getSegmentSkinData_ = DelegateUtil.CreateClosedDelegate<Delegates.GetSegmentSkinData>(nsapi);
+            getNodeSkinData_ = DelegateUtil.CreateClosedDelegate<Delegates.GetNodeSkinData>(nsapi);
+            onControllerChanged_ = DelegateUtil.CreateClosedDelegate<Delegates.OnControllerChanged>(nsapi);
         }
 
         public void AddImplementation(object impl) => addImplementation_(impl);

@@ -7,6 +7,7 @@
     using System.Linq;
     using UnityEngine;
     using NetworkSkins.Helpers;
+    using NetworkSkins.Persistence;
 
     public class NSAPI : INSAPI {
         public static NSAPI Instance;
@@ -91,5 +92,7 @@
             var panel = NetworkSkinPanelController.Instance.CustomPanelControllers[implID];
             panel.Changed();
         }
+
+        public IPersistency Persistency => ActiveSelectionData.Instance;
     }
 }

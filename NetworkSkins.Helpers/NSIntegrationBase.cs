@@ -5,15 +5,19 @@
     using UnityEngine;
 
     public abstract class NSIntegrationBase<TIntegration> : INSIntegration 
-        where TIntegration : class, INSIntegration, new()
+        where TIntegration : NSIntegrationBase<TIntegration>, INSIntegration, new()
     {
         #region life cycle
-        public static NSIntegrationBase<TIntegration> Instance { get; private set; }
+        public static TIntegration Instance;
+
+        private NSIntegrationBase() {
+            API = new NSAPIWrapper(NSHelpers.GetNSAPI());
+            Persistency = new NSPersistencyWrapper(NSHelpers.GetPersistency());
+        }
 
         private static void Create() {
-            Instance ??= new TIntegration() as NSIntegrationBase<TIntegration>;
-            Instance.API = new NSAPIWrapper(NSHelpers.GetNSAPI());
-            Instance.API.AddImplementation(Instance);
+            Instance ??= new TIntegration();
+            Instance.AddImplementation();
         }
 
         /// <summary>Call when your mod is enabled</summary>
@@ -34,6 +38,7 @@
         #endregion life cycle
 
         #region API
+        public IPersistency Persistency { get; private set; }
         public INSAPI API { get; private set; }
         public void AddImplementation() => API.AddImplementation(this);
         public bool RemoveImplementation() => API.RemoveImplementation(this);

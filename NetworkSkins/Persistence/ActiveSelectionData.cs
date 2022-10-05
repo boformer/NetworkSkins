@@ -4,11 +4,12 @@ using System.Globalization;
 using System.IO;
 using ColossalFramework.IO;
 using ICities;
+using NetworkSkins.Helpers;
 using UnityEngine;
 
 namespace NetworkSkins.Persistence
 {
-    public class ActiveSelectionData : SerializableDataExtensionBase
+    public class ActiveSelectionData : SerializableDataExtensionBase, IPersistency
     {
         public static ActiveSelectionData Instance { get; private set; }
 
