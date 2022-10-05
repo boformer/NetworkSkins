@@ -6,6 +6,7 @@
     using ColossalFramework.Plugins;
     using ColossalFramework.Threading;
     using UnityEngine;
+    using System.Runtime.CompilerServices;
 
     public static class NSHelpers {
         public static event Action EventNSInstalled;
@@ -40,7 +41,15 @@
         }
 
         /// <returns><c>true</c> if NS (a version that supports <see cref="INSIntegration>"/> is enabled</returns>
-        public static bool IsNSEnabled() => GetSupportedNS()?.isEnabled ?? false;
+        public static bool IsNSEnabled() {
+            return
+                GetSupportedNS() is PluginManager.PluginInfo p &&
+                p.isEnabled &&
+                HasAPI(); // detect when NS is being disabled
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public static bool HasAPI() => NSAPI.Instance != null; 
 
 
         /// <summary>
