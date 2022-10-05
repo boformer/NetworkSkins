@@ -10,11 +10,6 @@
     <Compile Include="..\NetworkSkins\DelegateUtil.cs" Link="DelegateUtil.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NetworkSkins\NetworkSkins.csproj">
-      <Aliases>NS</Aliases>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="Assembly-CSharp">
       <HintPath>C:\References\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>

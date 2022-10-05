@@ -5,6 +5,10 @@
     using UnityEngine;
 
     internal static class DelegateUtil {
+        public static readonly BindingFlags All = 
+            BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.SetField | BindingFlags.GetProperty | BindingFlags.SetProperty;
+
+
         /// <typeparam name="TDelegate">delegate type</typeparam>
         /// <returns>Type[] representing arguments of the delegate.</returns>
         internal static Type[] GetParameterTypes<TDelegate>()
@@ -28,7 +32,7 @@
             name ??= typeof(TDelegate).Name;
             var ret = type.GetMethod(
                 name,
-                HarmonyLib.AccessTools.all,
+                All,
                 null,
                 GetParameterTypes<TDelegate>(),
                 null);
