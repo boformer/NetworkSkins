@@ -11,11 +11,13 @@
         where TIntegration : class, INSIntegration, new()
     {
         #region life cycle
-        public static TIntegration Instance { get; private set; }
+        public static NSIntegrationBase<TIntegration> Instance { get; private set; }
+        public INSAPI API { get; private set; }
 
         private static void Create() {
-            Instance ??= new TIntegration();
-            Instance.Register();
+            Instance ??= new TIntegration() as NSIntegrationBase<TIntegration>;
+            Instance.API = new NSAPIWrapper(NSHelpers.GetNSAPI());
+            Instance.API.AddImplementation(Instance);
         }
 
         /// <summary>Call when your mod is enabled</summary>
@@ -24,7 +26,7 @@
         /// <summary>Call when your mod is disabled</summary>
         public static void Uninstall() {
             NSHelpers.EventNSInstalled -= Create;
-            Instance?.Remove();
+            Instance?.API?.RemoveImplementation(Instance);
             Instance = null;
         }
 

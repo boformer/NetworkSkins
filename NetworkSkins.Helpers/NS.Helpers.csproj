@@ -7,6 +7,9 @@
     <Version>2.0.0.1</Version>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\NetworkSkins\DelegateUtil.cs" Link="DelegateUtil.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\NetworkSkins\NetworkSkins.csproj">
       <Aliases>NS</Aliases>
     </ProjectReference>

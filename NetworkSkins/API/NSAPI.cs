@@ -6,8 +6,9 @@
     using System.Collections.Generic;
     using System.Linq;
     using UnityEngine;
+    using NetworkSkins.Helpers;
 
-    public class NSAPI {
+    public class NSAPI : INSAPI {
         public static NSAPI Instance;
 
         /// <summary>hot reload</summary>

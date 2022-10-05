@@ -34,6 +34,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\NetworkSkins.Helpers\INSAPI.cs" Link="API\INSAPI.cs" />
     <Compile Include="..\NetworkSkins.Helpers\INSIntegration.cs" Link="API\INSIntegration.cs" />
   </ItemGroup>
   <ItemGroup>

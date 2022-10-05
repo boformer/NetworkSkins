@@ -1,12 +1,9 @@
 ﻿namespace NetworkSkins.Helpers {
-    extern alias NS;
     using System;
     using System.Linq;
-    using NS.NetworkSkins.API;
     using ColossalFramework.Plugins;
     using ColossalFramework.Threading;
     using UnityEngine;
-    using System.Runtime.CompilerServices;
 
     public static class NSHelpers {
         public static event Action EventNSInstalled;
@@ -48,9 +45,6 @@
                 HasAPI(); // detect when NS is being disabled
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        public static bool HasAPI() => NSAPI.Instance != null; 
-
 
         /// <summary>
         /// performs the given action once NS (a version that supports <see cref="INSIntegration>"/> is enabled
@@ -86,27 +80,11 @@
             }
         }
 
-        public static object GetSegmentSkinData(this INSIntegration impl, ushort segmentID) {
-            return NSAPI.Instance.GetSegmentSkinData(implIndex: impl.Index, segmentID);
+        public static bool HasAPI() => GetNSAPI() != null;
+
+        public static object GetNSAPI() {
+            var asm = GetSupportedNS()?.userModInstance?.GetType()?.Assembly;
+            return asm?.GetType("NetworkSkins.API.NSAPI", throwOnError: false);
         }
-
-        public static object GetNodeSkinData(this INSIntegration impl, ushort nodeID) {
-            return NSAPI.Instance.GetNodeSkinData(implIndex: impl.Index, nodeID);
-        }
-
-        /// <summary>
-        /// If user changed skin data using UI call this to rebuild skin.
-        /// </summary>
-        public static void OnControllerChanged(this INSIntegration impl) =>
-            NSAPI.Instance.OnControllerChanged(impl.ID);
-
-        public static void Register(this INSIntegration impl) {
-            if(NSAPI.Instance == null)
-                throw new Exception("NS is not ready yet. Please use DoOnNSEnabled()");
-            NSAPI.Instance.AddImplementation(impl);
-        }
-
-        public static bool Remove(this INSIntegration impl) =>
-            NSAPI.Instance?.RemoveImplementation(impl) ?? false;
     }
 }
