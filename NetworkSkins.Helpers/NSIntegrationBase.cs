@@ -10,7 +10,7 @@
         #region life cycle
         public static TIntegration Instance;
 
-        private NSIntegrationBase() {
+        public NSIntegrationBase() {
             API = new NSAPIWrapper(NSHelpers.GetNSAPI());
             Persistency = new NSPersistencyWrapper(NSHelpers.GetPersistency());
         }
