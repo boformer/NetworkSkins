@@ -26,11 +26,11 @@
         }
 
         public void Disable() {
-            foreach(var impl in ActiveImplementationWrappers) {
-                impl.OnNSDisabled();
-            }
             LoadingManager.instance.m_levelPreLoaded -= Instance.OnLevelPreloaded;
             Instance = null;
+            foreach (var impl in ActiveImplementationWrappers) {
+                impl.OnNSDisabled();
+            }
         }
 
         internal void OnLevelPreloaded() {
