@@ -7,13 +7,18 @@
     public abstract class NSIntegrationBase<TIntegration> : INSIntegration 
         where TIntegration : NSIntegrationBase<TIntegration>, INSIntegration, new()
     {
+        public INSAPI api_;
+        public IPersistency persistency_;
+
+        public IPersistency Persistency => 
+            persistency_ ??= new NSPersistencyWrapper(NSHelpers.GetPersistency());
+
+        public INSAPI API => 
+            api_ ??= new NSAPIWrapper(NSHelpers.GetNSAPI());
+
+
         #region life cycle
         public static TIntegration Instance;
-
-        public NSIntegrationBase() {
-            API = new NSAPIWrapper(NSHelpers.GetNSAPI());
-            Persistency = new NSPersistencyWrapper(NSHelpers.GetPersistency());
-        }
 
         private static void Create() {
             Instance ??= new TIntegration();
@@ -30,16 +35,20 @@
             Instance = null;
         }
 
-        public virtual void OnNSDisabled() => Install(); // install again if/when NS is enabled again.
+        public virtual void OnNSDisabled() {
+            persistency_ = null;
+            api_ = null;
+            Install(); // install again if/when NS is enabled again.
+        }
 
-        public virtual void OnBeforeNSLoaded() { }
+        public virtual void OnBeforeNSLoaded() {
+            persistency_ = null;
+        }
         
         public virtual void OnAfterNSLoaded() { }
         #endregion life cycle
 
         #region API
-        public IPersistency Persistency { get; private set; }
-        public INSAPI API { get; private set; }
         public void AddImplementation() => API.AddImplementation(this);
         public bool RemoveImplementation() => API.RemoveImplementation(this);
         public object GetSegmentSkinData(ushort segmentID) => API.GetSegmentSkinData(Index, segmentID);
