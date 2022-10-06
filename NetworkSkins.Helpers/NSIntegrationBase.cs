@@ -21,8 +21,12 @@
         public static TIntegration Instance;
 
         private static void Create() {
-            Instance ??= new TIntegration();
-            Instance.AddImplementation();
+            try {
+                Instance ??= new TIntegration();
+                Instance.AddImplementation();
+            }catch(Exception ex) {
+                Debug.LogException(ex);
+            }
         }
 
         /// <summary>Call when your mod is enabled</summary>

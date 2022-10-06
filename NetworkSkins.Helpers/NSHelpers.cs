@@ -83,8 +83,14 @@
         public static bool HasAPI() => GetNSAPI() != null;
 
         public static object GetNSAPI() {
-            var asm = GetSupportedNS()?.userModInstance?.GetType()?.Assembly;
-            return asm?.GetType("NetworkSkins.API.NSAPI", throwOnError: false);
+            return
+                GetSupportedNS()?.
+                userModInstance?.
+                GetType()?.
+                Assembly?.
+                GetType("NetworkSkins.API.NSAPI", throwOnError: false)?.
+                GetField("Instance")
+                ?.GetValue(null);
         }
 
         public static object GetPersistency() {

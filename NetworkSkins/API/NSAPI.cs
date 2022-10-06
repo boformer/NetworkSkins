@@ -11,6 +11,7 @@
 
     public class NSAPI : INSAPI {
         public static NSAPI Instance;
+        public IPersistency Persistency => ActiveSelectionData.Instance;
 
         /// <summary>hot reload</summary>
         public event Action<NSImplementationWrapper> EventImplementationAdded;
@@ -92,7 +93,5 @@
             var panel = NetworkSkinPanelController.Instance.CustomPanelControllers[implID];
             panel.Changed();
         }
-
-        public IPersistency Persistency => ActiveSelectionData.Instance;
     }
 }
