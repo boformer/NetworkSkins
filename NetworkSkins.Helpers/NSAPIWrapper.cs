@@ -21,6 +21,7 @@
         private readonly Delegates.OnControllerChanged onControllerChanged_;
 
         public NSAPIWrapper(object nsapi) {
+            if (nsapi == null) throw new ArgumentNullException("nsapi");
             NSAPI = nsapi;
             addImplementation_ = DelegateUtil.CreateClosedDelegate<Delegates.AddImplementation>(nsapi);
             removeImplementation_ = DelegateUtil.CreateClosedDelegate<Delegates.RemoveImplementation>(nsapi);
