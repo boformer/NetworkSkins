@@ -37,17 +37,19 @@ namespace NetworkSkins
 
         public void OnEnabled()
         {
-            NetworkSkinManager.Ensure();
+            try {
+                Debug.Log(message: "Network skins OnEnabled() called");
+                NetworkSkinManager.Ensure();
 
-            HarmonyHelper.DoOnHarmonyReady(NetworkSkinsPatcher.Install);
+                HarmonyHelper.DoOnHarmonyReady(NetworkSkinsPatcher.Install);
 
-            NSAPI.Enable();
+                NSAPI.Enable();
 
-            if(LoadingManager.exists && LoadingManager.instance.m_loadingComplete)
-            {
-                NSAPI.Instance.OnLevelPreloaded();
-                Install();
-            }
+                if (LoadingManager.exists && LoadingManager.instance.m_loadingComplete) {
+                    NSAPI.Instance.OnLevelPreloaded();
+                    Install();
+                }
+            } catch (Exception ex) { Debug.LogException(ex); }
         }
 
         public void OnCreated(ILoading loading) {}

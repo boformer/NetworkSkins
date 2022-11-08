@@ -21,6 +21,7 @@
             ImplementationWrappers.OfType<NSImplementationWrapper>(); // get rid of nulls
 
         public static void Enable() {
+            Debug.Log(message: "NSAPI.Enabled() called.");
             Instance = new NSAPI();
             LoadingManager.instance.m_levelPreLoaded += Instance.OnLevelPreloaded;
         }
