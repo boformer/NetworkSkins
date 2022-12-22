@@ -11,12 +11,16 @@ namespace NetworkSkins.Patches.NetManager
     [HarmonyPatch(typeof(global::NetManager), "UpdateColorMap")]
     public static class NetManagerUpdateColorMapPatch
     {
+        delegate Color GetSegmentColor(ushort segmentID, ref global::NetSegment data, InfoManager.InfoMode infoMode, InfoManager.SubInfoMode subInfoMode);
+        delegate Color GetNodeColor(ushort nodeID, ref NetNode data, InfoManager.InfoMode infoMode, InfoManager.SubInfoMode subInfoMode);
+
         public static IEnumerable<CodeInstruction> Transpiler(ILGenerator il, IEnumerable<CodeInstruction> instructions)
         {
             var originalInstructions = new List<CodeInstruction>(instructions);
 
-            var netAiGetSegmentColorMethod = typeof(NetAI).GetMethod("GetColor", new[] { typeof(ushort), typeof(global::NetSegment).MakeByRefType(), typeof(InfoManager.InfoMode) });
-            var netAiGetNodeColorMethod = typeof(NetAI).GetMethod("GetColor", new[] { typeof(ushort), typeof(global::NetNode).MakeByRefType(), typeof(InfoManager.InfoMode) });
+            var netAiGetSegmentColorMethod = DelegateUtil.GetMethod<GetSegmentColor>(typeof(NetAI), "GetColor");
+                
+            var netAiGetNodeColorMethod = DelegateUtil.GetMethod<GetNodeColor>(typeof(NetAI), "GetColor");
 
             var colorPatcherGetSegmentColorMethod = typeof(ColorPatcher).GetMethod("GetSegmentColor");
             var colorPatcherGetNodeColorMethod = typeof(ColorPatcher).GetMethod("GetNodeColor");
